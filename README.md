@@ -47,18 +47,27 @@ That said, Jisho is a great resource with many useful features that
 Jitendex doesn't even attempt to implement. I'm only picking on it
 because it's popular.
 
-## Example 2: けいそつ
+## Example 2: いただきます
+Compare Jitendex (**left**) with the original [JMdict file for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries)
+(**right**) developed by FooSoft.
+
+![itadakimasu_firefox_light_noncompact](https://github.com/stephenmk/Jitendex/assets/8003332/adc87ae2-91a9-4bc2-acf6-9de8bdfc1fc8)
+
+Jitendex includes example sentences, usage notes, cross references, antonym information, language-of-origin details, and
+extra metadata (such as the "*literally*" note) that are all missing from FooSoft's version.
+
+## Example 3: けいそつ
 I previously
 [designed](https://github.com/FooSoft/yomichan/issues/2183)
 [and](https://github.com/FooSoft/yomichan-import/pull/40)
 [developed](https://github.com/FooSoft/yomichan-import/pull/41)
-new versions of JMdict/JMnedict dictionaries for Yomichan which addressed
+new versions of JMdict/JMnedict dictionaries for Yomichan which addressed the
 [many](https://github.com/FooSoft/yomichan/issues/1165)
 [long-standing](https://github.com/FooSoft/yomichan/issues/2057)
 [issues](https://github.com/FooSoft/yomichan/issues/1716#issuecomment-1214436766)
-with their original versions. Jitendex is a continuation of that project
-with support for more app formats, more ambitious goals, and more
-design improvements.
+with the original version displayed in Example 2 above. Jitendex
+is a continuation of that project with support for more app formats,
+more ambitious goals, and more design improvements.
 
 Compare the search results for けいそつ from Jitendex (**left**) and
 my previous version of JMdict for Yomichan (**right**).
@@ -102,8 +111,8 @@ and I can't make any promises on when they all might be implemented.
 This is a personal project, so improvements will likely appear
 slowly and incrementally over time.
 
-## The Jiten Index
-Japanese dictionaries are notoriously inconsistent about
+### The Jiten Index
+Japanese dictionaries ("jiten") are notoriously inconsistent about
 orthography. You may search your dictionary collection for the word
 'へそ繰り' and find it in one dictionary, but you will have no way of
 knowing that most dictionaries have the word recorded as '臍繰り'. The
@@ -122,26 +131,26 @@ each one. If an entry for a word is known to exist on a particular
 website (kotobank, goo.ne.jp, jitenon, etc.), it will contain a
 hyperlink to that resource as well.
 
-## Furigana for example sentences
+### Furigana for example sentences
 Most of the words that appear in example sentences are indexed to
 particular JMdict entries, so it wouldn't be too hard to gather accurate
 furigana information for them. The words that aren't indexed (proper nouns,
 numbers and counters) would need to be reviewed individually to ensure
 correctness.
 
-## Multimedia Support
+### Multimedia Support
 - Images for select entries sourced from Wikimedia Commons (or other
   free and open image sources).
 - Word pronunciation audio provided by the
   [KanjiAlive project](https://github.com/kanjialive/kanji-data-media)
   (or other sources).
 
-## Dictionary data from other EDRDG projects
+### Dictionary data from other EDRDG projects
 - Target languages other than English that are included in the JMdict file (Spanish, German, etc.)
 - Kanji entries using data provided by [KANJIDIC2](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project).
 - Names and proper nouns from [JMnedict](https://www.edrdg.org/enamdict/enamdict_doc.html).
 
-## Dictionary data that is not provided by EDRDG projects
+### Dictionary data that is not provided by EDRDG projects
 - Free monolingual (Japanese-to-Japanese) definitions are available
   from Wiktionary. It may be possible to produce a version of
   Jitendex with Japanese as a target language using this data.

@@ -51,7 +51,7 @@ because it's popular.
 Compare Jitendex (**left**) with the original [JMdict file for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries)
 (**right**) developed by FooSoft.
 
-![itadakimasu_firefox_light_noncompact](https://github.com/stephenmk/Jitendex/assets/8003332/adc87ae2-91a9-4bc2-acf6-9de8bdfc1fc8)
+![itadakimasu](https://github.com/stephenmk/Jitendex/assets/8003332/9c258d24-340d-4156-b66b-3e1dd080bfae)
 
 Jitendex includes example sentences, usage notes, cross references, antonym information, language-of-origin details, and
 extra metadata (such as the "*literally*" note) that are all missing from FooSoft's version.
@@ -72,7 +72,7 @@ more ambitious goals, and more design improvements.
 Compare the search results for けいそつ from Jitendex (**left**) and
 my previous version of JMdict for Yomichan (**right**).
 
-![keisotu_jitendex](https://github.com/stephenmk/Jitendex/assets/8003332/91c2d82c-7b94-4a1a-9a73-949ae324b817)
+![keisotu](https://github.com/stephenmk/Jitendex/assets/8003332/6d3d7564-9ddf-4816-a996-d28af18651c1)
 
 In Jitendex (**left**), you can clearly tell that the 軽卒 form (the bottom
 search result) may be found in two different entries. In the first
@@ -86,23 +86,28 @@ irregular spelling of 軽率 (the top search result).
 ![neko_no_te](https://github.com/stephenmk/Jitendex/assets/8003332/fb6dcfe7-3df5-4a5e-a38a-8ad163a59e10)
 </details>
 
+<details>
+  <summary>Entry for ばね in Yomibaba (compact glossary mode disabled; dark mode; Chromium)</summary>
+
+![bane](https://github.com/stephenmk/Jitendex/assets/8003332/db8d2a4e-0bfa-4824-ab04-5a884e764991)
+</details>
+
+<details>
+  <summary>Entry for 頂く in Yomibaba (compact glossary mode enabled; light mode; Chromium)</summary>
+
+![itadaku](https://github.com/stephenmk/Jitendex/assets/8003332/bd6f972b-1263-4c1b-ae53-57ae1293ab1a)
+</details>
 
 <details>
   <summary>Entry for 現在 in Yomibaba (compact glossary mode disabled; dark mode; Firefox)</summary>
 
-![genzai_firefox_dark_uncompact](https://github.com/stephenmk/Jitendex/assets/8003332/46185a5a-5db3-4a39-be78-e409fa1ab878)
+![genzai](https://github.com/stephenmk/Jitendex/assets/8003332/00f738cb-56c9-4cc8-8167-e9d68424acd3)
 </details>
 
 <details>
   <summary>Entry for 素姓 in Yomibaba (compact glossary mode enabled; dark mode; Firefox)</summary>
 
-![sujou_firefox_dark_compact](https://github.com/stephenmk/Jitendex/assets/8003332/0662a974-45fe-477c-9d5b-280a59203d71)
-</details>
-
-<details>
-  <summary>Entry for ばね in Yomibaba (compact glossary mode disabled; dark mode; Chromium)</summary>
-
-![bane_chromium](https://github.com/stephenmk/Jitendex/assets/8003332/84e59ede-561a-4b13-b802-500e43cc4273)
+![sujou](https://github.com/stephenmk/Jitendex/assets/8003332/8f97c1c3-9d34-40ea-9a5b-3fdbc3014584)
 </details>
 
 # Planned Features
@@ -184,6 +189,7 @@ Dictionaries Research Group. Visit
 # Version History
 Version | First Publication | Details
 -- | -- | --
+1.1 | 2023-10-12 | Adjust shape, size, and font of rectangular images in the Yomichan version
 1.0 | 2023-10-09 | Japanese-English versions for Yomichan and MDict formats
 
 

@@ -51,7 +51,7 @@ because it's popular.
 Compare Jitendex (**left**) with the original [JMdict file for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries)
 (**right**) developed by FooSoft.
 
-![itadakimasu](https://github.com/stephenmk/Jitendex/assets/8003332/9c258d24-340d-4156-b66b-3e1dd080bfae)
+![itadakimasu](https://github.com/stephenmk/Jitendex/assets/8003332/e7d3e061-6369-4274-ba61-f98aebd9d651)
 
 Jitendex includes example sentences, usage notes, cross references, antonym information, language-of-origin details, and
 extra metadata (such as the "*literally*" note) that are all missing from FooSoft's version.
@@ -72,7 +72,7 @@ more ambitious goals, and more design improvements.
 Compare the search results for けいそつ from Jitendex (**left**) and
 my previous version of JMdict for Yomichan (**right**).
 
-![keisotu](https://github.com/stephenmk/Jitendex/assets/8003332/6d3d7564-9ddf-4816-a996-d28af18651c1)
+![keisotu](https://github.com/stephenmk/Jitendex/assets/8003332/12d2e417-05e8-4ff7-9ac3-ba90ddab4dc9)
 
 In Jitendex (**left**), you can clearly tell that the 軽卒 form (the bottom
 search result) may be found in two different entries. In the first
@@ -83,31 +83,31 @@ irregular spelling of 軽率 (the top search result).
 <details>
   <summary>Entry for 猫の手も借りたい in GoldenDict-ng</summary>
 
-![neko_no_te](https://github.com/stephenmk/Jitendex/assets/8003332/fb6dcfe7-3df5-4a5e-a38a-8ad163a59e10)
+![neko](https://github.com/stephenmk/Jitendex/assets/8003332/afd8826c-1751-49b4-a079-fe7df22596ba)
 </details>
 
 <details>
   <summary>Entry for ばね in Yomibaba (compact glossary mode disabled; dark mode; Chromium)</summary>
 
-![bane](https://github.com/stephenmk/Jitendex/assets/8003332/db8d2a4e-0bfa-4824-ab04-5a884e764991)
+![bane_chromium](https://github.com/stephenmk/Jitendex/assets/8003332/213190cb-f64c-4741-bb5a-859ab207b382)
 </details>
 
 <details>
   <summary>Entry for 頂く in Yomibaba (compact glossary mode enabled; light mode; Chromium)</summary>
 
-![itadaku](https://github.com/stephenmk/Jitendex/assets/8003332/bd6f972b-1263-4c1b-ae53-57ae1293ab1a)
+![itadaku](https://github.com/stephenmk/Jitendex/assets/8003332/56530a1b-41de-496d-92ec-286b407895e4)
 </details>
 
 <details>
   <summary>Entry for 現在 in Yomibaba (compact glossary mode disabled; dark mode; Firefox)</summary>
 
-![genzai](https://github.com/stephenmk/Jitendex/assets/8003332/00f738cb-56c9-4cc8-8167-e9d68424acd3)
+![genzai](https://github.com/stephenmk/Jitendex/assets/8003332/f0785bef-d974-4f9e-9c8b-ec504abfe875)
 </details>
 
 <details>
   <summary>Entry for 素姓 in Yomibaba (compact glossary mode enabled; dark mode; Firefox)</summary>
 
-![sujou](https://github.com/stephenmk/Jitendex/assets/8003332/8f97c1c3-9d34-40ea-9a5b-3fdbc3014584)
+![sujou](https://github.com/stephenmk/Jitendex/assets/8003332/8013bf73-cdcb-4086-9690-1d3acf993a2b)
 </details>
 
 # Planned Features
@@ -187,11 +187,7 @@ Dictionaries Research Group. Visit
 [edrdg.org](https://www.edrdg.org/) for more information.
 
 # Version History
-Version | First Publication | Details
--- | -- | --
-1.1 | 2023-10-12 | Adjust shape, size, and font of rectangular images in the Yomichan version
-1.0 | 2023-10-09 | Japanese-English versions for Yomichan and MDict formats
-
+See [VERSION_HISTORY.md](VERSION_HISTORY.md).
 
 # Donations
 

@@ -200,3 +200,6 @@ for words recorded in recently published Japanese dictionaries.
 If you would like to support my efforts, you can leave a tip via PayPal
 on either [Ko-fi](https://ko-fi.com/jitendex) or
 [Liberapay](https://liberapay.com/Jitendex/).
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z5PZAG9)
+<img style="height: 2rem;" src="https://img.shields.io/liberapay/receives/Jitendex.svg?logo=liberapay">

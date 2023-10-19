@@ -188,18 +188,3 @@ Dictionaries Research Group. Visit
 
 # Version History
 See [VERSION_HISTORY.md](VERSION_HISTORY.md).
-
-# Donations
-
-In addition to developing Jitendex, I am also an active contributor to the
-upstream data source. I have edited thousands of JMdict entries since 2022
-and am currently driving an effort to add
-[hundreds of new entries](https://github.com/JMdictProject/JMdictIssues/issues/101)
-for words recorded in recently published Japanese dictionaries.
-
-If you would like to support my efforts, you can leave a tip via PayPal
-on either [Ko-fi](https://ko-fi.com/Z8Z5PZAG9) or
-[Liberapay](https://liberapay.com/Jitendex/).
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z5PZAG9)
-[<img style="height: 2rem;" src="https://img.shields.io/liberapay/receives/Jitendex.svg?logo=liberapay">](https://liberapay.com/Jitendex/)

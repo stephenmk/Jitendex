@@ -22,11 +22,12 @@ background. This setup allows readers to retrieve important
 information from entries at a glance.
 
 ## Example 1: ばね【発条】
-Compare Jitendex (**left**) with the reigning champ of JMdict-based
-dictionaries, [Jisho](https://jisho.org/) (**right**).
+Compare Jitendex with the reigning champ of JMdict-based
+dictionaries, [Jisho](https://jisho.org/).
 
-![bane_jisho](https://github.com/stephenmk/Jitendex/assets/8003332/7d7f06d5-021f-43e7-a3b0-1d168e23100d)
-
+Jitendex (viewed in GoldenDict-ng) | Jisho.org
+:---: | :--:
+![bane_goldendict](https://github.com/stephenmk/Jitendex/assets/8003332/cfa3e210-98d0-4322-9d6d-3d39508093ed) | ![bane_jisho](https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317)
 
  - Jisho writes long explanations of commonly-used categories such
    as "Usually written using kana alone." This same information is
@@ -48,10 +49,11 @@ Jitendex doesn't even attempt to implement. I'm only picking on it
 because it's popular.
 
 ## Example 2: いただきます
-Compare Jitendex (**left**) with the original [JMdict file for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries)
-(**right**) developed by FooSoft.
+Compare Jitendex with the original [JMdict file for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries) developed by FooSoft.
 
-![itadakimasu](https://github.com/stephenmk/Jitendex/assets/8003332/e7d3e061-6369-4274-ba61-f98aebd9d651)
+Jitendex (viewed in Yomichan) | FooSoft's "JMdict for Yomichan"
+:--: | :--:
+![itadakimasu_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/1121c2e0-4189-4e3c-a0d0-9f739fdfbead) | ![itadakimasu_yomi_old](https://github.com/stephenmk/Jitendex/assets/8003332/bdceca7c-6aa3-4941-b610-6de79300ab63)
 
 Jitendex includes example sentences, usage notes, cross references, antonym information, language-of-origin details, and
 extra metadata (such as the "*literally*" note) that are all missing from FooSoft's version.
@@ -65,16 +67,19 @@ new versions of JMdict/JMnedict dictionaries for Yomichan which addressed the
 [many](https://github.com/FooSoft/yomichan/issues/1165)
 [long-standing](https://github.com/FooSoft/yomichan/issues/2057)
 [issues](https://github.com/FooSoft/yomichan/issues/1716#issuecomment-1214436766)
-with the original version displayed in Example 2 above. Jitendex
-is a continuation of that project with support for more app formats,
-more ambitious goals, and more design improvements.
+with the original version displayed in Example 2 above. This new version was
+sometimes referred to as "JMdict Extra" in order to distinguish it from
+FooSoft's version. Jitendex is a continuation of that project with support
+for more app formats, more ambitious goals, and more design improvements.
 
-Compare the search results for けいそつ from Jitendex (**left**) and
-my previous version of JMdict for Yomichan (**right**).
+Compare the search results for けいそつ from Jitendex and
+my previous version of JMdict for Yomichan.
 
-![keisotu](https://github.com/stephenmk/Jitendex/assets/8003332/12d2e417-05e8-4ff7-9ac3-ba90ddab4dc9)
+Jitendex (viewed in Yomichan) | stephenmk's "JMdict Extra"
+:--: | :--:
+![keisotu_jitendex](https://github.com/stephenmk/Jitendex/assets/8003332/ff10c25f-7537-4ee2-98cc-797992c895b8) | ![keisotu_jmdict](https://github.com/stephenmk/Jitendex/assets/8003332/cb25f7c1-db04-43d2-95c9-7a2bdded9b2d)
 
-In Jitendex (**left**), you can clearly tell that the 軽卒 form (the bottom
+In Jitendex, you can clearly tell that the 軽卒 form (the bottom
 search result) may be found in two different entries. In the first
 entry it refers to a type of soldier, and in the second entry it is an
 irregular spelling of 軽率 (the top search result).
@@ -89,7 +94,7 @@ irregular spelling of 軽率 (the top search result).
 <details>
   <summary>Entry for ばね in Yomibaba (compact glossary mode disabled; dark mode; Chromium)</summary>
 
-![bane_chromium](https://github.com/stephenmk/Jitendex/assets/8003332/213190cb-f64c-4741-bb5a-859ab207b382)
+![bane_chromium](https://github.com/stephenmk/Jitendex/assets/8003332/afb3e1ac-b3f7-441f-b73d-c611b3894e41)
 </details>
 
 <details>
@@ -107,7 +112,7 @@ irregular spelling of 軽率 (the top search result).
 <details>
   <summary>Entry for 素姓 in Yomibaba (compact glossary mode enabled; dark mode; Firefox)</summary>
 
-![sujou](https://github.com/stephenmk/Jitendex/assets/8003332/8013bf73-cdcb-4086-9690-1d3acf993a2b)
+![sujou_firefox](https://github.com/stephenmk/Jitendex/assets/8003332/b8059942-ee29-4e90-8035-9001935c5e2e)
 </details>
 
 # Planned Features

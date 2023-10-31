@@ -185,6 +185,9 @@ alter the design of the dictionaries based upon user feedback, but
 changes to accommodate extremely specific use-cases (such as custom
 frequency lists or flashcard types) will likely not be implemented.
 
+If you see any errors or incorrect information in the dictionary
+data, please feel free to report them in the
+[GitHub discussions forum](https://github.com/stephenmk/Jitendex/discussions).
 
 # Legal
 © CC BY-SA 4.0 Stephen Kraus 2023

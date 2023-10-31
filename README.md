@@ -170,7 +170,14 @@ correctness.
   would technically need to be associated with each JMdict entry on
   a sense-by-sense basis. Furthermore, the data would need to be
   cross-referenced with modern sources to ensure its accuracy.
-
+- [Jreibun](https://www.tufs.ac.jp/ts/personal/SUZUKI_Tomomi/jreibun/index-jreibun.html)
+  is an ongoing project for developing a corpus of high quality
+  Japanese-English example sentences. It hasn't been published yet,
+  but it will be freely licensed (Creative Commons) when it is.
+  There is currently a
+  [preview sample of 407 sentences](https://jisho.org/forum/63fdba73d5dda7188e000002-jreibun-new-example-sentences)
+  from the project on jisho.org. These sentences will definitely be added
+  to Jitendex when they become publicly available.
 
 # Feedback
 Jitendex is targeted at a general audience of users. I may be able to

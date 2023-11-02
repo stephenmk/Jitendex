@@ -60,13 +60,15 @@ extra metadata (such as the "*literally*" note) that are all missing from FooSof
 
 ## Example 3: けいそつ
 I previously
-[designed](https://github.com/FooSoft/yomichan/issues/2183)
-[and](https://github.com/FooSoft/yomichan-import/pull/40)
+[designed](https://github.com/FooSoft/yomichan/issues/2111)
+[and](https://github.com/FooSoft/yomichan/issues/2183)
+[also](https://github.com/FooSoft/yomichan-import/pull/40)
 [developed](https://github.com/FooSoft/yomichan-import/pull/41)
-new versions of JMdict/JMnedict dictionaries for Yomichan which addressed the
-[many](https://github.com/FooSoft/yomichan/issues/1165)
-[long-standing](https://github.com/FooSoft/yomichan/issues/2057)
-[issues](https://github.com/FooSoft/yomichan/issues/1716#issuecomment-1214436766)
+new versions of JMdict/JMnedict dictionaries for Yomichan which addressed
+[the](https://github.com/FooSoft/yomichan/issues/1165)
+[many](https://github.com/FooSoft/yomichan/issues/1716#issuecomment-1214436766)
+[long](https://github.com/FooSoft/yomichan/issues/2057)-[standing](https://github.com/FooSoft/yomichan/issues/2058)
+[issues](https://github.com/FooSoft/yomichan/issues/2210)
 with the original version displayed in Example 2 above. This new version was
 sometimes referred to as "JMdict Extra" in order to distinguish it from
 FooSoft's version. Jitendex is a continuation of that project with support

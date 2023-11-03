@@ -1,0 +1,7 @@
+date,comment,sentence_id,sentence_text,before_meaning_id,before_meaning_text,after_meaning_id,after_meaning_text
+2023-10-31,Replace “start” with “depart.”,232659,すぐに出発した方がいいですよ。,52166,You may as well start at once.,12139113,You had better depart at once.
+2023-10-31,Replace “start” with “depart.”,126180,朝食後、出発しましょう。,277812,We shall start after breakfast.,12139116,Let's depart after breakfast.
+2023-11-02,Replace “country” with “countryside;” less confusing.,121628,馬の背にまたがり野山を走り回った。,282377,I rode around the country on horseback.,12142772,I rode all over the countryside on horseback.
+2023-11-02,More idiomatic English.,143049,星が空にきらきら輝いている。,271519,The stars are glittering above.,12142854,The stars are twinkling in the sky.
+2023-11-03,Closer translation.,236454,「はじめまして、ジェイムズさん」「こちらこそ、あなたにお会いできて、こんなに嬉しいことはありません」,73820,"""How do you do, Mr James?"" ""Fine, thanks for asking. Nice to meet you.""",12143846,"""Pleased to meet you, Mr. James."" ""The pleasure is all mine. It's an honor to make your acquaintance."""
+2023-11-03,Less figurative translation.,107420,彼は口やかましいが本心は悪くない。,285421,His bark is worse than his bite.,12143887,"He grumbles a lot, but deep down he's not a bad guy."

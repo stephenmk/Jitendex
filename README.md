@@ -27,7 +27,7 @@ dictionaries, [Jisho](https://jisho.org/).
 
 Jitendex (viewed in GoldenDict-ng) | Jisho.org
 :---: | :--:
-![bane_goldendict](https://github.com/stephenmk/Jitendex/assets/8003332/cfa3e210-98d0-4322-9d6d-3d39508093ed) | ![bane_jisho](https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317)
+![bane_goldendict](https://github.com/stephenmk/Jitendex/assets/8003332/8299c8fc-2b69-4154-a1b2-84fc5d67b0d4) | ![bane_jisho](https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317)
 
  - Jisho writes long explanations of commonly-used categories such
    as "Usually written using kana alone." This same information is
@@ -96,7 +96,7 @@ irregular spelling of 軽率 (the top search result).
 <details>
   <summary>Entry for ばね in Yomibaba (compact glossary mode disabled; dark mode; Chromium)</summary>
 
-![bane_chromium](https://github.com/stephenmk/Jitendex/assets/8003332/afb3e1ac-b3f7-441f-b73d-c611b3894e41)
+![bane_chromium](https://github.com/stephenmk/Jitendex/assets/8003332/4d6f4006-0efc-4c7d-b3ef-de44030d5f2b)
 </details>
 
 <details>

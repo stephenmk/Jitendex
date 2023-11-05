@@ -24,3 +24,6 @@ date,sentence_id,comment,index_before,index_after
 2023-11-04,113531,すまい is a somewhat irregular ateji reading of 住居. I think it’s okay to index 住居 to じゅうきょ here. すまい has other example sentences.,彼(かれ)[01] は 牙買加{ジャマイカ}~ に 住まい{住居} を 構える{構えた}~,彼(かれ)[01] は 牙買加{ジャマイカ}~ に 住居(じゅうきょ) を 構える{構えた}~
 2023-11-04,114731,"三位 means “third place” in this sentence. We don’t have a sense for this meaning in the entry for 三位, which describes court ranks.",彼(かれ)[01] は いいとこ[05]~ 三位~ だろう,彼(かれ)[01] は いいとこ[05]~ 三位(さんい) だろう
 2023-11-04,114771,"Add reading to 山脈, which is a headword in multiple entries",彼(かれ)[01] は アルプス 山脈 の 夜明け の 美しい{美し} さ[01] を ぼんやり{ぼんやりと} 佇む{たたずんで}~ 見る{見ていた},彼(かれ)[01] は アルプス 山脈(さんみゃく) の 夜明け の 美しい{美し} さ[01] を ぼんやり{ぼんやりと} 佇む{たたずんで}~ 見る{見ていた}
+2023-11-05,146024,Adding priority flag for sense 03 of 思う,状況 は 深刻 だ と 思う{思います} か,状況 は 深刻 だ と 思う[03]{思います}~ か
+2023-11-05,143025,Adding priority flag for sense 01 of 思う,晴れ[01] だ と 思う よ[01],晴れ[01] だ と 思う[01]~ よ[01]
+2023-11-05,234449,Remove priority flag for sense 01 of 思う (it’s not a very natural example).,明日[01] は 天気 だ と 思う~,明日[01] は 天気 だ と 思う[01]

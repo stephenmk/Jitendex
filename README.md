@@ -4,9 +4,10 @@ Jitendex is a free and openly licensed Japanese-to-English
 dictionary. The dictionary is provided in multiple file formats,
 allowing you to use the data in a variety of dictionary apps.
 
-Currently Jitendex is built solely upon data provided by the
-[JMdict project](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project),
-but additional free and open data sources will be incorporated
+Currently Jitendex is built upon data provided by the
+[JMdict project](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project)
+and [Tatoeba](https://tatoeba.org/en/about).
+Additional free and open data sources will be incorporated
 in the future. See the [planned features section](#planned-features) for details.
 
 # Installation
@@ -143,13 +144,6 @@ each one. If an entry for a word is known to exist on a particular
 website (kotobank, goo.ne.jp, jitenon, etc.), it will contain a
 hyperlink to that resource as well.
 
-### Furigana for example sentences
-Most of the words that appear in example sentences are indexed to
-particular JMdict entries, so it wouldn't be too hard to gather accurate
-furigana information for them. The words that aren't indexed (proper nouns,
-numbers and counters) would need to be reviewed individually to ensure
-correctness.
-
 ### Multimedia Support
 - Images for select entries sourced from Wikimedia Commons (or other
   free and open image sources).
@@ -202,6 +196,10 @@ Jitendex includes material from the JMdict (EDICT, etc.) dictionary
 files in accordance with the license provisions of the Electronic
 Dictionaries Research Group. Visit
 [edrdg.org](https://www.edrdg.org/) for more information.
+
+Example sentences in Jitendex are sourced from the [Tanaka Corpus](http://www.edrdg.org/wiki/index.php/Tanaka_Corpus),
+which is currently maintained and distributed by [Tatoeba](https://tatoeba.org/en/downloads).
+This data is licensed [CC BY 2.0 FR](https://creativecommons.org/licenses/by/2.0/fr/).
 
 # Version History
 See [VERSION_HISTORY.md](VERSION_HISTORY.md).

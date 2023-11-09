@@ -27,7 +27,7 @@ dictionaries, [Jisho](https://jisho.org/).
 
 Jitendex (viewed in GoldenDict-ng) | Jisho.org
 :---: | :--:
-![bane_goldendict](https://github.com/stephenmk/Jitendex/assets/8003332/8299c8fc-2b69-4154-a1b2-84fc5d67b0d4) | ![bane_jisho](https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317)
+![bane_goldendict](https://github.com/stephenmk/Jitendex/assets/8003332/af7ac12c-401c-4f5f-801a-1a7c575081b7) | ![bane_jisho](https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317)
 
  - Jisho writes long explanations of commonly-used categories such
    as "Usually written using kana alone." This same information is
@@ -53,7 +53,7 @@ Compare Jitendex with the original [JMdict file for Yomichan](https://foosoft.ne
 
 Jitendex (viewed in Yomichan) | FooSoft's "JMdict for Yomichan"
 :--: | :--:
-![itadakimasu_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/1121c2e0-4189-4e3c-a0d0-9f739fdfbead) | ![itadakimasu_yomi_old](https://github.com/stephenmk/Jitendex/assets/8003332/bdceca7c-6aa3-4941-b610-6de79300ab63)
+![itadakimasu](https://github.com/stephenmk/Jitendex/assets/8003332/747982fe-a598-457c-b945-27c894135c41) | ![itadakimasu_old](https://github.com/stephenmk/Jitendex/assets/8003332/925a9bf8-36e2-45a9-99de-e233ddd3dc3e)
 
 Jitendex includes example sentences, usage notes, cross references, antonym information, language-of-origin details, and
 extra metadata (such as the "*literally*" note) that are all missing from FooSoft's version.
@@ -79,42 +79,42 @@ my previous version of JMdict for Yomichan.
 
 Jitendex (viewed in Yomichan) | stephenmk's "JMdict Extra"
 :--: | :--:
-![keisotu_jitendex](https://github.com/stephenmk/Jitendex/assets/8003332/ff10c25f-7537-4ee2-98cc-797992c895b8) | ![keisotu_jmdict](https://github.com/stephenmk/Jitendex/assets/8003332/cb25f7c1-db04-43d2-95c9-7a2bdded9b2d)
+![keisotu](https://github.com/stephenmk/Jitendex/assets/8003332/eb06ae11-5e26-4570-9f40-33daba25071f) | ![keisotu_old](https://github.com/stephenmk/Jitendex/assets/8003332/078c2818-65a3-464a-91d8-2c770f5a9c8c)
 
 In Jitendex, you can clearly tell that the 軽卒 form (the bottom
 search result) may be found in two different entries. In the first
-entry it refers to a type of soldier, and in the second entry it is an
-irregular spelling of 軽率 (the top search result).
+entry it refers to a type of soldier, and in the second entry it is
+a rare spelling of 軽率 (the top search result).
 
 ## Other miscellaneous examples
 <details>
   <summary>Entry for 猫の手も借りたい in GoldenDict-ng</summary>
 
-![neko](https://github.com/stephenmk/Jitendex/assets/8003332/afd8826c-1751-49b4-a079-fe7df22596ba)
+![nekonote](https://github.com/stephenmk/Jitendex/assets/8003332/6bd9c238-2677-4ead-899e-db3c20220283)
 </details>
 
 <details>
   <summary>Entry for ばね in Yomibaba (compact glossary mode disabled; dark mode; Chromium)</summary>
 
-![bane_chromium](https://github.com/stephenmk/Jitendex/assets/8003332/4d6f4006-0efc-4c7d-b3ef-de44030d5f2b)
+![bane_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/59bc4409-c7e7-4a97-a9d2-dec5d0f066e7)
 </details>
 
 <details>
   <summary>Entry for 頂く in Yomibaba (compact glossary mode enabled; light mode; Chromium)</summary>
 
-![itadaku](https://github.com/stephenmk/Jitendex/assets/8003332/56530a1b-41de-496d-92ec-286b407895e4)
+![itadaku](https://github.com/stephenmk/Jitendex/assets/8003332/38de3560-368e-4cf3-9583-274fa577eab6)
 </details>
 
 <details>
   <summary>Entry for 現在 in Yomibaba (compact glossary mode disabled; dark mode; Firefox)</summary>
 
-![genzai](https://github.com/stephenmk/Jitendex/assets/8003332/f0785bef-d974-4f9e-9c8b-ec504abfe875)
+![genzai](https://github.com/stephenmk/Jitendex/assets/8003332/1d40aae2-0b89-40f4-bbd8-1c3285bb4073)
 </details>
 
 <details>
   <summary>Entry for 素姓 in Yomibaba (compact glossary mode enabled; dark mode; Firefox)</summary>
 
-![sujou_firefox](https://github.com/stephenmk/Jitendex/assets/8003332/b8059942-ee29-4e90-8035-9001935c5e2e)
+![sujou](https://github.com/stephenmk/Jitendex/assets/8003332/3d0e4a8f-20f0-4166-870e-3400dba52f2f)
 </details>
 
 # Planned Features

@@ -2,6 +2,7 @@
 
 Version | First Publication | Details
 -- | -- | --
+2.0 | 2023-11-09 | <ul><li>All formats<ul><li>Add furigana to approximately 22,000 of the 26,000 unique example sentences.</li></ul></li><li>Yomichan<ul><li>Increase font size of Japanese text in example sentences and cross references.</li></ul></li><li>MDict<ul><li>Change color of the keyword underline in example sentences from black to red.</li></ul></li></ul>
 1.6 | 2023-11-04 | Add color to the square braces surrounding sense restrictions. See the entry for ばね【発条】, for example.
 1.5 | 2023-10-29 | <ul><li>All Formats<ul><li>Change the symbol for valid kanji/reading forms to use the kanji 可 rather than 有.</li><li>Change the symbol for old kanji/reading forms to use the kanji 旧 rather than 古.</li></ul></li></ul>
 1.4 | 2023-10-21 | <ul><li>Yomichan<ul><li>Fix a bug in which the text within monochrome SVG images was not converted into path data</li></ul></li></ul>

@@ -4,11 +4,9 @@ Jitendex is a free and openly licensed Japanese-to-English
 dictionary. The dictionary is provided in multiple file formats,
 allowing you to use the data in a variety of dictionary apps.
 
-Currently Jitendex is built upon data provided by the
-[JMdict project](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project)
-and [Tatoeba](https://tatoeba.org/en/about).
-Additional free and open data sources will be incorporated
-in the future. See the [planned features section](#planned-features) for details.
+Jitendex is built upon data provided by [multiple free and open projects](#legal).
+Data from additional sources will be incorporated in the future.
+See the [planned features section](#planned-features) for details.
 
 # Installation
 See the instructions provided with
@@ -49,7 +47,20 @@ That said, Jisho is a great resource with many useful features that
 Jitendex doesn't even attempt to implement. I'm only picking on it
 because it's popular.
 
-## Example 2: いただきます
+## Example 2: Pronunciation audio
+The MDict version of Jitendex contains high-quality audio clips produced by native Japanese speakers in roughly 8,230 entries.
+About 930 of those entries contain multiple clips from different speakers (male and female).
+Most of these audio clips are also accompanied by [pitch accent](https://en.wikipedia.org/wiki/Japanese_pitch_accent) information.
+
+<table>
+  <tr><th colspan="2">Jitendex (viewed in GoldenDict-ng)</th></tr>
+  <tr>
+   <td><img src="https://github.com/stephenmk/Jitendex/assets/8003332/d90b8cf2-ab16-4437-accd-6d68a4b4be8c"/></td>
+   <td><img src="https://github.com/stephenmk/Jitendex/assets/8003332/fb210253-5c23-4c92-aa7d-21432b2f1f70"/></td>
+  </tr>
+</table>
+
+## Example 3: いただきます
 Compare Jitendex with the original [JMdict file for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries) developed by FooSoft.
 
 Jitendex (viewed in Yomichan) | FooSoft's "JMdict for Yomichan"
@@ -59,7 +70,7 @@ Jitendex (viewed in Yomichan) | FooSoft's "JMdict for Yomichan"
 Jitendex includes example sentences, usage notes, cross references, antonym information, language-of-origin details, and
 extra metadata (such as the "*literally*" note) that are all missing from FooSoft's version.
 
-## Example 3: けいそつ
+## Example 4: けいそつ
 I previously
 [designed](https://github.com/FooSoft/yomichan/issues/2111)
 [and](https://github.com/FooSoft/yomichan/issues/2183)
@@ -70,7 +81,7 @@ new versions of JMdict/JMnedict dictionaries for Yomichan which addressed
 [many](https://github.com/FooSoft/yomichan/issues/1716#issuecomment-1214436766)
 [long](https://github.com/FooSoft/yomichan/issues/2057)-[standing](https://github.com/FooSoft/yomichan/issues/2058)
 [issues](https://github.com/FooSoft/yomichan/issues/2210)
-with the original version displayed in Example 2 above. This new version was
+with the original version displayed in Example 3 above. This new version was
 sometimes referred to as "JMdict Extra" in order to distinguish it from
 FooSoft's version. Jitendex is a continuation of that project with support
 for more app formats, more ambitious goals, and more design improvements.
@@ -147,9 +158,6 @@ hyperlink to that resource as well.
 ### Multimedia Support
 - Images for select entries sourced from Wikimedia Commons (or other
   free and open image sources).
-- Word pronunciation audio provided by the
-  [KanjiAlive project](https://github.com/kanjialive/kanji-data-media)
-  (or other sources).
 
 ### Dictionary data from other EDRDG projects
 - Target languages other than English that are included in the JMdict file (Spanish, German, etc.)
@@ -188,18 +196,14 @@ data, please feel free to report them in the
 # Legal
 © CC BY-SA 4.0 Stephen Kraus 2023
 
-You are free to use, modify, and redistribute Jitendex files under
-the terms of the
-[Creative Commons Attribution-ShareAlike License (V4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
+You are free to use, modify, and redistribute Jitendex files under the terms of the [Creative Commons Attribution-ShareAlike License (V4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
 
-Jitendex includes material from the JMdict (EDICT, etc.) dictionary
-files in accordance with the license provisions of the Electronic
-Dictionaries Research Group. Visit
-[edrdg.org](https://www.edrdg.org/) for more information.
+Jitendex includes material from several copyrighted sources in compliance with the terms and conditions of those projects.
+* JMdict (EDICT, etc.) dictionary data is provided by the Electronic Dictionaries Research Group. Visit [edrdg.org](https://www.edrdg.org/) for more information.
+* Example sentences (Japanese and English) are provided by [Tatoeba](https://tatoeba.org/en/downloads). This data is licensed [CC BY 2.0 FR](https://creativecommons.org/licenses/by/2.0/fr/).
+* Example pronunciation audio is provided by the [Kanji alive](https://github.com/kanjialive/kanji-data-media) project under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
+* Positional information for the furigana displayed in headwords is provided by the [JmdictFurigana project](https://github.com/Doublevil/JmdictFurigana). This data is distributed under a Creative Commons Attribution-ShareAlike License.
 
-Example sentences in Jitendex are sourced from the [Tanaka Corpus](http://www.edrdg.org/wiki/index.php/Tanaka_Corpus),
-which is currently maintained and distributed by [Tatoeba](https://tatoeba.org/en/downloads).
-This data is licensed [CC BY 2.0 FR](https://creativecommons.org/licenses/by/2.0/fr/).
 
 # Version History
 See [VERSION_HISTORY.md](VERSION_HISTORY.md).

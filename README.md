@@ -12,40 +12,46 @@ See the [planned features section](#planned-features) for details.
 See the instructions provided with
 [the latest release of Jitendex](https://github.com/stephenmk/Jitendex/releases/latest).
 
-# Features
-Jitendex is designed to display information in an organized and easily
-readable manner. It uses both color and space to separate chunks of
-information, minimizes repetition by merging related categories into
-groups, and hides long and often-repeated explanations in the
-background. This setup allows readers to retrieve important
-information from entries at a glance.
+# Design and Features
+The following examples provide a quick overview of the design and features of Jitendex.
 
 ## Example 1: ばね【発条】
+The design goal of Jitendex is to allow readers to retrieve
+all of the important information from an entry at a glance.
+
 Compare Jitendex with the reigning champ of JMdict-based
 dictionaries, [Jisho](https://jisho.org/).
 
-Jitendex (viewed in GoldenDict-ng) | Jisho.org
-:---: | :--:
-![bane_goldendict](https://github.com/stephenmk/Jitendex/assets/8003332/af7ac12c-401c-4f5f-801a-1a7c575081b7) | ![bane_jisho](https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317)
-
- - Jisho writes long explanations of commonly-used categories such
-   as "Usually written using kana alone." This same information is
-   available in Jitendex by hovering over colorful tags with
-   abbreviated names such as "kana."
- - The second and third senses of the word are both nouns, both are
-   usually written in kana, and both apply only to ばね and バネ.
-   Instead of repeating all of this information, Jitendex places
-   both senses at the same indentation level underneath a single
-   metadata tag group.
- - jisho provides information regarding variant spellings in
-   two separate lists: "Other forms" and "Notes." Readers must strain
-   their eyes and play a game of "spot the difference" in order to make
-   sense of it. Jitendex displays all of the same information in a tidy
-   table.
-
-That said, Jisho is a great resource with many useful features that
-Jitendex doesn't even attempt to implement. I'm only picking on it
-because it's popular.
+<table>
+  <tr>
+    <th>Jitendex (viewed in GoldenDict-ng)</th>
+    <th>Jisho.org</th>
+  </tr>
+  <tr>
+     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/c4f7cc69-e2b1-4885-867d-bcd2a6ed680b'/></td>
+     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317'/></td>
+  </tr>
+  <tr>
+     <td colspan="2">Jitendex replaces lengthy explanations with short tags. The full explanation text is accessible by hovering over these tags.</td>
+  </tr>
+  <tr>
+     <td align='center'><img src='https://github.com/stephenmk/Jitendex/assets/8003332/ab22fcf1-7824-4b80-9fa7-f01e632a4c9e'/></td>
+     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/fe7ef964-19c0-4826-b71a-627eb0781417'/></td>
+  </tr>
+  <tr>
+     <td colspan="2">Repetition is reduced by combining sections with same metadata tags into a single group.</td>
+  </tr>
+  <tr>
+     <td align='center'><img src='https://github.com/stephenmk/Jitendex/assets/8003332/6b94643b-5b9c-4e28-aeb8-9f7a01ec1184'/></td>
+     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/2086acce-7348-40c9-8b3d-576c10809c37'/></td>
+  </tr>
+     <td colspan="2">Variant kanji forms and readings are displayed in a tidy table.</td>
+  </tr>
+  <tr>
+     <td align='center'><img src='https://github.com/stephenmk/Jitendex/assets/8003332/e008a321-9d7b-4948-a099-a79195a8993c'/></td>
+     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/58a134ef-712b-4bae-9598-d32b47f038a9'/></td>
+  </tr>
+</table>
 
 ## Example 2: Pronunciation audio
 The MDict version of Jitendex contains high-quality audio clips produced by native Japanese speakers in roughly 8,230 entries.

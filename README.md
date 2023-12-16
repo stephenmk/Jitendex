@@ -83,7 +83,7 @@ This information has all been implemented in Jitendex.
 * Cross references
 * Antonyms
 * Language of origin information
-* Glossary notes (such as "*Figuratively*", *"Literally"*, etc.)
+* Definition notes (such as "*Figuratively*", *"Literally"*, etc.)
 
 ## Example 4: けいそつ
 I previously

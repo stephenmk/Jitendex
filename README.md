@@ -109,7 +109,7 @@ Jitendex (viewed in Yomitan) | stephenmk's "JMdict Extra"
 ![Jitendex entries for けいそつ viewed in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a397349-7c17-49e0-b1a3-9d565f728d65) | !['JMDict Extra' entries for けいそつ viewed in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a666880-6b5a-48b2-b73d-eced944216ce)
 
 In Jitendex, you can clearly tell that the 軽卒 form (the bottom
-search result) may be found in two different entries. In the first
+search result) is found in two different entries. In the first
 entry it refers to a type of soldier, and in the second entry it is
 a rare spelling of 軽率 (the top search result).
 

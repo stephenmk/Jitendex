@@ -28,28 +28,28 @@ dictionaries, [Jisho](https://jisho.org/).
     <th>Jisho.org</th>
   </tr>
   <tr>
-     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/c4f7cc69-e2b1-4885-867d-bcd2a6ed680b'/></td>
-     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317'/></td>
+     <td><img alt='Screenshot of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/c4f7cc69-e2b1-4885-867d-bcd2a6ed680b'/></td>
+     <td><img alt='Screenshot of the Jisho.org entry for ばね'src='https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317'/></td>
   </tr>
   <tr>
-     <td colspan="2">Jitendex replaces lengthy explanations with short tags. The full explanation text is accessible by hovering over these tags.</td>
+     <td colspan="2"><br>Jitendex replaces lengthy explanations with short tags. The full explanation text is accessible by hovering over these tags.</td>
   </tr>
   <tr>
-     <td align='center'><img src='https://github.com/stephenmk/Jitendex/assets/8003332/ab22fcf1-7824-4b80-9fa7-f01e632a4c9e'/></td>
-     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/fe7ef964-19c0-4826-b71a-627eb0781417'/></td>
+     <td align='center'><img alt='Screenshot of the first sense of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/ab22fcf1-7824-4b80-9fa7-f01e632a4c9e'/></td>
+     <td><img alt='Screenshot of the first sense of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/assets/8003332/fe7ef964-19c0-4826-b71a-627eb0781417'/></td>
   </tr>
   <tr>
-     <td colspan="2">Repetition is reduced by combining sections with same metadata tags into a single group.</td>
+     <td colspan="2"><br>Repetition is reduced by combining sections with same metadata tags into a single group.</td>
   </tr>
   <tr>
-     <td align='center'><img src='https://github.com/stephenmk/Jitendex/assets/8003332/6b94643b-5b9c-4e28-aeb8-9f7a01ec1184'/></td>
-     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/2086acce-7348-40c9-8b3d-576c10809c37'/></td>
+     <td align='center'><img alt='Screenshot of the second and third senses of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/6b94643b-5b9c-4e28-aeb8-9f7a01ec1184'/></td>
+     <td><img alt='Screenshot of the second and third senses of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/assets/8003332/2086acce-7348-40c9-8b3d-576c10809c37'/></td>
   </tr>
-     <td colspan="2">Variant kanji forms and readings are displayed in a tidy table.</td>
+     <td colspan="2"><br>Variant kanji forms and readings are displayed in a tidy table.</td>
   </tr>
   <tr>
-     <td align='center'><img src='https://github.com/stephenmk/Jitendex/assets/8003332/e008a321-9d7b-4948-a099-a79195a8993c'/></td>
-     <td><img src='https://github.com/stephenmk/Jitendex/assets/8003332/58a134ef-712b-4bae-9598-d32b47f038a9'/></td>
+     <td align='center'><img alt='Screenshot of the variant forms table in the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/e008a321-9d7b-4948-a099-a79195a8993c'/></td>
+     <td><img alt='Screenshot of the "Other Forms" and "Notes" sections of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/assets/8003332/58a134ef-712b-4bae-9598-d32b47f038a9'/></td>
   </tr>
 </table>
 
@@ -71,7 +71,7 @@ Compare Jitendex with the original [JMdict file for Yomichan](https://foosoft.ne
 
 Jitendex (viewed in Yomitan) | FooSoft's "JMdict for Yomichan"
 :--: | :--:
-![ky_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/8facedad-2c8f-4d75-823d-5303c2eee51f) | ![ky_old](https://github.com/stephenmk/Jitendex/assets/8003332/b18a8437-7de1-409e-84d1-bd44516eda35)
+![Screenshot of the Jitendex entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/8facedad-2c8f-4d75-823d-5303c2eee51f) | ![Screenshot of FooSoft's 'JMdict' entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/b18a8437-7de1-409e-84d1-bd44516eda35)
 
 FooSoft's version is missing a variety of metadata and supplemental information that is included 
 in the [EDRDG's JMdict database](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project).
@@ -106,7 +106,7 @@ my previous version of JMdict for Yomichan.
 
 Jitendex (viewed in Yomitan) | stephenmk's "JMdict Extra"
 :--: | :--:
-![Jitendex entries for けいそつ viewed in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a397349-7c17-49e0-b1a3-9d565f728d65) | !['JMDict Extra' entries for けいそつ viewed in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a666880-6b5a-48b2-b73d-eced944216ce)
+![Screenshot of the Jitendex entries for けいそつ in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a397349-7c17-49e0-b1a3-9d565f728d65) | ![Screenshot of the 'JMDict Extra' entries for けいそつ in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a666880-6b5a-48b2-b73d-eced944216ce)
 
 In Jitendex, you can clearly tell that the 軽卒 form (the bottom
 search result) is found in two different entries. In the first
@@ -117,31 +117,31 @@ a rare spelling of 軽率 (the top search result).
 <details>
   <summary>Entry for 猫の手も借りたい in GoldenDict-ng</summary>
 
-![nekonote](https://github.com/stephenmk/Jitendex/assets/8003332/6bd9c238-2677-4ead-899e-db3c20220283)
+![Screenshot of the Jitendex entry for 猫の手も借りたい in GoldenDict-ng](https://github.com/stephenmk/Jitendex/assets/8003332/6bd9c238-2677-4ead-899e-db3c20220283)
 </details>
 
 <details>
   <summary>Entry for ばね in Yomitan (compact glossary mode disabled; dark mode)</summary>
 
-![bane_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/4aa0bd35-58ff-4988-bd09-e373995593d9)
+![Screenshot of the Jitendex entry for ばね in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4aa0bd35-58ff-4988-bd09-e373995593d9)
 </details>
 
 <details>
   <summary>Entry for 頂く in Yomitan (compact glossary mode enabled; light mode)</summary>
 
-![itadaku_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/070b60ae-0d03-4083-90f1-a37f5e0bd687)
+![Screenshot of the Jitendex entry for 頂く in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/070b60ae-0d03-4083-90f1-a37f5e0bd687)
 </details>
 
 <details>
   <summary>Entry for 現在 in Yomitan (compact glossary mode disabled; dark mode)</summary>
 
-![genzai_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/b795605c-85ef-4f76-b3c9-c4bc116f9758)
+![Screenshot of the Jitendex entry for 現在 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/b795605c-85ef-4f76-b3c9-c4bc116f9758)
 </details>
 
 <details>
   <summary>Entry for 素姓 in Yomitan (compact glossary mode enabled; dark mode)</summary>
 
-![sujou_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/4d94b214-e3ba-4ef7-b5ee-1bbd017d5419)
+![Screenshot of the Jitendex entry for 素姓 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4d94b214-e3ba-4ef7-b5ee-1bbd017d5419)
 </details>
 
 # Planned Features

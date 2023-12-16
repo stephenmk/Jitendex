@@ -45,7 +45,7 @@ dictionaries, [Jisho](https://jisho.org/).
      <td align='center'><img alt='Screenshot of the second and third senses of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/6b94643b-5b9c-4e28-aeb8-9f7a01ec1184'/></td>
      <td><img alt='Screenshot of the second and third senses of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/assets/8003332/2086acce-7348-40c9-8b3d-576c10809c37'/></td>
   </tr>
-     <td colspan="2"><br>Variant kanji forms and readings are displayed in a tidy table.</td>
+     <td colspan="2"><br>Variant kanji forms and readings in Jitendex are displayed in a tidy table.</td>
   </tr>
   <tr>
      <td align='center'><img alt='Screenshot of the variant forms table in the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/e008a321-9d7b-4948-a099-a79195a8993c'/></td>
@@ -117,7 +117,7 @@ a rare spelling of 軽率 (the top search result).
 <details>
   <summary>Entry for 猫の手も借りたい in GoldenDict-ng</summary>
 
-![Screenshot of the Jitendex entry for 猫の手も借りたい in GoldenDict-ng](https://github.com/stephenmk/Jitendex/assets/8003332/6bd9c238-2677-4ead-899e-db3c20220283)
+![Screenshot of the Jitendex entry for 猫の手も借りたい in GoldenDict-ng](https://github.com/stephenmk/Jitendex/assets/8003332/0c7c44bc-0d80-4b99-8aae-c6b00e9b4330)
 </details>
 
 <details>

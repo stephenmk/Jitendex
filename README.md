@@ -60,15 +60,24 @@ Most of these audio clips are also accompanied by [pitch accent](https://en.wiki
   </tr>
 </table>
 
-## Example 3: いただきます
+## Example 3: ケーワイ【ＫＹ】
 Compare Jitendex with the original [JMdict file for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries) developed by FooSoft.
 
-Jitendex (viewed in Yomichan) | FooSoft's "JMdict for Yomichan"
+Jitendex (viewed in Yomitan) | FooSoft's "JMdict for Yomichan"
 :--: | :--:
-![itadakimasu](https://github.com/stephenmk/Jitendex/assets/8003332/747982fe-a598-457c-b945-27c894135c41) | ![itadakimasu_old](https://github.com/stephenmk/Jitendex/assets/8003332/925a9bf8-36e2-45a9-99de-e233ddd3dc3e)
+![ky_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/8facedad-2c8f-4d75-823d-5303c2eee51f) | ![ky_old](https://github.com/stephenmk/Jitendex/assets/8003332/b18a8437-7de1-409e-84d1-bd44516eda35)
 
-Jitendex includes example sentences, usage notes, cross references, antonym information, language-of-origin details, and
-extra metadata (such as the "*literally*" note) that are all missing from FooSoft's version.
+FooSoft's version is missing a variety of metadata and supplemental information that is included 
+in the [EDRDG's JMdict database](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project).
+This information has all been implemented in Jitendex.
+
+* Example sentences
+* Usage notes
+* Etymology notes
+* Cross references
+* Antonyms
+* Language of origin information
+* Glossary notes (such as "*Figuratively*", *"Literally"*, etc.)
 
 ## Example 4: けいそつ
 I previously
@@ -89,9 +98,9 @@ for more app formats, more ambitious goals, and more design improvements.
 Compare the search results for けいそつ from Jitendex and
 my previous version of JMdict for Yomichan.
 
-Jitendex (viewed in Yomichan) | stephenmk's "JMdict Extra"
+Jitendex (viewed in Yomitan) | stephenmk's "JMdict Extra"
 :--: | :--:
-![keisotu](https://github.com/stephenmk/Jitendex/assets/8003332/eb06ae11-5e26-4570-9f40-33daba25071f) | ![keisotu_old](https://github.com/stephenmk/Jitendex/assets/8003332/078c2818-65a3-464a-91d8-2c770f5a9c8c)
+![Jitendex entries for けいそつ viewed in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a397349-7c17-49e0-b1a3-9d565f728d65) | !['JMDict Extra' entries for けいそつ viewed in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a666880-6b5a-48b2-b73d-eced944216ce)
 
 In Jitendex, you can clearly tell that the 軽卒 form (the bottom
 search result) may be found in two different entries. In the first
@@ -106,27 +115,27 @@ a rare spelling of 軽率 (the top search result).
 </details>
 
 <details>
-  <summary>Entry for ばね in Yomibaba (compact glossary mode disabled; dark mode; Chromium)</summary>
+  <summary>Entry for ばね in Yomitan (compact glossary mode disabled; dark mode)</summary>
 
-![bane_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/59bc4409-c7e7-4a97-a9d2-dec5d0f066e7)
+![bane_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/4aa0bd35-58ff-4988-bd09-e373995593d9)
 </details>
 
 <details>
-  <summary>Entry for 頂く in Yomibaba (compact glossary mode enabled; light mode; Chromium)</summary>
+  <summary>Entry for 頂く in Yomitan (compact glossary mode enabled; light mode)</summary>
 
-![itadaku](https://github.com/stephenmk/Jitendex/assets/8003332/38de3560-368e-4cf3-9583-274fa577eab6)
+![itadaku_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/070b60ae-0d03-4083-90f1-a37f5e0bd687)
 </details>
 
 <details>
-  <summary>Entry for 現在 in Yomibaba (compact glossary mode disabled; dark mode; Firefox)</summary>
+  <summary>Entry for 現在 in Yomitan (compact glossary mode disabled; dark mode)</summary>
 
-![genzai](https://github.com/stephenmk/Jitendex/assets/8003332/1d40aae2-0b89-40f4-bbd8-1c3285bb4073)
+![genzai_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/b795605c-85ef-4f76-b3c9-c4bc116f9758)
 </details>
 
 <details>
-  <summary>Entry for 素姓 in Yomibaba (compact glossary mode enabled; dark mode; Firefox)</summary>
+  <summary>Entry for 素姓 in Yomitan (compact glossary mode enabled; dark mode)</summary>
 
-![sujou](https://github.com/stephenmk/Jitendex/assets/8003332/3d0e4a8f-20f0-4166-870e-3400dba52f2f)
+![sujou_yomi](https://github.com/stephenmk/Jitendex/assets/8003332/4d94b214-e3ba-4ef7-b5ee-1bbd017d5419)
 </details>
 
 # Planned Features

@@ -39,7 +39,7 @@ dictionaries, [Jisho](https://jisho.org/).
      <td><img alt='Screenshot of the first sense of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/assets/8003332/fe7ef964-19c0-4826-b71a-627eb0781417'/></td>
   </tr>
   <tr>
-     <td colspan="2"><br>Repetition is reduced by combining sections with same metadata tags into a single group.</td>
+     <td colspan="2"><br>Repetition is reduced by combining sections with identical metadata tags into a single group.</td>
   </tr>
   <tr>
      <td align='center'><img alt='Screenshot of the second and third senses of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/6b94643b-5b9c-4e28-aeb8-9f7a01ec1184'/></td>

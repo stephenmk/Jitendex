@@ -61,8 +61,8 @@ Most of these audio clips are also accompanied by [pitch accent](https://en.wiki
 <table>
   <tr><th colspan="2">Jitendex (viewed in GoldenDict-ng)</th></tr>
   <tr>
-   <td><img src="https://github.com/stephenmk/Jitendex/assets/8003332/d90b8cf2-ab16-4437-accd-6d68a4b4be8c"/></td>
-   <td><img src="https://github.com/stephenmk/Jitendex/assets/8003332/fb210253-5c23-4c92-aa7d-21432b2f1f70"/></td>
+   <td><img alt="Screenshot of the entry for 弁護士 in Jitendex featuring example audio and pitch accent information" src="https://github.com/stephenmk/Jitendex/assets/8003332/d90b8cf2-ab16-4437-accd-6d68a4b4be8c"/></td>
+   <td><img alt="Screenshot of the entry for 美容院 in Jitendex featuring two example audio clips and pitch accent information" src="https://github.com/stephenmk/Jitendex/assets/8003332/fb210253-5c23-4c92-aa7d-21432b2f1f70"/></td>
   </tr>
 </table>
 

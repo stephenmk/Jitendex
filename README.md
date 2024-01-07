@@ -1,26 +1,18 @@
 # Jitendex
 
-Jitendex is a free and openly licensed Japanese-to-English
-dictionary. The dictionary is provided in multiple file formats,
-allowing you to use the data in a variety of dictionary apps.
-
-Jitendex is built upon data provided by [multiple free and open projects](#legal).
-Data from additional sources will be incorporated in the future.
-See the [planned features section](#planned-features) for details.
+Jitendex is a free, offline, and openly licensed Japanese-to-English dictionary. Updated versions with new content are published every week.
 
 # Installation
-See the instructions provided with
-[the latest release of Jitendex](https://github.com/stephenmk/Jitendex/releases/latest).
+See the instructions provided with [the latest release](https://github.com/stephenmk/Jitendex/releases/latest).
 
 # Design and Features
 The following examples provide a quick overview of the design and features of Jitendex.
 
-## Example 1: ばね【発条】
+## Example 1: Entry Layout
 The design goal of Jitendex is to allow readers to retrieve
 all of the important information from an entry at a glance.
 
-Compare Jitendex with the reigning champ of JMdict-based
-dictionaries, [Jisho](https://jisho.org/).
+Compare Jitendex with the reigning champ of free Japanese dictionaries, [Jisho.org](https://jisho.org/).
 
 <table>
   <tr>
@@ -66,15 +58,14 @@ Most of these audio clips are also accompanied by [pitch accent](https://en.wiki
   </tr>
 </table>
 
-## Example 3: ケーワイ【ＫＹ】
-Compare Jitendex with the original [JMdict file for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries) developed by FooSoft.
+## Example 3: Missing Information
+Compare Jitendex with the original version of [JMdict for Yomichan](https://foosoft.net/projects/yomichan/index.html#dictionaries).
 
-Jitendex (viewed in Yomitan) | FooSoft's "JMdict for Yomichan"
+Jitendex (viewed in Yomitan) | JMdict for Yomichan
 :--: | :--:
 ![Screenshot of the Jitendex entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/8facedad-2c8f-4d75-823d-5303c2eee51f) | ![Screenshot of FooSoft's 'JMdict' entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/b18a8437-7de1-409e-84d1-bd44516eda35)
 
-FooSoft's version is missing a variety of metadata and supplemental information that is included 
-in the [EDRDG's JMdict database](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project).
+The original version is missing a variety of supplemental information from the EDRDG's [JMdict database](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project).
 This information has all been implemented in Jitendex.
 
 * Example sentences
@@ -85,7 +76,7 @@ This information has all been implemented in Jitendex.
 * Language of origin information
 * Definition notes (such as "*Figuratively*", *"Literally"*, etc.)
 
-## Example 4: けいそつ
+## Example 4: Multiple Search Results
 I previously
 [designed](https://github.com/FooSoft/yomichan/issues/2111)
 [and](https://github.com/FooSoft/yomichan/issues/2183)
@@ -98,7 +89,7 @@ new versions of JMdict/JMnedict dictionaries for Yomichan which addressed
 [issues](https://github.com/FooSoft/yomichan/issues/2210)
 with the original version displayed in Example 3 above. This new version was
 sometimes referred to as "JMdict Extra" in order to distinguish it from
-FooSoft's version. Jitendex is a continuation of that project with support
+the original version. Jitendex is a continuation of that project with support
 for more app formats, more ambitious goals, and more design improvements.
 
 Compare the search results for けいそつ from Jitendex and
@@ -143,60 +134,6 @@ a rare spelling of 軽率 (the top search result).
 
 ![Screenshot of the Jitendex entry for 素姓 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4d94b214-e3ba-4ef7-b5ee-1bbd017d5419)
 </details>
-
-# Planned Features
-A few of the following ideas are much more ambitious than the others,
-and I can't make any promises on when they all might be implemented.
-This is a personal project, so improvements will likely appear
-slowly and incrementally over time.
-
-### The Jiten Index
-Japanese dictionaries ("jiten") are notoriously inconsistent about
-orthography. You may search your dictionary collection for the word
-'へそ繰り' and find it in one dictionary, but you will have no way of
-knowing that most dictionaries have the word recorded as '臍繰り'. The
-conventional solution to this dilemma is to perform a second search
-for the reading of the word that you found from your first search
-('へそくり' in this case). In this second search, you may have to sift
-through unrelated homophones as well as repeats of the entries that
-you already viewed during your first search. This process becomes
-quite a hassle to perform for every new word that you encounter.
-
-The goal of the Jiten Index is to provide a more convenient solution to
-this problem. I envision it as being a separate page linked to every
-applicable Jitendex entry. The page will contain a list of other
-popular dictionaries and display the forms of a word recorded in
-each one. If an entry for a word is known to exist on a particular
-website (kotobank, goo.ne.jp, jitenon, etc.), it will contain a
-hyperlink to that resource as well.
-
-### Multimedia Support
-- Images for select entries sourced from Wikimedia Commons (or other
-  free and open image sources).
-
-### Dictionary data from other EDRDG projects
-- Target languages other than English that are included in the JMdict file (Spanish, German, etc.)
-- Kanji entries using data provided by [KANJIDIC2](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project).
-- Names and proper nouns from [JMnedict](https://www.edrdg.org/enamdict/enamdict_doc.html).
-
-### Dictionary data that is not provided by EDRDG projects
-- Free monolingual (Japanese-to-Japanese) definitions are available
-  from Wiktionary. It may be possible to produce a version of
-  Jitendex with Japanese as a target language using this data.
-- There exist free sources of pitch accent data, e.g. from Wiktionary
-  and [kanjium](https://github.com/mifunetoshiro/kanjium). Pitch accents
-  can vary depending on the context in which a word is used, so they
-  would technically need to be associated with each JMdict entry on
-  a sense-by-sense basis. Furthermore, the data would need to be
-  cross-referenced with modern sources to ensure its accuracy.
-- [Jreibun](https://www.tufs.ac.jp/ts/personal/SUZUKI_Tomomi/jreibun/index-jreibun.html)
-  is an ongoing project for developing a corpus of high quality
-  Japanese-English example sentences. It hasn't been published yet,
-  but it will be freely licensed (Creative Commons) when it is.
-  There is currently a
-  [preview sample of 407 sentences](https://jisho.org/forum/63fdba73d5dda7188e000002-jreibun-new-example-sentences)
-  from the project on jisho.org. These sentences will definitely be added
-  to Jitendex when they become publicly available.
 
 # Feedback
 Jitendex is targeted at a general audience of users. I may be able to

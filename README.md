@@ -146,7 +146,7 @@ data, please feel free to report them in the
 [GitHub discussions forum](https://github.com/stephenmk/Jitendex/discussions).
 
 # Legal
-© CC BY-SA 4.0 Stephen Kraus 2023
+© CC BY-SA 4.0 Stephen Kraus 2023-2024
 
 You are free to use, modify, and redistribute Jitendex files under the terms of the [Creative Commons Attribution-ShareAlike License (V4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
 

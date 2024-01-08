@@ -6,3 +6,5 @@ date,sentence_id,comment,sentence_text,before_meaning_id,before_meaning_text,aft
 2023-11-03,236454,Closer translation.,「はじめまして、ジェイムズさん」「こちらこそ、あなたにお会いできて、こんなに嬉しいことはありません」,73820,"""How do you do, Mr James?"" ""Fine, thanks for asking. Nice to meet you.""",12143846,"""Pleased to meet you, Mr. James."" ""The pleasure is all mine. It's an honor to make your acquaintance."""
 2023-11-03,107420,Less figurative translation.,彼は口やかましいが本心は悪くない。,285421,His bark is worse than his bite.,12143887,"He grumbles a lot, but deep down he's not a bad guy."
 2023-11-06,88317,Closer translation.,彼女は昔羽振りが良かったに違いない。,315391,She must have seen better days.,12149546,She must have been well-off in the past.
+2024-01-07,230973,Better translation suggested by @Morgawr,あの子はいつもだだをこねている。,68339,That child is always fretting.,12258331,That child is always throwing tantrums.
+2024-01-07,199732,"This is a priority sentence for 提督, so the word “Admiral” should be in the meaning.",トラファルガー広場にはネルソン提督の彫像がある。,36934,There is a statue of Nelson in Trafalgar Square.,12255978,There is a statue of Admiral Nelson in Trafalgar Square.

@@ -8,3 +8,4 @@ date,sentence_id,comment,sentence_text,before_meaning_id,before_meaning_text,aft
 2023-11-06,88317,Closer translation.,彼女は昔羽振りが良かったに違いない。,315391,She must have seen better days.,12149546,She must have been well-off in the past.
 2024-01-07,230973,Better translation suggested by @Morgawr,あの子はいつもだだをこねている。,68339,That child is always fretting.,12258331,That child is always throwing tantrums.
 2024-01-07,199732,"This is a priority sentence for 提督, so the word “Admiral” should be in the meaning.",トラファルガー広場にはネルソン提督の彫像がある。,36934,There is a statue of Nelson in Trafalgar Square.,12255978,There is a statue of Admiral Nelson in Trafalgar Square.
+2024-01-07,92211,More natural translation.,彼女はそ知らぬ顔をした。,311500,She put on an assumption of ignorance.,12259642,She feigned ignorance.

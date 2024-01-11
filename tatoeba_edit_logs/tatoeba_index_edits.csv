@@ -65,3 +65,4 @@ date,sentence_id,comment,index_before,index_after
 2024-01-06,174865,Removing priority flag for 勝ち目,現実 の 占有~ は 九分~ の 勝ち目~,現実 の 占有~ は 九分~ の 勝ち目
 2024-01-06,217384,Adding priority flag for 勝ち目,こんな 一流~ 選手 が 相手 で(#2028980) は 勝ち目 が 無い{ない},こんな 一流~ 選手 が 相手 で(#2028980) は 勝ち目~ が 無い{ない}
 2024-01-07,225510,Reindexing sentence since the entry for クリケットクラブ was deleted.,クリケットクラブ~ に 入る(はいる){入り} たい,クリケット(#1044750) クラブ(#1044310)[02] に 入る(はいる){入り} たい
+2024-01-10,191413,"This is sense 02 of 染まる (“to be tainted”), not 01 (“to be dyed”)",悪習~ に 染まる~ の は 簡単 だ,悪習~ に 染まる[02]~ の は 簡単 だ

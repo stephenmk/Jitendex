@@ -9,3 +9,4 @@ date,sentence_id,comment,sentence_text,before_meaning_id,before_meaning_text,aft
 2024-01-07,230973,Better translation suggested by @Morgawr,あの子はいつもだだをこねている。,68339,That child is always fretting.,12258331,That child is always throwing tantrums.
 2024-01-07,199732,"This is a priority sentence for 提督, so the word “Admiral” should be in the meaning.",トラファルガー広場にはネルソン提督の彫像がある。,36934,There is a statue of Nelson in Trafalgar Square.,12255978,There is a statue of Admiral Nelson in Trafalgar Square.
 2024-01-07,92211,More natural translation.,彼女はそ知らぬ顔をした。,311500,She put on an assumption of ignorance.,12259642,She feigned ignorance.
+2024-01-18,141957,Changing from active to passive tense.,雪崩で道路がふさがった。,272613,A snowslide obstructed the road.,12271251,The road was blocked by an avalanche.

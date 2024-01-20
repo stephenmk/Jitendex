@@ -136,14 +136,12 @@ a rare spelling of 軽率 (the top search result).
 </details>
 
 # Feedback
-Jitendex is targeted at a general audience of users. I may be able to
-alter the design of the dictionaries based upon user feedback, but
-changes to accommodate extremely specific use-cases (such as custom
-frequency lists or flashcard types) will likely not be implemented.
-
 If you see any errors or incorrect information in the dictionary
 data, please feel free to report them in the
 [GitHub discussions forum](https://github.com/stephenmk/Jitendex/discussions).
+
+> [!TIP]
+> You can customize the appearance of Jitendex. Example customizations are provided in the [GitHub wiki](https://github.com/stephenmk/Jitendex/wiki/Custom-Styles-in-Yomitan).
 
 # Legal
 © CC BY-SA 4.0 Stephen Kraus 2023-2024

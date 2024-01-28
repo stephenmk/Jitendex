@@ -20,7 +20,7 @@ Compare Jitendex with the reigning champ of free Japanese dictionaries, [Jisho.o
     <th>Jisho.org</th>
   </tr>
   <tr>
-     <td><img alt='Screenshot of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex.webp/></td>
+     <td><img alt='Screenshot of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex.webp'/></td>
      <td><img alt='Screenshot of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho.webp'/></td>
   </tr>
   <tr>

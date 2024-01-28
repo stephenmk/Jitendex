@@ -21,27 +21,27 @@ Compare Jitendex with the reigning champ of free Japanese dictionaries, [Jisho.o
   </tr>
   <tr>
      <td><img alt='Screenshot of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex.webp/></td>
-     <td><img alt='Screenshot of the Jisho.org entry for ばね'src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho.webp/></td>
+     <td><img alt='Screenshot of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho.webp'/></td>
   </tr>
   <tr>
      <td colspan="2"><br>Jitendex replaces lengthy explanations with short tags. The full explanation text is accessible by hovering over these tags.</td>
   </tr>
   <tr>
-     <td align='center'><img alt='Screenshot of the first sense of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_1.webp/></td>
-     <td><img alt='Screenshot of the first sense of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_1.webp/></td>
+     <td align='center'><img alt='Screenshot of the first sense of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_1.webp'/></td>
+     <td><img alt='Screenshot of the first sense of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_1.webp'/></td>
   </tr>
   <tr>
      <td colspan="2"><br>Repetition is reduced by combining sections with identical metadata tags into a single group.</td>
   </tr>
   <tr>
-     <td align='center'><img alt='Screenshot of the second and third senses of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_2.webp/></td>
-     <td><img alt='Screenshot of the second and third senses of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_2.webp/></td>
+     <td align='center'><img alt='Screenshot of the second and third senses of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_2.webp'/></td>
+     <td><img alt='Screenshot of the second and third senses of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_2.webp'/></td>
   </tr>
      <td colspan="2"><br>Variant kanji forms and readings in Jitendex are displayed in a tidy table.</td>
   </tr>
   <tr>
-     <td align='center'><img alt='Screenshot of the variant forms table in the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_3.webp/></td>
-     <td><img alt='Screenshot of the "Other Forms" and "Notes" sections of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_3.webp/></td>
+     <td align='center'><img alt='Screenshot of the variant forms table in the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_3.webp'/></td>
+     <td><img alt='Screenshot of the "Other Forms" and "Notes" sections of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_3.webp'/></td>
   </tr>
 </table>
 

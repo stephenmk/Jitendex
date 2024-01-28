@@ -20,28 +20,28 @@ Compare Jitendex with the reigning champ of free Japanese dictionaries, [Jisho.o
     <th>Jisho.org</th>
   </tr>
   <tr>
-     <td><img alt='Screenshot of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/c4f7cc69-e2b1-4885-867d-bcd2a6ed680b'/></td>
-     <td><img alt='Screenshot of the Jisho.org entry for ばね'src='https://github.com/stephenmk/Jitendex/assets/8003332/95e0d708-7861-4360-b99e-04e399efd317'/></td>
+     <td><img alt='Screenshot of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex.webp/></td>
+     <td><img alt='Screenshot of the Jisho.org entry for ばね'src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho.webp/></td>
   </tr>
   <tr>
      <td colspan="2"><br>Jitendex replaces lengthy explanations with short tags. The full explanation text is accessible by hovering over these tags.</td>
   </tr>
   <tr>
-     <td align='center'><img alt='Screenshot of the first sense of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/ab22fcf1-7824-4b80-9fa7-f01e632a4c9e'/></td>
-     <td><img alt='Screenshot of the first sense of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/assets/8003332/fe7ef964-19c0-4826-b71a-627eb0781417'/></td>
+     <td align='center'><img alt='Screenshot of the first sense of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_1.webp/></td>
+     <td><img alt='Screenshot of the first sense of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_1.webp/></td>
   </tr>
   <tr>
      <td colspan="2"><br>Repetition is reduced by combining sections with identical metadata tags into a single group.</td>
   </tr>
   <tr>
-     <td align='center'><img alt='Screenshot of the second and third senses of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/6b94643b-5b9c-4e28-aeb8-9f7a01ec1184'/></td>
-     <td><img alt='Screenshot of the second and third senses of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/assets/8003332/2086acce-7348-40c9-8b3d-576c10809c37'/></td>
+     <td align='center'><img alt='Screenshot of the second and third senses of the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_2.webp/></td>
+     <td><img alt='Screenshot of the second and third senses of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_2.webp/></td>
   </tr>
      <td colspan="2"><br>Variant kanji forms and readings in Jitendex are displayed in a tidy table.</td>
   </tr>
   <tr>
-     <td align='center'><img alt='Screenshot of the variant forms table in the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/assets/8003332/e008a321-9d7b-4948-a099-a79195a8993c'/></td>
-     <td><img alt='Screenshot of the "Other Forms" and "Notes" sections of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/assets/8003332/58a134ef-712b-4bae-9598-d32b47f038a9'/></td>
+     <td align='center'><img alt='Screenshot of the variant forms table in the Jitendex entry for ばね in GodlenDict-ng' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jitendex_3.webp/></td>
+     <td><img alt='Screenshot of the "Other Forms" and "Notes" sections of the Jisho.org entry for ばね' src='https://github.com/stephenmk/Jitendex/raw/main/img/bane_jisho_3.webp/></td>
   </tr>
 </table>
 
@@ -53,8 +53,8 @@ Most of these audio clips are also accompanied by [pitch accent](https://en.wiki
 <table>
   <tr><th colspan="2">Jitendex (viewed in GoldenDict-ng)</th></tr>
   <tr>
-   <td><img alt="Screenshot of the entry for 弁護士 in Jitendex featuring example audio and pitch accent information" src="https://github.com/stephenmk/Jitendex/assets/8003332/d90b8cf2-ab16-4437-accd-6d68a4b4be8c"/></td>
-   <td><img alt="Screenshot of the entry for 美容院 in Jitendex featuring two example audio clips and pitch accent information" src="https://github.com/stephenmk/Jitendex/assets/8003332/fb210253-5c23-4c92-aa7d-21432b2f1f70"/></td>
+   <td><img alt="Screenshot of the entry for 弁護士 in Jitendex featuring example audio and pitch accent information" src="https://github.com/stephenmk/Jitendex/raw/main/img/bengoshi_jitendex.webp"/></td>
+   <td><img alt="Screenshot of the entry for 美容院 in Jitendex featuring two example audio clips and pitch accent information" src="https://github.com/stephenmk/Jitendex/raw/main/img/biyouin_jitendex.webp"/></td>
   </tr>
 </table>
 
@@ -63,7 +63,7 @@ Compare Jitendex with the original version of [JMdict for Yomichan](https://foos
 
 Jitendex (viewed in Yomitan) | JMdict for Yomichan
 :--: | :--:
-![Screenshot of the Jitendex entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/ky_jitendex.webp) | ![Screenshot of FooSoft's 'JMdict' entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/b18a8437-7de1-409e-84d1-bd44516eda35)
+![Screenshot of the Jitendex entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/ky_jitendex.webp) | ![Screenshot of FooSoft's 'JMdict' entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/ky_jmdict.webp)
 
 The original version is missing a variety of supplemental information from the EDRDG's [JMdict database](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project).
 This information has all been implemented in Jitendex.
@@ -97,7 +97,7 @@ my previous version of JMdict for Yomichan.
 
 Jitendex (viewed in Yomitan) | stephenmk's "JMdict Extra"
 :--: | :--:
-![Screenshot of the Jitendex entries for けいそつ in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a397349-7c17-49e0-b1a3-9d565f728d65) | ![Screenshot of the 'JMDict Extra' entries for けいそつ in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4a666880-6b5a-48b2-b73d-eced944216ce)
+![Screenshot of the Jitendex entries for けいそつ in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/keisotsu_jitendex.webp) | ![Screenshot of the 'JMDict Extra' entries for けいそつ in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/keisotsu_jmdict.webp)
 
 In Jitendex, you can clearly tell that the 軽卒 form (the bottom
 search result) is found in two different entries. In the first
@@ -108,31 +108,31 @@ a rare spelling of 軽率 (the top search result).
 <details>
   <summary>Entry for 猫の手も借りたい in GoldenDict-ng</summary>
 
-![Screenshot of the Jitendex entry for 猫の手も借りたい in GoldenDict-ng](https://github.com/stephenmk/Jitendex/assets/8003332/0c7c44bc-0d80-4b99-8aae-c6b00e9b4330)
+![Screenshot of the Jitendex entry for 猫の手も借りたい in GoldenDict-ng](https://github.com/stephenmk/Jitendex/raw/main/img/nekonote_jitendex.webp)
 </details>
 
 <details>
   <summary>Entry for ばね in Yomitan (compact glossary mode disabled; dark mode)</summary>
 
-![Screenshot of the Jitendex entry for ばね in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4aa0bd35-58ff-4988-bd09-e373995593d9)
+![Screenshot of the Jitendex entry for ばね in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/bane_yomitan.webp)
 </details>
 
 <details>
   <summary>Entry for 頂く in Yomitan (compact glossary mode enabled; light mode)</summary>
 
-![Screenshot of the Jitendex entry for 頂く in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/070b60ae-0d03-4083-90f1-a37f5e0bd687)
+![Screenshot of the Jitendex entry for 頂く in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/itadaku_yomitan.webp)
 </details>
 
 <details>
   <summary>Entry for 現在 in Yomitan (compact glossary mode disabled; dark mode)</summary>
 
-![Screenshot of the Jitendex entry for 現在 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/b795605c-85ef-4f76-b3c9-c4bc116f9758)
+![Screenshot of the Jitendex entry for 現在 in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/genzai_yomitan.webp)
 </details>
 
 <details>
   <summary>Entry for 素姓 in Yomitan (compact glossary mode enabled; dark mode)</summary>
 
-![Screenshot of the Jitendex entry for 素姓 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/4d94b214-e3ba-4ef7-b5ee-1bbd017d5419)
+![Screenshot of the Jitendex entry for 素姓 in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/sujou_yomitan.webp)
 </details>
 
 # Feedback

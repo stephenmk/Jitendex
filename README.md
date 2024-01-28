@@ -63,7 +63,7 @@ Compare Jitendex with the original version of [JMdict for Yomichan](https://foos
 
 Jitendex (viewed in Yomitan) | JMdict for Yomichan
 :--: | :--:
-![Screenshot of the Jitendex entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/8facedad-2c8f-4d75-823d-5303c2eee51f) | ![Screenshot of FooSoft's 'JMdict' entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/b18a8437-7de1-409e-84d1-bd44516eda35)
+![Screenshot of the Jitendex entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/raw/main/img/ky_jitendex.webp) | ![Screenshot of FooSoft's 'JMdict' entry for ケーワイ【ＫＹ】 in Yomitan](https://github.com/stephenmk/Jitendex/assets/8003332/b18a8437-7de1-409e-84d1-bd44516eda35)
 
 The original version is missing a variety of supplemental information from the EDRDG's [JMdict database](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project).
 This information has all been implemented in Jitendex.

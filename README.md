@@ -1,6 +1,6 @@
 # Jitendex
 
-Jitendex is a free, offline, and openly licensed Japanese-to-English dictionary. Updated versions with new content are published every week.
+Jitendex is a free, offline, and openly licensed Japanese-to-English dictionary. Updated versions with new content are published at least once a month.
 
 Visit [jitendex.org](https://jitendex.org/) to learn more and to download the dictionary.
 

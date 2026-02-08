@@ -79,7 +79,7 @@ That project served as an invaluable source of ideas, but all of the code borrow
     </td>
     <td>
       Furigana segments are modelled as objects containing a pair of texts: the base text and the furigana text.
-      This is conceptually much easier to work this.
+      This is conceptually much simpler and easier to work with.
       <br/><br/>
       Example:
       <br/>
@@ -103,7 +103,7 @@ That project served as an invaluable source of ideas, but all of the code borrow
     <td>
       Some Japanese characters are represented in Unicode using two
       <a href="https://en.wikipedia.org/wiki/UTF-16">UTF-16</a> code units.
-      For example, the character 𠮟 (U+20B9F) is a UTF-16 "surrogate pair" composed of two code units: 
+      For example, the character 𠮟 (U+20B9F) is a UTF-16 "surrogate pair" composed of two code units:
       <code>D842</code> and <code>DF9F</code>.
       <br/><br/>
       The C# standard library was not well-equiped for handling these characters at the time <b>JmdictFurigana</b>

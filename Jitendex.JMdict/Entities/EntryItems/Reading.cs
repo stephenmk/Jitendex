@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdict.Entities.EntryItems;
 
@@ -38,4 +39,12 @@ public sealed class Reading
     [ForeignKey(nameof(EntryId))]
     public Entry Entry { get; init; } = null!;
 
+    [InverseProperty(nameof(KanjiFormBridge.Reading))]
+    public List<KanjiFormBridge> Bridges { get; init; } = [];
+
+    [InverseProperty(nameof(CrossReference.ReferencedReading))]
+    public List<CrossReference> ReverseCrossReferences { get; init; } = [];
+
+    [InverseProperty(nameof(ReadingRestriction.Reading))]
+    public List<ReadingRestriction> RestrictedSenses { get; init; } = [];
 }

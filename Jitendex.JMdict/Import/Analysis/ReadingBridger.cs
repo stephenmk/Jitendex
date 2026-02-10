@@ -23,15 +23,8 @@ using Jitendex.JMdict.Import.Analysis.Tables;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
-internal partial class ReadingBridger
+internal partial class ReadingBridger(ILogger<ReadingBridger> logger, JmdictContext context)
 {
-    private readonly ILogger<ReadingBridger> _logger;
-    private readonly JmdictContext _context;
-
-    public ReadingBridger(ILogger<ReadingBridger> logger, JmdictContext context) =>
-        (_logger, _context) =
-        (@logger, @context);
-
     private static readonly KanjiFormBridgeTable KanjiFormBridgeTable = new();
     private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<int> Restrictions);
     private readonly record struct KanjiFormData(int Order, string Text);
@@ -41,7 +34,7 @@ internal partial class ReadingBridger
 
     public void BridgeReadingsToKanjiForms()
     {
-        var entries = _context.Entries
+        var entries = context.Entries
             .AsSplitQuery()
             .Select(static e => new
             {
@@ -93,7 +86,7 @@ internal partial class ReadingBridger
             }
         }
 
-        KanjiFormBridgeTable.InsertItems(_context, bridges);
+        KanjiFormBridgeTable.InsertItems(context, bridges);
     }
 
     private void CheckForRedundancies(int entryId, int visibleKanjiFormCount, in ReadingData reading)

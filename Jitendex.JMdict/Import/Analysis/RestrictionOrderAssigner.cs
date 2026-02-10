@@ -17,16 +17,14 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Import.Analysis.Tables;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
 internal partial class RestrictionOrderAssigner(ILogger<RestrictionOrderAssigner> logger, JmdictContext context)
 {
-    private sealed record Update(int EntryId, int ReadingOrder, int Order, int KanjiFormOrder);
+    private readonly static RestrictionTable RestrictionTable = new();
 
     public void AssignOrders()
     {
@@ -48,7 +46,7 @@ internal partial class RestrictionOrderAssigner(ILogger<RestrictionOrderAssigner
             })
             .ToList();
 
-        List<Update> updates = new(restrictions.Count);
+        List<RestrictionUpdate> updates = new(restrictions.Count);
 
         foreach (var r in restrictions)
         {
@@ -75,28 +73,7 @@ internal partial class RestrictionOrderAssigner(ILogger<RestrictionOrderAssigner
             }
         }
 
-        using var command = context.Database.GetDbConnection().CreateCommand();
-        command.CommandText =
-            $"""
-            UPDATE "{nameof(Restriction)}"
-            SET    "{nameof(Restriction.KanjiFormOrder)}" = @0
-            WHERE  "{nameof(Restriction.EntryId)}"        = @1
-            AND    "{nameof(Restriction.ReadingOrder)}"   = @2
-            AND    "{nameof(Restriction.Order)}"          = @3;
-            """;
-
-        foreach (var update in updates)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new("@0", update.KanjiFormOrder),
-                new("@1", update.EntryId),
-                new("@2", update.ReadingOrder),
-                new("@3", update.Order),
-            });
-            command.ExecuteNonQuery();
-            command.Parameters.Clear();
-        }
+        RestrictionTable.UpdateItems(context, updates);
     }
 
     [LoggerMessage(LogLevel.Warning,

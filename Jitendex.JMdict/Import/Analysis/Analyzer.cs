@@ -50,7 +50,8 @@ internal sealed class Analyzer(
             DELETE FROM "{nameof(KanjiFormBridge)}";
 
             UPDATE "{nameof(CrossReference)}"
-            SET    "{nameof(CrossReference.RefReadingOrder)}"   = NULL
+            SET    "{nameof(CrossReference.RefEntryId)}"        = NULL
+            ,      "{nameof(CrossReference.RefReadingOrder)}"   = NULL
             ,      "{nameof(CrossReference.RefKanjiFormOrder)}" = NULL
             ,      "{nameof(CrossReference.RefSenseOrder)}"     = NULL;
             """;

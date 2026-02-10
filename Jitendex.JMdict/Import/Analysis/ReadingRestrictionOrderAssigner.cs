@@ -17,16 +17,14 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Import.Analysis.Tables;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
 internal partial class ReadingRestrictionOrderAssigner(ILogger<ReadingRestrictionOrderAssigner> logger, JmdictContext context)
 {
-    private sealed record Update(int EntryId, int SenseOrder, int Order, int ReadingOrder);
+    private static readonly ReadingRestrictionTable ReadingRestrictionTable = new();
 
     public void AssignOrders()
     {
@@ -48,7 +46,7 @@ internal partial class ReadingRestrictionOrderAssigner(ILogger<ReadingRestrictio
             })
             .ToList();
 
-        List<Update> updates = new(restrictions.Count);
+        List<ReadingRestrictionUpdate> updates = new(restrictions.Count);
 
         foreach (var r in restrictions)
         {
@@ -75,28 +73,7 @@ internal partial class ReadingRestrictionOrderAssigner(ILogger<ReadingRestrictio
             }
         }
 
-        using var command = context.Database.GetDbConnection().CreateCommand();
-        command.CommandText =
-            $"""
-            UPDATE "{nameof(ReadingRestriction)}"
-            SET    "{nameof(ReadingRestriction.ReadingOrder)}" = @0
-            WHERE  "{nameof(ReadingRestriction.EntryId)}"      = @1
-            AND    "{nameof(ReadingRestriction.SenseOrder)}"   = @2
-            AND    "{nameof(ReadingRestriction.Order)}"        = @3;
-            """;
-
-        foreach (var update in updates)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new("@0", update.ReadingOrder),
-                new("@1", update.EntryId),
-                new("@2", update.SenseOrder),
-                new("@3", update.Order),
-            });
-            command.ExecuteNonQuery();
-            command.Parameters.Clear();
-        }
+        ReadingRestrictionTable.UpdateItems(context, updates);
     }
 
     [LoggerMessage(LogLevel.Warning,

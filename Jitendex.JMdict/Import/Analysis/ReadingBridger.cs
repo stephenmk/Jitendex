@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Jitendex.JMdict.Import.Analysis.Tables;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
@@ -35,15 +36,10 @@ internal partial class ReadingBridger
     private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<int> Restrictions);
     private readonly record struct KanjiFormData(int Order, string Text);
 
-    public void BridgeReadingsToKanjiForms()
-    {
-        var bridges = GetBridges();
-        // TODO: check for excessive pairings, e.g. キモ可愛；きも可愛【キモかわ；きもかわ】
-        // Need to include method for normalizing katakana to hiragana.
-        KanjiFormBridgeTable.InsertItems(_context, bridges);
-    }
+    // TODO: check for excessive pairings, e.g. キモ可愛；きも可愛【キモかわ；きもかわ】
+    // Need to include method for normalizing katakana to hiragana.
 
-    private List<KanjiFormBridgeElement> GetBridges()
+    public void BridgeReadingsToKanjiForms()
     {
         var entries = _context.Entries
             .AsSplitQuery()
@@ -97,7 +93,7 @@ internal partial class ReadingBridger
             }
         }
 
-        return bridges;
+        KanjiFormBridgeTable.InsertItems(_context, bridges);
     }
 
     private void CheckForRedundancies(int entryId, int visibleKanjiFormCount, in ReadingData reading)

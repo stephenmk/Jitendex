@@ -17,39 +17,35 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Jitendex.SupplementalData;
-using Jitendex.SupplementalData.Entities.JMdict;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
 internal partial class ReadingBridger
 {
     private readonly ILogger<ReadingBridger> _logger;
-    private readonly JmdictContext _jmdictContext;
-    private readonly SupplementContext _supplementContext;
+    private readonly JmdictContext _context;
 
-    public ReadingBridger(ILogger<ReadingBridger> logger, JmdictContext jmdictContext, SupplementContext supplementContext) =>
-        (_logger, _jmdictContext, _supplementContext) =
-        (@logger, @jmdictContext, @supplementContext);
+    public ReadingBridger(ILogger<ReadingBridger> logger, JmdictContext context) =>
+        (_logger, _context) =
+        (@logger, @context);
 
-    private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<string> Restrictions);
+    private static readonly KanjiFormBridgeTable KanjiFormBridgeTable = new();
+    private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<int> Restrictions);
     private readonly record struct KanjiFormData(int Order, string Text);
-    private readonly record struct Bridge(int EntryId, int ReadingOrder, int KanjiFormOrder);
 
     public void BridgeReadingsToKanjiForms()
     {
         var bridges = GetBridges();
         // TODO: check for excessive pairings, e.g. キモ可愛；きも可愛【キモかわ；きもかわ】
         // Need to include method for normalizing katakana to hiragana.
-        WriteBridgesToDatabase(bridges);
+        KanjiFormBridgeTable.InsertItems(_context, bridges);
     }
 
-    private List<Bridge> GetBridges()
+    private List<KanjiFormBridgeElement> GetBridges()
     {
-        var entries = _jmdictContext.Entries
+        var entries = _context.Entries
             .AsSplitQuery()
             .Select(static e => new
             {
@@ -64,59 +60,44 @@ internal partial class ReadingBridger
                             .Select(static i => i.TagName)
                             .Any(static t => t == "sk"),
                         Restrictions: r.Restrictions
-                            .Select(static x => x.KanjiFormText)
+                            .Where(static x => x.KanjiFormOrder != null)
+                            .Select(static x => (int)x.KanjiFormOrder!)
                             .ToImmutableArray()
                     )),
-                KanjiFormInfos = e.KanjiForms
+                KanjiForms = e.KanjiForms
                     .Where(static k => k.Infos.All(static i => i.TagName != "sK"))
                     .Select(static k => new KanjiFormData(k.Order, k.Text))
                     .ToImmutableArray(),
             });
 
-        var bridges = new List<Bridge>(250_000);
+        var bridges = new List<KanjiFormBridgeElement>(250_000);
 
         foreach (var entry in entries)
         {
-            var usedKanjiFormOrders = new HashSet<int>(entry.KanjiFormInfos.Length);
+            var usedKanjiFormOrders = new HashSet<int>(entry.KanjiForms.Length);
             foreach (var reading in entry.Readings)
             {
-                CheckForRedundancies(entry.Id, entry.KanjiFormInfos.Length, reading);
-                if (entry.KanjiFormInfos.Length == 0 || reading.NoKanji || reading.IsHidden)
+                CheckForRedundancies(entry.Id, entry.KanjiForms.Length, reading);
+                if (entry.KanjiForms.Length == 0 || reading.NoKanji || reading.IsHidden)
                 {
                     continue;
                 }
                 var kanjiFormOrders = reading.Restrictions.Length > 0
-                    ? GetRestrictionOrders(entry.Id, reading, entry.KanjiFormInfos)
-                    : entry.KanjiFormInfos.Select(static k => k.Order).ToArray();
+                    ? reading.Restrictions
+                    : entry.KanjiForms.Select(static k => k.Order).ToImmutableArray();
                 foreach (var order in kanjiFormOrders)
                 {
                     usedKanjiFormOrders.Add(order);
                     bridges.Add(new(entry.Id, reading.Order, order));
                 }
             }
-            if (usedKanjiFormOrders.Count != entry.KanjiFormInfos.Length)
+            if (usedKanjiFormOrders.Count != entry.KanjiForms.Length)
             {
                 LogOrphanKanjiForms(entry.Id);
             }
         }
 
         return bridges;
-    }
-
-    private int[] GetRestrictionOrders(int entryId, in ReadingData reading, in ImmutableArray<KanjiFormData> kanjiForms)
-    {
-        var restrictions = reading.Restrictions;
-        var orders = kanjiForms
-            .Where(k => restrictions.Contains(k.Text))
-            .Select(static k => k.Order)
-            .ToArray();
-
-        if (orders.Length != reading.Restrictions.Length)
-        {
-            LogInvalidRestriction(entryId, reading.Text);
-        }
-
-        return orders;
     }
 
     private void CheckForRedundancies(int entryId, int visibleKanjiFormCount, in ReadingData reading)
@@ -134,37 +115,6 @@ internal partial class ReadingBridger
         {
             LogRedundantRestrictions(entryId, reading.Text);
         }
-    }
-
-    private void WriteBridgesToDatabase(List<Bridge> bridges)
-    {
-        using var transaction = _supplementContext.Database.BeginTransaction();
-        _supplementContext.ReadingKanjiFormBridges.ExecuteDelete();
-
-        using var command = _supplementContext.Database.GetDbConnection().CreateCommand();
-        command.CommandText =
-            $"""
-            INSERT INTO "{nameof(ReadingKanjiFormBridge)}"
-            ( "{nameof(ReadingKanjiFormBridge.SequenceId)}"
-            , "{nameof(ReadingKanjiFormBridge.ReadingOrder)}"
-            , "{nameof(ReadingKanjiFormBridge.KanjiFormOrder)}"
-            ) VALUES (@0, @1, @2);
-            """;
-
-        foreach (var bridge in bridges)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new("@0", bridge.EntryId),
-                new("@1", bridge.ReadingOrder),
-                new("@2", bridge.KanjiFormOrder),
-            });
-            command.ExecuteNonQuery();
-            command.Parameters.Clear();
-        }
-
-        _supplementContext.SaveChanges();
-        transaction.Commit();
     }
 
     [LoggerMessage(LogLevel.Warning,

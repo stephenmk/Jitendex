@@ -25,6 +25,5 @@ namespace Jitendex.SupplementalData;
 public class SupplementContext : SqliteContext
 {
     public DbSet<CrossReferenceSequence> CrossReferenceSequences { get; set; } = null!;
-    public DbSet<ReadingKanjiFormBridge> ReadingKanjiFormBridges { get; set; } = null!;
     public SupplementContext() : base("supplemental_data.db") { }
 }

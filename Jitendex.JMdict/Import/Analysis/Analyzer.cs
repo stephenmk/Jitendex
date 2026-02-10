@@ -16,23 +16,56 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Entities.EntryItems.SenseItems;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
-internal partial class Analyzer
+internal sealed class Analyzer(
+    ILogger<Analyzer> logger,
+    JmdictContext context,
+    RestrictionOrderAssigner restrictionOrderAssigner,
+    ReadingRestrictionOrderAssigner readingRestrictionOrderAssigner,
+    KanjiFormRestrictionOrderAssigner kanjiFormRestrictionOrderAssigner,
+    ReadingBridger readingBridger,
+    ReferenceSequencer referenceSequencer)
 {
-    private readonly ILogger<Analyzer> _logger;
-    private readonly ReadingBridger _readingBridger;
-    private readonly ReferenceSequencer _referenceSequencer;
+    public void Clean()
+    {
+        logger.LogInformation("Deleting previous analysis data from database");
+        using var command = context.Database.GetDbConnection().CreateCommand();
+        command.CommandText =
+            $"""
+            UPDATE "{nameof(Restriction)}"
+            SET    "{nameof(Restriction.KanjiFormOrder)}" = NULL;
 
-    public Analyzer(ILogger<Analyzer> logger, ReadingBridger readingBridger, ReferenceSequencer referenceSequencer) =>
-        (_logger, _readingBridger, _referenceSequencer) =
-        (@logger, @readingBridger, @referenceSequencer);
+            UPDATE "{nameof(ReadingRestriction)}"
+            SET    "{nameof(ReadingRestriction.ReadingOrder)}" = NULL;
+
+            UPDATE "{nameof(KanjiFormRestriction)}"
+            SET    "{nameof(KanjiFormRestriction.KanjiFormOrder)}" = NULL;
+
+            DELETE FROM "{nameof(KanjiFormBridge)}";
+
+            UPDATE "{nameof(CrossReference)}"
+            SET    "{nameof(CrossReference.RefReadingOrder)}"   = NULL
+            ,      "{nameof(CrossReference.RefKanjiFormOrder)}" = NULL
+            ,      "{nameof(CrossReference.RefSenseOrder)}"     = NULL;
+            """;
+        command.ExecuteNonQuery();
+    }
 
     public void Analyze()
     {
-        _readingBridger.BridgeReadingsToKanjiForms();
-        _referenceSequencer.FindCrossReferenceSequenceIds();
+        logger.LogInformation("Starting data analysis");
+
+        restrictionOrderAssigner.AssignOrders();
+        readingRestrictionOrderAssigner.AssignOrders();
+        kanjiFormRestrictionOrderAssigner.AssignOrders();
+
+        readingBridger.BridgeReadingsToKanjiForms();
+        referenceSequencer.FindCrossReferenceSequenceIds();
     }
 }

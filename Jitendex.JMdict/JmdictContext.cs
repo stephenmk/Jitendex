@@ -48,6 +48,7 @@ public class JmdictContext : SqliteContext
     public DbSet<ReadingInfo> ReadingInfos { get; set; } = null!;
     public DbSet<ReadingPriority> ReadingPriorities { get; set; } = null!;
     public DbSet<Restriction> Restrictions { get; set; } = null!;
+    public DbSet<KanjiFormBridge> KanjiFormBridges { get; set; } = null!;
     #endregion
 
     #region Sense Elements

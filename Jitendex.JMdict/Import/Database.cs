@@ -129,8 +129,6 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
 
         var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 
-        using var transaction = context.Database.BeginTransaction();
-
         context.ExecuteDeferForeignKeysPragma();
 
         ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.ReadingInfoTags.Values);
@@ -233,7 +231,5 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         }
 
         RevisionTable.InsertItems(context, revisions);
-
-        transaction.Commit();
     }
 }

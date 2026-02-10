@@ -71,10 +71,10 @@ internal partial class ReferenceSequencer
             .AsNoTracking()
             .ToList();
 
-        var kanjiFormToReadings = _supplementContext.ReadingKanjiFormBridges
-            .GroupBy(static x => new { x.SequenceId, x.KanjiFormOrder })
+        var kanjiFormToReadings = _jmdictContext.KanjiFormBridges
+            .GroupBy(static x => new { x.EntryId, x.KanjiFormOrder })
             .ToFrozenDictionary(
-                static g => (g.Key.SequenceId, g.Key.KanjiFormOrder),
+                static g => (g.Key.EntryId, g.Key.KanjiFormOrder),
                 static g => g
                     .OrderBy(static bridge => bridge.ReadingOrder)
                     .Select(static bridge => bridge.ReadingOrder)

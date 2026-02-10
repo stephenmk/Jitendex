@@ -75,6 +75,9 @@ internal static class ImporterProvider
 
         // Analysis units
         .AddTransient<Analyzer>()
+        .AddTransient<RestrictionOrderAssigner>()
+        .AddTransient<ReadingRestrictionOrderAssigner>()
+        .AddTransient<KanjiFormRestrictionOrderAssigner>()
         .AddTransient<ReadingBridger>()
         .AddTransient<ReferenceSequencer>()
         .AddTransient<CrossReferenceTextParser>()

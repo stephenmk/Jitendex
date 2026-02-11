@@ -22,7 +22,7 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.ReadingElementReaders;
 
-internal sealed class RPriorityReader(ILogger<RPriorityReader> logger) : BaseReader<RPriorityReader>(logger)
+internal sealed class RPriorityReader(ILogger<RPriorityReader> logger) : BaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingElement reading)
     {

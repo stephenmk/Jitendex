@@ -21,10 +21,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Jitendex.JMdict.Import.Parsing;
 
-internal abstract partial class BaseReader<T> where T : BaseReader<T>
+internal abstract partial class BaseReader
 {
-    protected readonly ILogger<T> _logger;
-    public BaseReader(ILogger<T> logger) => _logger = logger;
+    protected readonly ILogger _logger;
+    public BaseReader(ILogger logger)
+        => _logger = logger;
 
     protected bool IsClosingTag(XmlReader xmlReader, ReadOnlySpan<char> tagName)
         => tagName.SequenceEqual(xmlReader.Name);

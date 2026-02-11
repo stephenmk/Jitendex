@@ -28,7 +28,7 @@ internal partial class KanjiFormReader
     ILogger<KanjiFormReader> logger,
     KInfoReader infoReader,
     KPriorityReader priorityReader
-) : BaseReader<KanjiFormReader>(logger)
+) : BaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {

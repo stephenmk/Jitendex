@@ -29,7 +29,7 @@ internal partial class EntryReader
     KanjiFormReader kanjiFormReader,
     ReadingReader readingReader,
     SenseReader senseReader
-) : BaseReader<EntryReader>(logger)
+) : BaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {

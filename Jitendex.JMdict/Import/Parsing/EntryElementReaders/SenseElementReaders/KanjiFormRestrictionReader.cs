@@ -22,7 +22,7 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.SenseElementReaders;
 
-internal sealed class KanjiFormRestrictionReader(ILogger<KanjiFormRestrictionReader> logger) : BaseReader<KanjiFormRestrictionReader>(logger)
+internal sealed class KanjiFormRestrictionReader(ILogger<KanjiFormRestrictionReader> logger) : BaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {

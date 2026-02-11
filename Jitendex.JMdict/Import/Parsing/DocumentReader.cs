@@ -28,7 +28,7 @@ internal partial class DocumentReader
     ILogger<DocumentReader> logger,
     DocumentTypeReader docTypeReader,
     EntriesReader entriesReader
-) : BaseReader<DocumentReader>(logger)
+) : BaseReader(logger)
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
     {

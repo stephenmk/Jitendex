@@ -35,7 +35,7 @@ internal partial class SenseReader
     LanguageSourceReader languageSourceReader,
     MiscReader miscReader,
     PartOfSpeechReader partOfSpeechReader
-) : BaseReader<SenseReader>(logger)
+) : BaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {

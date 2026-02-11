@@ -71,7 +71,7 @@ internal sealed class Importer
         var date = new DateOnly(2026, 2, 1);
         if (fileArchive.GetFile(JMdict_e_examp, date, archiveDirectory) is FileInfo file)
 #else
-        if (_fileArchive.GetEarliestFile(JMdict_e_examp, archiveDirectory) is (FileInfo file, DateOnly date))
+        if (fileArchive.GetEarliestFile(JMdict_e_examp, archiveDirectory) is (FileInfo file, DateOnly date))
 #endif
         {
             var document = await reader.ReadAsync(file, date);

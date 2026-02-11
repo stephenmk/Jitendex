@@ -23,10 +23,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class ReadingMeaningReader : BaseReader<ReadingMeaningReader>
+internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger) : BaseReader(logger)
 {
-    public ReadingMeaningReader(ILogger<ReadingMeaningReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingMeaningGroupElement group)
     {
         var readingMeaning = new ReadingMeaningElement

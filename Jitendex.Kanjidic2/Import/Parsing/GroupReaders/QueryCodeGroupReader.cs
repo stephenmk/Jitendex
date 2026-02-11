@@ -23,10 +23,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class QueryCodeGroupReader : BaseReader<QueryCodeGroupReader>
+internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger) : BaseReader(logger)
 {
-    public QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         var group = new QueryCodeGroupElement

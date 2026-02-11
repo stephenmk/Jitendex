@@ -23,10 +23,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class CodepointGroupReader : BaseReader<CodepointGroupReader>
+internal partial class CodepointGroupReader(ILogger<CodepointGroupReader> logger) : BaseReader(logger)
 {
-    public CodepointGroupReader(ILogger<CodepointGroupReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         var group = new CodepointGroupElement

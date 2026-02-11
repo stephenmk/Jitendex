@@ -22,10 +22,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing;
 
-internal partial class HeaderReader : BaseReader<HeaderReader>
+internal partial class HeaderReader(ILogger<HeaderReader> logger) : BaseReader(logger)
 {
-    public HeaderReader(ILogger<HeaderReader> logger) : base(logger) { }
-
     public async Task<DocumentHeader> ReadAsync(XmlReader xmlReader)
     {
         var header = new DocumentHeader

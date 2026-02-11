@@ -22,11 +22,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Kanjidic2.Import.Parsing;
 
-internal abstract partial class BaseReader<T> where T : BaseReader<T>
+internal abstract partial class BaseReader
 {
-    protected readonly ILogger<T> _logger;
+    protected readonly ILogger _logger;
 
-    public BaseReader(ILogger<T> logger) => _logger = logger;
+    public BaseReader(ILogger logger)
+        => _logger = logger;
 
     protected async Task LogUnexpectedTextNodeAsync(XmlReader xmlReader, int unicodeScalarValue, string tagName)
     {

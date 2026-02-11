@@ -23,15 +23,12 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class ReadingMeaningGroupReader : BaseReader<ReadingMeaningGroupReader>
+internal partial class ReadingMeaningGroupReader
+(
+    ILogger<ReadingMeaningGroupReader> logger,
+    ReadingMeaningReader readingMeaningReader
+) : BaseReader(logger)
 {
-    private readonly ReadingMeaningReader _readingMeaningReader;
-
-    public ReadingMeaningGroupReader(ILogger<ReadingMeaningGroupReader> logger, ReadingMeaningReader readingMeaningReader) : base(logger)
-    {
-        _readingMeaningReader = readingMeaningReader;
-    }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         var group = new ReadingMeaningGroupElement
@@ -65,7 +62,7 @@ internal partial class ReadingMeaningGroupReader : BaseReader<ReadingMeaningGrou
         switch (xmlReader.Name)
         {
             case XmlTagName.ReadingMeaning:
-                await _readingMeaningReader.ReadAsync(xmlReader, document, group);
+                await readingMeaningReader.ReadAsync(xmlReader, document, group);
                 break;
             case XmlTagName.Nanori:
                 await ReadNanori(xmlReader, document, group);

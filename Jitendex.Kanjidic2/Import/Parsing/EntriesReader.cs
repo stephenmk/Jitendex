@@ -22,13 +22,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing;
 
-internal partial class EntriesReader : BaseReader<EntriesReader>
+internal partial class EntriesReader(ILogger<EntriesReader> logger, EntryReader entryReader) : BaseReader(logger)
 {
-    private readonly EntryReader _entryReader;
-
-    public EntriesReader(ILogger<EntriesReader> logger, EntryReader entryReader) : base(logger)
-        => _entryReader = entryReader;
-
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {
         while (await xmlReader.ReadAsync())
@@ -51,7 +46,7 @@ internal partial class EntriesReader : BaseReader<EntriesReader>
         switch (xmlReader.Name)
         {
             case XmlTagName.Entry:
-                await _entryReader.ReadAsync(xmlReader, document);
+                await entryReader.ReadAsync(xmlReader, document);
                 break;
             default:
                 LogUnexpectedElement(xmlReader.Name);

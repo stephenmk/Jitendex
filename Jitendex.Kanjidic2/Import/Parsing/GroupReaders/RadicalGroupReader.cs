@@ -23,10 +23,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class RadicalGroupReader : BaseReader<RadicalGroupReader>
+internal partial class RadicalGroupReader(ILogger<RadicalGroupReader> logger) : BaseReader(logger)
 {
-    public RadicalGroupReader(ILogger<RadicalGroupReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         var group = new RadicalGroupElement

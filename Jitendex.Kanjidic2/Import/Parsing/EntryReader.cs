@@ -24,19 +24,17 @@ using Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
 namespace Jitendex.Kanjidic2.Import.Parsing;
 
-internal partial class EntryReader : BaseReader<EntryReader>
+internal partial class EntryReader
+(
+    ILogger<EntryReader> logger,
+    CodepointGroupReader codepointGroupReader,
+    DictionaryGroupReader dictionaryGroupReader,
+    MiscGroupReader miscGroupReader,
+    QueryCodeGroupReader queryCodeGroupReader,
+    RadicalGroupReader radicalGroupReader,
+    ReadingMeaningGroupReader readingMeaningGroupReader
+) : BaseReader(logger)
 {
-    private readonly CodepointGroupReader _codepointGroupReader;
-    private readonly DictionaryGroupReader _dictionaryGroupReader;
-    private readonly MiscGroupReader _miscGroupReader;
-    private readonly QueryCodeGroupReader _queryCodeGroupReader;
-    private readonly RadicalGroupReader _radicalGroupReader;
-    private readonly ReadingMeaningGroupReader _readingMeaningGroupReader;
-
-    public EntryReader(ILogger<EntryReader> logger, CodepointGroupReader codepointGroupReader, DictionaryGroupReader dictionaryGroupReader, MiscGroupReader miscGroupReader, QueryCodeGroupReader queryCodeGroupReader, RadicalGroupReader radicalGroupReader, ReadingMeaningGroupReader readingMeaningGroupReader) : base(logger) =>
-        (_codepointGroupReader, _dictionaryGroupReader, _miscGroupReader, _queryCodeGroupReader, _radicalGroupReader, _readingMeaningGroupReader) =
-        (@codepointGroupReader, @dictionaryGroupReader, @miscGroupReader, @queryCodeGroupReader, @radicalGroupReader, @readingMeaningGroupReader);
-
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {
         var entry = new EntryElement
@@ -85,22 +83,22 @@ internal partial class EntryReader : BaseReader<EntryReader>
                 await ReadCharacterAsync(xmlReader, entry);
                 break;
             case XmlTagName.CodepointGroup:
-                await _codepointGroupReader.ReadAsync(xmlReader, document, entry);
+                await codepointGroupReader.ReadAsync(xmlReader, document, entry);
                 break;
             case XmlTagName.DictionaryGroup:
-                await _dictionaryGroupReader.ReadAsync(xmlReader, document, entry);
+                await dictionaryGroupReader.ReadAsync(xmlReader, document, entry);
                 break;
             case XmlTagName.MiscGroup:
-                await _miscGroupReader.ReadAsync(xmlReader, document, entry);
+                await miscGroupReader.ReadAsync(xmlReader, document, entry);
                 break;
             case XmlTagName.QueryCodeGroup:
-                await _queryCodeGroupReader.ReadAsync(xmlReader, document, entry);
+                await queryCodeGroupReader.ReadAsync(xmlReader, document, entry);
                 break;
             case XmlTagName.RadicalGroup:
-                await _radicalGroupReader.ReadAsync(xmlReader, document, entry);
+                await radicalGroupReader.ReadAsync(xmlReader, document, entry);
                 break;
             case XmlTagName.ReadingMeaningGroup:
-                await _readingMeaningGroupReader.ReadAsync(xmlReader, document, entry);
+                await readingMeaningGroupReader.ReadAsync(xmlReader, document, entry);
                 break;
             default:
                 LogUnexpectedChildElement(entry.ToRune(), xmlReader.Name, XmlTagName.Entry);

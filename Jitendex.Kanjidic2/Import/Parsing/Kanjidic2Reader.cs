@@ -22,23 +22,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing;
 
-internal class Kanjidic2Reader
+internal partial class Kanjidic2Reader(HeaderReader headerReader, EntriesReader entriesReader)
 {
-    private readonly HeaderReader _headerReader;
-    private readonly EntriesReader _entriesReader;
-
-    public Kanjidic2Reader(HeaderReader headerReader, EntriesReader entriesReader) =>
-        (_headerReader, _entriesReader) =
-        (@headerReader, @entriesReader);
-
-   private static readonly XmlReaderSettings XmlReaderSettings = new()
-    {
-        Async = true,
-        DtdProcessing = DtdProcessing.Parse,
-        MaxCharactersFromEntities = long.MaxValue,
-        MaxCharactersInDocument = long.MaxValue,
-    };
-
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
     {
         await using FileStream f = new(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -47,11 +32,21 @@ internal class Kanjidic2Reader
 
         var document = new Document
         {
-            Header = await _headerReader.ReadAsync(xmlReader)
+            Header = await headerReader.ReadAsync(xmlReader)
         };
 
-        await _entriesReader.ReadAsync(xmlReader, document);
+        // TODO: Compare fileDate to header date
+
+        await entriesReader.ReadAsync(xmlReader, document);
 
         return document;
     }
+
+    private static readonly XmlReaderSettings XmlReaderSettings = new()
+    {
+        Async = true,
+        DtdProcessing = DtdProcessing.Parse,
+        MaxCharactersFromEntities = long.MaxValue,
+        MaxCharactersInDocument = long.MaxValue,
+    };
 }

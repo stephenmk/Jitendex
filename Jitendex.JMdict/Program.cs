@@ -30,9 +30,15 @@ public static class Program
             Description = "Path to the edrdg-dictionary-archive directory",
         };
 
+        Option<DirectoryInfo> dataDirOption = new("--data-path")
+        {
+            Description = "Path to the jitendex-data directory",
+        };
+
         var rootCommand = new RootCommand("Jitendex.JMdict: Import JMdict XML documents")
         {
-            archiveDirOption
+            archiveDirOption,
+            dataDirOption,
         };
 
         var parseResult = rootCommand.Parse(args);
@@ -46,9 +52,10 @@ public static class Program
         }
 
         var archiveDirectory = parseResult.GetValue(archiveDirOption);
+        var dataDirectory = parseResult.GetValue(dataDirOption);
 
         var importer = ImporterProvider.GetImporter();
-        await importer.ImportAsync(archiveDirectory);
+        await importer.ImportAsync(archiveDirectory, dataDirectory);
 
         return 0;
     }

@@ -38,7 +38,7 @@ internal sealed class Importer
         (_logger, _fileArchive, _context, _reader, _database, _analyzer) =
         (@logger, @fileArchive, @context, @reader, @database, @analyzer);
 
-    public async Task ImportAsync(DirectoryInfo? archiveDirectory)
+    public async Task ImportAsync(DirectoryInfo? archiveDirectory, DirectoryInfo? dataDirectory)
     {
         _context.Database.EnsureCreated();
         var previousDate = GetPreviousDate();
@@ -57,7 +57,7 @@ internal sealed class Importer
 
         _analyzer.Clean();
         await UpdateDatabaseAsync(archiveDirectory, previousDocument);
-        _analyzer.Analyze();
+        await _analyzer.AnalyzeAsync(dataDirectory);
 
         transaction.Commit();
     }

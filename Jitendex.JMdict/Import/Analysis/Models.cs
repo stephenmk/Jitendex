@@ -20,3 +20,9 @@ internal sealed record RestrictionUpdate(int EntryId, int ReadingOrder, int Orde
 internal sealed record ReadingRestrictionUpdate(int EntryId, int SenseOrder, int Order, int ReadingOrder);
 internal sealed record KanjiFormRestrictionUpdate(int EntryId, int SenseOrder, int Order, int KanjiFormOrder);
 internal sealed record KanjiFormBridgeElement(int EntryId, int ReadingOrder, int KanjiFormOrder);
+
+internal sealed record ParsedReferenceText(string Text1, string? Text2, int SenseNumber);
+internal sealed record ReferenceExportKey(int EntryId, int SenseNumber, string Text);
+internal sealed record CrossReferenceUpdate(
+    int EntryId, int SenseOrder, int Order,
+    int? RefEntryId, int? RefReadingOrder, int? RefKanjiFormOrder, int? RefSenseOrder, bool? IsAmbiguous);

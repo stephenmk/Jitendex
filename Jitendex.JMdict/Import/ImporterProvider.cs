@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using Jitendex.SupplementalData;
 using Jitendex.JMdict.Import.Analysis;
 using Jitendex.JMdict.Import.Parsing;
 using Jitendex.JMdict.Import.Parsing.EntryElementReaders;
@@ -39,7 +38,6 @@ internal static class ImporterProvider
 
         // Databases
         .AddDbContext<JmdictContext>()
-        .AddDbContext<SupplementContext>()
         .AddTransient<Database>()
 
         // Top-level readers.
@@ -79,8 +77,9 @@ internal static class ImporterProvider
         .AddTransient<ReadingRestrictionOrderAssigner>()
         .AddTransient<KanjiFormRestrictionOrderAssigner>()
         .AddTransient<ReadingBridger>()
-        .AddTransient<ReferenceSequencer>()
+        .AddTransient<ReferenceCacheService>()
         .AddTransient<CrossReferenceTextParser>()
+        .AddTransient<ReferenceSequencer>()
 
         // Logging
         .AddLogging(static builder =>

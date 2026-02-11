@@ -20,8 +20,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
-internal sealed record ParsedReferenceText(string Text1, string? Text2, int SenseNumber);
-
 internal partial class CrossReferenceTextParser(ILogger<CrossReferenceTextParser> logger)
 {
     public ParsedReferenceText? Parse(string referenceText)

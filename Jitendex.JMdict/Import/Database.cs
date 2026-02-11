@@ -129,8 +129,6 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
 
         var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 
-        context.ExecuteDeferForeignKeysPragma();
-
         ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.ReadingInfoTags.Values);
         KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.KanjiFormInfoTags.Values);
         PartOfSpeechTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.PartOfSpeechTags.Values);

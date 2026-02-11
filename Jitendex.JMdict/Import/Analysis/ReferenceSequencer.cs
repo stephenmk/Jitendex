@@ -18,29 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Frozen;
 using System.Collections.Immutable;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Jitendex.SupplementalData;
-using Jitendex.SupplementalData.Entities.JMdict;
-using Jitendex.SQLite;
 using Jitendex.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Import.Analysis.Tables;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
-internal partial class ReferenceSequencer
+internal partial class ReferenceSequencer(ILogger<ReferenceSequencer> logger, JmdictContext context, CrossReferenceTextParser parser)
 {
-    private readonly ILogger<ReferenceSequencer> _logger;
-    private readonly JmdictContext _jmdictContext;
-    private readonly SupplementContext _supplementContext;
-    private readonly CrossReferenceTextParser _parser;
-
-    public ReferenceSequencer(ILogger<ReferenceSequencer> logger, JmdictContext jmdictContext, SupplementContext supplementContext, CrossReferenceTextParser parser) =>
-        (_logger, _jmdictContext, _supplementContext, _parser) =
-        (@logger, @jmdictContext, @supplementContext, @parser);
+    private static readonly CrossReferenceTable CrossReferenceTable = new();
 
     private sealed record ReferenceText(string Text1, string? Text2);
-
     private sealed record EntryData(
         int Id,
         int SenseCount,
@@ -48,30 +37,15 @@ internal partial class ReferenceSequencer
         ImmutableArray<string> KanjiForms,
         FrozenSet<int> HiddenReadingIndices);
 
-    private sealed record SequencedRef(
-        int SequenceId,
-        int SenseOrder,
-        string Text,
-        int? RefSequenceId,
-        int? RefReadingOrder,
-        int? RefKanjiFormOrder,
-        int? RefSenseOrder);
-
-    public void FindCrossReferenceSequenceIds()
-    {
-        var sequencedRefs = GetSequencedRefs();
-        WriteRefsToDatabase(sequencedRefs);
-    }
-
-    private List<SequencedRef> GetSequencedRefs()
+    public void FindCrossReferenceSequenceIds(IReadOnlyDictionary<string, int?> sequenceIdCache)
     {
         var referenceTextToEntries = GetReferenceTextToEntries();
 
-        var rawCrossReferences = _jmdictContext.CrossReferences
+        var rawCrossReferences = context.CrossReferences
             .AsNoTracking()
             .ToList();
 
-        var kanjiFormToReadings = _jmdictContext.KanjiFormBridges
+        var kanjiFormToReadings = context.KanjiFormBridges
             .GroupBy(static x => new { x.EntryId, x.KanjiFormOrder })
             .ToFrozenDictionary(
                 static g => (g.Key.EntryId, g.Key.KanjiFormOrder),
@@ -80,20 +54,14 @@ internal partial class ReferenceSequencer
                     .Select(static bridge => bridge.ReadingOrder)
                     .ToImmutableArray());
 
-        var sequenceIdCache = _supplementContext.CrossReferenceSequences
-            .ToFrozenDictionary(
-                static x => x.ToExportKey(),
-                static x => x.RefSequenceId);
-
-        var sequencedRefs = new List<SequencedRef>(rawCrossReferences.Count);
+        var sequencedRefs = new List<CrossReferenceUpdate>(rawCrossReferences.Count);
 
         foreach (var xref in rawCrossReferences)
         {
-            var parsedRef = _parser.Parse(xref.Text);
+            var parsedRef = parser.Parse(xref.Text);
 
             if (parsedRef is null)
             {
-                sequencedRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Text, null, null, null, null));
                 continue;
             }
 
@@ -125,24 +93,28 @@ internal partial class ReferenceSequencer
                 ? readingOrders.First()
                 : null;
 
+            bool? isAmbiguous = entryId is null ? null
+                : potentialEntries.Length > 1;
+
             LogReferenceInconsistencies(xref, parsedRef, entry, readingOrder, kanjiFormOrder, kanjiFormToReadings);
 
             sequencedRefs.Add(new
             (
-                SequenceId: xref.EntryId,
+                EntryId: xref.EntryId,
                 SenseOrder: xref.SenseOrder,
-                Text: xref.Text,
-                RefSequenceId: entryId,
+                Order: xref.Order,
+                RefEntryId: entryId,
                 RefReadingOrder: readingOrder,
                 RefKanjiFormOrder: kanjiFormOrder,
-                RefSenseOrder: parsedRef.SenseNumber - 1
+                RefSenseOrder: parsedRef.SenseNumber - 1,
+                IsAmbiguous: isAmbiguous
             ));
         }
 
-        return sequencedRefs;
+        CrossReferenceTable.UpdateItems(context, sequencedRefs);
     }
 
-    private int? FindIdInCache(string key, int[] potentialEntryIds, FrozenDictionary<string, int?> xrefCache)
+    private int? FindIdInCache(string key, int[] potentialEntryIds, IReadOnlyDictionary<string, int?> xrefCache)
     {
         int? entryId;
         if (!xrefCache.TryGetValue(key, out var cachedId))
@@ -216,26 +188,27 @@ internal partial class ReferenceSequencer
         return dict.ToFrozenDictionary();
     }
 
-    private ImmutableList<EntryData> LoadEntryData() => _jmdictContext.Entries
-        .AsSplitQuery()
-        .Select(static e => new EntryData
-        (
-            e.Id,
-            SenseCount: e.Senses.Count(),
-            Readings: e.Readings
-                .OrderBy(static r => r.Order)
-                .Select(static r => r.Text)
-                .ToImmutableArray(),
-            KanjiForms: e.KanjiForms
-                .OrderBy(static k => k.Order)
-                .Select(static k => k.Text)
-                .ToImmutableArray(),
-            HiddenReadingIndices: e.Readings
-                .Where(static r => r.Infos.Any(static i => i.TagName == "sk"))
-                .Select(static r => r.Order)
-                .ToFrozenSet()
-        ))
-        .ToImmutableList();
+    private ImmutableList<EntryData> LoadEntryData()
+        => context.Entries
+            .AsSplitQuery()
+            .Select(static e => new EntryData
+            (
+                e.Id,
+                SenseCount: e.Senses.Count(),
+                Readings: e.Readings
+                    .OrderBy(static r => r.Order)
+                    .Select(static r => r.Text)
+                    .ToImmutableArray(),
+                KanjiForms: e.KanjiForms
+                    .OrderBy(static k => k.Order)
+                    .Select(static k => k.Text)
+                    .ToImmutableArray(),
+                HiddenReadingIndices: e.Readings
+                    .Where(static r => r.Infos.Any(static i => i.TagName == "sk"))
+                    .Select(static r => r.Order)
+                    .ToFrozenSet()
+            ))
+            .ToImmutableList();
 
     private static IEnumerable<ReferenceText> GetReferenceTexts(ImmutableArray<string> readings, ImmutableArray<string> kanjiForms)
     {
@@ -288,45 +261,6 @@ internal partial class ReferenceSequencer
         {
             LogInvalidPair(xref.ToExportKey());
         }
-    }
-
-    private void WriteRefsToDatabase(List<SequencedRef> refs)
-    {
-        using var transaction = _supplementContext.Database.BeginTransaction();
-        _supplementContext.CrossReferenceSequences.ExecuteDelete();
-
-        using var command = _supplementContext.Database.GetDbConnection().CreateCommand();
-        command.CommandText =
-            $"""
-            INSERT INTO "{nameof(CrossReferenceSequence)}"
-            ( "{nameof(CrossReferenceSequence.SequenceId)}"
-            , "{nameof(CrossReferenceSequence.SenseOrder)}"
-            , "{nameof(CrossReferenceSequence.Text)}"
-            , "{nameof(CrossReferenceSequence.RefSequenceId)}"
-            , "{nameof(CrossReferenceSequence.RefReadingOrder)}"
-            , "{nameof(CrossReferenceSequence.RefKanjiFormOrder)}"
-            , "{nameof(CrossReferenceSequence.RefSenseOrder)}"
-            ) VALUES (@0, @1, @2, @3, @4, @5, @6);
-            """;
-
-        foreach (var xref in refs)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new("@0", xref.SequenceId),
-                new("@1", xref.SenseOrder),
-                new("@2", xref.Text),
-                new("@3", xref.RefSequenceId.Nullable()),
-                new("@4", xref.RefReadingOrder.Nullable()),
-                new("@5", xref.RefKanjiFormOrder.Nullable()),
-                new("@6", xref.RefSenseOrder.Nullable()),
-            });
-            command.ExecuteNonQuery();
-            command.Parameters.Clear();
-        }
-
-        _supplementContext.SaveChanges();
-        transaction.Commit();
     }
 
     [LoggerMessage(LogLevel.Warning,

@@ -30,6 +30,7 @@ internal sealed class Analyzer(
     ReadingRestrictionOrderAssigner readingRestrictionOrderAssigner,
     KanjiFormRestrictionOrderAssigner kanjiFormRestrictionOrderAssigner,
     ReadingBridger readingBridger,
+    ReferenceCacheService referenceCacheService,
     ReferenceSequencer referenceSequencer)
 {
     public void Clean()
@@ -53,12 +54,13 @@ internal sealed class Analyzer(
             SET    "{nameof(CrossReference.RefEntryId)}"        = NULL
             ,      "{nameof(CrossReference.RefReadingOrder)}"   = NULL
             ,      "{nameof(CrossReference.RefKanjiFormOrder)}" = NULL
-            ,      "{nameof(CrossReference.RefSenseOrder)}"     = NULL;
+            ,      "{nameof(CrossReference.RefSenseOrder)}"     = NULL
+            ,      "{nameof(CrossReference.IsAmbiguous)}"       = NULL;
             """;
         command.ExecuteNonQuery();
     }
 
-    public void Analyze()
+    public async Task AnalyzeAsync(DirectoryInfo? dataDirectory)
     {
         logger.LogInformation("Starting data analysis");
 
@@ -67,6 +69,9 @@ internal sealed class Analyzer(
         kanjiFormRestrictionOrderAssigner.AssignOrders();
 
         readingBridger.BridgeReadingsToKanjiForms();
-        referenceSequencer.FindCrossReferenceSequenceIds();
+
+        var referenceCache = await referenceCacheService.ImportAsync(dataDirectory);
+        referenceSequencer.FindCrossReferenceSequenceIds(referenceCache);
+        await referenceCacheService.ExportAsync(dataDirectory);
     }
 }

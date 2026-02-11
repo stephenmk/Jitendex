@@ -35,6 +35,7 @@ public sealed class CrossReference
     public int? RefReadingOrder { get; set; }
     public int? RefKanjiFormOrder { get; set; }
     public int? RefSenseOrder { get; set; }
+    public bool? IsAmbiguous { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;

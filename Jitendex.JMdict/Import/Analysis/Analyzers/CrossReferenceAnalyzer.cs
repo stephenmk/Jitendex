@@ -30,12 +30,14 @@ internal partial class CrossReferenceAnalyzer(ILogger<CrossReferenceAnalyzer> lo
     private static readonly CrossReferenceTable CrossReferenceTable = new();
 
     private sealed record ReferenceText(string Text1, string? Text2);
-    private sealed record EntryData(
+    private sealed record EntryData
+    (
         int Id,
         int SenseCount,
         ImmutableArray<string> Readings,
         ImmutableArray<string> KanjiForms,
-        FrozenSet<int> HiddenReadingIndices);
+        FrozenSet<int> HiddenReadingIndices
+    );
 
     public void Analyze(IReadOnlyDictionary<string, int?> entryIdCache)
     {
@@ -142,10 +144,12 @@ internal partial class CrossReferenceAnalyzer(ILogger<CrossReferenceAnalyzer> lo
         return entryId;
     }
 
-    private EntryData[] GetPotentialEntries(
+    private EntryData[] GetPotentialEntries
+    (
         CrossReference xref,
         ParsedReferenceText parsed,
-        IReadOnlyDictionary<ReferenceText, List<EntryData>> referenceTextToEntries)
+        IReadOnlyDictionary<ReferenceText, List<EntryData>> referenceTextToEntries
+    )
     {
         var key = new ReferenceText(parsed.Text1, parsed.Text2);
 
@@ -231,13 +235,15 @@ internal partial class CrossReferenceAnalyzer(ILogger<CrossReferenceAnalyzer> lo
         }
     }
 
-    private void LogReferenceInconsistencies(
+    private void LogReferenceInconsistencies
+    (
         CrossReference xref,
         ParsedReferenceText parsed,
         EntryData? entry,
         int? readingOrder,
         int? kanjiFormOrder,
-        FrozenDictionary<(int SequenceId, int KanjiFormOrder), ImmutableArray<int>> kanjiFormToReadings)
+        FrozenDictionary<(int SequenceId, int KanjiFormOrder), ImmutableArray<int>> kanjiFormToReadings
+    )
     {
         if (entry is null)
         {

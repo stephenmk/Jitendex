@@ -22,7 +22,9 @@ internal sealed record KanjiFormRestrictionUpdate(int EntryId, int SenseOrder, i
 internal sealed record KanjiFormBridgeElement(int EntryId, int ReadingOrder, int KanjiFormOrder);
 
 internal sealed record ParsedReferenceText(string Text1, string? Text2, int SenseNumber);
-internal sealed record CrossReferenceUpdate(
+
+internal sealed record CrossReferenceUpdate
+(
     int EntryId,
     int SenseOrder,
     int Order,
@@ -30,4 +32,5 @@ internal sealed record CrossReferenceUpdate(
     int? RefReadingOrder,
     int? RefKanjiFormOrder,
     int? RefSenseOrder,
-    bool? IsAmbiguous);
+    bool? IsAmbiguous
+);

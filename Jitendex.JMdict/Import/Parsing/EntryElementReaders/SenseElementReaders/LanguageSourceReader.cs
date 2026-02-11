@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.SenseElementReaders;
 
-internal partial class LanguageSourceReader : BaseReader<LanguageSourceReader>
+internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger) : BaseReader<LanguageSourceReader>(logger)
 {
-    public LanguageSourceReader(ILogger<LanguageSourceReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
         var typeName = xmlReader.GetAttribute("ls_type") ?? "full";

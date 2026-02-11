@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.SenseElementReaders;
 
-internal partial class GlossReader : BaseReader<GlossReader>
+internal sealed class GlossReader(ILogger<GlossReader> logger) : BaseReader<GlossReader>(logger)
 {
-    public GlossReader(ILogger<GlossReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
         var typeName = xmlReader.GetAttribute("g_type");

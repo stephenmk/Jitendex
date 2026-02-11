@@ -23,15 +23,13 @@ using Jitendex.JMdict.Import.Parsing.EntryElementReaders.KanjiFormElementReaders
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders;
 
-internal partial class KanjiFormReader : BaseReader<KanjiFormReader>
+internal partial class KanjiFormReader
+(
+    ILogger<KanjiFormReader> logger,
+    KInfoReader infoReader,
+    KPriorityReader priorityReader
+) : BaseReader<KanjiFormReader>(logger)
 {
-    private readonly KInfoReader _infoReader;
-    private readonly KPriorityReader _priorityReader;
-
-    public KanjiFormReader(ILogger<KanjiFormReader> logger, KInfoReader infoReader, KPriorityReader priorityReader) : base(logger) =>
-        (_infoReader, _priorityReader) =
-        (@infoReader, @priorityReader);
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         var kanjiForm = new KanjiFormElement
@@ -76,10 +74,10 @@ internal partial class KanjiFormReader : BaseReader<KanjiFormReader>
                 await ReadKanjiFormText(xmlReader, kanjiForm);
                 break;
             case XmlTagName.KanjiFormInfo:
-                await _infoReader.ReadAsync(xmlReader, document, kanjiForm);
+                await infoReader.ReadAsync(xmlReader, document, kanjiForm);
                 break;
             case XmlTagName.KanjiFormPriority:
-                await _priorityReader.ReadAsync(xmlReader, document, kanjiForm);
+                await priorityReader.ReadAsync(xmlReader, document, kanjiForm);
                 break;
             default:
                 LogUnexpectedChildElement(xmlReader, XmlTagName.KanjiForm);

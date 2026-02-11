@@ -23,25 +23,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Jitendex.JMdict.Import.Parsing;
 
-internal partial class DocumentReader : BaseReader<DocumentReader>
+internal partial class DocumentReader
+(
+    ILogger<DocumentReader> logger,
+    DocumentTypeReader docTypeReader,
+    EntriesReader entriesReader
+) : BaseReader<DocumentReader>(logger)
 {
-    private readonly DocumentTypeReader _docTypeReader;
-    private readonly EntriesReader _entriesReader;
-
-    public DocumentReader(ILogger<DocumentReader> logger, DocumentTypeReader docTypeReader, EntriesReader entriesReader) : base(logger)
-    {
-        _docTypeReader = docTypeReader;
-        _entriesReader = entriesReader;
-    }
-
-    private static readonly XmlReaderSettings XmlReaderSettings = new()
-    {
-        Async = true,
-        DtdProcessing = DtdProcessing.Parse,
-        MaxCharactersFromEntities = long.MaxValue,
-        MaxCharactersInDocument = long.MaxValue,
-    };
-
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
     {
         await using FileStream f = new(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -53,7 +41,7 @@ internal partial class DocumentReader : BaseReader<DocumentReader>
             Header = new(fileDate)
         };
 
-        await _docTypeReader.ReadAsync(xmlReader, document);
+        await docTypeReader.ReadAsync(xmlReader, document);
 
         var exit = false;
         while (!exit && await xmlReader.ReadAsync())
@@ -77,11 +65,19 @@ internal partial class DocumentReader : BaseReader<DocumentReader>
         switch (xmlReader.Name)
         {
             case XmlTagName.Jmdict:
-                await _entriesReader.ReadAsync(xmlReader, document);
+                await entriesReader.ReadAsync(xmlReader, document);
                 break;
             default:
                 LogUnexpectedChildElement(xmlReader, XmlTagName.Root);
                 break;
         }
     }
+
+    private static readonly XmlReaderSettings XmlReaderSettings = new()
+    {
+        Async = true,
+        DtdProcessing = DtdProcessing.Parse,
+        MaxCharactersFromEntities = long.MaxValue,
+        MaxCharactersInDocument = long.MaxValue,
+    };
 }

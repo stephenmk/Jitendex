@@ -23,19 +23,14 @@ using Jitendex.JMdict.Import.Parsing.EntryElementReaders.ReadingElementReaders;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders;
 
-internal partial class ReadingReader : BaseReader<ReadingReader>
+internal partial class ReadingReader
+(
+    ILogger<ReadingReader> logger,
+    RestrictionReader restrictionReader,
+    RInfoReader infoReader,
+    RPriorityReader priorityReader
+) : BaseReader<ReadingReader>(logger)
 {
-    private readonly RestrictionReader _restrictionReader;
-    private readonly RInfoReader _infoReader;
-    private readonly RPriorityReader _priorityReader;
-
-    public ReadingReader(ILogger<ReadingReader> logger, RestrictionReader restrictionReader, RInfoReader infoReader, RPriorityReader priorityReader) : base(logger)
-    {
-        _restrictionReader = restrictionReader;
-        _infoReader = infoReader;
-        _priorityReader = priorityReader;
-    }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         var reading = new ReadingElement
@@ -81,13 +76,13 @@ internal partial class ReadingReader : BaseReader<ReadingReader>
                 await ReadReadingText(xmlReader, reading);
                 break;
             case XmlTagName.ReadingPriority:
-                await _priorityReader.ReadAsync(xmlReader, document, reading);
+                await priorityReader.ReadAsync(xmlReader, document, reading);
                 break;
             case XmlTagName.ReadingRestriction:
-                await _restrictionReader.ReadAsync(xmlReader, document, reading);
+                await restrictionReader.ReadAsync(xmlReader, document, reading);
                 break;
             case XmlTagName.ReadingInfo:
-                await _infoReader.ReadAsync(xmlReader, document, reading);
+                await infoReader.ReadAsync(xmlReader, document, reading);
                 break;
             case XmlTagName.ReadingNoKanji:
                 reading.NoKanji = true;

@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.SenseElementReaders;
 
-internal partial class ReadingRestrictionReader : BaseReader<ReadingRestrictionReader>
+internal sealed class ReadingRestrictionReader(ILogger<ReadingRestrictionReader> logger) : BaseReader<ReadingRestrictionReader>(logger)
 {
-    public ReadingRestrictionReader(ILogger<ReadingRestrictionReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
         var text = await xmlReader.ReadElementContentAsStringAsync();

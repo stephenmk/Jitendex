@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.ReadingElementReaders;
 
-internal class RInfoReader : BaseReader<RInfoReader>
+internal sealed class RInfoReader(ILogger<RInfoReader> logger) : BaseReader<RInfoReader>(logger)
 {
-    public RInfoReader(ILogger<RInfoReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingElement reading)
     {
         var description = await xmlReader.ReadElementContentAsStringAsync();

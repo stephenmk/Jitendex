@@ -23,23 +23,20 @@ using Jitendex.JMdict.Import.Parsing.EntryElementReaders.SenseElementReaders;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders;
 
-internal partial class SenseReader : BaseReader<SenseReader>
+internal partial class SenseReader
+(
+    ILogger<SenseReader> logger,
+    KanjiFormRestrictionReader kRestrictionReader,
+    ReadingRestrictionReader rRestrictionReader,
+    CrossReferenceReader crossReferenceReader,
+    DialectReader dialectReader,
+    FieldReader fieldReader,
+    GlossReader glossReader,
+    LanguageSourceReader languageSourceReader,
+    MiscReader miscReader,
+    PartOfSpeechReader partOfSpeechReader
+) : BaseReader<SenseReader>(logger)
 {
-    private readonly KanjiFormRestrictionReader _kRestrictionReader;
-    private readonly ReadingRestrictionReader _rRestrictionReader;
-    private readonly CrossReferenceReader _crossReferenceReader;
-    private readonly DialectReader _dialectReader;
-    private readonly FieldReader _fieldReader;
-    private readonly GlossReader _glossReader;
-    private readonly LanguageSourceReader _languageSourceReader;
-    private readonly MiscReader _miscReader;
-    private readonly PartOfSpeechReader _partOfSpeechReader;
-
-    public SenseReader(ILogger<SenseReader> logger, KanjiFormRestrictionReader kRestrictionReader, ReadingRestrictionReader rRestrictionReader, CrossReferenceReader crossReferenceReader, DialectReader dialectReader, FieldReader fieldReader, GlossReader glossReader, LanguageSourceReader languageSourceReader, MiscReader miscReader, PartOfSpeechReader partOfSpeechReader)
-        : base(logger) =>
-        (_kRestrictionReader, _rRestrictionReader, _crossReferenceReader, _dialectReader, _fieldReader, _glossReader, _languageSourceReader, _miscReader, _partOfSpeechReader) =
-        (@kRestrictionReader, @rRestrictionReader, @crossReferenceReader, @dialectReader, @fieldReader, @glossReader, @languageSourceReader, @miscReader, @partOfSpeechReader);
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         var sense = new SenseElement
@@ -73,38 +70,38 @@ internal partial class SenseReader : BaseReader<SenseReader>
         switch (xmlReader.Name)
         {
             case XmlTagName.Gloss:
-                await _glossReader.ReadAsync(xmlReader, document, sense);
+                await glossReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.PartOfSpeech:
-                await _partOfSpeechReader.ReadAsync(xmlReader, document, sense);
+                await partOfSpeechReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.Misc:
-                await _miscReader.ReadAsync(xmlReader, document, sense);
+                await miscReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.CrossReference:
             case XmlTagName.Antonym:
-                await _crossReferenceReader.ReadAsync(xmlReader, document, sense);
+                await crossReferenceReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.Example:
                 await xmlReader.SkipAsync();
                 break;
             case XmlTagName.Field:
-                await _fieldReader.ReadAsync(xmlReader, document, sense);
+                await fieldReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.LanguageSource:
-                await _languageSourceReader.ReadAsync(xmlReader, document, sense);
+                await languageSourceReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.SenseNote:
                 await ReadSenseNote(xmlReader, sense);
                 break;
             case XmlTagName.SenseReadingRestriction:
-                await _rRestrictionReader.ReadAsync(xmlReader, document, sense);
+                await rRestrictionReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.SenseKanjiFormRestriction:
-                await _kRestrictionReader.ReadAsync(xmlReader, document, sense);
+                await kRestrictionReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.Dialect:
-                await _dialectReader.ReadAsync(xmlReader, document, sense);
+                await dialectReader.ReadAsync(xmlReader, document, sense);
                 break;
             default:
                 LogUnexpectedChildElement(xmlReader, XmlTagName.Sense);

@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.ReadingElementReaders;
 
-internal class RPriorityReader : BaseReader<RPriorityReader>
+internal sealed class RPriorityReader(ILogger<RPriorityReader> logger) : BaseReader<RPriorityReader>(logger)
 {
-    public RPriorityReader(ILogger<RPriorityReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingElement reading)
     {
         var tagName = await xmlReader.ReadElementContentAsStringAsync();

@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.KanjiFormElementReaders;
 
-internal class KInfoReader : BaseReader<KInfoReader>
+internal sealed class KInfoReader(ILogger<KInfoReader> logger) : BaseReader<KInfoReader>(logger)
 {
-    public KInfoReader(ILogger<KInfoReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormElement kanjiForm)
     {
         var description = await xmlReader.ReadElementContentAsStringAsync();

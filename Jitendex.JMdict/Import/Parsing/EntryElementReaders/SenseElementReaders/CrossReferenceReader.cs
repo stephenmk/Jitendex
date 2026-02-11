@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.SenseElementReaders;
 
-internal partial class CrossReferenceReader : BaseReader<CrossReferenceReader>
+internal sealed class CrossReferenceReader(ILogger<CrossReferenceReader> logger) : BaseReader<CrossReferenceReader>(logger)
 {
-    public CrossReferenceReader(ILogger<CrossReferenceReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
         var typeName = xmlReader.Name;

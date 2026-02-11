@@ -23,20 +23,14 @@ using Jitendex.JMdict.Import.Parsing.EntryElementReaders;
 
 namespace Jitendex.JMdict.Import.Parsing;
 
-internal partial class EntryReader : BaseReader<EntryReader>
+internal partial class EntryReader
+(
+    ILogger<EntryReader> logger,
+    KanjiFormReader kanjiFormReader,
+    ReadingReader readingReader,
+    SenseReader senseReader
+) : BaseReader<EntryReader>(logger)
 {
-    private readonly KanjiFormReader _kanjiFormReader;
-    private readonly ReadingReader _readingReader;
-    private readonly SenseReader _senseReader;
-
-    public EntryReader(ILogger<EntryReader> logger, KanjiFormReader kanjiFormReader, ReadingReader readingReader, SenseReader senseReader)
-        : base(logger)
-    {
-        _kanjiFormReader = kanjiFormReader;
-        _readingReader = readingReader;
-        _senseReader = senseReader;
-    }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {
         var entry = new EntryElement
@@ -94,13 +88,13 @@ internal partial class EntryReader : BaseReader<EntryReader>
         switch (xmlReader.Name)
         {
             case XmlTagName.Sense:
-                await _senseReader.ReadAsync(xmlReader, document, entry);
+                await senseReader.ReadAsync(xmlReader, document, entry);
                 break;
             case XmlTagName.Reading:
-                await _readingReader.ReadAsync(xmlReader, document, entry);
+                await readingReader.ReadAsync(xmlReader, document, entry);
                 break;
             case XmlTagName.KanjiForm:
-                await _kanjiFormReader.ReadAsync(xmlReader, document, entry);
+                await kanjiFormReader.ReadAsync(xmlReader, document, entry);
                 break;
             default:
                 LogUnexpectedChildElement(xmlReader, XmlTagName.Entry);

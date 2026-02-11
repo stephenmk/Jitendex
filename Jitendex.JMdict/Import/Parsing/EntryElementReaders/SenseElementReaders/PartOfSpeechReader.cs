@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.SenseElementReaders;
 
-internal class PartOfSpeechReader : BaseReader<PartOfSpeechReader>
+internal sealed class PartOfSpeechReader(ILogger<PartOfSpeechReader> logger) : BaseReader<PartOfSpeechReader>(logger)
 {
-    public PartOfSpeechReader(ILogger<PartOfSpeechReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document,SenseElement sense)
     {
         var description = await xmlReader.ReadElementContentAsStringAsync();

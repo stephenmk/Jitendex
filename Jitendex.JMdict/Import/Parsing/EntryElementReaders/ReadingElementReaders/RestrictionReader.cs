@@ -22,10 +22,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.ReadingElementReaders;
 
-internal partial class RestrictionReader : BaseReader<RestrictionReader>
+internal sealed class RestrictionReader(ILogger<RestrictionReader> logger) : BaseReader<RestrictionReader>(logger)
 {
-    public RestrictionReader(ILogger<RestrictionReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingElement reading)
     {
         var kanjiFormText = await xmlReader.ReadElementContentAsStringAsync();

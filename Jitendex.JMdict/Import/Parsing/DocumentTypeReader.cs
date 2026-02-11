@@ -23,10 +23,8 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing;
 
-internal partial class DocumentTypeReader : BaseReader<DocumentTypeReader>
+internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : BaseReader<DocumentTypeReader>(logger)
 {
-    public DocumentTypeReader(ILogger<DocumentTypeReader> logger) : base(logger) { }
-
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {
         var exit = false;

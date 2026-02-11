@@ -46,7 +46,7 @@ public abstract class SqliteContext : DbContext
     /// <summary>
     /// Delete and recreate the database file.
     /// </summary>
-    public void InitializeDatabase()
+    public void RecreateDatabase()
     {
         Database.EnsureDeleted();
         Database.EnsureCreated();
@@ -55,7 +55,7 @@ public abstract class SqliteContext : DbContext
     /// <summary>
     /// Delete and recreate the database file.
     /// </summary>
-    public async Task InitializeDatabaseAsync()
+    public async Task RecreateDatabaseAsync()
     {
         await Database.EnsureDeletedAsync();
         await Database.EnsureCreatedAsync();

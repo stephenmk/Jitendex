@@ -37,7 +37,7 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
     {
         logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.Header.Date);
 
-        context.InitializeDatabase();
+        context.RecreateDatabase();
         context.ExecuteFastNewDatabasePragma();
 
         using var transaction = context.Database.BeginTransaction();

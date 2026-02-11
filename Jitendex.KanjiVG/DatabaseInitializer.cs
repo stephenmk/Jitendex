@@ -28,7 +28,7 @@ internal static class DatabaseInitializer
         await using var context = new Context();
 
         // Delete and recreate the database file.
-        await context.InitializeDatabaseAsync();
+        await context.RecreateDatabaseAsync();
 
         // For faster importing, write data to memory rather than to the disk.
         await context.ExecuteFastNewDatabasePragmaAsync();

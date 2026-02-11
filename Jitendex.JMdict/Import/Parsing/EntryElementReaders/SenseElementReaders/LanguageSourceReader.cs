@@ -26,21 +26,21 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
-        var typeName = xmlReader.GetAttribute("ls_type") ?? "full";
+        var typeName = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceType) ?? "full";
         if (!document.LanguageSourceTypes.ContainsKey(typeName))
         {
             var tag = new LanguageSourceTypeElement(typeName, document.Header.Date);
             document.LanguageSourceTypes.Add(typeName, tag);
         }
 
-        var languageCode = xmlReader.GetAttribute("xml:lang") ?? "eng";
+        var languageCode = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceCode) ?? "eng";
         if (!document.Languages.ContainsKey(languageCode))
         {
             var tag = new LanguageElement(languageCode, document.Header.Date);
             document.Languages.Add(languageCode, tag);
         }
 
-        var wasei = xmlReader.GetAttribute("ls_wasei");
+        var wasei = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceWasei);
         if (wasei is not null && wasei != "y")
         {
             LogInvalidWaseiValue(sense.EntryId, sense.Order, wasei);

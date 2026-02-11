@@ -26,7 +26,7 @@ internal sealed class GlossReader(ILogger<GlossReader> logger) : BaseReader(logg
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
-        var typeName = xmlReader.GetAttribute("g_type");
+        var typeName = xmlReader.GetAttribute(XmlAttributeName.GlossType);
 
         if (typeName is not null && !document.GlossTypes.ContainsKey(typeName))
         {

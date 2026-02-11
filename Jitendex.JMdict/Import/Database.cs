@@ -81,7 +81,6 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
     {
         logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.Header.Date);
 
-        context.ExecuteFastNewDatabasePragma();
         context.RecreateDatabase();
 
         using var transaction = context.Database.BeginTransaction();

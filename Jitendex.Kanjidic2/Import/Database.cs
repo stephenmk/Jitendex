@@ -74,7 +74,6 @@ internal sealed class Database(ILogger<Database> logger, Kanjidic2Context contex
         logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.Header.Date);
 
         context.RecreateDatabase();
-        context.ExecuteFastNewDatabasePragma();
 
         using var transaction = context.Database.BeginTransaction();
 

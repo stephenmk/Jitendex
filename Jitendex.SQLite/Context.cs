@@ -65,22 +65,6 @@ public abstract class SqliteContext : DbContext
     /// For faster importing into a new db file, write data to memory rather than to the disk.
     /// </summary>
     /// <remarks>See: https://www.sqlite.org/pragma.html</remarks>
-    public void ExecuteFastNewDatabasePragma()
-        => Database.ExecuteSqlRaw
-        (
-            """
-            PRAGMA synchronous  = OFF;
-            PRAGMA journal_mode = OFF;
-            PRAGMA temp_store   = MEMORY;
-            PRAGMA cache_size   = -200000;
-            PRAGMA locking_mode = EXCLUSIVE;
-            """
-        );
-
-    /// <summary>
-    /// For faster importing into a new db file, write data to memory rather than to the disk.
-    /// </summary>
-    /// <remarks>See: https://www.sqlite.org/pragma.html</remarks>
     public async Task ExecuteFastNewDatabasePragmaAsync()
         => await Database.ExecuteSqlRawAsync
         (

@@ -67,12 +67,7 @@ internal sealed class Importer
 
     private async Task<Document?> InitializeDatabaseAsync(DirectoryInfo? archiveDirectory)
     {
-#if DEBUG
-        var date = new DateOnly(2026, 2, 1);
-        if (fileArchive.GetFile(JMdict_e_examp, date, archiveDirectory) is FileInfo file)
-#else
         if (fileArchive.GetEarliestFile(JMdict_e_examp, archiveDirectory) is (FileInfo file, DateOnly date))
-#endif
         {
             var document = await reader.ReadAsync(file, date);
             database.Initialize(document);

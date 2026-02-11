@@ -25,6 +25,5 @@
   <Project Path="Jitendex.Kanjidic2/Jitendex.Kanjidic2.csproj" />
   <Project Path="Jitendex.KanjiVG/Jitendex.KanjiVG.csproj" />
   <Project Path="Jitendex.SQLite/Jitendex.SQLite.csproj" />
-  <Project Path="Jitendex.SupplementalData/Jitendex.SupplementalData.csproj" />
   <Project Path="Jitendex.Tatoeba/Jitendex.Tatoeba.csproj" />
 </Solution>

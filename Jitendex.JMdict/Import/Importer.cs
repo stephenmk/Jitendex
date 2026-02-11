@@ -26,21 +26,18 @@ using static Jitendex.EdrdgDictionaryArchive.DictionaryFile;
 namespace Jitendex.JMdict.Import;
 
 internal sealed class Importer
+(
+    ILogger<Importer> logger,
+    IEdrdgArchiveService fileArchive,
+    JmdictContext context,
+    DocumentReader reader,
+    Database database,
+    Analyzer analyzer
+)
 {
-    private readonly ILogger<Importer> _logger;
-    private readonly IEdrdgArchiveService _fileArchive;
-    private readonly JmdictContext _context;
-    private readonly DocumentReader _reader;
-    private readonly Database _database;
-    private readonly Analyzer _analyzer;
-
-    public Importer(ILogger<Importer> logger, IEdrdgArchiveService fileArchive, JmdictContext context, DocumentReader reader, Database database, Analyzer analyzer) =>
-        (_logger, _fileArchive, _context, _reader, _database, _analyzer) =
-        (@logger, @fileArchive, @context, @reader, @database, @analyzer);
-
     public async Task ImportAsync(DirectoryInfo? archiveDirectory, DirectoryInfo? dataDirectory)
     {
-        _context.Database.EnsureCreated();
+        context.Database.EnsureCreated();
         var previousDate = GetPreviousDate();
 
         var previousDocument = previousDate == default
@@ -49,20 +46,20 @@ internal sealed class Importer
 
         if (previousDocument is null)
         {
-            _logger.LogWarning("Unable to retrieve previous document");
+            logger.LogWarning("Unable to retrieve previous document");
             return;
         }
 
-        using var transaction = _context.Database.BeginTransaction();
+        using var transaction = context.Database.BeginTransaction();
 
-        _analyzer.Clean();
+        analyzer.Clean();
         await UpdateDatabaseAsync(archiveDirectory, previousDocument);
-        await _analyzer.AnalyzeAsync(dataDirectory);
+        await analyzer.AnalyzeAsync(dataDirectory);
 
         transaction.Commit();
     }
 
-    private DateOnly GetPreviousDate() => _context.FileHeaders
+    private DateOnly GetPreviousDate() => context.FileHeaders
         .OrderByDescending(static x => x.Id)
         .Take(1)
         .Select(static x => x.Date)
@@ -70,11 +67,16 @@ internal sealed class Importer
 
     private async Task<Document?> InitializeDatabaseAsync(DirectoryInfo? archiveDirectory)
     {
+#if DEBUG
+        var date = new DateOnly(2026, 2, 1);
+        if (fileArchive.GetFile(JMdict_e_examp, date, archiveDirectory) is FileInfo file)
+#else
         if (_fileArchive.GetEarliestFile(JMdict_e_examp, archiveDirectory) is (FileInfo file, DateOnly date))
+#endif
         {
-            var document = await _reader.ReadAsync(file, date);
-            _database.Initialize(document);
-            _context.ExecuteVacuum();
+            var document = await reader.ReadAsync(file, date);
+            database.Initialize(document);
+            context.ExecuteVacuum();
             return document;
         }
         else
@@ -85,9 +87,9 @@ internal sealed class Importer
 
     private async Task<Document?> GetPreviousDocumentAsync(DirectoryInfo? archiveDirectory, DateOnly previousDate)
     {
-        if (_fileArchive.GetFile(JMdict_e_examp, previousDate, archiveDirectory) is FileInfo file)
+        if (fileArchive.GetFile(JMdict_e_examp, previousDate, archiveDirectory) is FileInfo file)
         {
-            return await _reader.ReadAsync(file, previousDate);
+            return await reader.ReadAsync(file, previousDate);
         }
         else
         {
@@ -97,11 +99,11 @@ internal sealed class Importer
 
     private async Task UpdateDatabaseAsync(DirectoryInfo? archiveDirectory, Document previousDocument)
     {
-        while (_fileArchive.GetNextFile(JMdict_e_examp, previousDocument.Header.Date, archiveDirectory) is (FileInfo nextFile, DateOnly nextDate))
+        while (fileArchive.GetNextFile(JMdict_e_examp, previousDocument.Header.Date, archiveDirectory) is (FileInfo nextFile, DateOnly nextDate))
         {
-            var nextDocument = await _reader.ReadAsync(nextFile, nextDate);
+            var nextDocument = await reader.ReadAsync(nextFile, nextDate);
             var diff = new DocumentDiff(previousDocument, nextDocument);
-            _database.Update(diff);
+            database.Update(diff);
             previousDocument = nextDocument;
         }
     }

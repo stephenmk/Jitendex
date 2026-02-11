@@ -24,7 +24,8 @@ using Jitendex.JMdict.Import.Analysis.Analyzers;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
-internal sealed class Analyzer(
+internal sealed class Analyzer
+(
     ILogger<Analyzer> logger,
     JmdictContext context,
     RestrictionAnalyzer restrictionAnalyzer,
@@ -32,7 +33,8 @@ internal sealed class Analyzer(
     KanjiFormRestrictionAnalyzer kanjiFormRestrictionAnalyzer,
     KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
     CrossReferenceCacheService crossReferenceCacheService,
-    CrossReferenceAnalyzer crossReferenceAnalyzer)
+    CrossReferenceAnalyzer crossReferenceAnalyzer
+)
 {
     public void Clean()
     {

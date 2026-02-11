@@ -78,9 +78,9 @@ internal static class ImporterProvider
         .AddTransient<ReadingRestrictionAnalyzer>()
         .AddTransient<KanjiFormRestrictionAnalyzer>()
         .AddTransient<KanjiFormBridgeAnalyzer>()
+        .AddTransient<CrossReferenceAnalyzer>()
         .AddTransient<CrossReferenceCacheService>()
         .AddTransient<CrossReferenceTextParser>()
-        .AddTransient<CrossReferenceAnalyzer>()
 
         // Logging
         .AddLogging(static builder =>

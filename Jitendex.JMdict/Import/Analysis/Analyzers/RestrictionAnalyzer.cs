@@ -20,22 +20,22 @@ using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using Jitendex.JMdict.Import.Analysis.Tables;
 
-namespace Jitendex.JMdict.Import.Analysis;
+namespace Jitendex.JMdict.Import.Analysis.Analyzers;
 
-internal partial class KanjiFormRestrictionOrderAssigner(ILogger<KanjiFormRestrictionOrderAssigner> logger, JmdictContext context)
+internal partial class RestrictionAnalyzer(ILogger<RestrictionAnalyzer> logger, JmdictContext context)
 {
-    private static readonly KanjiFormRestrictionTable KanjiFormRestrictionTable = new();
+    private readonly static RestrictionTable RestrictionTable = new();
 
-    public void AssignOrders()
+    public void Analyze()
     {
-        var restrictions = context.KanjiFormRestrictions
+        var restrictions = context.Restrictions
             .Select(static r => new
             {
                 r.EntryId,
-                r.SenseOrder,
+                r.ReadingOrder,
                 r.Order,
                 r.KanjiFormText,
-                KanjiForms = r.Sense.Entry.KanjiForms
+                KanjiForms = r.Reading.Entry.KanjiForms
                     .Select(static k => new
                     {
                         k.Order,
@@ -46,7 +46,7 @@ internal partial class KanjiFormRestrictionOrderAssigner(ILogger<KanjiFormRestri
             })
             .ToList();
 
-        List<KanjiFormRestrictionUpdate> updates = new(restrictions.Count);
+        List<RestrictionUpdate> updates = new(restrictions.Count);
 
         foreach (var r in restrictions)
         {
@@ -61,7 +61,7 @@ internal partial class KanjiFormRestrictionOrderAssigner(ILogger<KanjiFormRestri
                     }
                     else
                     {
-                        updates.Add(new(r.EntryId, r.SenseOrder, r.Order, kanjiForm.Order));
+                        updates.Add(new(r.EntryId, r.ReadingOrder, r.Order, kanjiForm.Order));
                     }
                     found = true;
                     break;
@@ -69,18 +69,18 @@ internal partial class KanjiFormRestrictionOrderAssigner(ILogger<KanjiFormRestri
             }
             if (!found)
             {
-                LogInvalidSenseKanjiFormRestriction(r.EntryId, r.KanjiFormText);
+                LogInvalidRestriction(r.EntryId, r.KanjiFormText);
             }
         }
 
-        KanjiFormRestrictionTable.UpdateItems(context, updates);
+        RestrictionTable.UpdateItems(context, updates);
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} contains a sense kanji form restriction to invalid form `{KanjiForm}`")]
-    protected partial void LogInvalidSenseKanjiFormRestriction(int entryId, string kanjiForm);
+    "Entry ID {EntryId} contains a reading restriction to invalid kanji form `{KanjiForm}`")]
+    protected partial void LogInvalidRestriction(int entryId, string kanjiForm);
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} contains a sense kanji form restriction to search-only `{KanjiForm}`")]
+    "Entry ID {EntryId} contains a kanji form restriction to search-only `{KanjiForm}`")]
     protected partial void LogReferenceToSearchOnlyForm(int entryId, string kanjiForm);
 }

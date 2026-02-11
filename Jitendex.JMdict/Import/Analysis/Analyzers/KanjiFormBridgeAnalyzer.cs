@@ -21,9 +21,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Jitendex.JMdict.Import.Analysis.Tables;
 
-namespace Jitendex.JMdict.Import.Analysis;
+namespace Jitendex.JMdict.Import.Analysis.Analyzers;
 
-internal partial class ReadingBridger(ILogger<ReadingBridger> logger, JmdictContext context)
+internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> logger, JmdictContext context)
 {
     private static readonly KanjiFormBridgeTable KanjiFormBridgeTable = new();
     private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<int> Restrictions);
@@ -32,7 +32,7 @@ internal partial class ReadingBridger(ILogger<ReadingBridger> logger, JmdictCont
     // TODO: check for excessive pairings, e.g. キモ可愛；きも可愛【キモかわ；きもかわ】
     // Need to include method for normalizing katakana to hiragana.
 
-    public void BridgeReadingsToKanjiForms()
+    public void Analyze()
     {
         var entries = context.Entries
             .AsSplitQuery()

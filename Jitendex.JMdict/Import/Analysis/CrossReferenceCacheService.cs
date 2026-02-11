@@ -22,9 +22,9 @@ using Jitendex.AppDirectory;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
-internal sealed class ReferenceCacheService(JmdictContext context)
+internal sealed class CrossReferenceCacheService(JmdictContext context)
 {
-    public async Task<IReadOnlyDictionary<string, int?>> ImportAsync(DirectoryInfo? dataDir)
+    public async Task<IReadOnlyDictionary<string, int?>> LoadAsync(DirectoryInfo? dataDir)
     {
         var filePath = GetJsonFilePath(dataDir);
         await using var stream = File.OpenRead(filePath);

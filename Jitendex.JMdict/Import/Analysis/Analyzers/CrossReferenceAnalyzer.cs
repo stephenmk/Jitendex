@@ -23,9 +23,9 @@ using Microsoft.Extensions.Logging;
 using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.JMdict.Import.Analysis.Tables;
 
-namespace Jitendex.JMdict.Import.Analysis;
+namespace Jitendex.JMdict.Import.Analysis.Analyzers;
 
-internal partial class ReferenceSequencer(ILogger<ReferenceSequencer> logger, JmdictContext context, CrossReferenceTextParser parser)
+internal partial class CrossReferenceAnalyzer(ILogger<CrossReferenceAnalyzer> logger, JmdictContext context, CrossReferenceTextParser parser)
 {
     private static readonly CrossReferenceTable CrossReferenceTable = new();
 
@@ -37,7 +37,7 @@ internal partial class ReferenceSequencer(ILogger<ReferenceSequencer> logger, Jm
         ImmutableArray<string> KanjiForms,
         FrozenSet<int> HiddenReadingIndices);
 
-    public void FindCrossReferenceSequenceIds(IReadOnlyDictionary<string, int?> sequenceIdCache)
+    public void Analyze(IReadOnlyDictionary<string, int?> entryIdCache)
     {
         var referenceTextToEntries = GetReferenceTextToEntries();
 
@@ -72,7 +72,7 @@ internal partial class ReferenceSequencer(ILogger<ReferenceSequencer> logger, Jm
                 ? null
                 : potentialEntries.Length == 1
                 ? potentialEntries[0].Id
-                : FindIdInCache(xref.ToExportKey(), potentialEntryIds.ToArray(), sequenceIdCache);
+                : FindIdInCache(xref.ToExportKey(), potentialEntryIds.ToArray(), entryIdCache);
 
             var entry = entryId is null ? null
                 : potentialEntries.First(e => e.Id == entryId);
@@ -114,10 +114,10 @@ internal partial class ReferenceSequencer(ILogger<ReferenceSequencer> logger, Jm
         CrossReferenceTable.UpdateItems(context, sequencedRefs);
     }
 
-    private int? FindIdInCache(string key, int[] potentialEntryIds, IReadOnlyDictionary<string, int?> xrefCache)
+    private int? FindIdInCache(string key, int[] potentialEntryIds, IReadOnlyDictionary<string, int?> entryIdCache)
     {
         int? entryId;
-        if (!xrefCache.TryGetValue(key, out var cachedId))
+        if (!entryIdCache.TryGetValue(key, out var cachedId))
         {
             entryId = null;
         }

@@ -18,13 +18,14 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.JMdict.Import.Analysis;
+using Jitendex.JMdict.Import.Analysis.Analyzers;
 using Jitendex.JMdict.Import.Parsing;
 using Jitendex.JMdict.Import.Parsing.EntryElementReaders;
 using Jitendex.JMdict.Import.Parsing.EntryElementReaders.KanjiFormElementReaders;
 using Jitendex.JMdict.Import.Parsing.EntryElementReaders.ReadingElementReaders;
 using Jitendex.JMdict.Import.Parsing.EntryElementReaders.SenseElementReaders;
-using Jitendex.EdrdgDictionaryArchive;
 
 namespace Jitendex.JMdict.Import;
 
@@ -73,13 +74,13 @@ internal static class ImporterProvider
 
         // Analysis units
         .AddTransient<Analyzer>()
-        .AddTransient<RestrictionOrderAssigner>()
-        .AddTransient<ReadingRestrictionOrderAssigner>()
-        .AddTransient<KanjiFormRestrictionOrderAssigner>()
-        .AddTransient<ReadingBridger>()
-        .AddTransient<ReferenceCacheService>()
+        .AddTransient<RestrictionAnalyzer>()
+        .AddTransient<ReadingRestrictionAnalyzer>()
+        .AddTransient<KanjiFormRestrictionAnalyzer>()
+        .AddTransient<KanjiFormBridgeAnalyzer>()
+        .AddTransient<CrossReferenceCacheService>()
         .AddTransient<CrossReferenceTextParser>()
-        .AddTransient<ReferenceSequencer>()
+        .AddTransient<CrossReferenceAnalyzer>()
 
         // Logging
         .AddLogging(static builder =>

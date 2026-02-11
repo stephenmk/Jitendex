@@ -20,18 +20,19 @@ using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Jitendex.JMdict.Import.Analysis.Analyzers;
 
 namespace Jitendex.JMdict.Import.Analysis;
 
 internal sealed class Analyzer(
     ILogger<Analyzer> logger,
     JmdictContext context,
-    RestrictionOrderAssigner restrictionOrderAssigner,
-    ReadingRestrictionOrderAssigner readingRestrictionOrderAssigner,
-    KanjiFormRestrictionOrderAssigner kanjiFormRestrictionOrderAssigner,
-    ReadingBridger readingBridger,
-    ReferenceCacheService referenceCacheService,
-    ReferenceSequencer referenceSequencer)
+    RestrictionAnalyzer restrictionAnalyzer,
+    ReadingRestrictionAnalyzer readingRestrictionAnalyzer,
+    KanjiFormRestrictionAnalyzer kanjiFormRestrictionAnalyzer,
+    KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
+    CrossReferenceCacheService crossReferenceCacheService,
+    CrossReferenceAnalyzer crossReferenceAnalyzer)
 {
     public void Clean()
     {
@@ -64,14 +65,15 @@ internal sealed class Analyzer(
     {
         logger.LogInformation("Starting data analysis");
 
-        restrictionOrderAssigner.AssignOrders();
-        readingRestrictionOrderAssigner.AssignOrders();
-        kanjiFormRestrictionOrderAssigner.AssignOrders();
+        restrictionAnalyzer.Analyze();
+        readingRestrictionAnalyzer.Analyze();
+        kanjiFormRestrictionAnalyzer.Analyze();
+        kanjiFormBridgeAnalyzer.Analyze();
 
-        readingBridger.BridgeReadingsToKanjiForms();
+        var referenceCache = await crossReferenceCacheService.LoadAsync(dataDirectory);
 
-        var referenceCache = await referenceCacheService.ImportAsync(dataDirectory);
-        referenceSequencer.FindCrossReferenceSequenceIds(referenceCache);
-        await referenceCacheService.ExportAsync(dataDirectory);
+        crossReferenceAnalyzer.Analyze(referenceCache);
+
+        await crossReferenceCacheService.ExportAsync(dataDirectory);
     }
 }

@@ -20,13 +20,13 @@ using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using Jitendex.JMdict.Import.Analysis.Tables;
 
-namespace Jitendex.JMdict.Import.Analysis;
+namespace Jitendex.JMdict.Import.Analysis.Analyzers;
 
-internal partial class ReadingRestrictionOrderAssigner(ILogger<ReadingRestrictionOrderAssigner> logger, JmdictContext context)
+internal partial class ReadingRestrictionAnalyzer(ILogger<ReadingRestrictionAnalyzer> logger, JmdictContext context)
 {
     private static readonly ReadingRestrictionTable ReadingRestrictionTable = new();
 
-    public void AssignOrders()
+    public void Analyze()
     {
         var restrictions = context.ReadingRestrictions
             .Select(static r => new

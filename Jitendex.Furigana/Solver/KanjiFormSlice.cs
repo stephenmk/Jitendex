@@ -56,12 +56,12 @@ internal readonly ref struct KanjiFormSlice
         ContainsFinalRune = sliceEnd == entry.KanjiFormRunes.Length;
     }
 
-    private static string FastRuneSpanToString(in ReadOnlySpan<Rune> runes)
+    private static string FastRuneSpanToString(ReadOnlySpan<Rune> runes)
     {
         int totalChars = 0;
-        for (int i = 0; i < runes.Length; i++)
+        foreach (var rune in runes)
         {
-            totalChars += runes[i].Utf16SequenceLength;
+            totalChars += rune.Utf16SequenceLength;
         }
         return string.Create
         (
@@ -72,9 +72,9 @@ internal readonly ref struct KanjiFormSlice
                 // 'offset' is the total number of char values that
                 // have been written to the destination buffer.
                 int offset = 0;
-                for (int i = 0; i < source.Length; i++)
+                foreach (var rune in source)
                 {
-                    offset += source[i].EncodeToUtf16(destination[offset..]);
+                    offset += rune.EncodeToUtf16(destination[offset..]);
                 }
             }
         );

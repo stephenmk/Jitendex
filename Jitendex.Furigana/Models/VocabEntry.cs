@@ -18,15 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Furigana.Models;
 
-public class VocabEntry : Entry
+public class VocabEntry(string kanjiFormText, string readingText) : Entry(kanjiFormText, readingText)
 {
-    public VocabEntry(string kanjiFormText, string readingText) : base(kanjiFormText, readingText) { }
+    public override bool Equals(object? obj)
+        => obj is VocabEntry entry
+        && string.Equals(KanjiFormText, entry.KanjiFormText, StringComparison.Ordinal)
+        && string.Equals(ReadingText, entry.ReadingText, StringComparison.Ordinal);
 
-    public override bool Equals(object? obj) =>
-        obj is VocabEntry entry &&
-        KanjiFormText == entry.KanjiFormText &&
-        ReadingText == entry.ReadingText;
-
-    public override int GetHashCode() =>
-        HashCode.Combine(typeof(VocabEntry), KanjiFormText, ReadingText);
+    public override int GetHashCode()
+        => HashCode.Combine(typeof(VocabEntry), KanjiFormText, ReadingText);
 }

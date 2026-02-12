@@ -24,15 +24,8 @@ using Jitendex.Furigana.Models.TextUnits.Readings;
 
 namespace Jitendex.Furigana.Solver;
 
-internal sealed class CachedSolutionPartsGenerator : ISolutionPartsGenerator
+internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) : ISolutionPartsGenerator
 {
-    private readonly ResourceCache _resourceCache;
-
-    public CachedSolutionPartsGenerator(ResourceCache resourceCache)
-    {
-        _resourceCache = resourceCache;
-    }
-
     public ImmutableArray<List<SolutionPart>> Enumerate(in Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
         var textToReadings = GetValidReadings(entry, kanjiFormSlice, readingState);
@@ -79,7 +72,7 @@ internal sealed class CachedSolutionPartsGenerator : ISolutionPartsGenerator
         if (kanjiFormSlice.Runes.Length == 1)
         {
             var rune = kanjiFormSlice.Runes[0];
-            if (_resourceCache.Characters.TryGetValue(rune.Value, out JapaneseCharacter? character))
+            if (resourceCache.Characters.TryGetValue(rune.Value, out JapaneseCharacter? character))
             {
                 return GetCharacterReadingTexts(entry, kanjiFormSlice, character);
             }
@@ -87,7 +80,7 @@ internal sealed class CachedSolutionPartsGenerator : ISolutionPartsGenerator
         else
         {
             var text = kanjiFormSlice.Text();
-            if (_resourceCache.Compounds.TryGetValue(text, out JapaneseCompound? compound))
+            if (resourceCache.Compounds.TryGetValue(text, out JapaneseCompound? compound))
             {
                 return compound.Readings
                     .Select(static x => new KeyValuePair<string, List<IReading>>(x.Text, [x]))

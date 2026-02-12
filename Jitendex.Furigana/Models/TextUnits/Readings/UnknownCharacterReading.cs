@@ -20,7 +20,7 @@ using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Models.TextUnits.Readings;
 
-public class UnknownCharacterReading : CharacterReading
+public sealed class UnknownCharacterReading : CharacterReading
 {
     public override string Text { get; }
 
@@ -29,14 +29,9 @@ public class UnknownCharacterReading : CharacterReading
         Text = text.KatakanaToHiragana();
     }
 
-    public override bool Equals(object? obj) =>
-        obj is UnknownCharacterReading reading &&
-        IsPrefix == reading.IsPrefix &&
-        IsSuffix == reading.IsSuffix &&
-        Text == reading.Text;
+    public override bool Equals(object? obj)
+        => obj is UnknownCharacterReading && base.Equals(obj);
 
     public override int GetHashCode()
-    {
-        return HashCode.Combine(IsPrefix, IsSuffix, Text);
-    }
+        => HashCode.Combine(typeof(UnknownCharacterReading), base.GetHashCode());
 }

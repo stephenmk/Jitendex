@@ -61,13 +61,11 @@ internal class SolutionBuilder
     /// </list>
     /// However, any part that contains a kanji rune must contain furigana.
     /// </remarks>
-    private bool IsValid(Entry entry) =>
-        entry.NormalizedReadingText == NormalizedReadingText() &&
-        entry.KanjiFormText == KanjiFormText() &&
-        _parts.Where(static part => part
-                .BaseText
-                .EnumerateRunes()
-                .Any(KanjiComparison.IsKanji))
+    private bool IsValid(Entry entry)
+        => entry.NormalizedReadingText == NormalizedReadingText()
+        && entry.KanjiFormText == KanjiFormText()
+        && _parts
+            .Where(static part => part.BaseText.EnumerateRunes().Any(KanjiComparison.IsKanji))
             .All(static part => !string.IsNullOrWhiteSpace(part.Furigana));
 
     /// <summary>
@@ -96,9 +94,8 @@ internal class SolutionBuilder
         {
             parts.Add(new SolutionPart { BaseText = mergedTexts.ToString() });
         }
-        return parts.Where(static part =>
-                part.BaseText != string.Empty ||
-                part.Furigana is not null)
+        return parts
+            .Where(static part => part.BaseText != string.Empty || part.Furigana is not null)
             .ToImmutableArray();
     }
 }

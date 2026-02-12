@@ -31,4 +31,14 @@ public abstract class CharacterReading : IReading
         IsPrefix = text.EndsWith('-');
         IsSuffix = text.StartsWith('-');
     }
+
+    public override bool Equals(object? obj)
+        => obj is CharacterReading reading
+        && Character.Rune == reading.Character.Rune
+        && IsPrefix == reading.IsPrefix
+        && IsSuffix == reading.IsSuffix
+        && string.Equals(Text, reading.Text, StringComparison.Ordinal);
+
+    public override int GetHashCode()
+        => HashCode.Combine(Character.Rune, Text, IsPrefix, IsSuffix, Text);
 }

@@ -37,8 +37,8 @@ public abstract class Entry
         {
             throw new ArgumentException
             (
-                "Reading text must not contain characters with surrogate code units.",
-                nameof(readingText)
+                message: "Reading text must not contain characters with surrogate code units.",
+                paramName: nameof(readingText)
             );
         }
 

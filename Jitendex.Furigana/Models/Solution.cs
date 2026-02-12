@@ -20,19 +20,19 @@ using System.Collections.Immutable;
 
 namespace Jitendex.Furigana.Models;
 
-public class Solution
+public sealed class Solution
 {
     public required Entry Entry { get; init; }
     public required ImmutableArray<SolutionPart> Parts { get; init; }
 
-    public override bool Equals(object? obj) =>
-        obj is Solution other &&
-        Entry.Equals(other.Entry) &&
-        Parts.SequenceEqual(other.Parts);
+    public override bool Equals(object? obj)
+        => obj is Solution other
+        && Entry.Equals(other.Entry)
+        && Parts.SequenceEqual(other.Parts);
 
     public override int GetHashCode() => Parts.Aggregate
     (
         seed: Entry.GetHashCode(),
-        func: (hashcode, part) => HashCode.Combine(hashcode, part.GetHashCode())
+        func: static (hashcode, part) => HashCode.Combine(hashcode, part.GetHashCode())
     );
 }

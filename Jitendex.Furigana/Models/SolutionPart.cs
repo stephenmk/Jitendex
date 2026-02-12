@@ -21,17 +21,17 @@ using Jitendex.Furigana.Models.TextUnits.Readings;
 
 namespace Jitendex.Furigana.Models;
 
-public class SolutionPart
+public sealed class SolutionPart
 {
     public required string BaseText { get; init; }
     public string? Furigana { get; init; }
     public ImmutableArray<IReading> Readings { get; init; } = [];
 
-    public override bool Equals(object? obj) =>
-        obj is SolutionPart part &&
-        BaseText == part.BaseText &&
-        Furigana == part.Furigana;
+    public override bool Equals(object? obj)
+        => obj is SolutionPart part
+        && string.Equals(BaseText, part.BaseText, StringComparison.Ordinal)
+        && string.Equals(Furigana, part.Furigana, StringComparison.Ordinal);
 
-    public override int GetHashCode() =>
-        HashCode.Combine(BaseText, Furigana);
+    public override int GetHashCode()
+        => HashCode.Combine(BaseText, Furigana);
 }

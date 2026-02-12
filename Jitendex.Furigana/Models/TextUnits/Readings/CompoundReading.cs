@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Furigana.Models.TextUnits.Readings;
 
-public class CompoundReading : IReading
+public sealed class CompoundReading : IReading
 {
     public JapaneseCompound Compound { get; }
     public string Text { get; }

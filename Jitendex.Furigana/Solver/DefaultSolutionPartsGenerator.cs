@@ -21,22 +21,17 @@ using Jitendex.Furigana.Models;
 
 namespace Jitendex.Furigana.Solver;
 
-internal sealed class DefaultSolutionPartsGenerator : ISolutionPartsGenerator
+internal sealed class DefaultSolutionPartsGenerator
+(
+    DefaultSingleCharacterParts single,
+    DefaultRepeatedCharacterParts repeated
+) : ISolutionPartsGenerator
 {
-    private readonly DefaultSingleCharacterParts _single;
-    private readonly DefaultRepeatedCharacterParts _repeated;
-
-    public DefaultSolutionPartsGenerator(DefaultSingleCharacterParts single, DefaultRepeatedCharacterParts repeated)
-    {
-        _single = single;
-        _repeated = repeated;
-    }
-
-    public ImmutableArray<List<SolutionPart>> Enumerate(in Entry _, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState) =>
-        kanjiFormSlice.Runes switch
+    public ImmutableArray<List<SolutionPart>> Enumerate(in Entry _, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+        => kanjiFormSlice.Runes switch
         {
-            { Length: 1 } => _single.Enumerate(kanjiFormSlice, readingState),
-            { Length: 2 } => _repeated.Enumerate(kanjiFormSlice, readingState),
+            { Length: 1 } => single.Enumerate(kanjiFormSlice, readingState),
+            { Length: 2 } => repeated.Enumerate(kanjiFormSlice, readingState),
             _ => []
         };
 }

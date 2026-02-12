@@ -18,15 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Furigana.Models;
 
-public class NameEntry : Entry
+public sealed class NameEntry(string kanjiFormText, string readingText) : Entry(kanjiFormText, readingText)
 {
-    public NameEntry(string kanjiFormText, string readingText) : base(kanjiFormText, readingText) { }
+    public override bool Equals(object? obj)
+        => obj is NameEntry entry
+        && KanjiFormText == entry.KanjiFormText
+        && ReadingText == entry.ReadingText;
 
-    public override bool Equals(object? obj) =>
-        obj is NameEntry entry &&
-        KanjiFormText == entry.KanjiFormText &&
-        ReadingText == entry.ReadingText;
-
-    public override int GetHashCode() =>
-        HashCode.Combine(typeof(NameEntry), KanjiFormText, ReadingText);
+    public override int GetHashCode()
+        => HashCode.Combine(typeof(NameEntry), KanjiFormText, ReadingText);
 }

@@ -20,7 +20,7 @@ using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Models.TextUnits.Readings;
 
-public class NonKanjiReading : CharacterReading
+public sealed class NonKanjiReading : CharacterReading
 {
     public override string Text { get; }
 
@@ -28,4 +28,10 @@ public class NonKanjiReading : CharacterReading
     {
         Text = text.KatakanaToHiragana();
     }
+
+    public override bool Equals(object? obj)
+        => obj is NonKanjiReading && base.Equals(obj);
+
+    public override int GetHashCode()
+        => HashCode.Combine(typeof(NonKanjiReading), base.GetHashCode());
 }

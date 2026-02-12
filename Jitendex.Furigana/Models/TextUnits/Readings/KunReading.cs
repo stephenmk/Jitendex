@@ -37,14 +37,9 @@ public class KunReading : CharacterReading
         RendakuReadings = Text.ToRendakuForms();
     }
 
-    public override bool Equals(object? obj) =>
-        obj is KunReading reading &&
-        IsPrefix == reading.IsPrefix &&
-        IsSuffix == reading.IsSuffix &&
-        Text == reading.Text;
+    public override bool Equals(object? obj)
+        => obj is KunReading && base.Equals(obj);
 
     public override int GetHashCode()
-    {
-        return HashCode.Combine(IsPrefix, IsSuffix, Text);
-    }
+        => HashCode.Combine(typeof(KunReading), base.GetHashCode());
 }

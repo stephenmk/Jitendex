@@ -20,27 +20,19 @@ using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Models.TextUnits.Readings;
 
-public class VerbKunReading : SuffixedKunReading
+public sealed class VerbKunReading : SuffixedKunReading
 {
     public string MasuFormSuffix { get; }
 
     public VerbKunReading(Kanji character, string text) : base(character, text)
     {
         MasuFormSuffix = Suffix.VerbToMasuStem() ??
-            throw new ArgumentException
-            (
-                $"Reading `{text}` is not a verb",
-                nameof(text)
-            );
+            throw new ArgumentException($"Reading `{text}` is not a verb", nameof(text));
     }
 
-    public override bool Equals(object? obj) =>
-        obj is VerbKunReading reading &&
-        base.Equals(obj) &&
-        MasuFormSuffix == reading.MasuFormSuffix;
+    public override bool Equals(object? obj)
+        => obj is VerbKunReading && base.Equals(obj);
 
     public override int GetHashCode()
-    {
-        return HashCode.Combine(base.GetHashCode(), MasuFormSuffix);
-    }
+        => HashCode.Combine(typeof(VerbKunReading), base.GetHashCode());
 }

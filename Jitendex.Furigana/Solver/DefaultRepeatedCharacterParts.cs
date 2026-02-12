@@ -22,15 +22,8 @@ using Jitendex.Furigana.Models;
 
 namespace Jitendex.Furigana.Solver;
 
-internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
+internal sealed class DefaultRepeatedCharacterParts(ResourceCache resourceCache) : DefaultCharacterParts
 {
-    private readonly ResourceCache _resourceCache;
-
-    public DefaultRepeatedCharacterParts(ResourceCache resourceCache)
-    {
-        _resourceCache = resourceCache;
-    }
-
     public override ImmutableArray<List<SolutionPart>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
         var currentRune1 = kanjiFormSlice.Runes[0];
@@ -61,13 +54,13 @@ internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
             {
                 BaseText = kanjiFormSlice.RawRunes[0].ToString(),
                 Furigana = reading[..halfLength],
-                Readings = [_resourceCache.NewReading(currentRune1, reading[..halfLength])],
+                Readings = [resourceCache.NewReading(currentRune1, reading[..halfLength])],
             },
             new SolutionPart
             {
                 BaseText = kanjiFormSlice.RawRunes[1].ToString(),
                 Furigana = reading[halfLength..],
-                Readings = [_resourceCache.NewReading(currentRune2, reading[halfLength..])],
+                Readings = [resourceCache.NewReading(currentRune2, reading[halfLength..])],
             }
         ]];
     }

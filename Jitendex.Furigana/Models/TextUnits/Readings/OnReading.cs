@@ -21,7 +21,7 @@ using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Models.TextUnits.Readings;
 
-public class OnReading : CharacterReading
+public sealed class OnReading : CharacterReading
 {
     public override string Text { get; }
     public string? SokuonForm { get; }
@@ -36,10 +36,7 @@ public class OnReading : CharacterReading
     {
         if (text.Contains('.'))
         {
-            throw new ArgumentException
-            (
-                "Onyomi must not contain dot splits", nameof(text)
-            );
+            throw new ArgumentException("Onyomi must not contain dot splits", nameof(text));
         }
 
         Text = text.Replace("-", string.Empty).KatakanaToHiragana();
@@ -48,12 +45,9 @@ public class OnReading : CharacterReading
         RendakuSokuonReadings = SokuonForm?.ToRendakuForms() ?? [];
     }
 
-    public override bool Equals(object? obj) =>
-        obj is OnReading reading &&
-        IsPrefix == reading.IsPrefix &&
-        IsSuffix == reading.IsSuffix &&
-        Text == reading.Text;
+    public override bool Equals(object? obj)
+        => obj is OnReading && base.Equals(obj);
 
-    public override int GetHashCode() =>
-        HashCode.Combine(IsPrefix, IsSuffix, Text);
+    public override int GetHashCode()
+        => HashCode.Combine(typeof(OnReading), base.GetHashCode());
 }

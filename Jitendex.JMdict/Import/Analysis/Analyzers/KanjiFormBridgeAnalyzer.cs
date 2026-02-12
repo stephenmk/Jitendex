@@ -26,8 +26,7 @@ namespace Jitendex.JMdict.Import.Analysis.Analyzers;
 internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> logger, JmdictContext context)
 {
     private static readonly KanjiFormBridgeTable KanjiFormBridgeTable = new();
-    private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<int> Restrictions);
-    private readonly record struct KanjiFormData(int Order, string Text);
+    private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<int> RestrictionOrders);
 
     // TODO: check for excessive pairings, e.g. キモ可愛；きも可愛【キモかわ；きもかわ】
     // Need to include method for normalizing katakana to hiragana.
@@ -48,14 +47,14 @@ internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> 
                         IsHidden: r.Infos
                             .Select(static i => i.TagName)
                             .Any(static t => t == "sk"),
-                        Restrictions: r.Restrictions
+                        RestrictionOrders: r.Restrictions
                             .Where(static x => x.KanjiFormOrder != null)
                             .Select(static x => (int)x.KanjiFormOrder!)
                             .ToImmutableArray()
                     )),
-                KanjiForms = e.KanjiForms
+                KanjiFormOrders = e.KanjiForms
                     .Where(static k => k.Infos.All(static i => i.TagName != "sK"))
-                    .Select(static k => new KanjiFormData(k.Order, k.Text))
+                    .Select(static k => k.Order)
                     .ToImmutableArray(),
             });
 
@@ -63,24 +62,24 @@ internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> 
 
         foreach (var entry in entries)
         {
-            var usedKanjiFormOrders = new HashSet<int>(entry.KanjiForms.Length);
+            var usedKanjiFormOrders = new HashSet<int>(entry.KanjiFormOrders.Length);
             foreach (var reading in entry.Readings)
             {
-                CheckForRedundancies(entry.Id, entry.KanjiForms.Length, reading);
-                if (entry.KanjiForms.Length == 0 || reading.NoKanji || reading.IsHidden)
+                CheckForRestrictionRedundancies(entry.Id, entry.KanjiFormOrders.Length, reading);
+                if (entry.KanjiFormOrders.Length == 0 || reading.NoKanji || reading.IsHidden)
                 {
                     continue;
                 }
-                var kanjiFormOrders = reading.Restrictions.Length > 0
-                    ? reading.Restrictions
-                    : entry.KanjiForms.Select(static k => k.Order).ToImmutableArray();
+                var kanjiFormOrders = reading.RestrictionOrders.Length > 0
+                    ? reading.RestrictionOrders
+                    : entry.KanjiFormOrders;
                 foreach (var order in kanjiFormOrders)
                 {
                     usedKanjiFormOrders.Add(order);
                     bridges.Add(new(entry.Id, reading.Order, order));
                 }
             }
-            if (usedKanjiFormOrders.Count != entry.KanjiForms.Length)
+            if (usedKanjiFormOrders.Count != entry.KanjiFormOrders.Length)
             {
                 LogOrphanKanjiForms(entry.Id);
             }
@@ -89,10 +88,10 @@ internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> 
         KanjiFormBridgeTable.InsertItems(context, bridges);
     }
 
-    private void CheckForRedundancies(int entryId, int visibleKanjiFormCount, in ReadingData reading)
+    private void CheckForRestrictionRedundancies(int entryId, int visibleKanjiFormCount, in ReadingData reading)
     {
         // A reading shouldn't have both [NoKanji] and restrictions.
-        int count0 = (reading.NoKanji ? 1 : 0) + (reading.Restrictions.Length > 0 ? 1 : 0);
+        int count0 = (reading.NoKanji ? 1 : 0) + (reading.RestrictionOrders.Length > 0 ? 1 : 0);
 
         // If the reading is hidden, it shouldn't have [NoKanji] or restrictions.
         int count1 = (reading.IsHidden ? 1 : 0) + count0;

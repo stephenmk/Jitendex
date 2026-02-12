@@ -20,7 +20,7 @@ using System.Collections.Immutable;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Models;
 
-namespace Jitendex.Furigana.Solver;
+namespace Jitendex.Furigana.Solver.SolutionGenerators.DefaultSolutions;
 
 internal sealed class DefaultSingleCharacterParts(ResourceCache resourceCache) : DefaultCharacterParts
 {

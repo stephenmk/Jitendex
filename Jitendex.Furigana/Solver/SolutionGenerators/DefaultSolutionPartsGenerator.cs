@@ -18,8 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using Jitendex.Furigana.Models;
+using Jitendex.Furigana.Solver.SolutionGenerators.DefaultSolutions;
 
-namespace Jitendex.Furigana.Solver;
+namespace Jitendex.Furigana.Solver.SolutionGenerators;
 
 internal sealed class DefaultSolutionPartsGenerator
 (

@@ -22,7 +22,7 @@ using System.Text.RegularExpressions;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Models;
 
-namespace Jitendex.Furigana.Solver;
+namespace Jitendex.Furigana.Solver.SolutionGenerators.DefaultSolutions;
 
 internal abstract class DefaultCharacterParts
 {
@@ -30,11 +30,14 @@ internal abstract class DefaultCharacterParts
 
     protected static string? RegexReading(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
-        var remainingKanjiFormText = kanjiFormSlice.RemainingText().KatakanaToHiragana();
+        var remainingKanjiFormText = kanjiFormSlice.RemainingRunes.KatakanaToHiragana();
         var remainingReadingText = readingState.RemainingTextNormalized.ToString();
 
-        var greedyMatch = Match("(.+)", remainingKanjiFormText, remainingReadingText);
-        var lazyMatch = Match("(.+?)", remainingKanjiFormText, remainingReadingText);
+        var greedyRegex = MakeRegex("(.+)", remainingKanjiFormText);
+        var lazyRegex = MakeRegex("(.+?)", remainingKanjiFormText);
+
+        var greedyMatch = greedyRegex.Match(remainingReadingText);
+        var lazyMatch = lazyRegex.Match(remainingReadingText);
 
         if (!greedyMatch.Success || !lazyMatch.Success)
         {
@@ -54,7 +57,7 @@ internal abstract class DefaultCharacterParts
         }
     }
 
-    private static Match Match(string groupPattern, string kanjiFormText, string readingText)
+    private static Regex MakeRegex(ReadOnlySpan<char> groupPattern, ReadOnlySpan<char> kanjiFormText)
     {
         var pattern = new StringBuilder($"^{groupPattern}");
         bool newGroup = false;
@@ -72,7 +75,6 @@ internal abstract class DefaultCharacterParts
             }
         }
         pattern.Append('$');
-        var regex = new Regex(pattern.ToString());
-        return regex.Match(readingText);
+        return new Regex(pattern.ToString());
     }
 }

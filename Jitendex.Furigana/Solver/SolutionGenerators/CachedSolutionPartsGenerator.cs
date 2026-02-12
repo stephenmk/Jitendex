@@ -22,7 +22,7 @@ using Jitendex.Furigana.Models;
 using Jitendex.Furigana.Models.TextUnits;
 using Jitendex.Furigana.Models.TextUnits.Readings;
 
-namespace Jitendex.Furigana.Solver;
+namespace Jitendex.Furigana.Solver.SolutionGenerators;
 
 internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) : ISolutionPartsGenerator
 {

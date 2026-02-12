@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Immutable;
 using Jitendex.Furigana.Models;
 
-namespace Jitendex.Furigana.Solver;
+namespace Jitendex.Furigana.Solver.SolutionGenerators;
 
 internal interface ISolutionPartsGenerator
 {

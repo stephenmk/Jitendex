@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Jitendex.Furigana.Models;
 using Jitendex.Furigana.Models.TextUnits;
 using Jitendex.Furigana.Solver;
+using Jitendex.Furigana.Solver.SolutionGenerators;
 
 namespace Jitendex.Furigana;
 

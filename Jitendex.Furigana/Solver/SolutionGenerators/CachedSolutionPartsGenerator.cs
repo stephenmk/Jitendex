@@ -187,7 +187,7 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) 
     {
         var stems = GetStems(kanjiFormSlice, kunReading);
         var @return = new List<string>(stems);
-        var remainingKanjiFormText = kanjiFormSlice.RemainingText().KatakanaToHiragana();
+        var remainingKanjiFormText = kanjiFormSlice.RemainingRunes.KatakanaToHiragana();
 
         for (int i = 0; i < kunReading.Suffix.Length; i++)
         {
@@ -210,7 +210,7 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) 
     {
         var stems = GetStems(kanjiFormSlice, kunReading);
         var @return = new List<string>(stems);
-        var remainingKanjiFormText = kanjiFormSlice.RemainingText().KatakanaToHiragana();
+        var remainingKanjiFormText = kanjiFormSlice.RemainingRunes.KatakanaToHiragana();
 
         for (int i = 0; i < kunReading.Suffix.Length; i++)
         {

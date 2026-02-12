@@ -37,7 +37,6 @@ internal readonly ref struct KanjiFormSlice
 
     public string Text() => Runes.FastToString();
     public string RawText() => RawRunes.FastToString();
-    public string RemainingText() => RemainingRunes.FastToString();
 
     public KanjiFormSlice(Entry entry, int sliceStart, int sliceEnd)
     {

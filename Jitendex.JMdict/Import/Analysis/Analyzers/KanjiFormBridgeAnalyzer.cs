@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Jitendex.JapaneseTextUtils;
 using Jitendex.JMdict.Import.Analysis.Tables;
 
 namespace Jitendex.JMdict.Import.Analysis.Analyzers;
@@ -27,9 +28,6 @@ internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> 
 {
     private static readonly KanjiFormBridgeTable KanjiFormBridgeTable = new();
     private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<int> RestrictionOrders);
-
-    // TODO: check for excessive pairings, e.g. キモ可愛；きも可愛【キモかわ；きもかわ】
-    // Need to include method for normalizing katakana to hiragana.
 
     public void Analyze()
     {
@@ -62,24 +60,35 @@ internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> 
 
         foreach (var entry in entries)
         {
-            var usedKanjiFormOrders = new HashSet<int>(entry.KanjiFormOrders.Length);
+            var entryUsedOrders = new HashSet<int>(entry.KanjiFormOrders.Length);
+            var readingToUsedOrders = new Dictionary<string, HashSet<int>>();
             foreach (var reading in entry.Readings)
             {
-                CheckForRestrictionRedundancies(entry.Id, entry.KanjiFormOrders.Length, reading);
                 if (entry.KanjiFormOrders.Length == 0 || reading.NoKanji || reading.IsHidden)
                 {
+                    CheckForRestrictionRedundancies(entry.Id, entry.KanjiFormOrders.Length, reading);
                     continue;
                 }
                 var kanjiFormOrders = reading.RestrictionOrders.Length > 0
                     ? reading.RestrictionOrders
                     : entry.KanjiFormOrders;
+                var normalizedReading = reading.Text.KatakanaToHiragana();
+                if (!readingToUsedOrders.TryGetValue(normalizedReading, out var readingUsedOrders))
+                {
+                    readingUsedOrders = [];
+                    readingToUsedOrders[normalizedReading] = readingUsedOrders;
+                }
                 foreach (var order in kanjiFormOrders)
                 {
-                    usedKanjiFormOrders.Add(order);
+                    entryUsedOrders.Add(order);
+                    if (!readingUsedOrders.Add(order))
+                    {
+                        LogRedundantReadings(entry.Id, normalizedReading);
+                    }
                     bridges.Add(new(entry.Id, reading.Order, order));
                 }
             }
-            if (usedKanjiFormOrders.Count != entry.KanjiFormOrders.Length)
+            if (entryUsedOrders.Count != entry.KanjiFormOrders.Length)
             {
                 LogOrphanKanjiForms(entry.Id);
             }
@@ -110,10 +119,10 @@ internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> 
     protected partial void LogRedundantRestrictions(int entryId, string reading);
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} reading `{Reading}` contains a restriction to an invalid kanji form")]
-    protected partial void LogInvalidRestriction(int entryId, string reading);
-
-    [LoggerMessage(LogLevel.Warning,
     "Entry ID {EntryId} contains a visible kanji form without a corresponding reading")]
     protected partial void LogOrphanKanjiForms(int entryId);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry ID {EntryId} contains redundant reading {Reading}")]
+    protected partial void LogRedundantReadings(int entryId, string reading);
 }

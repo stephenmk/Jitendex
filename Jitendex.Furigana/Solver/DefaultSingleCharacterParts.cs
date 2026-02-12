@@ -33,10 +33,7 @@ internal sealed class DefaultSingleCharacterParts(ResourceCache resourceCache) :
         {
             if (baseText.IsKanaEquivalent(reading))
             {
-                partsBuilder.Add([new SolutionPart
-                {
-                    BaseText = baseText
-                }]);
+                partsBuilder.Add([new SolutionPart { BaseText = baseText }]);
             }
             else
             {

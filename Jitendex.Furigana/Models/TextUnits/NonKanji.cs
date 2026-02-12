@@ -22,7 +22,7 @@ using Jitendex.Furigana.Models.TextUnits.Readings;
 
 namespace Jitendex.Furigana.Models.TextUnits;
 
-public class NonKanji : JapaneseCharacter
+public sealed class NonKanji : JapaneseCharacter
 {
     public override ImmutableArray<CharacterReading> Readings { get; }
 

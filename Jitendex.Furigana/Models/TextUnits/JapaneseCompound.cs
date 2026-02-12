@@ -35,7 +35,7 @@ namespace Jitendex.Furigana.Models.TextUnits;
 /// 発条 could either be [発条|ばね] or [発条|ぜんまい].
 /// </para>
 /// </remarks>
-public class JapaneseCompound : IJapaneseTextUnit<CompoundReading>
+public sealed class JapaneseCompound : IJapaneseTextUnit<CompoundReading>
 {
     public string Text { get; }
     public ImmutableArray<CompoundReading> Readings { get; }

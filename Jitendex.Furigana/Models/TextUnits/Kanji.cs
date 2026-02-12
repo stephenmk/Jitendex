@@ -23,7 +23,7 @@ using Jitendex.Furigana.Models.TextUnits.Readings;
 
 namespace Jitendex.Furigana.Models.TextUnits;
 
-public class Kanji : JapaneseCharacter
+public sealed class Kanji : JapaneseCharacter
 {
     public override ImmutableArray<CharacterReading> Readings { get; }
 
@@ -50,25 +50,14 @@ public class Kanji : JapaneseCharacter
                 ({ Length: 1 }, _) => new KunReading(this, text),
                 ({ Length: 2 }, null) => new SuffixedKunReading(this, text),
                 ({ Length: 2 }, not null) => new VerbKunReading(this, text),
-
-                _ => throw new ArgumentException
-                (
-                    $"Reading `{text}` has too many '.' delimiters",
-                    nameof(text)
-                )
+                _ => throw new ArgumentException($"Reading `{text}` has too many '.' delimiters", nameof(text))
             },
 
-            (true, true) => throw new ArgumentException
-            (
-                "Reading must not be empty",
-                nameof(text)
-            ),
+            (true, true)
+                => throw new ArgumentException("Reading must not be empty", nameof(text)),
 
-            (false, false) => throw new ArgumentException
-            (
-                $"Reading `{text}` must either be all hiragana or all katakana",
-                nameof(text)
-            )
+            (false, false)
+                => throw new ArgumentException($"Reading `{text}` must either be all hiragana or all katakana", nameof(text))
         };
     }
 }

@@ -70,6 +70,8 @@ internal partial class CrossReferenceAnalyzer(ILogger<CrossReferenceAnalyzer> lo
             var potentialEntries = GetPotentialEntries(xref, parsedRef, referenceTextToEntries);
             var potentialEntryIds = potentialEntries.Select(static e => e.Id);
 
+            bool? isAmbiguous = potentialEntries.Length == 0 ? null : potentialEntries.Length > 1;
+
             var entryId = potentialEntries.Length == 0
                 ? null
                 : potentialEntries.Length == 1
@@ -94,9 +96,6 @@ internal partial class CrossReferenceAnalyzer(ILogger<CrossReferenceAnalyzer> lo
                 : kanjiFormToReadings.TryGetValue((entry.Id, (int)kanjiFormOrder), out var readingOrders)
                 ? readingOrders.First()
                 : null;
-
-            bool? isAmbiguous = entryId is null ? null
-                : potentialEntries.Length > 1;
 
             LogReferenceInconsistencies(xref, parsedRef, entry, readingOrder, kanjiFormOrder, kanjiFormToReadings);
 

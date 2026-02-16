@@ -26,6 +26,23 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
 {
     public List<Solution> Solve(Entry entry)
     {
+        var possibleSolutions = FindPossibleSolutions(entry);
+        var validSolutions = new List<Solution>(possibleSolutions.Count);
+
+        foreach (var possibleSolution in possibleSolutions)
+        {
+            var solution = possibleSolution.ToSolution(entry);
+            if (solution is not null)
+            {
+                validSolutions.Add(solution);
+            }
+        }
+
+        return validSolutions;
+    }
+
+    private List<SolutionBuilder> FindPossibleSolutions(Entry entry)
+    {
         var solutions = new List<SolutionBuilder>() { new() };
 
         for (int sliceStart = 0; sliceStart < entry.KanjiFormRunes.Length; sliceStart++)
@@ -47,16 +64,7 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
             }
         }
 
-        var validSolutions = new List<Solution>(solutions.Count);
-        foreach (var solutionBuilder in solutions)
-        {
-            var solution = solutionBuilder.ToSolution(entry);
-            if (solution is not null)
-            {
-                validSolutions.Add(solution);
-            }
-        }
-        return validSolutions;
+        return solutions;
     }
 
     private static List<SolutionBuilder> IterateSolutions

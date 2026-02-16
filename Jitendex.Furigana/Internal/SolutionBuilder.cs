@@ -45,8 +45,8 @@ internal class SolutionBuilder
     /// </summary>
     /// <remarks>
     /// Solutions may be valid even if they do not contain furigana for every non-kana rune
-    /// in the entry's <see cref="Entry.KanjiFormText"/> property. This is by design to allow for solutions to
-    /// entries containing punctuation.
+    /// in the entry's <see cref="Entry.KanjiFormText"/> property. This is by design to allow
+    /// for entries containing punctuation to be solved.
     /// <list type="bullet">
     /// <item>ブルータス、お[前|まえ]もか</item>
     /// <item>アンドロイドは[電|でん][気|き][羊|ひつじ]の[夢|ゆめ]を[見|み]るか？</item>

@@ -25,22 +25,18 @@ namespace Jitendex.Furigana.Internal;
 
 internal class SolutionBuilder
 {
-    private readonly List<SolutionPart> _parts;
+    public ImmutableList<SolutionPart> Parts { get; private set; }
 
     public SolutionBuilder() : this([]) { }
+    public SolutionBuilder(ImmutableList<SolutionPart> parts) => Parts = parts;
 
-    public SolutionBuilder(IEnumerable<SolutionPart> parts)
-    {
-        _parts = [.. parts];
-    }
-
-    public string KanjiFormText() => new(_parts.SelectMany(static x => x.BaseText).ToArray());
-    public string ReadingText() => new(_parts.SelectMany(static x => x.Furigana ?? x.BaseText).ToArray());
+    public string KanjiFormText() => new(Parts.SelectMany(static x => x.BaseText).ToArray());
+    public string ReadingText() => new(Parts.SelectMany(static x => x.Furigana ?? x.BaseText).ToArray());
     private string NormalizedReadingText() => ReadingText().KatakanaToHiragana();
-    public int ReadingTextLength() => ReadingText().Length;
+    public int ReadingTextLength() => Parts.Select(static x => x.Furigana ?? x.BaseText).Sum(static x => x.Length);
 
-    public void Add(SolutionPart part) => _parts.Add(part);
-    public ImmutableArray<SolutionPart> ToParts() => [.. _parts];
+    public void Add(SolutionPart part)
+        => Parts = Parts.Add(part);
 
     public Solution? ToSolution(Entry entry) => !IsValid(entry) ? null : new Solution
     {
@@ -65,7 +61,7 @@ internal class SolutionBuilder
     private bool IsValid(Entry entry)
         => entry.NormalizedReadingText == NormalizedReadingText()
         && entry.KanjiFormText == KanjiFormText()
-        && _parts
+        && Parts
             .Where(static part => part.BaseText.EnumerateRunes().Any(KanjiComparison.IsKanji))
             .All(static part => !string.IsNullOrWhiteSpace(part.Furigana));
 
@@ -75,9 +71,9 @@ internal class SolutionBuilder
     /// </summary>
     private ImmutableArray<SolutionPart> NormalizedParts()
     {
-        var parts = new List<SolutionPart>(_parts.Count);
+        var parts = new List<SolutionPart>(Parts.Count);
         var mergedTexts = new StringBuilder();
-        foreach (var part in _parts)
+        foreach (var part in Parts)
         {
             if (part.Furigana is null)
             {

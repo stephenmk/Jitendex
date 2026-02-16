@@ -79,12 +79,11 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
 
         foreach (var solution in solutions)
         {
-            var solutionParts = solution.ToParts();
             var readingState = new ReadingState(entry, solution.ReadingTextLength());
 
             foreach (var newParts in solutionPartsGenerator.Enumerate(entry, kanjiFormSlice, readingState))
             {
-                var newSolution = new SolutionBuilder(solutionParts.AddRange(newParts));
+                var newSolution = new SolutionBuilder(solution.Parts.AddRange(newParts));
                 newSolutions.Add(newSolution);
             }
         }

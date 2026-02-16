@@ -31,8 +31,7 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
 
         foreach (var possibleSolution in possibleSolutions)
         {
-            var solution = possibleSolution.ToSolution(entry);
-            if (solution is not null)
+            if (possibleSolution.ToSolution(entry) is Solution solution)
             {
                 validSolutions.Add(solution);
             }

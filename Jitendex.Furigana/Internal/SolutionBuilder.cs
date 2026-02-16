@@ -87,7 +87,7 @@ internal class SolutionBuilder
             parts.Add(new(mergedTexts.ToString(), null));
         }
         return parts
-            .Where(static part => part.BaseText != string.Empty || part.Furigana is not null)
+            .Where(static part => part.BaseText.Length > 0 || part.Furigana is not null)
             .ToImmutableArray();
     }
 

@@ -16,12 +16,53 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-internal sealed record RestrictionUpdate(int EntryId, int ReadingOrder, int Order, int KanjiFormOrder);
-internal sealed record ReadingRestrictionUpdate(int EntryId, int SenseOrder, int Order, int ReadingOrder);
-internal sealed record KanjiFormRestrictionUpdate(int EntryId, int SenseOrder, int Order, int KanjiFormOrder);
-internal sealed record KanjiFormBridgeElement(int EntryId, int ReadingOrder, int KanjiFormOrder);
+internal sealed record RestrictionUpdate
+(
+    int EntryId,
+    int ReadingOrder,
+    int Order,
+    int KanjiFormOrder
+);
 
-internal sealed record ParsedReferenceText(string Text1, string? Text2, int SenseNumber);
+internal sealed record ReadingRestrictionUpdate
+(
+    int EntryId,
+    int SenseOrder,
+    int Order,
+    int ReadingOrder
+);
+
+internal sealed record KanjiFormRestrictionUpdate
+(
+    int EntryId,
+    int SenseOrder,
+    int Order,
+    int KanjiFormOrder
+);
+
+internal sealed record FuriganaSegmentElement
+(
+    int EntryId,
+    int ReadingOrder,
+    int KanjiFormOrder,
+    int Order,
+    string BaseText,
+    string? Furigana
+);
+
+internal sealed record KanjiFormBridgeElement
+(
+    int EntryId,
+    int ReadingOrder,
+    int KanjiFormOrder
+);
+
+internal sealed record ParsedReferenceText
+(
+    string Text1,
+    string? Text2,
+    int SenseNumber
+);
 
 internal sealed record CrossReferenceUpdate
 (

@@ -21,20 +21,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.JMdict.Entities.EntryItems.Furigana;
 
-[Table(nameof(KanjiFormBridge))]
-[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder))]
-public sealed class KanjiFormBridge
+[Table(nameof(FuriganaSegment))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder), nameof(Order))]
+public sealed class FuriganaSegment
 {
     public required int EntryId { get; init; }
     public required int ReadingOrder { get; init; }
     public required int KanjiFormOrder { get; init; }
+    public required int Order { get; init; }
 
-    [InverseProperty(nameof(FuriganaSegment.KanjiFormBridge))]
-    public List<FuriganaSegment> FuriganaSegments { get; init; } = [];
+    public required string BaseText { get; set; }
+    public string? Furigana { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
-    public Reading Reading { get; init; } = null!;
-
-    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
-    public KanjiForm KanjiForm { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
+    public KanjiFormBridge KanjiFormBridge { get; init; } = null!;
 }

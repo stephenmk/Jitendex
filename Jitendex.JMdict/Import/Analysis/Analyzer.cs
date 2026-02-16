@@ -52,6 +52,7 @@ internal sealed class Analyzer
             UPDATE "{nameof(KanjiFormRestriction)}"
             SET    "{nameof(KanjiFormRestriction.KanjiFormOrder)}" = NULL;
 
+            DELETE FROM "{nameof(FuriganaSegment)}";
             DELETE FROM "{nameof(KanjiFormBridge)}";
 
             UPDATE "{nameof(CrossReference)}"

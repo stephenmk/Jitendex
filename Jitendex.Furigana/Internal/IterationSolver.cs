@@ -22,7 +22,7 @@ using Jitendex.Furigana.Internal.SolutionGenerators;
 
 namespace Jitendex.Furigana.Internal;
 
-internal sealed class IterationSolver(List<ISolutionPartsGenerator> solutionPartsGenerators)
+internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> solutionPartsGenerators)
 {
     public List<Solution> Solve(Entry entry)
     {

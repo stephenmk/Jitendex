@@ -29,15 +29,17 @@ public static class FuriganaSolverProvider
     public static IFuriganaSolver GetFuriganaSolver()
     {
         var resourceCache = new ResourceCache();
-        var solutionPartsGenerators = new List<ISolutionPartsGenerator>()
-        {
+
+        ImmutableArray<ISolutionPartsGenerator> solutionPartsGenerators =
+        [
             new CachedSolutionPartsGenerator(resourceCache),
             new DefaultSolutionPartsGenerator
             (
                 new DefaultSingleCharacterParts(),
                 new DefaultRepeatedCharacterParts()
             )
-        };
+        ];
+
         var iterationSolver = new IterationSolver(solutionPartsGenerators);
         var solver = new Solver(iterationSolver, resourceCache);
         return solver;

@@ -23,6 +23,7 @@ namespace Jitendex.Kanjidic2.Entities.SubgroupItems;
 
 [Table(nameof(DerivedReading))]
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(ReadingMeaningOrder), nameof(ReadingOrder), nameof(Order))]
+[Index(nameof(UnicodeScalarValue), nameof(Text), IsUnique = true)]
 public sealed class DerivedReading
 {
     public required int UnicodeScalarValue { get; init; }

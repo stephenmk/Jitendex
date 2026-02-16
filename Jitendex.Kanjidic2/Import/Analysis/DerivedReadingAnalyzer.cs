@@ -100,7 +100,7 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
                 filteredReadings.Add(firstReading);
             }
         }
-        foreach (var derivedReadings in textToDerivedReadings.Values)
+        foreach (var (text, derivedReadings) in textToDerivedReadings)
         {
             int order = 1;
             foreach (var derivedReading in derivedReadings[1..])
@@ -108,6 +108,10 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
                 if (usedReadingTexts.Add(derivedReading.Text))
                 {
                     filteredReadings.Add(derivedReading with { Order = order++ });
+                    if (!derivedReading.Text.IsAllKana())
+                    {
+                        LogNonKanaReading(new(derivedReading.EntryId), text);
+                    }
                 }
             }
         }
@@ -152,9 +156,14 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
         {
             return GetDerivedKunStems(split[0], key, strippedReading.IsPrefix, strippedReading.IsSuffix);
         }
-        else
+        else if (split.Length == 2)
         {
             return GetDerivedSuffixedKunReadings(split[0], split[1], key, strippedReading.IsPrefix, strippedReading.IsSuffix);
+        }
+        else
+        {
+            LogExcessiveSplits(new(key.EntryId), text.ToString());
+            return [];
         }
     }
 
@@ -297,11 +306,19 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
             (false, false) => new() { Text = text, IsPrefix = false, IsSuffix = false },
         };
 
-    [LoggerMessage(LogLevel.Warning,
+    [LoggerMessage(LogLevel.Information,
     "Entry for character {rune} contains redundant reading `{Reading}`")]
+    protected partial void LogRedundantReading(Rune rune, string reading);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry for character {rune} contains duplicate reading `{Reading}`")]
     protected partial void LogDuplicateReading(Rune rune, string reading);
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry for character {rune} contains redundant reading `{Reading}`")]
-    protected partial void LogRedundantReading(Rune rune, string reading);
+    "Entry for character {rune} contains reading `{Reading}` with too many split characters")]
+    protected partial void LogExcessiveSplits(Rune rune, string reading);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry for character {rune} contains reading `{Reading}` non-kana characters")]
+    protected partial void LogNonKanaReading(Rune rune, string reading);
 }

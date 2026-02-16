@@ -42,6 +42,7 @@ public class Kanjidic2Context : SqliteContext
     #region Subgroup Items
     public DbSet<Meaning> Meanings { get; set; } = null!;
     public DbSet<Reading> Readings { get; set; } = null!;
+    public DbSet<DerivedReading> DerivedReadings { get; set; } = null!;
     #endregion
 
     public Kanjidic2Context() : base("kanjidic2.db") { }

@@ -30,13 +30,8 @@ internal class SolutionBuilder
     public SolutionBuilder() : this([]) { }
     public SolutionBuilder(ImmutableList<SolutionPart> parts) => Parts = parts;
 
-    public string KanjiFormText() => new(Parts.SelectMany(static x => x.BaseText).ToArray());
-    public string ReadingText() => new(Parts.SelectMany(static x => x.Furigana ?? x.BaseText).ToArray());
-    private string NormalizedReadingText() => ReadingText().KatakanaToHiragana();
-    public int ReadingTextLength() => Parts.Select(static x => x.Furigana ?? x.BaseText).Sum(static x => x.Length);
-
-    public void Add(SolutionPart part)
-        => Parts = Parts.Add(part);
+    public int ReadingTextLength() => Parts.Sum(static part => (part.Furigana ?? part.BaseText).Length);
+    public void Add(SolutionPart part) => Parts = Parts.Add(part);
 
     public Solution? ToSolution(Entry entry) => !IsValid(entry) ? null : new Solution
     {
@@ -59,8 +54,8 @@ internal class SolutionBuilder
     /// However, any part that contains a kanji rune must contain furigana.
     /// </remarks>
     private bool IsValid(Entry entry)
-        => entry.NormalizedReadingText == NormalizedReadingText()
-        && entry.KanjiFormText == KanjiFormText()
+        => string.Equals(entry.NormalizedReadingText, NormalizedReadingText(), StringComparison.Ordinal)
+        && string.Equals(entry.KanjiFormText, KanjiFormText(), StringComparison.Ordinal)
         && Parts
             .Where(static part => part.BaseText.EnumerateRunes().Any(KanjiComparison.IsKanji))
             .All(static part => !string.IsNullOrWhiteSpace(part.Furigana));
@@ -95,4 +90,39 @@ internal class SolutionBuilder
             .Where(static part => part.BaseText != string.Empty || part.Furigana is not null)
             .ToImmutableArray();
     }
+
+    private string KanjiFormText() => string.Create
+    (
+        length: Parts.Sum(static part => part.BaseText.Length),
+        state: Parts,
+        action: static (destination, state) =>
+        {
+            int charsWritten = 0;
+            foreach (var part in state)
+            {
+                foreach (var character in part.BaseText)
+                {
+                    destination[charsWritten++] = character;
+                }
+            }
+        }
+    );
+
+    private string NormalizedReadingText() => string.Create
+    (
+        length: ReadingTextLength(),
+        state: Parts,
+        action: static (destination, state) =>
+        {
+            int charsWritten = 0;
+            foreach (var part in state)
+            {
+                var text = part.Furigana ?? part.BaseText;
+                foreach (var character in text)
+                {
+                    destination[charsWritten++] = character.KatakanaToHiragana();
+                }
+            }
+        }
+    );
 }

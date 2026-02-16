@@ -34,9 +34,6 @@ internal readonly ref struct KanjiFormSlice
     public readonly bool ContainsFirstRune;
     public readonly bool ContainsFinalRune;
 
-    public string Text() => Runes.FastToString();
-    public string RawText() => RawRunes.FastToString();
-
     public KanjiFormSlice(Entry entry, int sliceStart, int sliceEnd)
     {
         var normalizedRunesSpan = entry.NormalizedKanjiFormRunes.AsSpan();

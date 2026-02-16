@@ -26,7 +26,7 @@ internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
 {
     public override ImmutableArray<List<SolutionPart>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
-        var baseText = kanjiFormSlice.RawText();
+        var baseText = kanjiFormSlice.RawRunes.FastToString();
         var readings = DefaultSingleCharacterReadings(kanjiFormSlice, readingState);
         var partsBuilder = ImmutableArray.CreateBuilder<List<SolutionPart>>(readings.Length);
         foreach (var reading in readings)

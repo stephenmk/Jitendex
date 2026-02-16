@@ -33,7 +33,7 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) 
             return [];
         }
 
-        var baseText = kanjiFormSlice.RawText();
+        var baseText = kanjiFormSlice.RawRunes.FastToString();
         var partsLists = ImmutableArray.CreateBuilder<List<SolutionPart>>(texts.Count);
 
         foreach (var text in texts)
@@ -75,7 +75,7 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) 
         }
         else
         {
-            var text = kanjiFormSlice.Text();
+            var text = kanjiFormSlice.Runes.FastToString();
             if (resourceCache.Compounds.TryGetValue(text, out JapaneseCompound? compound))
             {
                 return compound.Readings;

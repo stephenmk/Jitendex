@@ -17,9 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Text;
-using Jitendex.Furigana.Models;
 
-namespace Jitendex.Furigana.Solver;
+namespace Jitendex.Furigana.Internal.Models;
 
 internal readonly ref struct KanjiFormSlice
 {

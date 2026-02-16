@@ -16,33 +16,37 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Models;
-using Jitendex.Furigana.Models.TextUnits;
+using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Test.ServiceTests;
 
 [TestClass]
 public class NameKanji : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.NameKanji(new()
-    {
-        ["佐"] = (["あ"], ["さ"]),
-        ["藤"] = (["あ"], ["とう"]),
-    });
-
-    private static readonly Service _service = new(_kanji, []);
+    private readonly IFuriganaSolver _solver;
 
     private const string _kanjiFormText = "佐藤";
     private const string _readingText = "さとう";
     private const string _expectedSolutionText = "[佐|さ][藤|とう]";
 
+    public NameKanji()
+    {
+        var characters = ResourceMethods.NameKanji(new()
+        {
+            ["佐"] = (["あ"], ["さ"]),
+            ["藤"] = (["あ"], ["とう"]),
+        });
+        _solver = FuriganaSolverProvider.GetFuriganaSolver();
+        _solver.AddCharacters(characters);
+    }
+
     [TestMethod]
     public void TestSolvable()
     {
-        var nameEntry = new NameEntry(_kanjiFormText, _readingText);
-        var nameSolution = _service.Solve(nameEntry);
+        var nameSolution = _solver.SolveName(_kanjiFormText, _readingText);
         Assert.IsNotNull(nameSolution);
 
+        var nameEntry = new NameEntry(_kanjiFormText, _readingText);
         var expectedSolution = TextSolution.Parse(_expectedSolutionText, nameEntry);
         Assert.AreEqual(expectedSolution, nameSolution);
     }
@@ -50,8 +54,7 @@ public class NameKanji : ServiceTest
     [TestMethod]
     public void TestUnsolvable()
     {
-        var vocabEntry = new VocabEntry(_kanjiFormText, _readingText);
-        var vocabSolution = _service.Solve(vocabEntry);
+        var vocabSolution = _solver.SolveVocab(_kanjiFormText, _readingText);
         Assert.IsNull(vocabSolution);
     }
 }

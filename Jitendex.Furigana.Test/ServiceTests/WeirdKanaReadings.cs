@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Models.TextUnits;
-
 namespace Jitendex.Furigana.Test.ServiceTests;
 
 [TestClass]
@@ -25,7 +23,7 @@ public class WeirdKanaReadings : ServiceTest
 {
     private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.VocabKanji(new()
     {
-        ["一"] = ["イチ", "イツ", "ひと-", "ひと.つ"],
+        ["一"] = ["イチ", "イツ", "ひと"],
         ["ヶ"] = ["か", "が"],
         ["ヵ"] = ["か", "が"],
         ["ケ"] = ["か", "が"],
@@ -45,7 +43,8 @@ public class WeirdKanaReadings : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var service = new Service(_kanji, []);
-        TestSolvable(service, _data);
+        var solver = FuriganaSolverProvider.GetFuriganaSolver();
+        solver.AddCharacters(_kanji);
+        TestSolvable(solver, _data);
     }
 }

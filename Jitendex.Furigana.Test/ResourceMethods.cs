@@ -16,39 +16,36 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Models.TextUnits;
+using System.Collections.Immutable;
+using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Test;
 
 internal static class ResourceMethods
 {
-    public static IEnumerable<JapaneseCharacter> VocabKanji(Dictionary<string, IEnumerable<string>> dataDictionary) => dataDictionary
-        .Select(static item => new Kanji
-        (
-            item.Key.EnumerateRunes().First(),
-            item.Value,
-            []
-        ));
+    public static IEnumerable<JapaneseCharacter> VocabKanji(Dictionary<string, IEnumerable<string>> dataDictionary)
+        => dataDictionary
+            .Select(static item => new JapaneseCharacter
+            (
+                item.Key.EnumerateRunes().First(),
+                item.Value.Select(static x => new CharacterReading(x.KatakanaToHiragana(), false, false)).ToImmutableArray(),
+                []
+            ));
 
-    public static IEnumerable<JapaneseCharacter> NameKanji(Dictionary<string, (IEnumerable<string>, IEnumerable<string>)> dataDictionary) => dataDictionary
-        .Select(static item => new Kanji
-        (
-            item.Key.EnumerateRunes().First(),
-            item.Value.Item1,
-            item.Value.Item2
-        ));
+    public static IEnumerable<JapaneseCharacter> NameKanji(Dictionary<string, (IEnumerable<string>, IEnumerable<string>)> dataDictionary)
+        => dataDictionary
+            .Select(static item => new JapaneseCharacter
+            (
+                item.Key.EnumerateRunes().First(),
+                item.Value.Item1.Select(static x => new CharacterReading(x.KatakanaToHiragana(), false, false)).ToImmutableArray(),
+                item.Value.Item2.Select(static x => new CharacterReading(x.KatakanaToHiragana(), false, false)).ToImmutableArray()
+            ));
 
-    public static IEnumerable<JapaneseCharacter> NonKanji(Dictionary<string, IEnumerable<string>> dataDictionary) => dataDictionary
-        .Select(static item => new NonKanji
-        (
-            item.Key.EnumerateRunes().First(),
-            item.Value
-        ));
-
-    public static IEnumerable<JapaneseCompound> Compounds(Dictionary<string, IEnumerable<string>> dataDictionary) => dataDictionary
-        .Select(static item => new JapaneseCompound
-        (
-            item.Key,
-            item.Value
-        ));
+    public static IEnumerable<JapaneseCompound> Compounds(Dictionary<string, IEnumerable<string>> dataDictionary)
+        => dataDictionary
+            .Select(static item => new JapaneseCompound
+            (
+                item.Key,
+                item.Value.ToImmutableArray()
+            ));
 }

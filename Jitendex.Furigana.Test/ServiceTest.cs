@@ -19,44 +19,43 @@ If not, see <https://www.gnu.org/licenses/>.
 global using SolvableData = System.Collections.Generic.IEnumerable<(string KanjiFormText, string ReadingText, string ExpectedSolutionText)>;
 global using UnsolvableData = System.Collections.Generic.IEnumerable<(string KanjiFormText, string ReadingText)>;
 
-using Jitendex.Furigana.Models;
+using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Test;
 
 public class ServiceTest
 {
-    protected static Service DefaultService { get; } = new([], []);
+    protected static IFuriganaSolver DefaultService { get; } = FuriganaSolverProvider.GetFuriganaSolver();
 
-    protected static void TestSolvable(Service service, SolvableData data)
+    protected static void TestSolvable(IFuriganaSolver service, SolvableData data)
     {
         foreach (var (kanjiFormText, readingText, expectedSolutionText) in data)
         {
-            var entry = new VocabEntry(kanjiFormText, readingText);
-            TestSingleSolvable(service, entry, expectedSolutionText);
+            TestSingleSolvable(service, kanjiFormText, readingText, expectedSolutionText);
         }
     }
 
-    protected static void TestUnsolvable(Service service, UnsolvableData data)
+    protected static void TestUnsolvable(IFuriganaSolver service, UnsolvableData data)
     {
         foreach (var (kanjiFormText, readingText) in data)
         {
-            var entry = new VocabEntry(kanjiFormText, readingText);
-            TestSingleUnsolvable(service, entry);
+            TestSingleUnsolvable(service, kanjiFormText, readingText);
         }
     }
 
-    private static void TestSingleSolvable(Service service, Entry entry, string expectedSolutionText)
+    private static void TestSingleSolvable(IFuriganaSolver service, string kanjiForm, string reading, string expectedSolutionText)
     {
-        var solution = service.Solve(entry);
-        Assert.IsNotNull(solution, $"\n\n{entry}\n");
+        var solution = service.SolveVocab(kanjiForm, reading);
+        Assert.IsNotNull(solution, $"\n\n{kanjiForm}【{reading}】\n");
 
+        var entry = new VocabEntry(kanjiForm, reading);
         var expectedSolution = TextSolution.Parse(expectedSolutionText, entry);
         Assert.AreEqual(expectedSolution, solution);
     }
 
-    private static void TestSingleUnsolvable(Service service, Entry entry)
+    private static void TestSingleUnsolvable(IFuriganaSolver service, string kanjiForm, string reading)
     {
-        var solution = service.Solve(entry);
-        Assert.IsNull(solution, $"\n\n{entry}\n");
+        var solution = service.SolveVocab(kanjiForm, reading);
+        Assert.IsNull(solution, $"\n\n{kanjiForm}【{reading}】\n");
     }
 }

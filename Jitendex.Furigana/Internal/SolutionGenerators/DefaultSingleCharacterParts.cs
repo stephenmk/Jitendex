@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using Jitendex.JapaneseTextUtils;
-using Jitendex.Furigana.Models;
+using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Solver.SolutionGenerators.DefaultSolutions;
+namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
-internal sealed class DefaultSingleCharacterParts(ResourceCache resourceCache) : DefaultCharacterParts
+internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
 {
     public override ImmutableArray<List<SolutionPart>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
@@ -33,19 +33,20 @@ internal sealed class DefaultSingleCharacterParts(ResourceCache resourceCache) :
         {
             if (baseText.IsKanaEquivalent(reading))
             {
-                partsBuilder.Add([new SolutionPart { BaseText = baseText }]);
+                var part = new SolutionPart(baseText, null);
+                partsBuilder.Add([part]);
             }
             else
             {
-                partsBuilder.Add([new SolutionPart
-                {
-                    BaseText = baseText,
-                    Furigana = readingState.RemainingText[..reading.Length].ToString(),
-                    Readings = [resourceCache.NewReading(kanjiFormSlice.Runes[0], reading)],
-                }]);
+                var part = new SolutionPart
+                (
+                    BaseText: baseText,
+                    Furigana: readingState.RemainingText[..reading.Length].ToString()
+                );
+                partsBuilder.Add([part]);
             }
         }
-        return partsBuilder.ToImmutableArray();
+        return partsBuilder.MoveToImmutable();
     }
 
     private static ImmutableArray<string> DefaultSingleCharacterReadings(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
@@ -81,7 +82,7 @@ internal sealed class DefaultSingleCharacterParts(ResourceCache resourceCache) :
             {
                 readingsBuilder.Add(remainingText[..i].ToString());
             }
-            return readingsBuilder.ToImmutableArray();
+            return readingsBuilder.MoveToImmutable();
         }
 
         if (readingState.FirstRemainingChar == currentRune.Value)

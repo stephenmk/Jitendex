@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using Jitendex.JapaneseTextUtils;
-using Jitendex.Furigana.Models;
+using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Solver.SolutionGenerators.DefaultSolutions;
+namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
-internal sealed class DefaultRepeatedCharacterParts(ResourceCache resourceCache) : DefaultCharacterParts
+internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
 {
     public override ImmutableArray<List<SolutionPart>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
@@ -51,17 +51,15 @@ internal sealed class DefaultRepeatedCharacterParts(ResourceCache resourceCache)
         return
         [[
             new SolutionPart
-            {
-                BaseText = kanjiFormSlice.RawRunes[0].ToString(),
-                Furigana = reading[..halfLength],
-                Readings = [resourceCache.NewReading(currentRune1, reading[..halfLength])],
-            },
+            (
+                BaseText: kanjiFormSlice.RawRunes[0].ToString(),
+                Furigana: reading[..halfLength]
+            ),
             new SolutionPart
-            {
-                BaseText = kanjiFormSlice.RawRunes[1].ToString(),
-                Furigana = reading[halfLength..],
-                Readings = [resourceCache.NewReading(currentRune2, reading[halfLength..])],
-            }
+            (
+                BaseText: kanjiFormSlice.RawRunes[1].ToString(),
+                Furigana: reading[halfLength..]
+            )
         ]];
     }
 }

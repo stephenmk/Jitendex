@@ -19,9 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Immutable;
 using System.Text;
 using Jitendex.JapaneseTextUtils;
-using Jitendex.Furigana.Models;
+using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Solver;
+namespace Jitendex.Furigana.Internal;
 
 internal class SolutionBuilder
 {
@@ -44,7 +44,8 @@ internal class SolutionBuilder
 
     public Solution? ToSolution(Entry entry) => !IsValid(entry) ? null : new Solution
     {
-        Entry = entry,
+        KanjiFormText = entry.KanjiFormText,
+        ReadingText = entry.ReadingText,
         Parts = NormalizedParts(),
     };
 
@@ -85,14 +86,14 @@ internal class SolutionBuilder
             }
             if (mergedTexts.Length > 0)
             {
-                parts.Add(new SolutionPart { BaseText = mergedTexts.ToString() });
+                parts.Add(new(mergedTexts.ToString(), null));
                 mergedTexts.Clear();
             }
             parts.Add(part);
         }
         if (mergedTexts.Length > 0)
         {
-            parts.Add(new SolutionPart { BaseText = mergedTexts.ToString() });
+            parts.Add(new(mergedTexts.ToString(), null));
         }
         return parts
             .Where(static part => part.BaseText != string.Empty || part.Furigana is not null)

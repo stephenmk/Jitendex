@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Models.TextUnits;
-
 namespace Jitendex.Furigana.Test.ServiceTests;
 
 [TestClass]
@@ -25,30 +23,30 @@ public class RequiresKanjiReadings : ServiceTest
 {
     private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.VocabKanji(new()
     {
-        ["御"] = ["ギョ", "ゴ", "おん-", "お-", "み-"],
+        ["御"] = ["ギョ", "ゴ", "おん", "お", "み"],
         ["姉"] = ["シ", "あね", "はは", "ねえ"],
         ["母"] = ["ボ", "はは", "も", "かあ"],
         ["兄"] = ["ケイ", "キョウ", "あに", "にい"],
         ["東"] = ["トウ", "ひがし"],
         ["京"] = ["キョウ", "ケイ", "キン", "みやこ"],
         ["湾"] = ["ワン", "いりえ"],
-        ["日"] = ["ニチ", "ジツ", "ひ", "-び", "-か"],
-        ["独"] = ["ドク", "トク", "ひと.り"],
+        ["日"] = ["ニチ", "ジツ", "ひ", "び", "か"],
+        ["独"] = ["ドク", "トク", "ひと"],
         ["協"] = ["キョウ"],
-        ["会"] = ["カイ", "エ", "あ.う", "あ.わせる", "あつ.まる"],
-        ["可"] = ["カ", "コク", "-べ.き", "-べ.し"],
-        ["能"] = ["ノウ", "よ.く", "あた.う"],
+        ["会"] = ["カイ", "エ", "あ", "あつ"],
+        ["可"] = ["カ", "コク", "べ"],
+        ["能"] = ["ノウ", "よ", "あた"],
         ["津"] = ["シン", "つ"],
         ["波"] = ["ハ", "なみ"],
-        ["問"] = ["モン", "と.う", "と.い", "とん"],
+        ["問"] = ["モン", "と", "とん"],
         ["題"] = ["ダイ"],
-        ["質"] = ["シツ", "シチ", "チ", "たち", "ただ.す", "もと", "わりふ"],
-        ["乱"] = ["ラン", "ロン", "みだ.れる", "みだ.る", "みだ.す", "みだ", "おさ.める", "わた.る"],
+        ["質"] = ["シツ", "シチ", "チ", "たち", "ただ", "もと", "わりふ"],
+        ["乱"] = ["ラン", "ロン", "みだ", "おさ", "わた"],
         ["脈"] = ["ミャク", "すじ",],
         ["蝶"] = ["チョウ"],
         ["夫"] = ["フ", "フウ", "ブ", "おっと", "それ"],
-        ["好"] = ["コウ", "この.む", "す.く", "よ.い", "い.い"],
-        ["嫌"] = ["ケン", "ゲン", "きら.う", "きら.い", "いや"],
+        ["好"] = ["コウ", "この", "す", "よ", "い"],
+        ["嫌"] = ["ケン", "ゲン", "きら", "いや"],
     });
 
     private static readonly SolvableData _data =
@@ -78,14 +76,15 @@ public class RequiresKanjiReadings : ServiceTest
         ("好き嫌い", "すききらい", "[好|す]き[嫌|きら]い"),
     ];
 
-    private static readonly UnsolvableData _unsolvableData = _data
-        .Select(static x => (x.KanjiFormText, x.ReadingText));
+    private static readonly UnsolvableData _unsolvableData =
+        _data.Select(static x => (x.KanjiFormText, x.ReadingText));
 
     [TestMethod]
     public void TestSolvable()
     {
-        var service = new Service(_kanji, []);
-        TestSolvable(service, _data);
+        var solver = FuriganaSolverProvider.GetFuriganaSolver();
+        solver.AddCharacters(_kanji);
+        TestSolvable(solver, _data);
     }
 
     [TestMethod]

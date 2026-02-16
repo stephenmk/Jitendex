@@ -16,28 +16,22 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Models;
-using Jitendex.Furigana.Solver.SolutionGenerators;
+using System.Collections.Immutable;
+using Jitendex.Furigana.Internal.Models;
+using Jitendex.Furigana.Internal.SolutionGenerators;
 
-namespace Jitendex.Furigana.Solver;
+namespace Jitendex.Furigana.Internal;
 
-internal sealed class IterationSolver
+internal sealed class IterationSolver(List<ISolutionPartsGenerator> solutionPartsGenerators)
 {
-    private readonly List<ISolutionPartsGenerator> _solutionPartsGenerators;
-
-    public IterationSolver(List<ISolutionPartsGenerator> solutionPartsGenerators)
-    {
-        _solutionPartsGenerators = solutionPartsGenerators;
-    }
-
-    public IEnumerable<Solution> Solve(Entry entry)
+    public List<Solution> Solve(Entry entry)
     {
         var solutions = new List<SolutionBuilder>() { new() };
 
         for (int sliceStart = 0; sliceStart < entry.KanjiFormRunes.Length; sliceStart++)
         {
         BeginGeneratorLoop:
-            foreach (var solutionPartsGenerator in _solutionPartsGenerators)
+            foreach (var solutionPartsGenerator in solutionPartsGenerators)
             {
                 for (int sliceEnd = entry.KanjiFormRunes.Length; sliceStart < sliceEnd; sliceEnd--)
                 {
@@ -53,21 +47,25 @@ internal sealed class IterationSolver
             }
         }
 
+        var validSolutions = new List<Solution>(solutions.Count);
         foreach (var solutionBuilder in solutions)
         {
             var solution = solutionBuilder.ToSolution(entry);
             if (solution is not null)
             {
-                yield return solution;
+                validSolutions.Add(solution);
             }
         }
+        return validSolutions;
     }
 
-    private static List<SolutionBuilder> IterateSolutions(
-        in ISolutionPartsGenerator solutionPartsGenerator,
-        in Entry entry,
+    private static List<SolutionBuilder> IterateSolutions
+    (
+        ISolutionPartsGenerator solutionPartsGenerator,
+        Entry entry,
         in KanjiFormSlice kanjiFormSlice,
-        in List<SolutionBuilder> solutions)
+        List<SolutionBuilder> solutions
+    )
     {
         var newSolutions = new List<SolutionBuilder>();
 
@@ -78,10 +76,8 @@ internal sealed class IterationSolver
 
             foreach (var newParts in solutionPartsGenerator.Enumerate(entry, kanjiFormSlice, readingState))
             {
-                newSolutions.Add
-                (
-                    new(solutionParts.AddRange(newParts))
-                );
+                var newSolution = new SolutionBuilder(solutionParts.AddRange(newParts));
+                newSolutions.Add(newSolution);
             }
         }
 

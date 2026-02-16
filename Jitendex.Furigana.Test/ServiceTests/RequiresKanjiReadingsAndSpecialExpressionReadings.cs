@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Models.TextUnits;
-
 namespace Jitendex.Furigana.Test.ServiceTests;
 
 [TestClass]
@@ -25,24 +23,24 @@ public class RequiresKanjiReadingsAndSpecialExpressions : ServiceTest
 {
     private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.VocabKanji(new()
     {
-        ["大"] = ["ダイ", "タイ", "おお-", "おお.きい", "-おお.いに"],
-        ["和"] = ["ワ", "オ", "カ", "やわ.らぐ", "やわ.らげる", "なご.む", "なご.やか", "あ.える"],
+        ["大"] = ["ダイ", "タイ", "おお"],
+        ["和"] = ["ワ", "オ", "カ", "やわ", "なご", "あ"],
         ["魂"] = ["コン", "たましい", "たま"],
-        ["風"] = ["フウ", "フ", "かぜ", "かざ-"],
-        ["邪"] = ["ジャ", "よこし.ま"],
+        ["風"] = ["フウ", "フ", "かぜ", "かざ"],
+        ["邪"] = ["ジャ", "よこし"],
         ["薬"] = ["ヤク", "くすり"],
         ["純"] = ["ジュン"],
-        ["日"] = ["ニチ", "ジツ", "ひ", "-び", "-か"],
+        ["日"] = ["ニチ", "ジツ", "ひ", "び", "か"],
         ["本"] = ["ホン", "もと"],
-        ["学"] = ["ガク", "まな.ぶ"],
+        ["学"] = ["ガク", "まな"],
         ["者"] = ["シャ", "もの"],
         ["製"] = ["セイ"],
         ["側"] = ["ソク", "かわ", "がわ", "そば"],
         ["刀"] = ["トウ", "かたな", "そり"],
-        ["発"] = ["ハツ", "ホツ", "た.つ", "あば.く", "おこ.る", "つか.わす", "はな.つ"],
+        ["発"] = ["ハツ", "ホツ", "た", "あば", "おこ", "つか", "はな"],
         ["条"] = ["ジョウ", "チョウ", "デキ", "えだ", "すじ"],
-        ["仕"] = ["シ", "ジ", "つか.える"],
-        ["掛"] = ["カイ", "ケイ", "か.ける", "-か.ける", "か.け", "-か.け", "-が.け", "か.かる", "-か.かる", "-が.かる", "か.かり", "-が.かり", "かかり", "-がかり"],
+        ["仕"] = ["シ", "ジ", "つか"],
+        ["掛"] = ["カイ", "ケイ", "か", "が", "かかり", "がかり"],
     });
 
     private static readonly IEnumerable<JapaneseCompound> _compounds = ResourceMethods.Compounds(new()
@@ -84,7 +82,9 @@ public class RequiresKanjiReadingsAndSpecialExpressions : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var service = new Service(_kanji, _compounds);
-        TestSolvable(service, _data);
+        var solver = FuriganaSolverProvider.GetFuriganaSolver();
+        solver.AddCharacters(_kanji);
+        solver.AddCompounds(_compounds);
+        TestSolvable(solver, _data);
     }
 }

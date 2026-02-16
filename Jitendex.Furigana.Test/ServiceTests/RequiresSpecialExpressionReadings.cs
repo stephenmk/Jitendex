@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Models.TextUnits;
-
 namespace Jitendex.Furigana.Test.ServiceTests;
 
 [TestClass]
@@ -59,14 +57,16 @@ public class RequiresSpecialExpressionReadings : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var service = new Service([], _compounds);
-        TestSolvable(service, _data);
+        var solver = FuriganaSolverProvider.GetFuriganaSolver();
+        solver.AddCompounds(_compounds);
+        TestSolvable(solver, _data);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        var service = new Service([], _compounds);
-        TestUnsolvable(service, _unsolvableData);
+        var solver = FuriganaSolverProvider.GetFuriganaSolver();
+        solver.AddCompounds(_compounds);
+        TestUnsolvable(solver, _unsolvableData);
     }
 }

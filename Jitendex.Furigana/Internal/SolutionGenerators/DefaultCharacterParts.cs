@@ -20,9 +20,9 @@ using System.Collections.Immutable;
 using System.Text;
 using System.Text.RegularExpressions;
 using Jitendex.JapaneseTextUtils;
-using Jitendex.Furigana.Models;
+using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Solver.SolutionGenerators.DefaultSolutions;
+namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal abstract class DefaultCharacterParts
 {

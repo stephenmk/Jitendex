@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Text.RegularExpressions;
-using Jitendex.Furigana.Models;
-using Jitendex.Furigana.Solver;
+using Jitendex.Furigana.Internal;
+using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Test;
 
@@ -35,7 +35,7 @@ internal static partial class TextSolution
 
         if (matches.Count == 0)
         {
-            solutionBuilder.Add(new SolutionPart { BaseText = text });
+            solutionBuilder.Add(new SolutionPart(text, null));
         }
 
         foreach (Match match in matches)
@@ -45,9 +45,9 @@ internal static partial class TextSolution
             var furigana = match.Groups[3].Value;
             var noFurigana2 = match.Groups[4].Value;
 
-            solutionBuilder.Add(new SolutionPart { BaseText = noFurigana1 });
-            solutionBuilder.Add(new SolutionPart { BaseText = baseText, Furigana = furigana });
-            solutionBuilder.Add(new SolutionPart { BaseText = noFurigana2 });
+            solutionBuilder.Add(new SolutionPart(noFurigana1, null));
+            solutionBuilder.Add(new SolutionPart(baseText, furigana));
+            solutionBuilder.Add(new SolutionPart(noFurigana2, null));
         }
 
         var solution = solutionBuilder.ToSolution(entry) ??

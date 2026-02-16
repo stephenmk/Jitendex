@@ -17,22 +17,11 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using Jitendex.Furigana.Models;
-using Jitendex.Furigana.Solver.SolutionGenerators.DefaultSolutions;
+using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Solver.SolutionGenerators;
+namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
-internal sealed class DefaultSolutionPartsGenerator
-(
-    DefaultSingleCharacterParts single,
-    DefaultRepeatedCharacterParts repeated
-) : ISolutionPartsGenerator
+internal interface ISolutionPartsGenerator
 {
-    public ImmutableArray<List<SolutionPart>> Enumerate(in Entry _, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
-        => kanjiFormSlice.Runes switch
-        {
-            { Length: 1 } => single.Enumerate(kanjiFormSlice, readingState),
-            { Length: 2 } => repeated.Enumerate(kanjiFormSlice, readingState),
-            _ => []
-        };
+    public ImmutableArray<List<SolutionPart>> Enumerate(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState);
 }

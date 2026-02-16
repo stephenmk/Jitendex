@@ -16,15 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Furigana.Models;
+namespace Jitendex.Furigana.Internal.Models;
 
-public class VocabEntry(string kanjiFormText, string readingText) : Entry(kanjiFormText, readingText)
+internal sealed class ResourceCache
 {
-    public override bool Equals(object? obj)
-        => obj is VocabEntry entry
-        && string.Equals(KanjiFormText, entry.KanjiFormText, StringComparison.Ordinal)
-        && string.Equals(ReadingText, entry.ReadingText, StringComparison.Ordinal);
-
-    public override int GetHashCode()
-        => HashCode.Combine(typeof(VocabEntry), KanjiFormText, ReadingText);
+    public Dictionary<int, JapaneseCharacter> Characters { get; init; } = [];
+    public Dictionary<string, JapaneseCompound> Compounds { get; init; } = [];
 }

@@ -20,16 +20,19 @@ using System.Collections.Immutable;
 using System.Text;
 using Jitendex.JapaneseTextUtils;
 
-namespace Jitendex.Furigana.Models;
+namespace Jitendex.Furigana.Internal.Models;
 
-public abstract class Entry
+internal sealed record VocabEntry(string KanjiFormText, string ReadingText) : Entry(KanjiFormText, ReadingText);
+internal sealed record NameEntry(string KanjiFormText, string ReadingText) : Entry(KanjiFormText, ReadingText);
+
+internal abstract record Entry
 {
     public string KanjiFormText { get; }
-    internal ImmutableArray<Rune> KanjiFormRunes { get; }
-    internal ImmutableArray<Rune> NormalizedKanjiFormRunes { get; }
+    public ImmutableArray<Rune> KanjiFormRunes { get; }
+    public ImmutableArray<Rune> NormalizedKanjiFormRunes { get; }
 
     public string ReadingText { get; }
-    internal string NormalizedReadingText { get; }
+    public string NormalizedReadingText { get; }
 
     public Entry(string kanjiFormText, string readingText)
     {
@@ -49,11 +52,4 @@ public abstract class Entry
         ReadingText = readingText;
         NormalizedReadingText = readingText.KatakanaToHiragana();
     }
-
-    public override abstract bool Equals(object? obj);
-
-    public override abstract int GetHashCode();
-
-    public override string ToString() =>
-        $"{GetType()}: {ReadingText}【{KanjiFormText}】";
 }

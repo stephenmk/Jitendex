@@ -16,14 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Models.TextUnits;
-
 namespace Jitendex.Furigana.Test.ServiceTests;
 
 [TestClass]
 public class EmptyReading : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCharacter> _nonKanji = ResourceMethods.NonKanji(new()
+    private static readonly IEnumerable<JapaneseCharacter> _nonKanji = ResourceMethods.VocabKanji(new()
     {
         ["・"] = ["・", ""],
         ["、"] = ["、", ""],
@@ -55,8 +53,9 @@ public class EmptyReading : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var service = new Service(_nonKanji, []);
-        TestSolvable(service, _data);
+        var solver = FuriganaSolverProvider.GetFuriganaSolver();
+        solver.AddCharacters(_nonKanji);
+        TestSolvable(solver, _data);
     }
 
     [TestMethod]

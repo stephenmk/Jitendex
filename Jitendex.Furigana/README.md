@@ -88,17 +88,6 @@ That project served as an invaluable source of ideas, but all of the code borrow
     </td>
   </tr>
   <tr>
-    <th>Analysis Features</th>
-    <td>
-      Outputs only the furigana segmentation data for a given problem.
-    </td>
-    <td>
-      Provided that しょう is a reading for the character 象 in the word <ruby>具<rt>ぐ</rt></ruby><ruby>象<rt>しょう</rt></ruby>,
-      we might be interested to know which other vocabulary words contain this reading of this character.
-      <b>Jitendex.Furigana</b> keeps track of this information.
-    </td>
-  </tr>
-  <tr>
     <th>Unicode Support</th>
     <td>
       Some Japanese characters are represented in Unicode using two

@@ -17,8 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities;
 using Jitendex.SQLite;
+using Jitendex.Kanjidic2.Entities;
+using Jitendex.Kanjidic2.Entities.SubgroupItems;
 
 namespace Jitendex.Kanjidic2;
 
@@ -36,6 +37,11 @@ public class Kanjidic2Context : SqliteContext
     public DbSet<RadicalType> RadicalTypes { get; set; } = null!;
     public DbSet<ReadingType> ReadingType { get; set; } = null!;
     public DbSet<VariantType> VariantTypes { get; set; } = null!;
+    #endregion
+
+    #region Subgroup Items
+    public DbSet<Meaning> Meanings { get; set; } = null!;
+    public DbSet<Reading> Readings { get; set; } = null!;
     #endregion
 
     public Kanjidic2Context() : base("kanjidic2.db") { }

@@ -16,22 +16,28 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.GroupItems;
+using Microsoft.Extensions.Logging;
+using Jitendex.Kanjidic2.Entities.SubgroupItems;
 
-namespace Jitendex.Kanjidic2.Entities.SubgroupItems;
+namespace Jitendex.Kanjidic2.Import.Analysis;
 
-[Table(nameof(Meaning))]
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(ReadingMeaningOrder), nameof(Order))]
-public sealed class Meaning
+internal sealed class Analyzer(ILogger<Analyzer> logger, Kanjidic2Context context, DerivedReadingAnalyzer derivedReadingAnalyzer)
 {
-    public required int UnicodeScalarValue { get; init; }
-    public required int GroupOrder { get; init; }
-    public required int ReadingMeaningOrder { get; init; }
-    public required int Order { get; init; }
-    public required string Text { get; set; }
+    public void Clean()
+    {
+        logger.LogInformation("Deleting previous analysis data from database");
+        using var command = context.Database.GetDbConnection().CreateCommand();
+        command.CommandText =
+            $"""
+            DELETE FROM "{nameof(DerivedReading)}";
+            """;
+        command.ExecuteNonQuery();
+    }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}, {nameof(ReadingMeaningOrder)}")]
-    public ReadingMeaning Group { get; init; } = null!;
+    public async Task AnalyzeAsync()
+    {
+        logger.LogInformation("Starting data analysis");
+        derivedReadingAnalyzer.Analyze();
+    }
 }

@@ -18,27 +18,23 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.GroupItems;
 
 namespace Jitendex.Kanjidic2.Entities.SubgroupItems;
 
-[Table(nameof(Reading))]
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(ReadingMeaningOrder), nameof(Order))]
-public sealed class Reading
+[Table(nameof(DerivedReading))]
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(ReadingMeaningOrder), nameof(ReadingOrder), nameof(Order))]
+public sealed class DerivedReading
 {
     public required int UnicodeScalarValue { get; init; }
     public required int GroupOrder { get; init; }
     public required int ReadingMeaningOrder { get; init; }
+    public required int ReadingOrder { get; init; }
     public required int Order { get; init; }
     public required string Text { get; set; }
+    public required bool IsPrefix { get; set; }
+    public required bool IsSuffix { get; set; }
     public required string TypeName { get; set; }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}, {nameof(ReadingMeaningOrder)}")]
-    public ReadingMeaning Group { get; init; } = null!;
-
-    [ForeignKey(nameof(TypeName))]
-    public ReadingType Type { get; set; } = null!;
-
-    [InverseProperty(nameof(DerivedReading.Reading))]
-    public List<DerivedReading> DerivedReadings { get; init; } = [];
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}, {nameof(ReadingMeaningOrder)}, {nameof(ReadingOrder)}")]
+    public Reading Reading { get; init; } = null!;
 }

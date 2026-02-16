@@ -119,8 +119,6 @@ internal sealed class Database(ILogger<Database> logger, Kanjidic2Context contex
 
         var aSequences = DtoMapper.LoadRevisionlessSequences(context, diff.SequenceIds);
 
-        using var transaction = context.Database.BeginTransaction();
-
         context.ExecuteDeferForeignKeysPragma();
 
         FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
@@ -219,7 +217,5 @@ internal sealed class Database(ILogger<Database> logger, Kanjidic2Context contex
         }
 
         RevisionTable.InsertItems(context, revisions);
-
-        transaction.Commit();
     }
 }

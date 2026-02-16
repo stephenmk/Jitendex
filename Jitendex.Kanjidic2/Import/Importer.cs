@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Jitendex.EdrdgDictionaryArchive;
+using Jitendex.Kanjidic2.Import.Analysis;
 using Jitendex.Kanjidic2.Import.Models;
 using Jitendex.Kanjidic2.Import.Parsing;
 using static Jitendex.EdrdgDictionaryArchive.DictionaryFile;
@@ -30,7 +31,8 @@ internal sealed class Importer
     IEdrdgArchiveService fileArchive,
     Kanjidic2Context context,
     Kanjidic2Reader reader,
-    Database database
+    Database database,
+    Analyzer analyzer
 )
 {
     public async Task ImportAsync(DirectoryInfo? archiveDirectory)
@@ -48,7 +50,13 @@ internal sealed class Importer
             return;
         }
 
+        using var transaction = context.Database.BeginTransaction();
+
+        analyzer.Clean();
         await UpdateDatabaseAsync(archiveDirectory, previousDocument);
+        await analyzer.AnalyzeAsync();
+
+        transaction.Commit();
     }
 
     private DateOnly GetPreviousDate() => context.FileHeaders

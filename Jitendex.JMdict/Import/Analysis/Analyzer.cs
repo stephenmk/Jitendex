@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.JMdict.Entities.EntryItems.Furigana;
 using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 using Microsoft.EntityFrameworkCore;

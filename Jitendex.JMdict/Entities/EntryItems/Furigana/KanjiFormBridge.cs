@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Entities.EntryItems.ReadingItems;
+namespace Jitendex.JMdict.Entities.EntryItems.Furigana;
 
 [Table(nameof(KanjiFormBridge))]
 [PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder))]

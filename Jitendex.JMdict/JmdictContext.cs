@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Jitendex.SQLite;
 using Jitendex.JMdict.Entities;
 using Jitendex.JMdict.Entities.EntryItems;
+using Jitendex.JMdict.Entities.EntryItems.Furigana;
 using Jitendex.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.JMdict.Entities.EntryItems.SenseItems;
@@ -33,25 +34,24 @@ public class JmdictContext : SqliteContext
     public DbSet<Revision> Revisions { get; set; } = null!;
     public DbSet<Entry> Entries { get; set; } = null!;
 
-    #region Entry Elements
+    #region Entry Items
     public DbSet<KanjiForm> KanjiForms { get; set; } = null!;
     public DbSet<Reading> Readings { get; set; } = null!;
     public DbSet<Sense> Senses { get; set; } = null!;
     #endregion
 
-    #region Kanji Form Elements
+    #region Kanji Form Items
     public DbSet<KanjiFormInfo> KanjiFormInfos { get; set; } = null!;
     public DbSet<KanjiFormPriority> KanjiFormPriorities { get; set; } = null!;
     #endregion
 
-    #region Reading Elements
+    #region Reading Items
     public DbSet<ReadingInfo> ReadingInfos { get; set; } = null!;
     public DbSet<ReadingPriority> ReadingPriorities { get; set; } = null!;
     public DbSet<Restriction> Restrictions { get; set; } = null!;
-    public DbSet<KanjiFormBridge> KanjiFormBridges { get; set; } = null!;
     #endregion
 
-    #region Sense Elements
+    #region Sense Items
     public DbSet<CrossReference> CrossReferences { get; set; } = null!;
     public DbSet<Dialect> Dialects { get; set; } = null!;
     public DbSet<Field> Fields { get; set; } = null!;
@@ -61,6 +61,10 @@ public class JmdictContext : SqliteContext
     public DbSet<Misc> Miscs { get; set; } = null!;
     public DbSet<PartOfSpeech> PartsOfSpeech { get; set; } = null!;
     public DbSet<ReadingRestriction> ReadingRestrictions { get; set; } = null!;
+    #endregion
+
+    #region Furigana Items
+    public DbSet<KanjiFormBridge> KanjiFormBridges { get; set; } = null!;
     #endregion
 
     #region Keywords

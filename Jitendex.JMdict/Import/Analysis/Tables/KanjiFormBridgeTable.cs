@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Entities.EntryItems.Furigana;
 
 namespace Jitendex.JMdict.Import.Analysis.Tables;
 

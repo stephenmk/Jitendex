@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using System.Text;
+using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal;
 using Jitendex.Furigana.Internal.Models;
 using Jitendex.Furigana.Internal.SolutionGenerators;
@@ -55,10 +56,22 @@ public interface IFuriganaSolver
 }
 
 public sealed record JapaneseCompound
-(
-    string Text,
-    ImmutableArray<string> Readings
-);
+{
+    public string Text { get; }
+    public ImmutableArray<string> Readings { get; }
+    public JapaneseCompound(string text, IEnumerable<string> readings)
+    {
+        Text = text;
+        var readingList = readings.ToList();
+        var arrayBuilder = ImmutableArray.CreateBuilder<string>(readingList.Count);
+        foreach (var reading in readingList)
+        {
+            var normalReading = reading.ContainsKatakana() ? reading.KatakanaToHiragana() : reading;
+            arrayBuilder.Add(normalReading);
+        }
+        Readings = arrayBuilder.MoveToImmutable();
+    }
+};
 
 public sealed record JapaneseCharacter
 (
@@ -68,11 +81,17 @@ public sealed record JapaneseCharacter
 );
 
 public sealed record CharacterReading
-(
-    string Text,
-    bool IsPrefix,
-    bool IsSuffix
-);
+{
+    public string Text { get; }
+    public bool IsPrefix { get; }
+    public bool IsSuffix { get; }
+    public CharacterReading(string text, bool isPrefix, bool isSuffix)
+    {
+        Text = text.ContainsKatakana() ? text.KatakanaToHiragana() : text;
+        IsPrefix = isPrefix;
+        IsSuffix = isSuffix;
+    }
+}
 
 public sealed record SolutionPart
 (

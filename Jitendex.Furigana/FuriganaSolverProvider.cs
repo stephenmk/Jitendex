@@ -62,23 +62,27 @@ public sealed record JapaneseCompound
     public JapaneseCompound(string text, IEnumerable<string> readings)
     {
         Text = text;
-        var readingList = readings.ToList();
-        var arrayBuilder = ImmutableArray.CreateBuilder<string>(readingList.Count);
-        foreach (var reading in readingList)
+        var normalizedReadings = new List<string>();
+        foreach (var reading in readings)
         {
-            var normalReading = reading.ContainsKatakana() ? reading.KatakanaToHiragana() : reading;
-            arrayBuilder.Add(normalReading);
+            normalizedReadings.Add(reading.ContainsKatakana() ? reading.KatakanaToHiragana() : reading);
         }
-        Readings = arrayBuilder.MoveToImmutable();
+        Readings = [.. normalizedReadings];
     }
 };
 
 public sealed record JapaneseCharacter
-(
-    Rune Rune,
-    ImmutableArray<CharacterReading> VocabReadings,
-    ImmutableArray<CharacterReading> NameReadings
-);
+{
+    public Rune Rune { get; }
+    public ImmutableArray<CharacterReading> VocabReadings { get; }
+    public ImmutableArray<CharacterReading> NameReadings { get; }
+    public JapaneseCharacter(Rune rune, IEnumerable<CharacterReading> vocabReadings, IEnumerable<CharacterReading> nameReadings)
+    {
+        Rune = rune;
+        VocabReadings = [.. vocabReadings];
+        NameReadings = [.. nameReadings];
+    }
+};
 
 public sealed record CharacterReading
 {

@@ -33,6 +33,7 @@ internal sealed class Analyzer
     ReadingRestrictionAnalyzer readingRestrictionAnalyzer,
     KanjiFormRestrictionAnalyzer kanjiFormRestrictionAnalyzer,
     KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
+    FuriganaSegmentAnalyzer furiganaSegmentAnalyzer,
     CrossReferenceCacheService crossReferenceCacheService,
     CrossReferenceAnalyzer crossReferenceAnalyzer
 )
@@ -75,9 +76,9 @@ internal sealed class Analyzer
         kanjiFormBridgeAnalyzer.Analyze();
 
         var referenceCache = await crossReferenceCacheService.LoadAsync(dataDirectory);
-
         crossReferenceAnalyzer.Analyze(referenceCache);
-
         await crossReferenceCacheService.ExportAsync(dataDirectory);
+
+        furiganaSegmentAnalyzer.Analyze();
     }
 }

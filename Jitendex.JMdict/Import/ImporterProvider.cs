@@ -19,6 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
+using Jitendex.Furigana;
+using Jitendex.Kanjidic2;
 using Jitendex.JMdict.Import.Analysis;
 using Jitendex.JMdict.Import.Analysis.Analyzers;
 using Jitendex.JMdict.Import.Parsing;
@@ -39,6 +41,7 @@ internal static class ImporterProvider
 
         // Databases
         .AddDbContext<JmdictContext>()
+        .AddDbContext<Kanjidic2Context>()
         .AddTransient<Database>()
 
         // Top-level readers.
@@ -78,9 +81,13 @@ internal static class ImporterProvider
         .AddTransient<ReadingRestrictionAnalyzer>()
         .AddTransient<KanjiFormRestrictionAnalyzer>()
         .AddTransient<KanjiFormBridgeAnalyzer>()
+        .AddTransient<FuriganaSegmentAnalyzer>()
         .AddTransient<CrossReferenceAnalyzer>()
         .AddTransient<CrossReferenceCacheService>()
         .AddTransient<CrossReferenceTextParser>()
+
+        // Furigana solver
+        .AddTransient(static _ => FuriganaSolverProvider.GetFuriganaSolver())
 
         // Logging
         .AddLogging(static builder =>

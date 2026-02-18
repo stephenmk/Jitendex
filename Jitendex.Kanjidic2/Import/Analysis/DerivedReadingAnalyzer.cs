@@ -182,7 +182,7 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
                     key.ReadingOrder,
                     0,
                     Text: derivedStem.Text + okurigana[..(i + 1)],
-                    IsPrefix: derivedStem.IsPrefix && i == okurigana.Length - 1,
+                    IsPrefix: isPrefix && i == okurigana.Length - 1,
                     IsSuffix: derivedStem.IsSuffix,
                     TypeName: $"{derivedStem.TypeName}-okurigana"
                 ));

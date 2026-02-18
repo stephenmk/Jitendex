@@ -65,7 +65,7 @@ public sealed record JapaneseCompound
         var normalizedReadings = new List<string>();
         foreach (var reading in readings)
         {
-            normalizedReadings.Add(reading.ContainsKatakana() ? reading.KatakanaToHiragana() : reading);
+            normalizedReadings.Add(reading.KatakanaToHiragana());
         }
         Readings = [.. normalizedReadings];
     }
@@ -91,7 +91,7 @@ public sealed record CharacterReading
     public bool IsSuffix { get; }
     public CharacterReading(string text, bool isPrefix, bool isSuffix)
     {
-        Text = text.ContainsKatakana() ? text.KatakanaToHiragana() : text;
+        Text = text.KatakanaToHiragana();
         IsPrefix = isPrefix;
         IsSuffix = isSuffix;
     }

@@ -169,10 +169,38 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
 
     private List<DerivedReadingElement> GetDerivedSuffixedKunReadings(string stem, string okurigana, ReadingKey key, bool isPrefix, bool isSuffix)
     {
-        var readings = GetDerivedKunStems(stem, key, false, isSuffix);
-        if ((stem + okurigana).VerbToMasuStem() is string masuStem)
+        var stems = GetDerivedKunStems(stem, key, false, isSuffix);
+        var readings = new List<DerivedReadingElement>(stems);
+        foreach (var derivedStem in stems)
         {
-            readings.AddRange(GetDerivedKunStems(masuStem, key, isPrefix, isSuffix));
+            for (int i = 0; i < okurigana.Length; i++)
+            {
+                readings.Add(new(
+                    key.EntryId,
+                    key.GroupOrder,
+                    key.ReadingMeaningOrder,
+                    key.ReadingOrder,
+                    0,
+                    derivedStem.Text + okurigana[..(i+1)],
+                    isPrefix && i != okurigana.Length - 1,
+                    isSuffix,
+                    $"{derivedStem.TypeName}-okurigana"
+                ));
+            }
+            if ((derivedStem.Text + okurigana).VerbToMasuStem() is string masuStem)
+            {
+                readings.Add(new(
+                    key.EntryId,
+                    key.GroupOrder,
+                    key.ReadingMeaningOrder,
+                    key.ReadingOrder,
+                    0,
+                    masuStem,
+                    isPrefix,
+                    isSuffix,
+                    $"{derivedStem.TypeName}-masu"
+                ));
+            }
         }
         return readings;
     }

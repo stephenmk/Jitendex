@@ -181,7 +181,7 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
                     key.ReadingMeaningOrder,
                     key.ReadingOrder,
                     0,
-                    Text: derivedStem.Text + okurigana[..(i+1)],
+                    Text: derivedStem.Text + okurigana[..(i + 1)],
                     IsPrefix: derivedStem.IsPrefix && i == okurigana.Length - 1,
                     IsSuffix: derivedStem.IsSuffix,
                     TypeName: $"{derivedStem.TypeName}-okurigana"
@@ -221,23 +221,20 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
         );
         var readings = new List<DerivedReadingElement> { reading };
 
-        if (!isSuffix)
+        foreach (var rendakuReading in text.ToRendakuForms())
         {
-            foreach (var rendakuReading in text.ToRendakuForms())
-            {
-                readings.Add(new
-                (
-                    key.EntryId,
-                    key.GroupOrder,
-                    key.ReadingMeaningOrder,
-                    key.ReadingOrder,
-                    0,
-                    rendakuReading,
-                    IsPrefix: isPrefix,
-                    IsSuffix: true,
-                    "kunyomi-rendaku"
-                ));
-            }
+            readings.Add(new
+            (
+                key.EntryId,
+                key.GroupOrder,
+                key.ReadingMeaningOrder,
+                key.ReadingOrder,
+                0,
+                rendakuReading,
+                IsPrefix: isPrefix,
+                IsSuffix: true,
+                "kunyomi-rendaku"
+            ));
         }
 
         return readings;

@@ -181,10 +181,10 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
                     key.ReadingMeaningOrder,
                     key.ReadingOrder,
                     0,
-                    derivedStem.Text + okurigana[..(i+1)],
-                    isPrefix && i != okurigana.Length - 1,
-                    isSuffix,
-                    $"{derivedStem.TypeName}-okurigana"
+                    Text: derivedStem.Text + okurigana[..(i+1)],
+                    IsPrefix: derivedStem.IsPrefix && i == okurigana.Length - 1,
+                    IsSuffix: derivedStem.IsSuffix,
+                    TypeName: $"{derivedStem.TypeName}-okurigana"
                 ));
             }
             if ((derivedStem.Text + okurigana).VerbToMasuStem() is string masuStem)
@@ -195,10 +195,10 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
                     key.ReadingMeaningOrder,
                     key.ReadingOrder,
                     0,
-                    masuStem,
-                    isPrefix,
-                    isSuffix,
-                    $"{derivedStem.TypeName}-masu"
+                    Text: masuStem,
+                    IsPrefix: false,
+                    IsSuffix: derivedStem.IsSuffix,
+                    TypeName: $"{derivedStem.TypeName}-masu"
                 ));
             }
         }

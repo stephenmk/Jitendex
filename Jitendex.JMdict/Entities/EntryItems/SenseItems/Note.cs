@@ -16,32 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.SQLite;
-using Jitendex.JMdict.Entities.EntryItems;
-using Jitendex.JMdict.Import.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Import.Tables.EntryElements;
+namespace Jitendex.JMdict.Entities.EntryItems.SenseItems;
 
-internal sealed class SenseTable : Table<SenseElement>
+[Table(nameof(Note))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
+public sealed class Note
 {
-    protected override string Name => nameof(Sense);
+    public required int EntryId { get; init; }
+    public required int SenseOrder { get; init; }
+    public required int Order { get; init; }
+    public required string Text { get; set; }
 
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(Sense.EntryId),
-        nameof(Sense.Order),
-    ];
-
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
-        nameof(Sense.EntryId),
-        nameof(Sense.Order),
-    ];
-
-    protected override SqliteParameter[] Parameters(SenseElement sense) =>
-    [
-        new("@0", sense.EntryId),
-        new("@1", sense.Order),
-    ];
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
+    public Sense Sense { get; init; } = null!;
 }

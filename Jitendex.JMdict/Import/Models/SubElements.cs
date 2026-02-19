@@ -61,6 +61,9 @@ internal sealed record LanguageSourceElement
 internal sealed record MiscElement
     (int EntryId, int ParentOrder, int Order, string TagName) : ISubElement;
 
+internal sealed record NoteElement
+    (int EntryId, int ParentOrder, int Order, string Text) : ISubElement;
+
 internal sealed record PartOfSpeechElement
     (int EntryId, int ParentOrder, int Order, string TagName) : ISubElement;
 

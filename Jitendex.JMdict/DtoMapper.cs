@@ -95,7 +95,6 @@ public static class DtoMapper
     private static Expression<Func<Sense, SenseDto>> SenseProjection =>
         static sense => new SenseDto
         {
-            Note = sense.Note,
             CrossReferences = sense.CrossReferences
                 .OrderBy(static x => x.Order)
                 .Select(static x => new CrossReferenceDto(x.TypeName, x.Text))
@@ -123,6 +122,10 @@ public static class DtoMapper
             Miscs = sense.Miscs
                 .OrderBy(static m => m.Order)
                 .Select(static m => m.TagName)
+                .ToImmutableArray(),
+            Notes = sense.Notes
+                .OrderBy(static n => n.Order)
+                .Select(static n => n.Text)
                 .ToImmutableArray(),
             PartsOfSpeech = sense.PartsOfSpeech
                 .OrderBy(static pos => pos.Order)

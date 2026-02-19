@@ -48,6 +48,7 @@ internal sealed class Document
     public Dictionary<(int, int, int), KanjiFormRestrictionElement> KanjiFormRestrictions { get; init; }
     public Dictionary<(int, int, int), LanguageSourceElement> LanguageSources { get; init; }
     public Dictionary<(int, int, int), MiscElement> Miscs { get; init; }
+    public Dictionary<(int, int, int), NoteElement> Notes { get; init; }
     public Dictionary<(int, int, int), PartOfSpeechElement> PartsOfSpeech { get; init; }
     public Dictionary<(int, int, int), ReadingRestrictionElement> ReadingRestrictions { get; init; }
     #endregion
@@ -90,6 +91,7 @@ internal sealed class Document
         KanjiFormRestrictions = new(expectedEntryCount / 100);
         LanguageSources = new(expectedEntryCount / 30);
         Miscs = new(expectedEntryCount / 5);
+        Notes = new(expectedEntryCount / 20);
         PartsOfSpeech = new(expectedEntryCount * 2);
         ReadingRestrictions = new(expectedEntryCount / 100);
     }
@@ -114,6 +116,7 @@ internal sealed class Document
             .Concat(KanjiFormRestrictions.EntryIds())
             .Concat(LanguageSources.EntryIds())
             .Concat(Miscs.EntryIds())
+            .Concat(Notes.EntryIds())
             .Concat(PartsOfSpeech.EntryIds())
             .Concat(ReadingRestrictions.EntryIds());
 }

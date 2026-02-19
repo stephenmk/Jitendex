@@ -18,30 +18,35 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.JMdict.Entities.EntryItems;
+using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.JMdict.Import.Models;
 
-namespace Jitendex.JMdict.Import.Tables.EntryElements;
+namespace Jitendex.JMdict.Import.Tables.EntryElements.SenseElements;
 
-internal sealed class SenseTable : Table<SenseElement>
+internal sealed class NoteTable : Table<NoteElement>
 {
-    protected override string Name => nameof(Sense);
+    protected override string Name => nameof(Note);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Sense.EntryId),
-        nameof(Sense.Order),
+        nameof(Note.EntryId),
+        nameof(Note.SenseOrder),
+        nameof(Note.Order),
+        nameof(Note.Text),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(Sense.EntryId),
-        nameof(Sense.Order),
+        nameof(Note.EntryId),
+        nameof(Note.SenseOrder),
+        nameof(Note.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(SenseElement sense) =>
+    protected override SqliteParameter[] Parameters(NoteElement note) =>
     [
-        new("@0", sense.EntryId),
-        new("@1", sense.Order),
+        new("@0", note.EntryId),
+        new("@1", note.ParentOrder),
+        new("@2", note.Order),
+        new("@3", note.Text),
     ];
 }

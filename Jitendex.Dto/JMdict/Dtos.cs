@@ -51,7 +51,6 @@ public sealed record ReadingDto
 
 public sealed record SenseDto
 {
-    public string? Note { get; init; }
     public ImmutableArray<string> KanjiFormRestrictions { get; init; } = [];
     public ImmutableArray<string> ReadingRestrictions { get; init; } = [];
     public ImmutableArray<string> PartsOfSpeech { get; init; } = [];
@@ -59,6 +58,7 @@ public sealed record SenseDto
     public ImmutableArray<string> Miscs { get; init; } = [];
     public ImmutableArray<string> Dialects { get; init; } = [];
     public ImmutableArray<LanguageSourceDto> LanguageSources { get; init; } = [];
+    public ImmutableArray<string> Notes { get; init; } = [];
     public ImmutableArray<GlossDto> Glosses { get; init; } = [];
     public ImmutableArray<CrossReferenceDto> CrossReferences { get; init; } = [];
 }

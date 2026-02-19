@@ -65,6 +65,7 @@ internal sealed class DocumentDiff
         DiffDictionaryProperties<(int, int, int), KanjiFormRestrictionElement>(docA, docB, nameof(Document.KanjiFormRestrictions));
         DiffDictionaryProperties<(int, int, int), LanguageSourceElement>(docA, docB, nameof(Document.LanguageSources));
         DiffDictionaryProperties<(int, int, int), MiscElement>(docA, docB, nameof(Document.Miscs));
+        DiffDictionaryProperties<(int, int, int), NoteElement>(docA, docB, nameof(Document.Notes));
         DiffDictionaryProperties<(int, int, int), PartOfSpeechElement>(docA, docB, nameof(Document.PartsOfSpeech));
         DiffDictionaryProperties<(int, int, int), ReadingRestrictionElement>(docA, docB, nameof(Document.ReadingRestrictions));
 

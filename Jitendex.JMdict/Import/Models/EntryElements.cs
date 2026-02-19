@@ -54,7 +54,6 @@ internal sealed record SenseElement : IEntryElement
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
-    public string? Note { get; set; }
 }
 
 internal static class EntryElementExtensions

@@ -67,6 +67,7 @@ internal static class ImporterProvider
         .AddTransient<KanjiFormRestrictionReader>()
         .AddTransient<LanguageSourceReader>()
         .AddTransient<MiscReader>()
+        .AddTransient<NoteReader>()
         .AddTransient<PartOfSpeechReader>()
         .AddTransient<ReadingRestrictionReader>()
 

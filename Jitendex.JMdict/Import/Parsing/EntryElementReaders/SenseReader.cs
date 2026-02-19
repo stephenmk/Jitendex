@@ -34,6 +34,7 @@ internal partial class SenseReader
     GlossReader glossReader,
     LanguageSourceReader languageSourceReader,
     MiscReader miscReader,
+    NoteReader noteReader,
     PartOfSpeechReader partOfSpeechReader
 ) : BaseReader(logger)
 {
@@ -92,7 +93,7 @@ internal partial class SenseReader
                 await languageSourceReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.SenseNote:
-                await ReadSenseNote(xmlReader, sense);
+                await noteReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.SenseReadingRestriction:
                 await rRestrictionReader.ReadAsync(xmlReader, document, sense);
@@ -108,19 +109,4 @@ internal partial class SenseReader
                 break;
         }
     }
-
-    private async Task ReadSenseNote(XmlReader xmlReader, SenseElement sense)
-    {
-        // The XML schema allows for more than one note per sense,
-        // but in practice there is only one or none.
-        if (sense.Note != null)
-        {
-            LogTooManySenseNotes(sense.EntryId, sense.Order);
-        }
-        sense.Note = await xmlReader.ReadElementContentAsStringAsync();
-    }
-
-    [LoggerMessage(LogLevel.Warning,
-    "Entry ID `{entryId}` sense #{SenseOrder} contains multiple sense notes")]
-    partial void LogTooManySenseNotes(int entryId, int senseOrder);
 }

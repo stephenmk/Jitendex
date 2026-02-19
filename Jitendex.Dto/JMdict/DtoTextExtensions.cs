@@ -139,10 +139,13 @@ public static class DtoTextExtensions
                 sb.Append($"\t\t{langSource.ToText()}");
             }
         }
-        if (x.Note is not null)
+        if (x.Notes.Length > 0)
         {
-            sb.AppendLine();
-            sb.Append($"\t\t《{x.Note}》");
+            foreach (var note in x.Notes)
+            {
+                sb.AppendLine();
+                sb.Append($"\t\t《{note}》");
+            }
         }
         if (x.Glosses.Length > 0)
         {

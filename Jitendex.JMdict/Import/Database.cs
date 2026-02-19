@@ -59,6 +59,7 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
     private static readonly KanjiFormRestrictionTable KanjiFormRestrictionTable = new();
     private static readonly LanguageSourceTable LanguageSourceTable = new();
     private static readonly MiscTable MiscTable = new();
+    private static readonly NoteTable NoteTable = new();
     private static readonly PartOfSpeechTable PartOfSpeechTable = new();
     private static readonly ReadingRestrictionTable ReadingRestrictionTable = new();
     #endregion
@@ -116,6 +117,7 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         KanjiFormRestrictionTable.InsertItems(context, document.KanjiFormRestrictions.Values);
         LanguageSourceTable.InsertItems(context, document.LanguageSources.Values);
         MiscTable.InsertItems(context, document.Miscs.Values);
+        NoteTable.InsertItems(context, document.Notes.Values);
         PartOfSpeechTable.InsertItems(context, document.PartsOfSpeech.Values);
         ReadingRestrictionTable.InsertItems(context, document.ReadingRestrictions.Values);
 
@@ -159,6 +161,7 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         KanjiFormRestrictionTable.InsertItems(context, diff.InsertDocument.KanjiFormRestrictions.Values);
         LanguageSourceTable.InsertItems(context, diff.InsertDocument.LanguageSources.Values);
         MiscTable.InsertItems(context, diff.InsertDocument.Miscs.Values);
+        NoteTable.InsertItems(context, diff.InsertDocument.Notes.Values);
         PartOfSpeechTable.InsertItems(context, diff.InsertDocument.PartsOfSpeech.Values);
         ReadingRestrictionTable.InsertItems(context, diff.InsertDocument.ReadingRestrictions.Values);
 
@@ -178,11 +181,13 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         KanjiFormRestrictionTable.UpdateItems(context, diff.UpdateDocument.KanjiFormRestrictions.Values);
         LanguageSourceTable.UpdateItems(context, diff.UpdateDocument.LanguageSources.Values);
         MiscTable.UpdateItems(context, diff.UpdateDocument.Miscs.Values);
+        NoteTable.UpdateItems(context, diff.UpdateDocument.Notes.Values);
         PartOfSpeechTable.UpdateItems(context, diff.UpdateDocument.PartsOfSpeech.Values);
         ReadingRestrictionTable.UpdateItems(context, diff.UpdateDocument.ReadingRestrictions.Values);
 
         ReadingRestrictionTable.DeleteItems(context, diff.DeleteDocument.ReadingRestrictions.Values);
         PartOfSpeechTable.DeleteItems(context, diff.DeleteDocument.PartsOfSpeech.Values);
+        NoteTable.DeleteItems(context, diff.DeleteDocument.Notes.Values);
         MiscTable.DeleteItems(context, diff.DeleteDocument.Miscs.Values);
         LanguageSourceTable.DeleteItems(context, diff.DeleteDocument.LanguageSources.Values);
         KanjiFormRestrictionTable.DeleteItems(context, diff.DeleteDocument.KanjiFormRestrictions.Values);

@@ -16,6 +16,8 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+namespace Jitendex.JMdict.Import.Models;
+
 internal static class DictionaryExtentions
 {
     public static int NextOrder<T>(this Dictionary<(int, int), T> dictionary, int parentKey)

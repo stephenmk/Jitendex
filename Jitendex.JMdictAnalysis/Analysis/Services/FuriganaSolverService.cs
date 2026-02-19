@@ -23,7 +23,7 @@ using Jitendex.AppDirectory;
 using Jitendex.Furigana;
 using Jitendex.Kanjidic2;
 
-namespace Jitendex.JMdictAnalysis.Import.Services;
+namespace Jitendex.JMdictAnalysis.Analysis.Services;
 
 internal sealed class FuriganaSolverService(ILogger<FuriganaSolverService> logger, Kanjidic2Context kanjiContext)
 {

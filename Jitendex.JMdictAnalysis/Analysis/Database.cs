@@ -24,7 +24,7 @@ using Jitendex.JMdictAnalysis.Entities.EntryItems.KanjiFormItems;
 using Jitendex.JMdictAnalysis.Entities.EntryItems.ReadingItems;
 using Jitendex.JMdictAnalysis.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdictAnalysis.Import;
+namespace Jitendex.JMdictAnalysis.Analysis;
 
 internal sealed class Database(JmdictAnalysisContext context)
 {

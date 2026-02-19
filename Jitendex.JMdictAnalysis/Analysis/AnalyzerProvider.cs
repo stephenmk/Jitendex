@@ -19,10 +19,10 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Kanjidic2;
-using Jitendex.JMdictAnalysis.Import.Services;
-using Jitendex.JMdictAnalysis.Import.Services.Analyzers;
+using Jitendex.JMdictAnalysis.Analysis.Services;
+using Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
 
-namespace Jitendex.JMdictAnalysis.Import;
+namespace Jitendex.JMdictAnalysis.Analysis;
 
 internal static class AnalyzerProvider
 {

@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdictAnalysis.Import.Services;
-using Jitendex.JMdictAnalysis.Import.Services.Analyzers;
+using Jitendex.JMdictAnalysis.Analysis.Services;
+using Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
 
-namespace Jitendex.JMdictAnalysis.Import;
+namespace Jitendex.JMdictAnalysis.Analysis;
 
 internal sealed class Analyzer
 (
@@ -39,7 +39,7 @@ internal sealed class Analyzer
     FuriganaSolverService furiganaSolverService
 )
 {
-    public async Task ImportAsync(DirectoryInfo? dataDirectory)
+    public async Task AnalyzeAsync(DirectoryInfo? dataDirectory)
     {
         context.RecreateDatabase();
 

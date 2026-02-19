@@ -20,7 +20,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.AppDirectory;
 
-namespace Jitendex.JMdictAnalysis.Import.Services;
+namespace Jitendex.JMdictAnalysis.Analysis.Services;
 
 internal sealed class CrossReferenceCacheService(JmdictAnalysisContext context)
 {

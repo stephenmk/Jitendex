@@ -21,9 +21,9 @@ using Microsoft.Extensions.Logging;
 using Jitendex.Furigana;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Kanjidic2;
-using Jitendex.JMdictAnalysis.Import.Services.Tables;
+using Jitendex.JMdictAnalysis.Analysis.Services.Tables;
 
-namespace Jitendex.JMdictAnalysis.Import.Services.Analyzers;
+namespace Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
 
 internal partial class FuriganaSegmentAnalyzer
 (

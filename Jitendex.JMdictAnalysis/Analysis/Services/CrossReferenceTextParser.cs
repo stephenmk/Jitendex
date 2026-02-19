@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.JMdictAnalysis.Import.Services;
+namespace Jitendex.JMdictAnalysis.Analysis.Services;
 
 internal partial class CrossReferenceTextParser(ILogger<CrossReferenceTextParser> logger)
 {

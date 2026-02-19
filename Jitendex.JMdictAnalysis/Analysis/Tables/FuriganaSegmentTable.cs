@@ -20,7 +20,7 @@ using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.JMdictAnalysis.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdictAnalysis.Import.Services.Tables;
+namespace Jitendex.JMdictAnalysis.Analysis.Services.Tables;
 
 internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
 {

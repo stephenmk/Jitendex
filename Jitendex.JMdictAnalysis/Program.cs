@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.CommandLine;
-using Jitendex.JMdictAnalysis.Import;
+using Jitendex.JMdictAnalysis.Analysis;
 
 namespace Jitendex.JMdictAnalysis;
 
@@ -49,8 +49,8 @@ public static class Program
 
         var dataDirectory = parseResult.GetValue(dataDirOption);
 
-        var importer = AnalyzerProvider.GetAnalyzer();
-        await importer.ImportAsync(dataDirectory);
+        var analyzer = AnalyzerProvider.GetAnalyzer();
+        await analyzer.AnalyzeAsync(dataDirectory);
 
         return 0;
     }

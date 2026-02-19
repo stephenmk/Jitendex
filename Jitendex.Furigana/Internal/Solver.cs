@@ -20,7 +20,12 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal;
 
-internal sealed class Solver(IterationSolver iterationSolver, ResourceCache cache) : IFuriganaSolver
+internal sealed class Solver
+(
+    IterationSolver smartSolver,
+    IterationSolver dumbSolver,
+    ResourceCache cache
+) : IFuriganaSolver
 {
     public Solution? SolveVocab(string kanjiFormText, string readingText)
         => Solve(new VocabEntry(kanjiFormText, readingText));
@@ -30,16 +35,21 @@ internal sealed class Solver(IterationSolver iterationSolver, ResourceCache cach
 
     private Solution? Solve(Entry entry)
     {
-        var solutions = iterationSolver.Solve(entry).ToArray();
+        var solutions = smartSolver.Solve(entry).ToArray();
 
         if (solutions.Length == 1)
         {
             return solutions[0];
         }
-        else
+
+        solutions = dumbSolver.Solve(entry).ToArray();
+
+        if (solutions.Length == 1)
         {
-            return null;
+            return solutions[0];
         }
+
+        return null;
     }
 
     public void AddCompounds(IEnumerable<JapaneseCompound> compounds)

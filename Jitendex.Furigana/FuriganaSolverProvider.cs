@@ -31,18 +31,22 @@ public static class FuriganaSolverProvider
     {
         var resourceCache = new ResourceCache();
 
-        ImmutableArray<ISolutionPartsGenerator> solutionPartsGenerators =
+        ImmutableArray<ISolutionPartsGenerator> smartGenerators =
         [
             new CachedSolutionPartsGenerator(resourceCache),
             new DefaultSolutionPartsGenerator
             (
                 new DefaultSingleCharacterParts(),
                 new DefaultRepeatedCharacterParts()
-            )
+            ),
         ];
 
-        var iterationSolver = new IterationSolver(solutionPartsGenerators);
-        var solver = new Solver(iterationSolver, resourceCache);
+        ImmutableArray<ISolutionPartsGenerator> dumbGenerators = [smartGenerators[1]];
+
+        var smartSolver = new IterationSolver(smartGenerators);
+        var dumbSolver = new IterationSolver(dumbGenerators);
+
+        var solver = new Solver(smartSolver, dumbSolver, resourceCache);
         return solver;
     }
 }
@@ -69,7 +73,7 @@ public sealed record JapaneseCompound
         }
         Readings = [.. normalizedReadings];
     }
-};
+}
 
 public sealed record JapaneseCharacter
 {
@@ -82,7 +86,7 @@ public sealed record JapaneseCharacter
         VocabReadings = [.. vocabReadings];
         NameReadings = [.. nameReadings];
     }
-};
+}
 
 public sealed record CharacterReading
 {

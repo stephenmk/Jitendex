@@ -23,22 +23,18 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal;
 
-internal class SolutionBuilder
+internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
 {
-    public ImmutableList<SolutionPart> Parts { get; private set; }
+    public int ReadingTextLength()
+        => Parts.Sum(static part => (part.Furigana ?? part.BaseText).Length);
 
-    public SolutionBuilder() : this([]) { }
-    public SolutionBuilder(ImmutableList<SolutionPart> parts) => Parts = parts;
-
-    public int ReadingTextLength() => Parts.Sum(static part => (part.Furigana ?? part.BaseText).Length);
-    public void Add(SolutionPart part) => Parts = Parts.Add(part);
-
-    public Solution? ToSolution(Entry entry) => !IsValid(entry) ? null : new Solution
-    {
-        KanjiFormText = entry.KanjiFormText,
-        ReadingText = entry.ReadingText,
-        Parts = NormalizedParts(),
-    };
+    public Solution? ToSolution(Entry entry)
+        => !IsValid(entry) ? null : new Solution
+        {
+            KanjiFormText = entry.KanjiFormText,
+            ReadingText = entry.ReadingText,
+            Parts = NormalizedParts(),
+        };
 
     /// <summary>
     /// Determine if the parts contained within this builder are valid for the given entry.
@@ -62,7 +58,6 @@ internal class SolutionBuilder
 
     /// <summary>
     /// Merge consecutive parts together if they have null furigana.
-    /// Ignore merged parts with both empty text and null furigana.
     /// </summary>
     private ImmutableArray<SolutionPart> NormalizedParts()
     {

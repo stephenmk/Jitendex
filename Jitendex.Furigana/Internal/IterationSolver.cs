@@ -42,7 +42,8 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
 
     private List<SolutionBuilder> FindPossibleSolutions(Entry entry)
     {
-        var solutions = new List<SolutionBuilder>() { new() };
+        var emptySolution = new SolutionBuilder([]); // Need an initial solution to iterate upon.
+        var solutions = new List<SolutionBuilder>() { emptySolution };
 
         for (int sliceStart = 0; sliceStart < entry.KanjiFormRunes.Length; sliceStart++)
         {

@@ -29,13 +29,12 @@ internal static partial class TextSolution
 
     public static Solution Parse(string text, Entry entry)
     {
-        var solutionBuilder = new SolutionBuilder();
-
+        var parts = new List<SolutionPart>();
         var matches = TextSolutionRegex().Matches(text);
 
         if (matches.Count == 0)
         {
-            solutionBuilder.Add(new SolutionPart(text, null));
+            parts.Add(new SolutionPart(text, null));
         }
 
         foreach (Match match in matches)
@@ -45,11 +44,12 @@ internal static partial class TextSolution
             var furigana = match.Groups[3].Value;
             var noFurigana2 = match.Groups[4].Value;
 
-            solutionBuilder.Add(new SolutionPart(noFurigana1, null));
-            solutionBuilder.Add(new SolutionPart(baseText, furigana));
-            solutionBuilder.Add(new SolutionPart(noFurigana2, null));
+            parts.Add(new SolutionPart(noFurigana1, null));
+            parts.Add(new SolutionPart(baseText, furigana));
+            parts.Add(new SolutionPart(noFurigana2, null));
         }
 
+        var solutionBuilder = new SolutionBuilder([.. parts]);
         var solution = solutionBuilder.ToSolution(entry) ??
             throw new ArgumentException("Malformatted solution text", nameof(text));
 

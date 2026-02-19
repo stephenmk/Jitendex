@@ -18,7 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Dto.Tatoeba;
 
-public sealed record RevisionDto(int Number, DateOnly CreatedDate, bool IsPriority, string DiffJson);
+public sealed record RevisionDto
+(
+    int Number,
+    DateOnly CreatedDate,
+    bool IsPriority,
+    string DiffJson
+);
 
 public sealed record SequenceDto(int Id, DateOnly CreatedDate)
 {
@@ -37,5 +43,18 @@ public sealed record SegmentationDto
     public ImmutableArray<TokenDto> Tokens { get; init; } = [];
 }
 
-public sealed record TranslationDto(int Id, string Text);
-public sealed record TokenDto(string Headword, string? Reading, int? EntryId, int? SenseNumber, string? SentenceForm, bool IsPriority);
+public sealed record TranslationDto
+(
+    int Id,
+    string Text
+);
+
+public sealed record TokenDto
+(
+    string Headword,
+    string? Reading,
+    int? EntryId,
+    int? SenseNumber,
+    string? SentenceForm,
+    bool IsPriority
+);

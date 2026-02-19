@@ -63,7 +63,29 @@ public sealed record SenseDto
     public ImmutableArray<CrossReferenceDto> CrossReferences { get; init; } = [];
 }
 
-public sealed record RevisionDto(int Number, DateOnly Date, string DiffJson);
-public sealed record LanguageSourceDto(string? Text, string LanguageCode, string TypeName, bool IsWasei);
-public sealed record GlossDto(string? TypeName, string Text);
-public sealed record CrossReferenceDto(string TypeName, string Text);
+public sealed record RevisionDto
+(
+    int Number,
+    DateOnly Date,
+    string DiffJson
+);
+
+public sealed record LanguageSourceDto
+(
+    string? Text,
+    string LanguageCode,
+    string TypeName,
+    bool IsWasei
+);
+
+public sealed record GlossDto
+(
+    string? TypeName,
+    string Text
+);
+
+public sealed record CrossReferenceDto
+(
+    string TypeName,
+    string Text
+);

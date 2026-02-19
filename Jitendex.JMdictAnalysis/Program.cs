@@ -30,7 +30,7 @@ public static class Program
             Description = "Path to the jitendex-data directory",
         };
 
-        var rootCommand = new RootCommand("Jitendex.JMdictAnalysis: Import JMdict XML documents")
+        var rootCommand = new RootCommand("Jitendex.JMdictAnalysis: A fork of the JMdict database")
         {
             dataDirOption
         };

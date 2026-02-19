@@ -44,6 +44,8 @@ internal sealed class Analyzer
         context.RecreateDatabase();
 
         using var transaction = context.Database.BeginTransaction();
+
+        logger.LogInformation("Copying data from the JMdict database file");
         database.TransferDataFromJmdict();
 
         logger.LogInformation("Starting data analysis");

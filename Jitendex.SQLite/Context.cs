@@ -30,10 +30,9 @@ public abstract class SqliteContext : DbContext
 
     public SqliteContext(DatabaseFile databaseFile)
     {
-        var directory = AppDirectory.Cache.Get(SqliteDirectory);
         var builder = new SqliteConnectionStringBuilder
         {
-            DataSource = Path.Join(directory.FullName, databaseFile.ToFilename()),
+            DataSource = GetDataSource(databaseFile),
             Pooling = true,
         };
         _dbPath = builder.ToString();
@@ -51,10 +50,6 @@ public abstract class SqliteContext : DbContext
         Database.EnsureDeleted();
         Database.EnsureCreated();
     }
-
-    /// <summary>
-    /// Delete and recreate the database file.
-    /// </summary>
     public async Task RecreateDatabaseAsync()
     {
         await Database.EnsureDeletedAsync();
@@ -82,23 +77,26 @@ public abstract class SqliteContext : DbContext
     /// </summary>
     public void ExecuteDeferForeignKeysPragma()
         => Database.ExecuteSqlRaw("PRAGMA defer_foreign_keys = ON;");
-
-    /// <summary>
-    /// Wait until all data is imported before checking foreign key constraints.
-    /// </summary>
     public async Task ExecuteDeferForeignKeysPragmaAsync()
         => await Database.ExecuteSqlRawAsync("PRAGMA defer_foreign_keys = ON;");
 
-
     /// <summary>
     /// Rebuild the database file compactly.
     /// </summary>
-    public void ExecuteVacuum()
-        => Database.ExecuteSqlRaw("VACUUM;");
+    public void ExecuteVacuum() => Database.ExecuteSqlRaw("VACUUM;");
+    public async Task ExecuteVacuumAsync() => await Database.ExecuteSqlRawAsync("VACUUM;");
 
-    /// <summary>
-    /// Rebuild the database file compactly.
-    /// </summary>
-    public async Task ExecuteVacuumAsync()
-        => await Database.ExecuteSqlRawAsync("VACUUM;");
+#pragma warning disable EF1002
+    public void AttachDatabase(DatabaseFile databaseFile)
+        => Database.ExecuteSqlRaw($"ATTACH DATABASE '{GetDataSource(databaseFile)}' AS '{databaseFile}';");
+    public void DetachDatabase(DatabaseFile databaseFile)
+        => Database.ExecuteSqlRaw($"DETACH DATABASE '{databaseFile}';");
+#pragma warning restore EF1002
+
+    private static string GetDataSource(DatabaseFile databaseFile)
+        => Path.Join
+        (
+            AppDirectory.Cache.Get(SqliteDirectory).FullName,
+            databaseFile.ToFilename()
+        );
 }

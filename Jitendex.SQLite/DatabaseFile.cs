@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,17 +16,31 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
-using Jitendex.Chise.Models;
-using Jitendex.SQLite;
+using static Jitendex.SQLite.DatabaseFile;
 
-namespace Jitendex.Chise;
+namespace Jitendex.SQLite;
 
-public class Context() : SqliteContext(DatabaseFile.ChiseIds)
+public enum DatabaseFile
 {
-    public DbSet<Codepoint> Codepoints { get; } = null!;
-    public DbSet<Component> Components { get; } = null!;
-    public DbSet<ComponentPosition> ComponentPositions { get; } = null!;
-    public DbSet<UnicodeCharacter> UnicodeCharacters { get; } = null!;
-    public DbSet<Sequence> Sequences { get; } = null!;
+    JMdict,
+    JMdictAnalysis,
+    Kanjidic2,
+    Tatoeba,
+    KanjiVG,
+    ChiseIds,
+}
+
+internal static class DatabaseFileExtensions
+{
+    public static string ToFilename(this DatabaseFile databaseFile)
+        => databaseFile switch
+        {
+            JMdict => "jmdict.db",
+            JMdictAnalysis => "jmdict_analysis.db",
+            Kanjidic2 => "kanjidic2.db",
+            Tatoeba => "tatoeba.db",
+            KanjiVG => "kanjivg.db",
+            ChiseIds => "chise_ids.db",
+            _ => throw new ArgumentOutOfRangeException(nameof(databaseFile))
+        };
 }

@@ -22,7 +22,7 @@ using Jitendex.SQLite;
 
 namespace Jitendex.KanjiVG;
 
-public class Context : SqliteContext
+public class Context() : SqliteContext(DatabaseFile.KanjiVG)
 {
     public DbSet<Entry> Entries { get; set; } = null!;
     public DbSet<VariantType> VariantTypes { get; set; } = null!;
@@ -35,5 +35,4 @@ public class Context : SqliteContext
     public DbSet<ComponentRadical> ComponentRadicals { get; set; } = null!;
     public DbSet<ComponentPhon> ComponentPhons { get; set; } = null!;
     public DbSet<StrokeType> StrokeTypes { get; set; } = null!;
-    public Context() : base("kanjivg.db") { }
 }

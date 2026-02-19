@@ -26,7 +26,7 @@ using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdict;
 
-public class JmdictContext() : SqliteContext("jmdict.db")
+public class JmdictContext() : SqliteContext(DatabaseFile.JMdict)
 {
     public DbSet<FileHeader> FileHeaders { get; set; } = null!;
     public DbSet<Sequence> Sequences { get; set; } = null!;

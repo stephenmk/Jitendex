@@ -23,7 +23,7 @@ using Jitendex.Kanjidic2.Entities.SubgroupItems;
 
 namespace Jitendex.Kanjidic2;
 
-public class Kanjidic2Context : SqliteContext
+public class Kanjidic2Context() : SqliteContext(DatabaseFile.Kanjidic2)
 {
     public DbSet<FileHeader> FileHeaders { get; set; } = null!;
     public DbSet<Sequence> Sequences { get; set; } = null!;
@@ -44,6 +44,4 @@ public class Kanjidic2Context : SqliteContext
     public DbSet<Reading> Readings { get; set; } = null!;
     public DbSet<DerivedReading> DerivedReadings { get; set; } = null!;
     #endregion
-
-    public Kanjidic2Context() : base("kanjidic2.db") { }
 }

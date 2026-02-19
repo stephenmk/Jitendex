@@ -28,12 +28,12 @@ public abstract class SqliteContext : DbContext
 {
     private readonly string _dbPath;
 
-    public SqliteContext(string dbFilename)
+    public SqliteContext(DatabaseFile databaseFile)
     {
         var directory = AppDirectory.Cache.Get(SqliteDirectory);
         var builder = new SqliteConnectionStringBuilder
         {
-            DataSource = Path.Join(directory.FullName, dbFilename),
+            DataSource = Path.Join(directory.FullName, databaseFile.ToFilename()),
             Pooling = true,
         };
         _dbPath = builder.ToString();

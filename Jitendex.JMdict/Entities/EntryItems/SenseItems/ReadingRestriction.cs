@@ -29,11 +29,7 @@ public sealed class ReadingRestriction
     public required int SenseOrder { get; init; }
     public required int Order { get; init; }
     public required string ReadingText { get; set; }
-    public int? ReadingOrder { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;
-
-    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
-    public Reading? Reading { get; set; }
 }

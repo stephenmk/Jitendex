@@ -18,9 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.JMdict.Entities.EntryItems.Furigana;
 using Jitendex.JMdict.Entities.EntryItems.KanjiFormItems;
-using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdict.Entities.EntryItems;
 
@@ -37,13 +35,4 @@ public sealed class KanjiForm
 
     [ForeignKey(nameof(EntryId))]
     public Entry Entry { get; init; } = null!;
-
-    [InverseProperty(nameof(KanjiFormBridge.KanjiForm))]
-    public List<KanjiFormBridge> Bridges { get; init; } = [];
-
-    [InverseProperty(nameof(CrossReference.ReferencedKanjiForm))]
-    public List<CrossReference> ReverseCrossReferences { get; init; } = [];
-
-    [InverseProperty(nameof(KanjiFormRestriction.KanjiForm))]
-    public List<KanjiFormRestriction> RestrictedSenses { get; init; } = [];
 }

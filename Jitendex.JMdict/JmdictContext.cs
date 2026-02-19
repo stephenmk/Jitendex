@@ -20,14 +20,13 @@ using Microsoft.EntityFrameworkCore;
 using Jitendex.SQLite;
 using Jitendex.JMdict.Entities;
 using Jitendex.JMdict.Entities.EntryItems;
-using Jitendex.JMdict.Entities.EntryItems.Furigana;
 using Jitendex.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdict;
 
-public class JmdictContext : SqliteContext
+public class JmdictContext() : SqliteContext("jmdict.db")
 {
     public DbSet<FileHeader> FileHeaders { get; set; } = null!;
     public DbSet<Sequence> Sequences { get; set; } = null!;
@@ -63,10 +62,6 @@ public class JmdictContext : SqliteContext
     public DbSet<ReadingRestriction> ReadingRestrictions { get; set; } = null!;
     #endregion
 
-    #region Furigana Items
-    public DbSet<KanjiFormBridge> KanjiFormBridges { get; set; } = null!;
-    #endregion
-
     #region Keywords
     public DbSet<PriorityTag> PriorityTags { get; set; } = null!;
     public DbSet<ReadingInfoTag> ReadingInfoTags { get; set; } = null!;
@@ -82,6 +77,4 @@ public class JmdictContext : SqliteContext
     public DbSet<LanguageSourceType> LanguageSourceTypes { get; set; } = null!;
     public DbSet<Language> Languages { get; set; } = null!;
     #endregion
-
-    public JmdictContext() : base("jmdict.db") { }
 }

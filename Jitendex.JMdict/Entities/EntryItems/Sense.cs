@@ -40,12 +40,7 @@ public sealed class Sense
 
     public List<Gloss> Glosses { get; init; } = [];
     public List<LanguageSource> LanguageSources { get; init; } = [];
-
-    [InverseProperty(nameof(CrossReference.Sense))]
     public List<CrossReference> CrossReferences { get; init; } = [];
-
-    [InverseProperty(nameof(CrossReference.ReferencedSense))]
-    public List<CrossReference> ReverseCrossReferences { get; init; } = [];
 
     [ForeignKey(nameof(EntryId))]
     public Entry Entry { get; init; } = null!;

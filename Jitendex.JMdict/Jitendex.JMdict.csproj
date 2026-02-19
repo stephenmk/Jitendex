@@ -19,8 +19,5 @@
     <ProjectReference Include="..\Jitendex.EdrdgDictionaryArchive\Jitendex.EdrdgDictionaryArchive.csproj" />
     <ProjectReference Include="..\Libraries\MinimalJsonDiff\Jitendex.MinimalJsonDiff\Jitendex.MinimalJsonDiff.csproj" />
     <ProjectReference Include="..\Jitendex.Dto\Jitendex.Dto.csproj" />
-    <ProjectReference Include="..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
-    <ProjectReference Include="..\Jitendex.Kanjidic2\Jitendex.Kanjidic2.csproj" />
-    <ProjectReference Include="..\Jitendex.Furigana\Jitendex.Furigana.csproj" />
   </ItemGroup>
 </Project>

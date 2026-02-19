@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Jitendex.EdrdgDictionaryArchive;
-using Jitendex.JMdict.Import.Analysis;
 using Jitendex.JMdict.Import.Models;
 using Jitendex.JMdict.Import.Parsing;
 using static Jitendex.EdrdgDictionaryArchive.DictionaryFile;
@@ -31,11 +30,10 @@ internal sealed class Importer
     IEdrdgArchiveService fileArchive,
     JmdictContext context,
     DocumentReader reader,
-    Database database,
-    Analyzer analyzer
+    Database database
 )
 {
-    public async Task ImportAsync(DirectoryInfo? archiveDirectory, DirectoryInfo? dataDirectory)
+    public async Task ImportAsync(DirectoryInfo? archiveDirectory)
     {
         context.Database.EnsureCreated();
         var previousDate = GetPreviousDate();
@@ -51,11 +49,7 @@ internal sealed class Importer
         }
 
         using var transaction = context.Database.BeginTransaction();
-
-        analyzer.Clean();
         await UpdateDatabaseAsync(archiveDirectory, previousDocument);
-        await analyzer.AnalyzeAsync(dataDirectory);
-
         transaction.Commit();
     }
 

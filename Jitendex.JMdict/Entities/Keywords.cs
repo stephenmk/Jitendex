@@ -29,7 +29,6 @@ public interface IKeyword
 {
     string Name { get; init; }
     DateOnly CreatedDate { get; init; }
-    string? Description { get; set; }
 }
 
 [Table(nameof(ReadingInfoTag))]
@@ -38,7 +37,6 @@ public sealed class ReadingInfoTag : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(ReadingInfo.Tag))]
     public List<ReadingInfo> Infos { get; init; } = [];
@@ -50,7 +48,6 @@ public sealed class KanjiFormInfoTag : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(KanjiFormInfo.Tag))]
     public List<KanjiFormInfo> Infos { get; init; } = [];
@@ -62,7 +59,6 @@ public sealed class PartOfSpeechTag : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(PartOfSpeech.Tag))]
     public List<PartOfSpeech> PartsOfSpeech { get; init; } = [];
@@ -74,7 +70,6 @@ public sealed class FieldTag : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(Field.Tag))]
     public List<Field> Fields { get; init; } = [];
@@ -86,7 +81,6 @@ public sealed class MiscTag : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(Misc.Tag))]
     public List<Misc> Miscs { get; init; } = [];
@@ -98,7 +92,6 @@ public sealed class DialectTag : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(Dialect.Tag))]
     public List<Dialect> Dialects { get; init; } = [];
@@ -110,7 +103,6 @@ public sealed class GlossType : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(Gloss.Type))]
     public List<Gloss> Glosses { get; init; } = [];
@@ -122,7 +114,6 @@ public sealed class CrossReferenceType : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(CrossReference.Type))]
     public List<CrossReference> CrossReferences { get; init; } = [];
@@ -134,7 +125,6 @@ public sealed class LanguageSourceType : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(LanguageSource.Type))]
     public List<LanguageSource> LanguageSources { get; init; } = [];
@@ -146,23 +136,12 @@ public sealed class PriorityTag : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(KanjiFormPriority.Tag))]
     public List<KanjiFormPriority> KanjiFormPriorities { get; init; } = [];
 
     [InverseProperty(nameof(ReadingPriority.Tag))]
     public List<ReadingPriority> ReadingPriorities { get; init; } = [];
-
-    public bool IsHighPriority() => Name switch
-    {
-        "gai1" or
-        "ichi1" or
-        "news1" or
-        "spec1" or
-        "spec2" => true,
-        _ => false
-    };
 }
 
 [Table(nameof(Language))]
@@ -171,7 +150,6 @@ public sealed class Language : IKeyword
     [Key]
     public required string Name { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public string? Description { get; set; }
 
     [InverseProperty(nameof(LanguageSource.Language))]
     public List<LanguageSource> LanguageSources { get; init; } = [];

@@ -29,11 +29,7 @@ public sealed class KanjiFormRestriction
     public required int SenseOrder { get; init; }
     public required int Order { get; init; }
     public required string KanjiFormText { get; set; }
-    public int? KanjiFormOrder { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;
-
-    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
-    public KanjiForm? KanjiForm { get; set; }
 }

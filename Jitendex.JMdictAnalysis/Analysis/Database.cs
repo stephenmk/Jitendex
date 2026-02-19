@@ -34,6 +34,10 @@ internal sealed class Database(JmdictAnalysisContext context)
         context.Database.ExecuteSqlRaw(TransferCommandText);
     }
 
+    /// <remarks>
+    /// This assumes that the table names and column names
+    /// in the JMdict SQLite database are exactly the same.
+    /// </remarks>
     private const string TransferCommandText =
         $"""
         INSERT INTO "{nameof(ReadingInfoTag)}"

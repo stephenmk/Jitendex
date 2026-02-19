@@ -46,7 +46,7 @@ internal partial class KanjiFormRestrictionAnalyzer(ILogger<KanjiFormRestriction
             })
             .ToList();
 
-        List<KanjiFormRestrictionRow> updates = new(restrictions.Count);
+        var updates = new List<KanjiFormRestrictionRow>(restrictions.Count);
 
         foreach (var r in restrictions)
         {

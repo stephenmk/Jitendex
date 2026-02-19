@@ -46,7 +46,7 @@ internal partial class RestrictionAnalyzer(ILogger<RestrictionAnalyzer> logger, 
             })
             .ToList();
 
-        List<RestrictionRow> updates = new(restrictions.Count);
+        var updates = new List<RestrictionRow>(restrictions.Count);
 
         foreach (var r in restrictions)
         {

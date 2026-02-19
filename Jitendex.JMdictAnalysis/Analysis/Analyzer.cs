@@ -33,9 +33,9 @@ internal sealed class Analyzer
     KanjiFormRestrictionAnalyzer kanjiFormRestrictionAnalyzer,
     KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
     FuriganaSegmentAnalyzer furiganaSegmentAnalyzer,
+    CrossReferenceAnalyzer crossReferenceAnalyzer,
 
     CrossReferenceCacheService crossReferenceCacheService,
-    CrossReferenceAnalyzer crossReferenceAnalyzer,
     FuriganaSolverService furiganaSolverService
 )
 {
@@ -64,5 +64,6 @@ internal sealed class Analyzer
         await furiganaSegmentAnalyzer.Analyze(furiganaSolver);
 
         transaction.Commit();
+        context.ExecuteVacuum();
     }
 }

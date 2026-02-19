@@ -27,7 +27,15 @@ namespace Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
 internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> logger, JmdictAnalysisContext context)
 {
     private static readonly KanjiFormBridgeTable KanjiFormBridgeTable = new();
-    private readonly record struct ReadingData(int Order, string Text, bool NoKanji, bool IsHidden, ImmutableArray<int> RestrictionOrders);
+
+    private readonly record struct ReadingData
+    (
+        int Order,
+        string Text,
+        bool NoKanji,
+        bool IsHidden,
+        ImmutableArray<int> RestrictionOrders
+    );
 
     public void Analyze()
     {

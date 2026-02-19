@@ -122,6 +122,6 @@ public sealed class Solution
     public override int GetHashCode() => Parts.Aggregate
     (
         seed: HashCode.Combine(KanjiFormText, ReadingText),
-        func: static (hashcode, part) => HashCode.Combine(hashcode, part.GetHashCode())
+        func: static (hashcode, part) => HashCode.Combine(hashcode, part)
     );
 }

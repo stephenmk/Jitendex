@@ -28,7 +28,6 @@ public sealed class Sense
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
-    public string? Note { get; set; }
 
     public List<KanjiFormRestriction> KanjiFormRestrictions { get; init; } = [];
     public List<ReadingRestriction> ReadingRestrictions { get; init; } = [];
@@ -38,6 +37,7 @@ public sealed class Sense
     public List<Misc> Miscs { get; init; } = [];
     public List<Dialect> Dialects { get; init; } = [];
 
+    public List<Note> Notes { get; init; } = [];
     public List<Gloss> Glosses { get; init; } = [];
     public List<LanguageSource> LanguageSources { get; init; } = [];
 

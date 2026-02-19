@@ -169,6 +169,9 @@ internal sealed class Database(JmdictAnalysisContext context)
         INSERT INTO "{nameof(Misc)}"
         SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Misc)}";
 
+        INSERT INTO "{nameof(Note)}"
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Note)}";
+
         INSERT INTO "{nameof(PartOfSpeech)}"
         SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(PartOfSpeech)}";
 

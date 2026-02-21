@@ -47,19 +47,36 @@ internal sealed class RepeatedCharacterAlgorithm : CharacterAlgorithm
         }
 
         int halfLength = reading.Length / 2;
+        var reading1 = reading[..halfLength];
+        var reading2 = reading[halfLength..];
+
+        if (!IsValidReadingPair(reading1, reading2))
+        {
+            return [];
+        }
 
         return
         [[
-            new Solution.Part
-            (
-                BaseText: textSlice.RawRunes[0].ToString(),
-                RubyText: reading[..halfLength]
-            ),
-            new Solution.Part
-            (
-                BaseText: textSlice.RawRunes[1].ToString(),
-                RubyText: reading[halfLength..]
-            )
+            new Solution.Part(textSlice.RawRunes[0].ToString(), reading1),
+            new Solution.Part(textSlice.RawRunes[1].ToString(), reading2),
         ]];
+    }
+
+    private bool IsValidReadingPair(string reading1, ReadOnlySpan<char> reading2)
+    {
+        if (reading1.IsKanaEquivalent(reading2))
+        {
+            return true;
+        }
+
+        foreach (var rendakuForm in reading1.KatakanaToHiragana().ToRendakuForms())
+        {
+            if (rendakuForm.IsKanaEquivalent(reading2))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

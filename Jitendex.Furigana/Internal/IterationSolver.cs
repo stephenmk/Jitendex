@@ -42,7 +42,7 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
 
     private List<SolutionBuilder> FindPossibleSolutions(Entry entry)
     {
-        var emptySolution = new SolutionBuilder([]); // Need an initial solution to iterate upon.
+        var emptySolution = new SolutionBuilder([]); // Need an initial, empty solution to iterate upon.
         var solutions = new List<SolutionBuilder>() { emptySolution };
 
         for (int sliceStart = 0; sliceStart < entry.TextRunes.Length; sliceStart++)

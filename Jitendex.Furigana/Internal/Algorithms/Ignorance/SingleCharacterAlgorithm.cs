@@ -26,25 +26,22 @@ internal sealed class SingleCharacterAlgorithm : CharacterAlgorithm
 {
     public override ImmutableArray<List<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
-        var baseText = textSlice.RawRunes.FastToString();
         var readings = DefaultSingleCharacterReadings(textSlice, readingState);
+
+        if (readings.Length == 0)
+        {
+            return [];
+        }
+
+        var baseText = textSlice.RawRunes.FastToString();
         var partsBuilder = ImmutableArray.CreateBuilder<List<Solution.Part>>(readings.Length);
         foreach (var reading in readings)
         {
-            if (baseText.IsKanaEquivalent(reading))
-            {
-                var part = new Solution.Part(baseText, null);
-                partsBuilder.Add([part]);
-            }
-            else
-            {
-                var part = new Solution.Part
-                (
-                    BaseText: baseText,
-                    RubyText: new(readingState.RemainingText[..reading.Length])
-                );
-                partsBuilder.Add([part]);
-            }
+            var rubyText = baseText.IsKanaEquivalent(reading)
+                ? null
+                : new string(readingState.RemainingText[..reading.Length]);
+
+            partsBuilder.Add([new(baseText, rubyText)]);
         }
         return partsBuilder.MoveToImmutable();
     }

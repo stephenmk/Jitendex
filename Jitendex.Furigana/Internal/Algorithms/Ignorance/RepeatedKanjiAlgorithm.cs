@@ -26,15 +26,7 @@ internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
 {
     public override ImmutableArray<List<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
-        var currentRune1 = textSlice.Runes[0];
-        var currentRune2 = textSlice.Runes[1];
-
-        if (!currentRune1.IsKanji() || currentRune1 != currentRune2)
-        {
-            return [];
-        }
-
-        if (!textSlice.PreviousRune.IsKanaOrDefault() || !textSlice.NextRune.IsKanaOrDefault())
+        if (!IsValidTextSlice(textSlice))
         {
             return [];
         }
@@ -60,6 +52,24 @@ internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
             new Solution.Part(textSlice.RawRunes[0].ToString(), reading1),
             new Solution.Part(textSlice.RawRunes[1].ToString(), reading2),
         ]];
+    }
+
+    private bool IsValidTextSlice(in TextSlice textSlice)
+    {
+        var currentRune1 = textSlice.Runes[0];
+        var currentRune2 = textSlice.Runes[1];
+
+        if (!currentRune1.IsKanji() || currentRune1 != currentRune2)
+        {
+            return false;
+        }
+
+        if (!textSlice.PreviousRune.IsKanaOrDefault() || !textSlice.NextRune.IsKanaOrDefault())
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private bool IsValidReadingPair(string reading1, ReadOnlySpan<char> reading2)

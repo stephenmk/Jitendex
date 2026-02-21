@@ -23,7 +23,7 @@ using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Internal;
 
-internal sealed class Service(ImmutableArray<IterationSolver> solvers, ResourceCache cache) : IFuriganaService
+internal sealed class Service(ImmutableArray<IterationSolver> solvers, ReadingKnowledge cache) : IFuriganaService
 {
     public void AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false)
         => AddReading(character.Value, new CharacterReading(reading.KatakanaToHiragana(), isPrefix, isSuffix), cache.Characters);

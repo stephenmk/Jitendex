@@ -16,11 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
 using Jitendex.Furigana.Internal;
 using Jitendex.Furigana.Internal.Models;
 using Jitendex.Furigana.Internal.Algorithms;
-using Jitendex.Furigana.Internal.Algorithms.APriori;
+using Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
 namespace Jitendex.Furigana;
 
@@ -28,27 +27,19 @@ public static class FuriganaServiceProvider
 {
     public static IFuriganaService GetFuriganaService()
     {
-        var resourceCache = new ResourceCache();
+        var knowledge = new ReadingKnowledge();
 
-        ImmutableArray<IAlgorithm> smartGenerators =
-        [
-            new APosterioriAlgorithm(resourceCache),
-            new APrioriAlgorithm
-            (
-                new SingleCharacterAlgorithm(),
-                new RepeatedCharacterAlgorithm()
-            ),
-        ];
+        var informedAlgo = new InformedAlgorithm(knowledge);
+        var ignorantAlgo = new IgnorantAlgorithm
+        (
+            new SingleCharacterAlgorithm(),
+            new RepeatedCharacterAlgorithm()
+        );
 
-        ImmutableArray<IAlgorithm> dumbGenerators =
-        [
-            smartGenerators[1]
-        ];
+        var informedSolver = new IterationSolver([informedAlgo, ignorantAlgo]);
+        var ignorantSolver = new IterationSolver([ignorantAlgo]);
 
-        var smartSolver = new IterationSolver(smartGenerators);
-        var dumbSolver = new IterationSolver(dumbGenerators);
-
-        var service = new Service([smartSolver, dumbSolver], resourceCache);
+        var service = new Service([informedSolver, ignorantSolver], knowledge);
         return service;
     }
 }

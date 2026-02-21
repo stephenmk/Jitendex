@@ -22,7 +22,7 @@ using System.Text.RegularExpressions;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Internal.Algorithms.APriori;
+namespace Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
 internal abstract class CharacterAlgorithm
 {

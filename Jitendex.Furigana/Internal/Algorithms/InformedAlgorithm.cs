@@ -22,7 +22,7 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal.Algorithms;
 
-internal sealed class APosterioriAlgorithm(ResourceCache cache) : IAlgorithm
+internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
 {
     public ImmutableArray<List<Solution.Part>> Solve(Entry entry, in TextSlice textSlice, in ReadingState readingState)
     {

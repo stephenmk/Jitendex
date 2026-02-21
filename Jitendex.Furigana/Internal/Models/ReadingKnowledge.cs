@@ -23,7 +23,7 @@ internal sealed record CharacterReading(string Text, bool IsPrefix, bool IsSuffi
 // TODO: The dictionaries and lists in this class really only need to be mutable
 // by the Service class. The solver classes should not be able to mutate it.
 
-internal sealed class ResourceCache
+internal sealed class ReadingKnowledge
 {
     public Dictionary<string, List<string>> Compounds { get; init; } = [];
     public Dictionary<int, List<CharacterReading>> Characters { get; init; } = [];

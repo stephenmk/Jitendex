@@ -18,13 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.JMdict.Entities;
 
 [Table(nameof(FileHeader))]
+[Index(nameof(Date), IsUnique = true)]
 public sealed class FileHeader
 {
     [Key]
     public required int Id { get; init; }
     public required DateOnly Date { get; init; }
+
+    [InverseProperty(nameof(Revision.FileHeader))]
+    public List<Revision> SequenceRevisions { get; init; } = [];
 }

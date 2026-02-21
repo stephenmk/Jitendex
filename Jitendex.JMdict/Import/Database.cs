@@ -142,7 +142,6 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         PriorityTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.PriorityTags.Values);
         LanguageTable.InsertOrIgnoreItems(context, diff.InsertDocument.Languages.Values);
 
-        FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
         SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences());
 
         EntryTable.InsertItems(context, diff.InsertDocument.Entries.Values);
@@ -205,6 +204,9 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         KanjiFormTable.DeleteItems(context, diff.DeleteDocument.KanjiForms.Values);
         EntryTable.DeleteItems(context, diff.DeleteDocument.Entries.Values);
 
+        FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
+        var fileHeaderId = (int)context.GetLastInsertRowId();
+
         var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 
         var sequences = context.Sequences
@@ -226,7 +228,7 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
                 revisions.Add(new(
                     SequenceId: seq.Id,
                     Number: seq.RevisionCount,
-                    CreatedDate: diff.FileHeader.Date,
+                    FileHeaderId: fileHeaderId,
                     DiffJson: baDiff
                 ));
             }

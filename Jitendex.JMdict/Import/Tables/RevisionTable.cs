@@ -31,7 +31,7 @@ internal sealed class RevisionTable : Table<DocumentRevision>
     [
         nameof(Revision.SequenceId),
         nameof(Revision.Number),
-        nameof(Revision.CreatedDate),
+        nameof(Revision.FileHeaderId),
         nameof(Revision.DiffJson),
     ];
 
@@ -42,7 +42,7 @@ internal sealed class RevisionTable : Table<DocumentRevision>
     [
         new("@0", revision.SequenceId),
         new("@1", revision.Number),
-        new("@2", revision.CreatedDate),
+        new("@2", revision.FileHeaderId),
         new("@3", revision.DiffJson),
     ];
 }

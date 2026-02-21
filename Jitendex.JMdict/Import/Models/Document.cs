@@ -123,4 +123,4 @@ internal sealed class Document
 
 internal sealed record DocumentHeader(DateOnly Date);
 internal sealed record DocumentSequence(int Id, DateOnly CreatedDate);
-internal sealed record DocumentRevision(int SequenceId, int Number, DateOnly CreatedDate, string DiffJson);
+internal sealed record DocumentRevision(int SequenceId, int Number, int FileHeaderId, string DiffJson);

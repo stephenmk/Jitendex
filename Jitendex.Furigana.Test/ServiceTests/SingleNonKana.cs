@@ -35,6 +35,6 @@ public class SingleNonKana : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        TestSolvable(DefaultService, _data);
+        TestSolvable(_data);
     }
 }

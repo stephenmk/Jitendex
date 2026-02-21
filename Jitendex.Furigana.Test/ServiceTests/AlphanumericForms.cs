@@ -21,11 +21,11 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class AlphanumericForms : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.VocabKanji(new()
+    private static readonly Dictionary<string, string[]> _kanji = new()
     {
         ["Ｄ"] = ["ディー"],
         ["３"] = ["スリー"],
-    });
+    };
 
     private static readonly SolvableData _data =
     [
@@ -38,14 +38,13 @@ public class AlphanumericForms : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var solver = FuriganaSolverProvider.GetFuriganaSolver();
-        solver.AddCharacters(_kanji);
-        TestSolvable(solver, _data);
+        AddCharacters(_kanji);
+        TestSolvable(_data);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        TestUnsolvable(DefaultService, _unsolvableData);
+        TestUnsolvable(_unsolvableData);
     }
 }

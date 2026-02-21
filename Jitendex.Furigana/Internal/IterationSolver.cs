@@ -45,12 +45,12 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
         var emptySolution = new SolutionBuilder([]); // Need an initial solution to iterate upon.
         var solutions = new List<SolutionBuilder>() { emptySolution };
 
-        for (int sliceStart = 0; sliceStart < entry.KanjiFormRunes.Length; sliceStart++)
+        for (int sliceStart = 0; sliceStart < entry.TextRunes.Length; sliceStart++)
         {
         BeginGeneratorLoop:
             foreach (var solutionPartsGenerator in solutionPartsGenerators)
             {
-                for (int sliceEnd = entry.KanjiFormRunes.Length; sliceStart < sliceEnd; sliceEnd--)
+                for (int sliceEnd = entry.TextRunes.Length; sliceStart < sliceEnd; sliceEnd--)
                 {
                     var kanjiFormSlice = new KanjiFormSlice(entry, sliceStart, sliceEnd);
                     var newSolutions = IterateSolutions(solutionPartsGenerator, entry, kanjiFormSlice, solutions);

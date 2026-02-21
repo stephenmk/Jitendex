@@ -26,13 +26,13 @@ namespace Jitendex.Furigana.Internal;
 internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
 {
     public int ReadingTextLength()
-        => Parts.Sum(static part => (part.Furigana ?? part.BaseText).Length);
+        => Parts.Sum(static part => (part.RubyText ?? part.BaseText).Length);
 
     public Solution? ToSolution(Entry entry)
         => !IsValid(entry) ? null : new Solution
         {
-            KanjiFormText = entry.KanjiFormText,
-            ReadingText = entry.ReadingText,
+            Text = entry.Text,
+            Reading = entry.Reading,
             Parts = NormalizedParts(),
         };
 
@@ -41,7 +41,7 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
     /// </summary>
     /// <remarks>
     /// Solutions may be valid even if they do not contain furigana for every non-kana rune
-    /// in the entry's <see cref="Entry.KanjiFormText"/> property. This is by design to allow
+    /// in the entry's <see cref="Entry.Text"/> property. This is by design to allow
     /// for entries containing punctuation to be solved.
     /// <list type="bullet">
     /// <item>ブルータス、お[前|まえ]もか</item>
@@ -50,11 +50,11 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
     /// However, any part that contains a kanji rune must contain furigana.
     /// </remarks>
     private bool IsValid(Entry entry)
-        => string.Equals(entry.NormalizedReadingText, NormalizedReadingText(), StringComparison.Ordinal)
-        && string.Equals(entry.KanjiFormText, KanjiFormText(), StringComparison.Ordinal)
+        => string.Equals(entry.NormalizedReading, NormalizedReadingText(), StringComparison.Ordinal)
+        && string.Equals(entry.Text, KanjiFormText(), StringComparison.Ordinal)
         && Parts
             .Where(static part => part.BaseText.EnumerateRunes().Any(KanjiComparison.IsKanji))
-            .All(static part => !string.IsNullOrWhiteSpace(part.Furigana));
+            .All(static part => !string.IsNullOrWhiteSpace(part.RubyText));
 
     /// <summary>
     /// Merge consecutive parts together if they have null furigana.
@@ -65,7 +65,7 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
         var mergedTexts = new StringBuilder();
         foreach (var part in Parts)
         {
-            if (part.Furigana is null)
+            if (part.RubyText is null)
             {
                 mergedTexts.Append(part.BaseText);
                 continue;
@@ -110,7 +110,7 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
             int charsWritten = 0;
             foreach (var part in state)
             {
-                var text = part.Furigana ?? part.BaseText;
+                var text = part.RubyText ?? part.BaseText;
                 foreach (var character in text)
                 {
                     destination[charsWritten++] = character.KatakanaToHiragana();

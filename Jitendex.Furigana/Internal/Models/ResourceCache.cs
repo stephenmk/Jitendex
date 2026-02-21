@@ -18,8 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Furigana.Internal.Models;
 
+internal sealed record CharacterReading(string Text, bool IsPrefix, bool IsSuffix);
+
 internal sealed class ResourceCache
 {
-    public Dictionary<int, JapaneseCharacter> Characters { get; init; } = [];
-    public Dictionary<string, JapaneseCompound> Compounds { get; init; } = [];
+    public Dictionary<string, List<string>> Compounds { get; init; } = [];
+    public Dictionary<int, List<CharacterReading>> Characters { get; init; } = [];
+    public Dictionary<int, List<string>> NameKanji { get; init; } = [];
+    public Dictionary<int, List<string>> Hanzi { get; init; } = [];
+    public Dictionary<int, List<string>> Hanja { get; init; } = [];
 }

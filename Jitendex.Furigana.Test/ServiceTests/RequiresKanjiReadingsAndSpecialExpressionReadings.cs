@@ -21,7 +21,7 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class RequiresKanjiReadingsAndSpecialExpressions : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.VocabKanji(new()
+    private static readonly Dictionary<string, string[]> _kanji = new()
     {
         ["大"] = ["ダイ", "タイ", "おお"],
         ["和"] = ["ワ", "オ", "カ", "やわ", "なご", "あ"],
@@ -41,15 +41,15 @@ public class RequiresKanjiReadingsAndSpecialExpressions : ServiceTest
         ["条"] = ["ジョウ", "チョウ", "デキ", "えだ", "すじ"],
         ["仕"] = ["シ", "ジ", "つか"],
         ["掛"] = ["カイ", "ケイ", "か", "が", "かかり", "がかり"],
-    });
+    };
 
-    private static readonly IEnumerable<JapaneseCompound> _compounds = ResourceMethods.Compounds(new()
+    private static readonly Dictionary<string, string[]> _compounds = new()
     {
         ["日本"] = ["にほん"],
         ["大和"] = ["やまと"],
         ["風邪"] = ["かぜ"],
         ["発条"] = ["ぜんまい", "ばね"],
-    });
+    };
 
     private static readonly SolvableData _data =
     [
@@ -82,9 +82,8 @@ public class RequiresKanjiReadingsAndSpecialExpressions : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var solver = FuriganaSolverProvider.GetFuriganaSolver();
-        solver.AddCharacters(_kanji);
-        solver.AddCompounds(_compounds);
-        TestSolvable(solver, _data);
+        AddCharacters(_kanji);
+        AddCompounds(_compounds);
+        TestSolvable(_data);
     }
 }

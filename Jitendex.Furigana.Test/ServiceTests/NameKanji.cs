@@ -23,38 +23,48 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class NameKanji : ServiceTest
 {
-    private readonly IFuriganaSolver _solver;
-
     private const string _kanjiFormText = "佐藤";
     private const string _readingText = "さとう";
     private const string _expectedSolutionText = "[佐|さ][藤|とう]";
 
-    public NameKanji()
+    private static readonly Dictionary<string, string[]> _kanji = new()
     {
-        var characters = ResourceMethods.NameKanji(new()
-        {
-            ["佐"] = (["あ"], ["さ"]),
-            ["藤"] = (["あ"], ["とう"]),
-        });
-        _solver = FuriganaSolverProvider.GetFuriganaSolver();
-        _solver.AddCharacters(characters);
-    }
+        ["佐"] = ["あ"],
+        ["藤"] = ["あ"],
+    };
+
+    private static readonly Dictionary<string, string[]> _nameKanji = new()
+    {
+        ["佐"] = ["さ"],
+        ["藤"] = ["とう"],
+    };
 
     [TestMethod]
     public void TestSolvable()
     {
-        var nameSolution = _solver.SolveName(_kanjiFormText, _readingText);
-        Assert.IsNotNull(nameSolution);
+        AddCharacters(_kanji);
+        AddNameKanji(_nameKanji);
+
+        var solution = Service.SolveName(_kanjiFormText, _readingText);
+        Assert.IsNotNull(solution);
 
         var nameEntry = new NameEntry(_kanjiFormText, _readingText);
         var expectedSolution = TextSolution.Parse(_expectedSolutionText, nameEntry);
-        Assert.AreEqual(expectedSolution, nameSolution);
+        Assert.AreEqual(expectedSolution, solution);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        var vocabSolution = _solver.SolveVocab(_kanjiFormText, _readingText);
-        Assert.IsNull(vocabSolution);
+        var solution = Service.Solve(_kanjiFormText, _readingText);
+        Assert.IsNull(solution);
+    }
+
+    [TestMethod]
+    public void TestUnsolvableWithBogusKanji()
+    {
+        AddCharacters(_kanji);
+        var solution = Service.Solve(_kanjiFormText, _readingText);
+        Assert.IsNull(solution);
     }
 }

@@ -53,12 +53,12 @@ internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
             new SolutionPart
             (
                 BaseText: kanjiFormSlice.RawRunes[0].ToString(),
-                Furigana: reading[..halfLength]
+                RubyText: reading[..halfLength]
             ),
             new SolutionPart
             (
                 BaseText: kanjiFormSlice.RawRunes[1].ToString(),
-                Furigana: reading[halfLength..]
+                RubyText: reading[halfLength..]
             )
         ]];
     }

@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class AmbiguousKanjiReadings : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.VocabKanji([]);
+    private static readonly Dictionary<string, string[]> _kanji = [];
 
     private static readonly UnsolvableData _data =
     [

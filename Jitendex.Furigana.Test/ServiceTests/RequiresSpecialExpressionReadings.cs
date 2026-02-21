@@ -21,7 +21,7 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class RequiresSpecialExpressionReadings : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCompound> _compounds = ResourceMethods.Compounds(new()
+    private static readonly Dictionary<string, string[]> _compounds = new()
     {
         ["発条"] = ["ぜんまい", "ばね"],
         ["芝生"] = ["しばふ"],
@@ -29,7 +29,7 @@ public class RequiresSpecialExpressionReadings : ServiceTest
         ["竹刀"] = ["しない"],
         ["大人"] = ["おとな"],
         ["狗母魚"] = ["えそ"],
-    });
+    };
 
     private static readonly SolvableData _data =
     [
@@ -57,16 +57,14 @@ public class RequiresSpecialExpressionReadings : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var solver = FuriganaSolverProvider.GetFuriganaSolver();
-        solver.AddCompounds(_compounds);
-        TestSolvable(solver, _data);
+        AddCompounds(_compounds);
+        TestSolvable(_data);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        var solver = FuriganaSolverProvider.GetFuriganaSolver();
-        solver.AddCompounds(_compounds);
-        TestUnsolvable(solver, _unsolvableData);
+        AddCompounds(_compounds);
+        TestUnsolvable(_unsolvableData);
     }
 }

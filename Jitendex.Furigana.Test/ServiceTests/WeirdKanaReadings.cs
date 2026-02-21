@@ -21,14 +21,14 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class WeirdKanaReadings : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.VocabKanji(new()
+    private static readonly Dictionary<string, string[]> _kanji = new()
     {
         ["一"] = ["イチ", "イツ", "ひと"],
         ["ヶ"] = ["か", "が"],
         ["ヵ"] = ["か", "が"],
         ["ケ"] = ["か", "が"],
         ["月"] = ["ゲツ", "ガツ", "つき"],
-    });
+    };
 
     private static readonly SolvableData _data =
     [
@@ -43,8 +43,7 @@ public class WeirdKanaReadings : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var solver = FuriganaSolverProvider.GetFuriganaSolver();
-        solver.AddCharacters(_kanji);
-        TestSolvable(solver, _data);
+        AddCharacters(_kanji);
+        TestSolvable(_data);
     }
 }

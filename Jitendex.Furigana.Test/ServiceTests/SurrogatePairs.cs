@@ -44,6 +44,6 @@ public class SurrogatePairs : ServiceTest
             Assert.IsTrue(kanjiFormText.Any(char.IsSurrogate));
             Assert.IsTrue(expectedResultText.Any(char.IsSurrogate));
         }
-        TestSolvable(DefaultService, _data);
+        TestSolvable(_data);
     }
 }

@@ -59,12 +59,12 @@ public class EmptyOrWhitespace : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        TestSolvable(DefaultService, _solvableData);
+        TestSolvable(_solvableData);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        TestUnsolvable(DefaultService, _unsolvableData);
+        TestUnsolvable(_unsolvableData);
     }
 }

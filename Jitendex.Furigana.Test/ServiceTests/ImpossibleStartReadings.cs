@@ -71,6 +71,6 @@ public class ImpossibleStartReadings : ServiceTest
         {
             Assert.AreNotEqual(kanjiFormText.Length, readingText.Length);
         }
-        TestSolvable(DefaultService, _data);
+        TestSolvable(_data);
     }
 }

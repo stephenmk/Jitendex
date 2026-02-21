@@ -22,34 +22,35 @@ using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Internal.Models;
 
-internal sealed record VocabEntry(string KanjiFormText, string ReadingText) : Entry(KanjiFormText, ReadingText);
-internal sealed record NameEntry(string KanjiFormText, string ReadingText) : Entry(KanjiFormText, ReadingText);
-
-internal abstract record Entry
+internal record Entry
 {
-    public string KanjiFormText { get; }
-    public ImmutableArray<Rune> KanjiFormRunes { get; }
-    public ImmutableArray<Rune> NormalizedKanjiFormRunes { get; }
+    public string Text { get; }
+    public ImmutableArray<Rune> TextRunes { get; }
+    public ImmutableArray<Rune> NormalizedTextRunes { get; }
 
-    public string ReadingText { get; }
-    public string NormalizedReadingText { get; }
+    public string Reading { get; }
+    public string NormalizedReading { get; }
 
-    public Entry(string kanjiFormText, string readingText)
+    public Entry(string text, string reading)
     {
-        if (readingText.Any(char.IsSurrogate))
+        if (reading.Any(char.IsSurrogate))
         {
             throw new ArgumentException
             (
-                message: "Reading text must not contain characters with surrogate code units.",
-                paramName: nameof(readingText)
+                message: "Reading must not contain characters with surrogate code units.",
+                paramName: nameof(reading)
             );
         }
 
-        KanjiFormText = kanjiFormText;
-        KanjiFormRunes = [.. kanjiFormText.EnumerateRunes()];
-        NormalizedKanjiFormRunes = [.. KanjiFormRunes.IterationMarksToKanji()];
+        Text = text;
+        TextRunes = [.. text.EnumerateRunes()];
+        NormalizedTextRunes = [.. TextRunes.IterationMarksToKanji()];
 
-        ReadingText = readingText;
-        NormalizedReadingText = readingText.KatakanaToHiragana();
+        Reading = reading;
+        NormalizedReading = reading.KatakanaToHiragana();
     }
 }
+
+internal sealed record NameEntry(string Text, string Reading) : Entry(Text, Reading);
+internal sealed record ChineseEntry(string Text, string Reading) : Entry(Text, Reading);
+internal sealed record KoreanEntry(string Text, string Reading) : Entry(Text, Reading);

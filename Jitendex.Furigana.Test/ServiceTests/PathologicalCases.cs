@@ -40,6 +40,6 @@ public class PathologicalCases : ServiceTest
     [TestMethod]
     public void TestUnsolvable()
     {
-        TestUnsolvable(DefaultService, _unsolvableData);
+        TestUnsolvable(_unsolvableData);
     }
 }

@@ -42,6 +42,6 @@ public class EqualLengthTexts : ServiceTest
         {
             Assert.AreEqual(kanjiFormText.Length, readingText.Length);
         }
-        TestSolvable(DefaultService, _data);
+        TestSolvable(_data);
     }
 }

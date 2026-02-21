@@ -70,12 +70,12 @@ public class RepeatedKanji : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        TestSolvable(DefaultService, _data);
+        TestSolvable(_data);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        TestUnsolvable(DefaultService, _unsolvableData);
+        TestUnsolvable(_unsolvableData);
     }
 }

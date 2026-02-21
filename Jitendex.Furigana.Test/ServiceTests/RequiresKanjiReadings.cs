@@ -21,7 +21,7 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class RequiresKanjiReadings : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCharacter> _kanji = ResourceMethods.VocabKanji(new()
+    private static readonly Dictionary<string, string[]> _kanji = new()
     {
         ["御"] = ["ギョ", "ゴ", "おん", "お", "み"],
         ["姉"] = ["シ", "あね", "はは", "ねえ"],
@@ -47,7 +47,7 @@ public class RequiresKanjiReadings : ServiceTest
         ["夫"] = ["フ", "フウ", "ブ", "おっと", "それ"],
         ["好"] = ["コウ", "この", "す", "よ", "い"],
         ["嫌"] = ["ケン", "ゲン", "きら", "いや"],
-    });
+    };
 
     private static readonly SolvableData _data =
     [
@@ -82,14 +82,13 @@ public class RequiresKanjiReadings : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var solver = FuriganaSolverProvider.GetFuriganaSolver();
-        solver.AddCharacters(_kanji);
-        TestSolvable(solver, _data);
+        AddCharacters(_kanji);
+        TestSolvable(_data);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        TestUnsolvable(DefaultService, _unsolvableData);
+        TestUnsolvable(_unsolvableData);
     }
 }

@@ -36,18 +36,18 @@ internal readonly ref struct KanjiFormSlice
 
     public KanjiFormSlice(Entry entry, int sliceStart, int sliceEnd)
     {
-        var normalizedRunesSpan = entry.NormalizedKanjiFormRunes.AsSpan();
+        var normalizedRunesSpan = entry.NormalizedTextRunes.AsSpan();
 
         PriorRunes = normalizedRunesSpan[..sliceStart];
         Runes = normalizedRunesSpan[sliceStart..sliceEnd];
         RemainingRunes = normalizedRunesSpan[sliceEnd..];
 
-        RawRunes = entry.KanjiFormRunes.AsSpan()[sliceStart..sliceEnd];
+        RawRunes = entry.TextRunes.AsSpan()[sliceStart..sliceEnd];
 
         PreviousRune = PriorRunes.Length > 0 ? PriorRunes[^1] : default;
         NextRune = RemainingRunes.Length > 0 ? RemainingRunes[0] : default;
 
         ContainsFirstRune = sliceStart == 0;
-        ContainsFinalRune = sliceEnd == entry.KanjiFormRunes.Length;
+        ContainsFinalRune = sliceEnd == entry.TextRunes.Length;
     }
 }

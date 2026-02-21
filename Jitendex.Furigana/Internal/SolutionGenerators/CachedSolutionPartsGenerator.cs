@@ -22,7 +22,7 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
-internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) : ISolutionPartsGenerator
+internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolutionPartsGenerator
 {
     public ImmutableArray<List<SolutionPart>> Enumerate(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
@@ -49,10 +49,10 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) 
         return partsLists.MoveToImmutable();
     }
 
-    private List<string> GetValidReadingTexts(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    private HashSet<string> GetValidReadingTexts(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
-        var texts = GetReadingTexts(entry, kanjiFormSlice);
-        var validTexts = new List<string>(texts.Count);
+        var texts = GetCachedTexts(entry, kanjiFormSlice);
+        var validTexts = new HashSet<string>(texts.Count);
         foreach (var text in texts)
         {
             if (readingState.RemainingTextNormalized.StartsWith(text, StringComparison.Ordinal))
@@ -63,48 +63,42 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) 
         return validTexts;
     }
 
-    private IReadOnlyList<string> GetReadingTexts(Entry entry, in KanjiFormSlice kanjiFormSlice)
+    private List<string> GetCachedTexts(Entry entry, in KanjiFormSlice kanjiFormSlice)
+        => kanjiFormSlice.Runes switch
+        {
+            { Length: 1 } => GetCharacterTexts(entry, kanjiFormSlice),
+            _ => GetCompoundTexts(kanjiFormSlice)
+        };
+
+    private List<string> GetCharacterTexts(Entry entry, in KanjiFormSlice kanjiFormSlice)
+        => entry switch
+        {
+            NameEntry => GetSpecialCharacterReadings(kanjiFormSlice, cache.NameKanji),
+            ChineseEntry => GetSpecialCharacterReadings(kanjiFormSlice, cache.Hanzi),
+            KoreanEntry => GetSpecialCharacterReadings(kanjiFormSlice, cache.Hanja),
+            Entry => GetCharacterReadings(kanjiFormSlice),
+        };
+
+    private List<string> GetSpecialCharacterReadings(in KanjiFormSlice kanjiFormSlice, Dictionary<int, List<string>> dictionary)
     {
-        if (kanjiFormSlice.Runes.Length == 1)
+        var characterReadings = GetCharacterReadings(kanjiFormSlice);
+        if (dictionary.TryGetValue(kanjiFormSlice.Runes[0].Value, out var readings))
         {
-            var rune = kanjiFormSlice.Runes[0];
-            if (resourceCache.Characters.TryGetValue(rune.Value, out JapaneseCharacter? character))
-            {
-                return GetCharacterReadingTexts(entry, kanjiFormSlice, character);
-            }
+            characterReadings.AddRange(readings);
         }
-        else
-        {
-            var text = kanjiFormSlice.Runes.FastToString();
-            if (resourceCache.Compounds.TryGetValue(text, out JapaneseCompound? compound))
-            {
-                return compound.Readings;
-            }
-        }
-        return [];
+        return characterReadings;
     }
 
-    private static List<string> GetCharacterReadingTexts(Entry entry, in KanjiFormSlice kanjiFormSlice, JapaneseCharacter character)
+    private List<string> GetCharacterReadings(in KanjiFormSlice kanjiFormSlice)
     {
-        var texts = new List<string>();
-
-        if (entry is NameEntry)
+        if (!cache.Characters.TryGetValue(kanjiFormSlice.Runes[0].Value, out var readings))
         {
-            foreach (var reading in character.NameReadings)
-            {
-                if (reading.IsSuffix && kanjiFormSlice.ContainsFirstRune)
-                {
-                    continue;
-                }
-                if (reading.IsPrefix && kanjiFormSlice.ContainsFinalRune)
-                {
-                    continue;
-                }
-                texts.Add(reading.Text);
-            }
+            return [];
         }
 
-        foreach (var reading in character.VocabReadings)
+        var texts = new List<string>(readings.Count);
+
+        foreach (var reading in readings)
         {
             if (reading.IsSuffix && kanjiFormSlice.ContainsFirstRune)
             {
@@ -119,4 +113,9 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache resourceCache) 
 
         return texts;
     }
+
+    private List<string> GetCompoundTexts(in KanjiFormSlice kanjiFormSlice)
+        => cache.Compounds.TryGetValue(kanjiFormSlice.Runes.FastToString(), out var readings)
+            ? readings
+            : [];
 }

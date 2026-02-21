@@ -41,7 +41,7 @@ internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
                 var part = new SolutionPart
                 (
                     BaseText: baseText,
-                    Furigana: readingState.RemainingText[..reading.Length].ToString()
+                    RubyText: readingState.RemainingText[..reading.Length].ToString()
                 );
                 partsBuilder.Add([part]);
             }

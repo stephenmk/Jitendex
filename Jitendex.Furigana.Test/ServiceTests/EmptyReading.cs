@@ -21,12 +21,12 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class EmptyReading : ServiceTest
 {
-    private static readonly IEnumerable<JapaneseCharacter> _nonKanji = ResourceMethods.VocabKanji(new()
+    private static readonly Dictionary<string, string[]> _nonKanji = new()
     {
         ["・"] = ["・", ""],
         ["、"] = ["、", ""],
         ["？"] = ["？", ""],
-    });
+    };
 
     private static readonly SolvableData _data =
     [
@@ -53,14 +53,13 @@ public class EmptyReading : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        var solver = FuriganaSolverProvider.GetFuriganaSolver();
-        solver.AddCharacters(_nonKanji);
-        TestSolvable(solver, _data);
+        AddCharacters(_nonKanji);
+        TestSolvable(_data);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        TestUnsolvable(DefaultService, _unsolvableData);
+        TestUnsolvable(_unsolvableData);
     }
 }

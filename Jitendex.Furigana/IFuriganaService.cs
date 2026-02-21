@@ -16,22 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
-using Jitendex.Furigana.Internal.Models;
+using System.Text;
 
-namespace Jitendex.Furigana.Internal.SolutionGenerators;
+namespace Jitendex.Furigana;
 
-internal sealed class DefaultSolutionPartsGenerator
-(
-    DefaultSingleCharacterParts single,
-    DefaultRepeatedCharacterParts repeated
-) : ISolutionPartsGenerator
+public interface IFuriganaService
 {
-    public ImmutableArray<List<Solution.Part>> Enumerate(Entry _, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
-        => kanjiFormSlice.Runes switch
-        {
-            { Length: 1 } => single.Enumerate(kanjiFormSlice, readingState),
-            { Length: 2 } => repeated.Enumerate(kanjiFormSlice, readingState),
-            _ => []
-        };
+    public Solution? Solve(string text, string reading);
+    public Solution? SolveName(string text, string reading);
+    public Solution? SolveChineseLoanword(string text, string reading);
+    public Solution? SolveKoreanLoanword(string text, string reading);
+
+    public void AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false);
+    public void AddNameReading(Rune kanji, string reading);
+    public void AddHanziReading(Rune hanzi, string reading);
+    public void AddHanjaReading(Rune hanja, string reading);
+    public void AddCompoundReading(string compound, string reading);
 }

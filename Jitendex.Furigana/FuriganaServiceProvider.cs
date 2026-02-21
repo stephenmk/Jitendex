@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using System.Text;
 using Jitendex.Furigana.Internal;
 using Jitendex.Furigana.Internal.Models;
 using Jitendex.Furigana.Internal.SolutionGenerators;
@@ -52,42 +51,3 @@ public static class FuriganaServiceProvider
         return service;
     }
 }
-
-public interface IFuriganaService
-{
-    public Solution? Solve(string text, string reading);
-    public Solution? SolveName(string text, string reading);
-    public Solution? SolveChineseLoanword(string text, string reading);
-    public Solution? SolveKoreanLoanword(string text, string reading);
-
-    public void AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false);
-    public void AddNameReading(Rune kanji, string reading);
-    public void AddHanziReading(Rune hanzi, string reading);
-    public void AddHanjaReading(Rune hanja, string reading);
-    public void AddCompoundReading(string compound, string reading);
-}
-
-public sealed class Solution
-{
-    public required string Text { get; init; }
-    public required string Reading { get; init; }
-    public required ImmutableArray<SolutionPart> Parts { get; init; }
-
-    public override bool Equals(object? obj)
-        => obj is Solution sln
-        && string.Equals(Text, sln.Text, StringComparison.Ordinal)
-        && string.Equals(Reading, sln.Reading, StringComparison.Ordinal)
-        && Parts.SequenceEqual(sln.Parts);
-
-    public override int GetHashCode() => Parts.Aggregate
-    (
-        seed: HashCode.Combine(Text, Reading),
-        func: static (hashcode, part) => HashCode.Combine(hashcode, part)
-    );
-}
-
-public sealed record SolutionPart
-(
-    string BaseText,
-    string? RubyText
-);

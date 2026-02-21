@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolutionPartsGenerator
 {
-    public ImmutableArray<List<SolutionPart>> Enumerate(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    public ImmutableArray<List<Solution.Part>> Enumerate(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
         var texts = GetValidReadingTexts(entry, kanjiFormSlice, readingState);
 
@@ -34,7 +34,7 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolut
         }
 
         var baseText = kanjiFormSlice.RawRunes.FastToString();
-        var partsLists = ImmutableArray.CreateBuilder<List<SolutionPart>>(texts.Count);
+        var partsLists = ImmutableArray.CreateBuilder<List<Solution.Part>>(texts.Count);
 
         foreach (var text in texts)
         {
@@ -42,7 +42,7 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolut
                 ? null
                 : readingState.RemainingText[..text.Length].ToString();
 
-            var part = new SolutionPart(baseText, furigana);
+            var part = new Solution.Part(baseText, furigana);
             partsLists.Add([part]);
         }
 

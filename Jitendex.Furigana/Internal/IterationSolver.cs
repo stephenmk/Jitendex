@@ -79,7 +79,7 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
 
         foreach (var solution in solutions)
         {
-            var readingState = new ReadingState(entry, solution.ReadingTextLength());
+            var readingState = new ReadingState(entry, solution.ReadingLength());
 
             foreach (var newParts in solutionPartsGenerator.Enumerate(entry, kanjiFormSlice, readingState))
             {

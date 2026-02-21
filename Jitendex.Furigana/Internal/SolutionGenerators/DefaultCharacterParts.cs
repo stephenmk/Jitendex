@@ -26,7 +26,7 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal abstract class DefaultCharacterParts
 {
-    public abstract ImmutableArray<List<SolutionPart>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState);
+    public abstract ImmutableArray<List<Solution.Part>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState);
 
     protected static string? RegexReading(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {

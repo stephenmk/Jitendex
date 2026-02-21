@@ -29,12 +29,12 @@ internal static partial class TextSolution
 
     public static Solution Parse(string text, Entry entry)
     {
-        var parts = new List<SolutionPart>();
+        var parts = new List<Solution.Part>();
         var matches = TextSolutionRegex().Matches(text);
 
         if (matches.Count == 0)
         {
-            parts.Add(new SolutionPart(text, null));
+            parts.Add(new Solution.Part(text, null));
         }
 
         foreach (Match match in matches)
@@ -44,9 +44,9 @@ internal static partial class TextSolution
             var furigana = match.Groups[3].Value;
             var noFurigana2 = match.Groups[4].Value;
 
-            parts.Add(new SolutionPart(noFurigana1, null));
-            parts.Add(new SolutionPart(baseText, furigana));
-            parts.Add(new SolutionPart(noFurigana2, null));
+            parts.Add(new Solution.Part(noFurigana1, null));
+            parts.Add(new Solution.Part(baseText, furigana));
+            parts.Add(new Solution.Part(noFurigana2, null));
         }
 
         var solutionBuilder = new SolutionBuilder([.. parts]);

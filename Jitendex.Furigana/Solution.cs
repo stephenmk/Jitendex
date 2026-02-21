@@ -17,21 +17,26 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Internal.SolutionGenerators;
+namespace Jitendex.Furigana;
 
-internal sealed class DefaultSolutionPartsGenerator
-(
-    DefaultSingleCharacterParts single,
-    DefaultRepeatedCharacterParts repeated
-) : ISolutionPartsGenerator
+public sealed class Solution
 {
-    public ImmutableArray<List<Solution.Part>> Enumerate(Entry _, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
-        => kanjiFormSlice.Runes switch
-        {
-            { Length: 1 } => single.Enumerate(kanjiFormSlice, readingState),
-            { Length: 2 } => repeated.Enumerate(kanjiFormSlice, readingState),
-            _ => []
-        };
+    public sealed record Part(string BaseText, string? RubyText);
+
+    public required string Text { get; init; }
+    public required string Reading { get; init; }
+    public required ImmutableArray<Part> Parts { get; init; }
+
+    public override bool Equals(object? obj)
+        => obj is Solution sln
+        && string.Equals(Text, sln.Text, StringComparison.Ordinal)
+        && string.Equals(Reading, sln.Reading, StringComparison.Ordinal)
+        && Parts.SequenceEqual(sln.Parts);
+
+    public override int GetHashCode() => Parts.Aggregate
+    (
+        seed: HashCode.Combine(Text, Reading),
+        func: static (hashcode, part) => HashCode.Combine(hashcode, part)
+    );
 }

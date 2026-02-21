@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
 {
-    public override ImmutableArray<List<SolutionPart>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    public override ImmutableArray<List<Solution.Part>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
         var currentRune1 = kanjiFormSlice.Runes[0];
         var currentRune2 = kanjiFormSlice.Runes[1];
@@ -50,12 +50,12 @@ internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
 
         return
         [[
-            new SolutionPart
+            new Solution.Part
             (
                 BaseText: kanjiFormSlice.RawRunes[0].ToString(),
                 RubyText: reading[..halfLength]
             ),
-            new SolutionPart
+            new Solution.Part
             (
                 BaseText: kanjiFormSlice.RawRunes[1].ToString(),
                 RubyText: reading[halfLength..]

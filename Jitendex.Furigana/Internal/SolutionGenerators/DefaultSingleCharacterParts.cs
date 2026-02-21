@@ -24,21 +24,21 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
 {
-    public override ImmutableArray<List<SolutionPart>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    public override ImmutableArray<List<Solution.Part>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
     {
         var baseText = kanjiFormSlice.RawRunes.FastToString();
         var readings = DefaultSingleCharacterReadings(kanjiFormSlice, readingState);
-        var partsBuilder = ImmutableArray.CreateBuilder<List<SolutionPart>>(readings.Length);
+        var partsBuilder = ImmutableArray.CreateBuilder<List<Solution.Part>>(readings.Length);
         foreach (var reading in readings)
         {
             if (baseText.IsKanaEquivalent(reading))
             {
-                var part = new SolutionPart(baseText, null);
+                var part = new Solution.Part(baseText, null);
                 partsBuilder.Add([part]);
             }
             else
             {
-                var part = new SolutionPart
+                var part = new Solution.Part
                 (
                     BaseText: baseText,
                     RubyText: readingState.RemainingText[..reading.Length].ToString()

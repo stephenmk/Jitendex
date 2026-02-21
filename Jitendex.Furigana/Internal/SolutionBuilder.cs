@@ -23,9 +23,9 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal;
 
-internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
+internal sealed record SolutionBuilder(ImmutableList<Solution.Part> Parts)
 {
-    public int ReadingTextLength()
+    public int ReadingLength()
         => Parts.Sum(static part => (part.RubyText ?? part.BaseText).Length);
 
     public Solution? ToSolution(Entry entry)
@@ -33,7 +33,7 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
         {
             Text = entry.Text,
             Reading = entry.Reading,
-            Parts = NormalizedParts(),
+            Parts = GetNormalizedParts(),
         };
 
     /// <summary>
@@ -50,8 +50,8 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
     /// However, any part that contains a kanji rune must contain furigana.
     /// </remarks>
     private bool IsValid(Entry entry)
-        => string.Equals(entry.NormalizedReading, NormalizedReadingText(), StringComparison.Ordinal)
-        && string.Equals(entry.Text, KanjiFormText(), StringComparison.Ordinal)
+        => string.Equals(NormalizedReading, entry.NormalizedReading, StringComparison.Ordinal)
+        && string.Equals(Text, entry.Text, StringComparison.Ordinal)
         && Parts
             .Where(static part => part.BaseText.EnumerateRunes().Any(KanjiComparison.IsKanji))
             .All(static part => !string.IsNullOrWhiteSpace(part.RubyText));
@@ -59,9 +59,9 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
     /// <summary>
     /// Merge consecutive parts together if they have null furigana.
     /// </summary>
-    private ImmutableArray<SolutionPart> NormalizedParts()
+    private ImmutableArray<Solution.Part> GetNormalizedParts()
     {
-        var parts = new List<SolutionPart>(Parts.Count);
+        var parts = new List<Solution.Part>(Parts.Count);
         var mergedTexts = new StringBuilder();
         foreach (var part in Parts)
         {
@@ -84,7 +84,7 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
         return parts.ToImmutableArray();
     }
 
-    private string KanjiFormText() => string.Create
+    private string Text => string.Create
     (
         length: Parts.Sum(static part => part.BaseText.Length),
         state: Parts,
@@ -101,9 +101,9 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
         }
     );
 
-    private string NormalizedReadingText() => string.Create
+    private string NormalizedReading => string.Create
     (
-        length: ReadingTextLength(),
+        length: ReadingLength(),
         state: Parts,
         action: static (destination, state) =>
         {

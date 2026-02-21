@@ -34,7 +34,7 @@ internal partial class FuriganaSegmentAnalyzer
 {
     private readonly static FuriganaSegmentTable FuriganaSegmentTable = new();
 
-    public async Task Analyze(IFuriganaSolver furiganaSolver)
+    public async Task Analyze(IFuriganaService furiganaService)
     {
         var entries = context.KanjiFormBridges
             .Select(static b => new
@@ -58,7 +58,7 @@ internal partial class FuriganaSegmentAnalyzer
 
         foreach (var entry in entries)
         {
-            var solution = furiganaSolver.SolveVocab(entry.KanjiFormText, entry.ReadingText);
+            var solution = furiganaService.Solve(entry.KanjiFormText, entry.ReadingText);
             if (solution is null)
             {
                 LogUnsolvedFurigana(entry.Id, entry.ReadingText, entry.KanjiFormText);
@@ -67,7 +67,7 @@ internal partial class FuriganaSegmentAnalyzer
             for (int i = 0; i < solution.Parts.Length; i++)
             {
                 var part = solution.Parts[i];
-                var typeName = GetTypeName(typeNames, part.BaseText, part.Furigana);
+                var typeName = GetTypeName(typeNames, part.BaseText, part.RubyText);
                 segments.Add(new
                 (
                     entry.Id,
@@ -75,7 +75,7 @@ internal partial class FuriganaSegmentAnalyzer
                     entry.KanjiFormOrder,
                     i,
                     part.BaseText,
-                    part.Furigana,
+                    part.RubyText,
                     typeName
                 ));
             }

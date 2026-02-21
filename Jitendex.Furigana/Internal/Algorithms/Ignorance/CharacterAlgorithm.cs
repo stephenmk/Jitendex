@@ -26,7 +26,7 @@ namespace Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
 internal abstract class CharacterAlgorithm
 {
-    public abstract ImmutableArray<List<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState);
+    public abstract ImmutableArray<ImmutableArray<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState);
 
     protected static string? RegexReading(in TextSlice textSlice, in ReadingState readingState)
     {

@@ -23,5 +23,5 @@ namespace Jitendex.Furigana.Internal.Algorithms;
 
 internal interface IAlgorithm
 {
-    public ImmutableArray<List<Solution.Part>> Solve(Entry entry, in TextSlice textSlice, in ReadingState readingState);
+    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(Entry entry, in TextSlice textSlice, in ReadingState readingState);
 }

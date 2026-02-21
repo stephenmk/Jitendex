@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal.Algorithms;
 
 internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
 {
-    public ImmutableArray<List<Solution.Part>> Solve(Entry entry, in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(Entry entry, in TextSlice textSlice, in ReadingState readingState)
     {
         var texts = GetValidReadingTexts(entry, textSlice, readingState);
 
@@ -34,7 +34,7 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
         }
 
         var baseText = textSlice.RawRunes.FastToString();
-        var partsLists = ImmutableArray.CreateBuilder<List<Solution.Part>>(texts.Count);
+        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(texts.Count);
 
         foreach (var text in texts)
         {

@@ -29,7 +29,7 @@ internal sealed class IgnorantAlgorithm
     ConsecutiveKanjiAlgorithm? consecutiveSolver = null
 ) : IAlgorithm
 {
-    public ImmutableArray<List<Solution.Part>> Solve(Entry _, in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(Entry _, in TextSlice textSlice, in ReadingState readingState)
         => textSlice.Runes switch
         {
             { Length: 1 } => SolveOneRuneLengthText(textSlice, readingState),
@@ -37,14 +37,14 @@ internal sealed class IgnorantAlgorithm
                         _ => SolveAnyRuneLengthText(textSlice, readingState),
         };
 
-    private ImmutableArray<List<Solution.Part>> SolveOneRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+    private ImmutableArray<ImmutableArray<Solution.Part>> SolveOneRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
         => singleSolver.Solve(textSlice, readingState);
 
-    private ImmutableArray<List<Solution.Part>> SolveTwoRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+    private ImmutableArray<ImmutableArray<Solution.Part>> SolveTwoRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
         => repeatedSolver.Solve(textSlice, readingState) is var parts and not []
             ? parts
             : SolveAnyRuneLengthText(textSlice, readingState);
 
-    private ImmutableArray<List<Solution.Part>> SolveAnyRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+    private ImmutableArray<ImmutableArray<Solution.Part>> SolveAnyRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
         => consecutiveSolver?.Solve(textSlice, readingState) ?? [];
 }

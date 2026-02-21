@@ -56,6 +56,20 @@ public abstract class SqliteContext : DbContext
         await Database.EnsureCreatedAsync();
     }
 
+    public long GetLastInsertRowId()
+    {
+        using var command = Database.GetDbConnection().CreateCommand();
+        command.CommandText = "SELECT last_insert_rowid();";
+        if (command.ExecuteScalar() is long rowId)
+        {
+            return rowId;
+        }
+        else
+        {
+            throw new InvalidOperationException();
+        }
+    }
+
     /// <summary>
     /// For faster importing into a new db file, write data to memory rather than to the disk.
     /// </summary>

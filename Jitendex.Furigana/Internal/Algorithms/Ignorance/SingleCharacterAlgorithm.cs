@@ -92,14 +92,4 @@ internal sealed class SingleCharacterAlgorithm : CharacterAlgorithm
 
         return [];
     }
-
-    private static bool IsImpossibleKanjiReadingFirst(char c) => c switch
-    {
-        'っ' or
-        'ょ' or
-        'ゃ' or
-        'ゅ' or
-        'ん' => true,
-        _ => false
-    };
 }

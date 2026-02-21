@@ -22,13 +22,18 @@ using Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
 namespace Jitendex.Furigana.Internal.Algorithms;
 
-internal sealed class IgnorantAlgorithm(SingleCharacterAlgorithm single, RepeatedCharacterAlgorithm repeated) : IAlgorithm
+internal sealed class IgnorantAlgorithm
+(
+    SingleCharacterAlgorithm single,
+    RepeatedCharacterAlgorithm repeated,
+    ConsecutiveKanjiAlgorithm? consecutiveKanji = null
+) : IAlgorithm
 {
     public ImmutableArray<List<Solution.Part>> Solve(Entry _, in TextSlice textSlice, in ReadingState readingState)
         => textSlice.Runes switch
         {
             { Length: 1 } => single.Solve(textSlice, readingState),
             { Length: 2 } => repeated.Solve(textSlice, readingState),
-            _ => []
+            _ => consecutiveKanji?.Solve(textSlice, readingState) ?? []
         };
 }

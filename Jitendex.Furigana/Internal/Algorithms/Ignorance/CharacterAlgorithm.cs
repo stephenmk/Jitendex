@@ -77,4 +77,14 @@ internal abstract class CharacterAlgorithm
         pattern.Append('$');
         return new Regex(pattern.ToString());
     }
+
+    protected static bool IsImpossibleKanjiReadingFirst(char c) => c switch
+    {
+        'っ' or
+        'ょ' or
+        'ゃ' or
+        'ゅ' or
+        'ん' => true,
+        _ => false
+    };
 }

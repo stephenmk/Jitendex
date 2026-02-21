@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -16,16 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.JapaneseTextUtils;
+
 namespace Jitendex.Furigana.Internal.Models;
 
-// TODO: The dictionaries and lists in this class really only need to be mutable
-// by the Service class. The solver classes should not be able to mutate it.
-
-internal sealed class ReadingKnowledge
+internal sealed record Reading
 {
-    public Dictionary<string, List<Reading>> Compounds { get; init; } = [];
-    public Dictionary<int, List<Reading>> Characters { get; init; } = [];
-    public Dictionary<int, List<Reading>> NameKanji { get; init; } = [];
-    public Dictionary<int, List<Reading>> Hanzi { get; init; } = [];
-    public Dictionary<int, List<Reading>> Hanja { get; init; } = [];
+    public string Text { get; }
+    public bool IsPrefix { get; }
+    public bool IsSuffix { get; }
+
+    public Reading(string text, bool isPrefix = false, bool isSuffix = false)
+    {
+        Text = text.KatakanaToHiragana();
+        IsPrefix = isPrefix;
+        IsSuffix = isSuffix;
+    }
 }

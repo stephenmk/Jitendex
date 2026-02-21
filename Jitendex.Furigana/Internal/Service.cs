@@ -19,28 +19,27 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Immutable;
 using System.Text;
 using Jitendex.Furigana.Internal.Models;
-using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Internal;
 
 internal sealed class Service(ImmutableArray<IterationSolver> solvers, ReadingKnowledge cache) : IFuriganaService
 {
     public void AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(character.Value, new CharacterReading(reading.KatakanaToHiragana(), isPrefix, isSuffix), cache.Characters);
+        => AddReading(character.Value, new Reading(reading, isPrefix, isSuffix), cache.Characters);
 
     public void AddNameReading(Rune kanji, string reading)
-        => AddReading(kanji.Value, reading.KatakanaToHiragana(), cache.NameKanji);
+        => AddReading(kanji.Value, new Reading(reading), cache.NameKanji);
 
     public void AddHanziReading(Rune hanzi, string reading)
-        => AddReading(hanzi.Value, reading.KatakanaToHiragana(), cache.Hanzi);
+        => AddReading(hanzi.Value, new Reading(reading), cache.Hanzi);
 
     public void AddHanjaReading(Rune hanja, string reading)
-        => AddReading(hanja.Value, reading.KatakanaToHiragana(), cache.Hanja);
+        => AddReading(hanja.Value, new Reading(reading), cache.Hanja);
 
     public void AddCompoundReading(string compound, string reading)
-        => AddReading(compound, reading.KatakanaToHiragana(), cache.Compounds);
+        => AddReading(compound, new Reading(reading), cache.Compounds);
 
-    private void AddReading<T1, T2>(T1 key, T2 value, Dictionary<T1, List<T2>> dictionary) where T1 : notnull
+    private void AddReading<T>(T key, Reading value, Dictionary<T, List<Reading>> dictionary) where T : notnull
     {
         if (dictionary.TryGetValue(key, out var readings))
         {

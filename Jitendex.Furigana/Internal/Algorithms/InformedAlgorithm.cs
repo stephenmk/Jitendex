@@ -79,12 +79,12 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
             Entry => GetCharacterReadings(textSlice),
         };
 
-    private List<string> GetSpecialCharacterReadings(in TextSlice textSlice, Dictionary<int, List<string>> dictionary)
+    private List<string> GetSpecialCharacterReadings(in TextSlice textSlice, Dictionary<int, List<Reading>> dictionary)
     {
         var characterReadings = GetCharacterReadings(textSlice);
         if (dictionary.TryGetValue(textSlice.Runes[0].Value, out var readings))
         {
-            characterReadings.AddRange(readings);
+            characterReadings.AddRange(readings.Select(static r => r.Text));
         }
         return characterReadings;
     }
@@ -116,6 +116,6 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
 
     private List<string> GetCompoundTexts(in TextSlice textSlice)
         => cache.Compounds.TryGetValue(textSlice.Runes.FastToString(), out var readings)
-            ? readings
+            ? new(readings.Select(static r => r.Text))
             : [];
 }

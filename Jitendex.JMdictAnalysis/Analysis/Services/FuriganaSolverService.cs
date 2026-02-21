@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
+using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Jitendex.AppDirectory;
@@ -27,98 +28,106 @@ namespace Jitendex.JMdictAnalysis.Analysis.Services;
 
 internal sealed class FuriganaSolverService(ILogger<FuriganaSolverService> logger, Kanjidic2Context kanjiContext)
 {
-    public async Task<IFuriganaSolver> LoadAsync(DirectoryInfo? dataDir)
+    public async Task<IFuriganaService> LoadAsync(DirectoryInfo? dataDir)
     {
-        var solver = FuriganaSolverProvider.GetFuriganaSolver();
+        var service = FuriganaServiceProvider.GetFuriganaService();
 
         // Characters
-        AddKanjiCharactersToSolver(solver);
-        await AddAlphanumericCharactersToSolver(solver, dataDir);
-        await AddPunctuationCharactersToSolver(solver, dataDir);
-        await AddKanaCharactersToSolver(solver, dataDir);
+        AddKanjiCharactersToSolver(service);
+        await AddAlphanumericCharactersToSolver(service, dataDir);
+        await AddPunctuationCharactersToSolver(service, dataDir);
+        await AddKanaCharactersToSolver(service, dataDir);
 
         // Compounds
-        await AddKanjiCompoundsToSolver(solver, dataDir);
-        await AddAlphanumericCompoundsToSolver(solver, dataDir);
+        await AddKanjiCompoundsToSolver(service, dataDir);
+        await AddAlphanumericCompoundsToSolver(service, dataDir);
 
-        return solver;
+        return service;
     }
 
-    private void AddKanjiCharactersToSolver(IFuriganaSolver solver)
+    private void AddKanjiCharactersToSolver(IFuriganaService service)
     {
         var characters = kanjiContext.DerivedReadings
             .GroupBy(static r => r.UnicodeScalarValue)
-            .Select(static g => new JapaneseCharacter
-            (
-                rune: new(g.Key),
-                vocabReadings: g.Select(static r => new CharacterReading(r.Text, r.IsPrefix, r.IsSuffix)).ToImmutableArray(),
-                nameReadings: Enumerable.Empty<CharacterReading>()
-            ));
-        solver.AddCharacters(characters);
+            .Select(static g => new
+            {
+                Rune = new Rune(g.Key),
+                Readings = g.Select(static r => new { r.Text, r.IsPrefix, r.IsSuffix }).ToImmutableArray()
+            });
+        foreach (var character in characters)
+        {
+            foreach (var reading in character.Readings)
+            {
+                service.AddCharacterReading(character.Rune, reading.Text, reading.IsPrefix, reading.IsSuffix);
+            }
+        }
     }
 
-    private async Task AddAlphanumericCharactersToSolver(IFuriganaSolver solver, DirectoryInfo? dataDir)
+    private async Task AddAlphanumericCharactersToSolver(IFuriganaService solver, DirectoryInfo? dataDir)
     {
         var filePath = GetJsonFilePath(dataDir, "characters", "alphanumeric.json");
         await AddDefaultCharactersToSolver(solver, filePath);
     }
 
-    private async Task AddPunctuationCharactersToSolver(IFuriganaSolver solver, DirectoryInfo? dataDir)
+    private async Task AddPunctuationCharactersToSolver(IFuriganaService solver, DirectoryInfo? dataDir)
     {
         var filePath = GetJsonFilePath(dataDir, "characters", "symbols_and_punctuation.json");
         await AddDefaultCharactersToSolver(solver, filePath);
     }
 
-    private async Task AddKanaCharactersToSolver(IFuriganaSolver solver, DirectoryInfo? dataDir)
+    private async Task AddKanaCharactersToSolver(IFuriganaService solver, DirectoryInfo? dataDir)
     {
         var filePath = GetJsonFilePath(dataDir, "characters", "kana.json");
         await AddDefaultCharactersToSolver(solver, filePath);
     }
 
-    private async Task AddDefaultCharactersToSolver(IFuriganaSolver solver, string filePath)
+    private async Task AddDefaultCharactersToSolver(IFuriganaService service, string filePath)
     {
         await using var stream = File.OpenRead(filePath);
-        var dictionary = await JsonSerializer.DeserializeAsync<Dictionary<string, ImmutableArray<string>>>(stream);
+        var dictionary = await JsonSerializer.DeserializeAsync<Dictionary<string, string[]>>(stream);
         if (dictionary is null || dictionary.Count == 0)
         {
             logger.LogError("Failed to load dictionary from path {Path}", filePath);
             return;
         }
-        var characters = dictionary
-            .Select(static x => new JapaneseCharacter
-            (
-                rune: x.Key.EnumerateRunes().First(),
-                vocabReadings: x.Value.Select(static x => new CharacterReading(x, false, false)),
-                nameReadings: []
-            ));
-        solver.AddCharacters(characters);
+        foreach (var (character, readings) in dictionary)
+        {
+            var rune = character.EnumerateRunes().First();
+            foreach (var reading in readings)
+            {
+                service.AddCharacterReading(rune, reading);
+            }
+        }
     }
 
-    private async Task AddAlphanumericCompoundsToSolver(IFuriganaSolver solver, DirectoryInfo? dataDir)
+    private async Task AddAlphanumericCompoundsToSolver(IFuriganaService solver, DirectoryInfo? dataDir)
     {
         var filePath = GetJsonFilePath(dataDir, "compounds", "alphanumeric.json");
         await AddCompoundsToSolver(solver, filePath);
     }
 
-    private async Task AddKanjiCompoundsToSolver(IFuriganaSolver solver, DirectoryInfo? dataDir)
+    private async Task AddKanjiCompoundsToSolver(IFuriganaService solver, DirectoryInfo? dataDir)
     {
         var filePath = GetJsonFilePath(dataDir, "compounds", "kanji.json");
         await AddCompoundsToSolver(solver, filePath);
     }
 
-    private async Task AddCompoundsToSolver(IFuriganaSolver solver, string filePath)
+    private async Task AddCompoundsToSolver(IFuriganaService service, string filePath)
     {
         await using var stream = File.OpenRead(filePath);
-        var dictionary = await JsonSerializer.DeserializeAsync<Dictionary<string, ImmutableArray<string>>>(stream);
-
+        var dictionary = await JsonSerializer.DeserializeAsync<Dictionary<string, string[]>>(stream);
         if (dictionary is null || dictionary.Count == 0)
         {
             logger.LogError("Failed to load dictionary from path {Path}", filePath);
             return;
         }
-
-        var compounds = dictionary.Select(static x => new JapaneseCompound(x.Key, x.Value));
-        solver.AddCompounds(compounds);
+        foreach (var (compound, readings) in dictionary)
+        {
+            foreach (var reading in readings)
+            {
+                service.AddCompoundReading(compound, reading);
+            }
+        }
     }
 
     private string GetJsonFilePath(DirectoryInfo? dataDir, string subdirectory, string filename)

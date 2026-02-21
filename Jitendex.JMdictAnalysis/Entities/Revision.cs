@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2025 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,22 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.JMdictAnalysis.Entities;
 
-[Table(nameof(Sequence))]
-public sealed class Sequence
+[Table(nameof(Revision))]
+[Index(nameof(SequenceId), nameof(Number), IsUnique = true)]
+public sealed class Revision
 {
+    [Key]
     public required int Id { get; init; }
-    public required int OriginFileId { get; init; }
+    public required int SequenceId { get; init; }
+    public required int Number { get; init; }
+    public required int FileHeaderId { get; init; }
+    public required string DiffJson { get; init; }
 
-    [ForeignKey(nameof(OriginFileId))]
-    public FileHeader OriginFile { get; init; } = null!;
+    [ForeignKey(nameof(SequenceId))]
+    public Sequence Sequence { get; init; } = null!;
 
-    [InverseProperty(nameof(Revision.Sequence))]
-    public List<Revision> Revisions { get; init; } = [];
-
-    [InverseProperty(nameof(Entry.Sequence))]
-    public Entry? Entry { get; set; }
+    [ForeignKey(nameof(FileHeaderId))]
+    public FileHeader FileHeader { get; init; } = null!;
 }

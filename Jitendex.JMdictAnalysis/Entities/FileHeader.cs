@@ -16,22 +16,23 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.JMdictAnalysis.Entities;
 
-[Table(nameof(Sequence))]
-public sealed class Sequence
+[Table(nameof(FileHeader))]
+[Index(nameof(Date), IsUnique = true)]
+public sealed class FileHeader
 {
+    [Key]
     public required int Id { get; init; }
-    public required int OriginFileId { get; init; }
+    public required DateOnly Date { get; init; }
 
-    [ForeignKey(nameof(OriginFileId))]
-    public FileHeader OriginFile { get; init; } = null!;
+    [InverseProperty(nameof(Sequence.OriginFile))]
+    public List<Sequence> NewSequences { get; init; } = [];
 
-    [InverseProperty(nameof(Revision.Sequence))]
-    public List<Revision> Revisions { get; init; } = [];
-
-    [InverseProperty(nameof(Entry.Sequence))]
-    public Entry? Entry { get; set; }
+    [InverseProperty(nameof(Revision.FileHeader))]
+    public List<Revision> SequenceRevisions { get; init; } = [];
 }

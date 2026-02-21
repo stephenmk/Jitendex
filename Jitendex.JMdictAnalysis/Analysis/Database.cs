@@ -106,8 +106,14 @@ internal sealed class Database(JmdictAnalysisContext context)
              )
         SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Language)}";
 
+        INSERT INTO "{nameof(FileHeader)}"
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(FileHeader)}";
+
         INSERT INTO "{nameof(Sequence)}"
         SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Sequence)}";
+
+        INSERT INTO "{nameof(Revision)}"
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Revision)}";
 
         INSERT INTO "{nameof(Entry)}"
         SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Entry)}";

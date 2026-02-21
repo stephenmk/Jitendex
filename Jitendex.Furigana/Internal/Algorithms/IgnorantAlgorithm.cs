@@ -24,16 +24,27 @@ namespace Jitendex.Furigana.Internal.Algorithms;
 
 internal sealed class IgnorantAlgorithm
 (
-    SingleCharacterAlgorithm single,
-    RepeatedKanjiAlgorithm repeated,
-    ConsecutiveKanjiAlgorithm? consecutiveKanji = null
+    SingleCharacterAlgorithm singleSolver,
+    RepeatedKanjiAlgorithm repeatedSolver,
+    ConsecutiveKanjiAlgorithm? consecutiveSolver = null
 ) : IAlgorithm
 {
     public ImmutableArray<List<Solution.Part>> Solve(Entry _, in TextSlice textSlice, in ReadingState readingState)
         => textSlice.Runes switch
         {
-            { Length: 1 } => single.Solve(textSlice, readingState),
-            { Length: 2 } => repeated.Solve(textSlice, readingState),
-            _ => consecutiveKanji?.Solve(textSlice, readingState) ?? [] // TODO: this should also be available when the length is 2
+            { Length: 1 } => SolveOneRuneLengthText(textSlice, readingState),
+            { Length: 2 } => SolveTwoRuneLengthText(textSlice, readingState),
+                        _ => SolveAnyRuneLengthText(textSlice, readingState),
         };
+
+    private ImmutableArray<List<Solution.Part>> SolveOneRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+        => singleSolver.Solve(textSlice, readingState);
+
+    private ImmutableArray<List<Solution.Part>> SolveTwoRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+        => repeatedSolver.Solve(textSlice, readingState) is var parts and not []
+            ? parts
+            : SolveAnyRuneLengthText(textSlice, readingState);
+
+    private ImmutableArray<List<Solution.Part>> SolveAnyRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+        => consecutiveSolver?.Solve(textSlice, readingState) ?? [];
 }

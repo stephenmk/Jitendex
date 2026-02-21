@@ -47,7 +47,7 @@ internal abstract class CharacterAlgorithm
         var greedyValue = greedyMatch.Groups[1].Value;
         var lazyValue = lazyMatch.Groups[1].Value;
 
-        if (greedyValue != string.Empty && string.Equals(greedyValue, lazyValue, StringComparison.Ordinal))
+        if (greedyValue.Length > 0 && string.Equals(greedyValue, lazyValue, StringComparison.Ordinal))
         {
             return greedyValue;
         }

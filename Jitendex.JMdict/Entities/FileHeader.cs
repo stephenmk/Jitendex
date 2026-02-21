@@ -30,6 +30,9 @@ public sealed class FileHeader
     public required int Id { get; init; }
     public required DateOnly Date { get; init; }
 
+    [InverseProperty(nameof(Sequence.OriginFile))]
+    public List<Sequence> NewSequences { get; init; } = [];
+
     [InverseProperty(nameof(Revision.FileHeader))]
     public List<Revision> SequenceRevisions { get; init; } = [];
 }

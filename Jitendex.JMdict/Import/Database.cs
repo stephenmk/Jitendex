@@ -86,6 +86,10 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
 
         using var transaction = context.Database.BeginTransaction();
 
+        FileHeaderTable.InsertItem(context, document.Header);
+        var fileHeaderId = (int)context.GetLastInsertRowId();
+        SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
+
         ReadingInfoTagTable.InsertItems(context, document.ReadingInfoTags.Values);
         KanjiFormInfoTagTable.InsertItems(context, document.KanjiFormInfoTags.Values);
         PartOfSpeechTagTable.InsertItems(context, document.PartOfSpeechTags.Values);
@@ -97,9 +101,6 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         LanguageSourceTypeTable.InsertItems(context, document.LanguageSourceTypes.Values);
         PriorityTagTable.InsertItems(context, document.PriorityTags.Values);
         LanguageTable.InsertItems(context, document.Languages.Values);
-
-        FileHeaderTable.InsertItem(context, document.Header);
-        SequenceTable.InsertItems(context, document.GetSequences());
 
         EntryTable.InsertItems(context, document.Entries.Values);
         KanjiFormTable.InsertItems(context, document.KanjiForms.Values);
@@ -130,6 +131,10 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
 
         var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 
+        FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
+        var fileHeaderId = (int)context.GetLastInsertRowId();
+        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences(fileHeaderId));
+
         ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.ReadingInfoTags.Values);
         KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.KanjiFormInfoTags.Values);
         PartOfSpeechTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.PartOfSpeechTags.Values);
@@ -141,8 +146,6 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         LanguageSourceTypeTable.InsertOrIgnoreItems(context, diff.InsertDocument.LanguageSourceTypes.Values);
         PriorityTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.PriorityTags.Values);
         LanguageTable.InsertOrIgnoreItems(context, diff.InsertDocument.Languages.Values);
-
-        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences());
 
         EntryTable.InsertItems(context, diff.InsertDocument.Entries.Values);
         KanjiFormTable.InsertItems(context, diff.InsertDocument.KanjiForms.Values);
@@ -203,9 +206,6 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         ReadingTable.DeleteItems(context, diff.DeleteDocument.Readings.Values);
         KanjiFormTable.DeleteItems(context, diff.DeleteDocument.KanjiForms.Values);
         EntryTable.DeleteItems(context, diff.DeleteDocument.Entries.Values);
-
-        FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
-        var fileHeaderId = (int)context.GetLastInsertRowId();
 
         var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 

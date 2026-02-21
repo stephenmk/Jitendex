@@ -16,8 +16,8 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-global using SolvableData = System.Collections.Generic.IEnumerable<(string KanjiFormText, string ReadingText, string ExpectedSolutionText)>;
-global using UnsolvableData = System.Collections.Generic.IEnumerable<(string KanjiFormText, string ReadingText)>;
+global using SolvableData = System.Collections.Generic.IEnumerable<(string Text, string Reading, string Solution)>;
+global using UnsolvableData = System.Collections.Generic.IEnumerable<(string Text, string Reading)>;
 using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Test;
@@ -63,33 +63,33 @@ public class ServiceTest
 
     protected void TestSolvable(SolvableData data)
     {
-        foreach (var (kanjiFormText, readingText, expectedSolutionText) in data)
+        foreach (var (text, reading, expectedSolutionText) in data)
         {
-            TestSingleSolvable(kanjiFormText, readingText, expectedSolutionText);
+            TestSingleSolvable(text, reading, expectedSolutionText);
         }
     }
 
     protected void TestUnsolvable(UnsolvableData data)
     {
-        foreach (var (kanjiFormText, readingText) in data)
+        foreach (var (text, reading) in data)
         {
-            TestSingleUnsolvable(kanjiFormText, readingText);
+            TestSingleUnsolvable(text, reading);
         }
     }
 
-    private void TestSingleSolvable(string kanjiForm, string reading, string expectedSolutionText)
+    private void TestSingleSolvable(string text, string reading, string expectedSolutionText)
     {
-        var solution = Service.Solve(kanjiForm, reading);
-        Assert.IsNotNull(solution, $"\n\n{kanjiForm}【{reading}】\n");
+        var solution = Service.Solve(text, reading);
+        Assert.IsNotNull(solution, $"\n\n{text}【{reading}】\n");
 
-        var entry = new Entry(kanjiForm, reading);
+        var entry = new Entry(text, reading);
         var expectedSolution = TextSolution.Parse(expectedSolutionText, entry);
         Assert.AreEqual(expectedSolution, solution);
     }
 
-    private void TestSingleUnsolvable(string kanjiForm, string reading)
+    private void TestSingleUnsolvable(string text, string reading)
     {
-        var solution = Service.Solve(kanjiForm, reading);
-        Assert.IsNull(solution, $"\n\n{kanjiForm}【{reading}】\n");
+        var solution = Service.Solve(text, reading);
+        Assert.IsNull(solution, $"\n\n{text}【{reading}】\n");
     }
 }

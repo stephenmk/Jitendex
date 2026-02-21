@@ -33,7 +33,7 @@ public class AlphanumericForms : ServiceTest
     ];
 
     private static readonly UnsolvableData _unsolvableData =
-        _data.Select(static x => (x.KanjiFormText, x.ReadingText));
+        _data.Select(static x => (x.Text, x.Reading));
 
     [TestMethod]
     public void TestSolvable()

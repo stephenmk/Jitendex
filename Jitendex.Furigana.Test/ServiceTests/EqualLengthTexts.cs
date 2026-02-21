@@ -38,9 +38,9 @@ public class EqualLengthTexts : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        foreach (var (kanjiFormText, readingText, _) in _data)
+        foreach (var (text, reading, _) in _data)
         {
-            Assert.AreEqual(kanjiFormText.Length, readingText.Length);
+            Assert.AreEqual(text.Length, reading.Length);
         }
         TestSolvable(_data);
     }

@@ -23,9 +23,9 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class NameKanji : ServiceTest
 {
-    private const string _kanjiFormText = "佐藤";
-    private const string _readingText = "さとう";
-    private const string _expectedSolutionText = "[佐|さ][藤|とう]";
+    private const string _text = "佐藤";
+    private const string _reading = "さとう";
+    private const string _solution = "[佐|さ][藤|とう]";
 
     private static readonly Dictionary<string, string[]> _kanji = new()
     {
@@ -45,18 +45,18 @@ public class NameKanji : ServiceTest
         AddCharacters(_kanji);
         AddNameKanji(_nameKanji);
 
-        var solution = Service.SolveName(_kanjiFormText, _readingText);
+        var solution = Service.SolveName(_text, _reading);
         Assert.IsNotNull(solution);
 
-        var nameEntry = new NameEntry(_kanjiFormText, _readingText);
-        var expectedSolution = TextSolution.Parse(_expectedSolutionText, nameEntry);
+        var nameEntry = new NameEntry(_text, _reading);
+        var expectedSolution = TextSolution.Parse(_solution, nameEntry);
         Assert.AreEqual(expectedSolution, solution);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        var solution = Service.Solve(_kanjiFormText, _readingText);
+        var solution = Service.Solve(_text, _reading);
         Assert.IsNull(solution);
     }
 
@@ -64,7 +64,7 @@ public class NameKanji : ServiceTest
     public void TestUnsolvableWithBogusKanji()
     {
         AddCharacters(_kanji);
-        var solution = Service.Solve(_kanjiFormText, _readingText);
+        var solution = Service.Solve(_text, _reading);
         Assert.IsNull(solution);
     }
 }

@@ -67,9 +67,9 @@ public class ImpossibleStartReadings : ServiceTest
     [TestMethod]
     public void TestSolvable()
     {
-        foreach (var (kanjiFormText, readingText, _) in _data)
+        foreach (var (text, reading, _) in _data)
         {
-            Assert.AreNotEqual(kanjiFormText.Length, readingText.Length);
+            Assert.AreNotEqual(text.Length, reading.Length);
         }
         TestSolvable(_data);
     }

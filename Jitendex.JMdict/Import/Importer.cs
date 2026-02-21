@@ -65,7 +65,6 @@ internal sealed class Importer
         {
             var document = await reader.ReadAsync(file, date);
             database.Initialize(document);
-            context.ExecuteVacuum();
             return document;
         }
         else

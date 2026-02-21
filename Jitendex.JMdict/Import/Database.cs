@@ -123,6 +123,7 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         ReadingRestrictionTable.InsertItems(context, document.ReadingRestrictions.Values);
 
         transaction.Commit();
+        context.ExecuteVacuum();
     }
 
     public void Update(DocumentDiff diff)

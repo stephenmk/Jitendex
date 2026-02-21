@@ -23,5 +23,5 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal interface ISolutionPartsGenerator
 {
-    public ImmutableArray<List<Solution.Part>> Enumerate(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState);
+    public ImmutableArray<List<Solution.Part>> Enumerate(Entry entry, in TextSlice textSlice, in ReadingState readingState);
 }

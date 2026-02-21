@@ -20,7 +20,7 @@ using System.Text;
 
 namespace Jitendex.Furigana.Internal.Models;
 
-internal readonly ref struct KanjiFormSlice
+internal readonly ref struct TextSlice
 {
     public readonly ReadOnlySpan<Rune> PriorRunes;
     public readonly ReadOnlySpan<Rune> Runes;
@@ -34,7 +34,7 @@ internal readonly ref struct KanjiFormSlice
     public readonly bool ContainsFirstRune;
     public readonly bool ContainsFinalRune;
 
-    public KanjiFormSlice(Entry entry, int sliceStart, int sliceEnd)
+    public TextSlice(Entry entry, int sliceStart, int sliceEnd)
     {
         var normalizedRunesSpan = entry.NormalizedTextRunes.AsSpan();
 

@@ -52,8 +52,8 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
             {
                 for (int sliceEnd = entry.TextRunes.Length; sliceStart < sliceEnd; sliceEnd--)
                 {
-                    var kanjiFormSlice = new KanjiFormSlice(entry, sliceStart, sliceEnd);
-                    var newSolutions = IterateSolutions(solutionPartsGenerator, entry, kanjiFormSlice, solutions);
+                    var textSlice = new TextSlice(entry, sliceStart, sliceEnd);
+                    var newSolutions = IterateSolutions(solutionPartsGenerator, entry, textSlice, solutions);
                     if (newSolutions.Count > 0)
                     {
                         sliceStart += sliceEnd - sliceStart;
@@ -71,7 +71,7 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
     (
         ISolutionPartsGenerator solutionPartsGenerator,
         Entry entry,
-        in KanjiFormSlice kanjiFormSlice,
+        in TextSlice textSlice,
         List<SolutionBuilder> solutions
     )
     {
@@ -81,7 +81,7 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
         {
             var readingState = new ReadingState(entry, solution.ReadingLength());
 
-            foreach (var newParts in solutionPartsGenerator.Enumerate(entry, kanjiFormSlice, readingState))
+            foreach (var newParts in solutionPartsGenerator.Enumerate(entry, textSlice, readingState))
             {
                 var newSolution = new SolutionBuilder(solution.Parts.AddRange(newParts));
                 newSolutions.Add(newSolution);

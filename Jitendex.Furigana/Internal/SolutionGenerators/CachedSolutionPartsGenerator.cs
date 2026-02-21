@@ -24,16 +24,16 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolutionPartsGenerator
 {
-    public ImmutableArray<List<Solution.Part>> Enumerate(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    public ImmutableArray<List<Solution.Part>> Enumerate(Entry entry, in TextSlice textSlice, in ReadingState readingState)
     {
-        var texts = GetValidReadingTexts(entry, kanjiFormSlice, readingState);
+        var texts = GetValidReadingTexts(entry, textSlice, readingState);
 
         if (texts.Count == 0)
         {
             return [];
         }
 
-        var baseText = kanjiFormSlice.RawRunes.FastToString();
+        var baseText = textSlice.RawRunes.FastToString();
         var partsLists = ImmutableArray.CreateBuilder<List<Solution.Part>>(texts.Count);
 
         foreach (var text in texts)
@@ -49,9 +49,9 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolut
         return partsLists.MoveToImmutable();
     }
 
-    private HashSet<string> GetValidReadingTexts(Entry entry, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    private HashSet<string> GetValidReadingTexts(Entry entry, in TextSlice textSlice, in ReadingState readingState)
     {
-        var texts = GetCachedTexts(entry, kanjiFormSlice);
+        var texts = GetCachedTexts(entry, textSlice);
         var validTexts = new HashSet<string>(texts.Count);
         foreach (var text in texts)
         {
@@ -63,35 +63,35 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolut
         return validTexts;
     }
 
-    private List<string> GetCachedTexts(Entry entry, in KanjiFormSlice kanjiFormSlice)
-        => kanjiFormSlice.Runes switch
+    private List<string> GetCachedTexts(Entry entry, in TextSlice textSlice)
+        => textSlice.Runes switch
         {
-            { Length: 1 } => GetCharacterTexts(entry, kanjiFormSlice),
-            _ => GetCompoundTexts(kanjiFormSlice)
+            { Length: 1 } => GetCharacterTexts(entry, textSlice),
+            _ => GetCompoundTexts(textSlice)
         };
 
-    private List<string> GetCharacterTexts(Entry entry, in KanjiFormSlice kanjiFormSlice)
+    private List<string> GetCharacterTexts(Entry entry, in TextSlice textSlice)
         => entry switch
         {
-            NameEntry => GetSpecialCharacterReadings(kanjiFormSlice, cache.NameKanji),
-            ChineseEntry => GetSpecialCharacterReadings(kanjiFormSlice, cache.Hanzi),
-            KoreanEntry => GetSpecialCharacterReadings(kanjiFormSlice, cache.Hanja),
-            Entry => GetCharacterReadings(kanjiFormSlice),
+            NameEntry => GetSpecialCharacterReadings(textSlice, cache.NameKanji),
+            ChineseEntry => GetSpecialCharacterReadings(textSlice, cache.Hanzi),
+            KoreanEntry => GetSpecialCharacterReadings(textSlice, cache.Hanja),
+            Entry => GetCharacterReadings(textSlice),
         };
 
-    private List<string> GetSpecialCharacterReadings(in KanjiFormSlice kanjiFormSlice, Dictionary<int, List<string>> dictionary)
+    private List<string> GetSpecialCharacterReadings(in TextSlice textSlice, Dictionary<int, List<string>> dictionary)
     {
-        var characterReadings = GetCharacterReadings(kanjiFormSlice);
-        if (dictionary.TryGetValue(kanjiFormSlice.Runes[0].Value, out var readings))
+        var characterReadings = GetCharacterReadings(textSlice);
+        if (dictionary.TryGetValue(textSlice.Runes[0].Value, out var readings))
         {
             characterReadings.AddRange(readings);
         }
         return characterReadings;
     }
 
-    private List<string> GetCharacterReadings(in KanjiFormSlice kanjiFormSlice)
+    private List<string> GetCharacterReadings(in TextSlice textSlice)
     {
-        if (!cache.Characters.TryGetValue(kanjiFormSlice.Runes[0].Value, out var readings))
+        if (!cache.Characters.TryGetValue(textSlice.Runes[0].Value, out var readings))
         {
             return [];
         }
@@ -100,11 +100,11 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolut
 
         foreach (var reading in readings)
         {
-            if (reading.IsSuffix && kanjiFormSlice.ContainsFirstRune)
+            if (reading.IsSuffix && textSlice.ContainsFirstRune)
             {
                 continue;
             }
-            if (reading.IsPrefix && kanjiFormSlice.ContainsFinalRune)
+            if (reading.IsPrefix && textSlice.ContainsFinalRune)
             {
                 continue;
             }
@@ -114,8 +114,8 @@ internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolut
         return texts;
     }
 
-    private List<string> GetCompoundTexts(in KanjiFormSlice kanjiFormSlice)
-        => cache.Compounds.TryGetValue(kanjiFormSlice.Runes.FastToString(), out var readings)
+    private List<string> GetCompoundTexts(in TextSlice textSlice)
+        => cache.Compounds.TryGetValue(textSlice.Runes.FastToString(), out var readings)
             ? readings
             : [];
 }

@@ -27,11 +27,11 @@ internal sealed class DefaultSolutionPartsGenerator
     DefaultRepeatedCharacterParts repeated
 ) : ISolutionPartsGenerator
 {
-    public ImmutableArray<List<Solution.Part>> Enumerate(Entry _, in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
-        => kanjiFormSlice.Runes switch
+    public ImmutableArray<List<Solution.Part>> Enumerate(Entry _, in TextSlice textSlice, in ReadingState readingState)
+        => textSlice.Runes switch
         {
-            { Length: 1 } => single.Enumerate(kanjiFormSlice, readingState),
-            { Length: 2 } => repeated.Enumerate(kanjiFormSlice, readingState),
+            { Length: 1 } => single.Enumerate(textSlice, readingState),
+            { Length: 2 } => repeated.Enumerate(textSlice, readingState),
             _ => []
         };
 }

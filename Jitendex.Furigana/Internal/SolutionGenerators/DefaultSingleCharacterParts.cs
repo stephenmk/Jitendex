@@ -24,10 +24,10 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
 {
-    public override ImmutableArray<List<Solution.Part>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    public override ImmutableArray<List<Solution.Part>> Enumerate(in TextSlice textSlice, in ReadingState readingState)
     {
-        var baseText = kanjiFormSlice.RawRunes.FastToString();
-        var readings = DefaultSingleCharacterReadings(kanjiFormSlice, readingState);
+        var baseText = textSlice.RawRunes.FastToString();
+        var readings = DefaultSingleCharacterReadings(textSlice, readingState);
         var partsBuilder = ImmutableArray.CreateBuilder<List<Solution.Part>>(readings.Length);
         foreach (var reading in readings)
         {
@@ -49,9 +49,9 @@ internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
         return partsBuilder.MoveToImmutable();
     }
 
-    private static ImmutableArray<string> DefaultSingleCharacterReadings(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    private static ImmutableArray<string> DefaultSingleCharacterReadings(in TextSlice textSlice, in ReadingState readingState)
     {
-        var currentRune = kanjiFormSlice.Runes[0];
+        var currentRune = textSlice.Runes[0];
 
         if (currentRune.IsKana())
         {
@@ -61,9 +61,9 @@ internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
             }
         }
 
-        if (kanjiFormSlice.PreviousRune.IsKanaOrDefault() && kanjiFormSlice.NextRune.IsKanaOrDefault())
+        if (textSlice.PreviousRune.IsKanaOrDefault() && textSlice.NextRune.IsKanaOrDefault())
         {
-            var regexReading = RegexReading(kanjiFormSlice, readingState);
+            var regexReading = RegexReading(textSlice, readingState);
             if (regexReading is not null)
             {
                 return [regexReading];

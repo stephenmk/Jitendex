@@ -24,22 +24,22 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
 {
-    public override ImmutableArray<List<Solution.Part>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    public override ImmutableArray<List<Solution.Part>> Enumerate(in TextSlice textSlice, in ReadingState readingState)
     {
-        var currentRune1 = kanjiFormSlice.Runes[0];
-        var currentRune2 = kanjiFormSlice.Runes[1];
+        var currentRune1 = textSlice.Runes[0];
+        var currentRune2 = textSlice.Runes[1];
 
         if (!currentRune1.IsKanji() || currentRune1 != currentRune2)
         {
             return [];
         }
 
-        if (!kanjiFormSlice.PreviousRune.IsKanaOrDefault() || !kanjiFormSlice.NextRune.IsKanaOrDefault())
+        if (!textSlice.PreviousRune.IsKanaOrDefault() || !textSlice.NextRune.IsKanaOrDefault())
         {
             return [];
         }
 
-        var reading = RegexReading(kanjiFormSlice, readingState);
+        var reading = RegexReading(textSlice, readingState);
 
         if (reading is null || reading.Length % 2 != 0)
         {
@@ -52,12 +52,12 @@ internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
         [[
             new Solution.Part
             (
-                BaseText: kanjiFormSlice.RawRunes[0].ToString(),
+                BaseText: textSlice.RawRunes[0].ToString(),
                 RubyText: reading[..halfLength]
             ),
             new Solution.Part
             (
-                BaseText: kanjiFormSlice.RawRunes[1].ToString(),
+                BaseText: textSlice.RawRunes[1].ToString(),
                 RubyText: reading[halfLength..]
             )
         ]];

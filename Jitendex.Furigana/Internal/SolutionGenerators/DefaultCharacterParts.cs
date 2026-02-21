@@ -26,18 +26,18 @@ namespace Jitendex.Furigana.Internal.SolutionGenerators;
 
 internal abstract class DefaultCharacterParts
 {
-    public abstract ImmutableArray<List<Solution.Part>> Enumerate(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState);
+    public abstract ImmutableArray<List<Solution.Part>> Enumerate(in TextSlice textSlice, in ReadingState readingState);
 
-    protected static string? RegexReading(in KanjiFormSlice kanjiFormSlice, in ReadingState readingState)
+    protected static string? RegexReading(in TextSlice textSlice, in ReadingState readingState)
     {
-        var remainingKanjiFormText = kanjiFormSlice.RemainingRunes.KatakanaToHiragana();
-        var remainingReadingText = readingState.RemainingTextNormalized.ToString();
+        var remainingText = textSlice.RemainingRunes.KatakanaToHiragana();
+        var remainingReading = readingState.RemainingTextNormalized.ToString();
 
-        var greedyRegex = MakeRegex("(.+)", remainingKanjiFormText);
-        var lazyRegex = MakeRegex("(.+?)", remainingKanjiFormText);
+        var greedyRegex = MakeRegex("(.+)", remainingText);
+        var lazyRegex = MakeRegex("(.+?)", remainingText);
 
-        var greedyMatch = greedyRegex.Match(remainingReadingText);
-        var lazyMatch = lazyRegex.Match(remainingReadingText);
+        var greedyMatch = greedyRegex.Match(remainingReading);
+        var lazyMatch = lazyRegex.Match(remainingReading);
 
         if (!greedyMatch.Success || !lazyMatch.Success)
         {
@@ -57,11 +57,11 @@ internal abstract class DefaultCharacterParts
         }
     }
 
-    private static Regex MakeRegex(ReadOnlySpan<char> groupPattern, ReadOnlySpan<char> kanjiFormText)
+    private static Regex MakeRegex(ReadOnlySpan<char> groupPattern, ReadOnlySpan<char> text)
     {
         var pattern = new StringBuilder($"^{groupPattern}");
         bool newGroup = false;
-        foreach (var character in kanjiFormText)
+        foreach (var character in text)
         {
             if (character.IsKana())
             {

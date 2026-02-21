@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using Jitendex.Furigana.Internal.Models;
-using Jitendex.Furigana.Internal.SolutionGenerators;
+using Jitendex.Furigana.Internal.Algorithms;
 
 namespace Jitendex.Furigana.Internal;
 
-internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> solutionPartsGenerators)
+internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
 {
     public List<Solution> Solve(Entry entry)
     {
@@ -47,18 +47,18 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
 
         for (int sliceStart = 0; sliceStart < entry.TextRunes.Length; sliceStart++)
         {
-        BeginGeneratorLoop:
-            foreach (var solutionPartsGenerator in solutionPartsGenerators)
+        BeginAlgorithmLoop:
+            foreach (var algorithm in algorithms)
             {
                 for (int sliceEnd = entry.TextRunes.Length; sliceStart < sliceEnd; sliceEnd--)
                 {
                     var textSlice = new TextSlice(entry, sliceStart, sliceEnd);
-                    var newSolutions = IterateSolutions(solutionPartsGenerator, entry, textSlice, solutions);
+                    var newSolutions = IterateSolutions(algorithm, entry, textSlice, solutions);
                     if (newSolutions.Count > 0)
                     {
                         sliceStart += sliceEnd - sliceStart;
                         solutions = newSolutions;
-                        goto BeginGeneratorLoop;
+                        goto BeginAlgorithmLoop;
                     }
                 }
             }
@@ -69,7 +69,7 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
 
     private static List<SolutionBuilder> IterateSolutions
     (
-        ISolutionPartsGenerator solutionPartsGenerator,
+        IAlgorithm algorithm,
         Entry entry,
         in TextSlice textSlice,
         List<SolutionBuilder> solutions
@@ -81,7 +81,7 @@ internal sealed class IterationSolver(ImmutableArray<ISolutionPartsGenerator> so
         {
             var readingState = new ReadingState(entry, solution.ReadingLength());
 
-            foreach (var newParts in solutionPartsGenerator.Enumerate(entry, textSlice, readingState))
+            foreach (var newParts in algorithm.Solve(entry, textSlice, readingState))
             {
                 var newSolution = new SolutionBuilder(solution.Parts.AddRange(newParts));
                 newSolutions.Add(newSolution);

@@ -20,11 +20,11 @@ using System.Collections.Immutable;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Internal.SolutionGenerators;
+namespace Jitendex.Furigana.Internal.Algorithms.APriori;
 
-internal sealed class DefaultRepeatedCharacterParts : DefaultCharacterParts
+internal sealed class RepeatedCharacterAlgorithm : CharacterAlgorithm
 {
-    public override ImmutableArray<List<Solution.Part>> Enumerate(in TextSlice textSlice, in ReadingState readingState)
+    public override ImmutableArray<List<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         var currentRune1 = textSlice.Runes[0];
         var currentRune2 = textSlice.Runes[1];

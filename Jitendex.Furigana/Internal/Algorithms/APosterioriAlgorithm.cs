@@ -20,11 +20,11 @@ using System.Collections.Immutable;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Internal.SolutionGenerators;
+namespace Jitendex.Furigana.Internal.Algorithms;
 
-internal sealed class CachedSolutionPartsGenerator(ResourceCache cache) : ISolutionPartsGenerator
+internal sealed class APosterioriAlgorithm(ResourceCache cache) : IAlgorithm
 {
-    public ImmutableArray<List<Solution.Part>> Enumerate(Entry entry, in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<List<Solution.Part>> Solve(Entry entry, in TextSlice textSlice, in ReadingState readingState)
     {
         var texts = GetValidReadingTexts(entry, textSlice, readingState);
 

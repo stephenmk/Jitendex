@@ -20,6 +20,9 @@ namespace Jitendex.Furigana.Internal.Models;
 
 internal sealed record CharacterReading(string Text, bool IsPrefix, bool IsSuffix);
 
+// TODO: The dictionaries and lists in this class really only need to be mutable
+// by the Service class. The solver classes should not be able to mutate it.
+
 internal sealed class ResourceCache
 {
     public Dictionary<string, List<string>> Compounds { get; init; } = [];

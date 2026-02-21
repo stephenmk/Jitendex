@@ -19,7 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Immutable;
 using Jitendex.Furigana.Internal;
 using Jitendex.Furigana.Internal.Models;
-using Jitendex.Furigana.Internal.SolutionGenerators;
+using Jitendex.Furigana.Internal.Algorithms;
+using Jitendex.Furigana.Internal.Algorithms.APriori;
 
 namespace Jitendex.Furigana;
 
@@ -29,17 +30,17 @@ public static class FuriganaServiceProvider
     {
         var resourceCache = new ResourceCache();
 
-        ImmutableArray<ISolutionPartsGenerator> smartGenerators =
+        ImmutableArray<IAlgorithm> smartGenerators =
         [
-            new CachedSolutionPartsGenerator(resourceCache),
-            new DefaultSolutionPartsGenerator
+            new APosterioriAlgorithm(resourceCache),
+            new APrioriAlgorithm
             (
-                new DefaultSingleCharacterParts(),
-                new DefaultRepeatedCharacterParts()
+                new SingleCharacterAlgorithm(),
+                new RepeatedCharacterAlgorithm()
             ),
         ];
 
-        ImmutableArray<ISolutionPartsGenerator> dumbGenerators =
+        ImmutableArray<IAlgorithm> dumbGenerators =
         [
             smartGenerators[1]
         ];

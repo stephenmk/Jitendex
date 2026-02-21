@@ -20,11 +20,11 @@ using System.Collections.Immutable;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Internal.SolutionGenerators;
+namespace Jitendex.Furigana.Internal.Algorithms.APriori;
 
-internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
+internal sealed class SingleCharacterAlgorithm : CharacterAlgorithm
 {
-    public override ImmutableArray<List<Solution.Part>> Enumerate(in TextSlice textSlice, in ReadingState readingState)
+    public override ImmutableArray<List<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         var baseText = textSlice.RawRunes.FastToString();
         var readings = DefaultSingleCharacterReadings(textSlice, readingState);
@@ -41,7 +41,7 @@ internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
                 var part = new Solution.Part
                 (
                     BaseText: baseText,
-                    RubyText: readingState.RemainingText[..reading.Length].ToString()
+                    RubyText: new(readingState.RemainingText[..reading.Length])
                 );
                 partsBuilder.Add([part]);
             }
@@ -80,7 +80,7 @@ internal sealed class DefaultSingleCharacterParts : DefaultCharacterParts
             var readingsBuilder = ImmutableArray.CreateBuilder<string>(remainingText.Length);
             for (int i = 1; i <= remainingText.Length; i++)
             {
-                readingsBuilder.Add(remainingText[..i].ToString());
+                readingsBuilder.Add(new(remainingText[..i]));
             }
             return readingsBuilder.MoveToImmutable();
         }

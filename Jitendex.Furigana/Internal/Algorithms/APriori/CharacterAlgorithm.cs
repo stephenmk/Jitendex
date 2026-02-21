@@ -22,11 +22,11 @@ using System.Text.RegularExpressions;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Internal.SolutionGenerators;
+namespace Jitendex.Furigana.Internal.Algorithms.APriori;
 
-internal abstract class DefaultCharacterParts
+internal abstract class CharacterAlgorithm
 {
-    public abstract ImmutableArray<List<Solution.Part>> Enumerate(in TextSlice textSlice, in ReadingState readingState);
+    public abstract ImmutableArray<List<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState);
 
     protected static string? RegexReading(in TextSlice textSlice, in ReadingState readingState)
     {

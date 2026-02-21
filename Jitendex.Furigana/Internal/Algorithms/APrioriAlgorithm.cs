@@ -18,10 +18,17 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using Jitendex.Furigana.Internal.Models;
+using Jitendex.Furigana.Internal.Algorithms.APriori;
 
-namespace Jitendex.Furigana.Internal.SolutionGenerators;
+namespace Jitendex.Furigana.Internal.Algorithms;
 
-internal interface ISolutionPartsGenerator
+internal sealed class APrioriAlgorithm(SingleCharacterAlgorithm single, RepeatedCharacterAlgorithm repeated) : IAlgorithm
 {
-    public ImmutableArray<List<Solution.Part>> Enumerate(Entry entry, in TextSlice textSlice, in ReadingState readingState);
+    public ImmutableArray<List<Solution.Part>> Solve(Entry _, in TextSlice textSlice, in ReadingState readingState)
+        => textSlice.Runes switch
+        {
+            { Length: 1 } => single.Solve(textSlice, readingState),
+            { Length: 2 } => repeated.Solve(textSlice, readingState),
+            _ => []
+        };
 }

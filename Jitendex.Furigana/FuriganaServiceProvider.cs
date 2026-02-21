@@ -33,7 +33,7 @@ public static class FuriganaServiceProvider
         var ignorantAlgo = new IgnorantAlgorithm
         (
             new SingleCharacterAlgorithm(),
-            new RepeatedCharacterAlgorithm()
+            new RepeatedKanjiAlgorithm()
         );
 
         var informedSolver = new IterationSolver([informedAlgo, ignorantAlgo]);

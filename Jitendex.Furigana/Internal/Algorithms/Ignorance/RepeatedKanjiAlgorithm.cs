@@ -22,7 +22,7 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
-internal sealed class RepeatedCharacterAlgorithm : CharacterAlgorithm
+internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
 {
     public override ImmutableArray<List<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {

@@ -25,7 +25,7 @@ namespace Jitendex.Furigana.Internal.Algorithms;
 internal sealed class IgnorantAlgorithm
 (
     SingleCharacterAlgorithm single,
-    RepeatedCharacterAlgorithm repeated,
+    RepeatedKanjiAlgorithm repeated,
     ConsecutiveKanjiAlgorithm? consecutiveKanji = null
 ) : IAlgorithm
 {
@@ -34,6 +34,6 @@ internal sealed class IgnorantAlgorithm
         {
             { Length: 1 } => single.Solve(textSlice, readingState),
             { Length: 2 } => repeated.Solve(textSlice, readingState),
-            _ => consecutiveKanji?.Solve(textSlice, readingState) ?? []
+            _ => consecutiveKanji?.Solve(textSlice, readingState) ?? [] // TODO: this should also be available when the length is 2
         };
 }

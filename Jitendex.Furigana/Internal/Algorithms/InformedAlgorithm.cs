@@ -74,8 +74,33 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
     private HashSet<string> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
     {
         var rune = textSlice.Runes[0];
-        var readings = cache.GetCharacterReadings(rune);
-        var texts = new HashSet<string>(readings.Count);
+
+        var characterReadings = cache.GetCharacterReadings(rune);
+        var specialReadings = entryType switch
+        {
+            EntryType.Default => [],
+            EntryType.Name    => cache.GetNameKanjiReadings(rune),
+            EntryType.Chinese => cache.GetHanziReadings(rune),
+            EntryType.Korean  => cache.GetHanjaReadings(rune),
+                            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        var readings = characterReadings.Concat(specialReadings);
+        int maxCount = characterReadings.Count + specialReadings.Count;
+
+        return FilterReadings(textSlice, readings, maxCount);
+    }
+
+    private HashSet<string> GetCompoundTexts(in TextSlice textSlice)
+    {
+        var compound = textSlice.Runes.FastToString();
+        var readings = cache.GetCompoundReadings(compound);
+        return FilterReadings(textSlice, readings, readings.Count);
+    }
+
+    private static HashSet<string> FilterReadings(in TextSlice textSlice, IEnumerable<Reading> readings, int maxCount)
+    {
+        var texts = new HashSet<string>(maxCount);
 
         foreach (var reading in readings)
         {
@@ -90,24 +115,6 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
             texts.Add(reading.Text);
         }
 
-        var specialReadings = entryType switch
-        {
-            EntryType.Default => [],
-            EntryType.Name    => cache.GetNameKanjiReadings(rune),
-            EntryType.Chinese => cache.GetHanziReadings(rune),
-            EntryType.Korean  => cache.GetHanjaReadings(rune),
-                            _ => throw new ArgumentOutOfRangeException()
-        };
-
-        texts.UnionWith(specialReadings.Select(static r => r.Text));
-
         return texts;
-    }
-
-    private HashSet<string> GetCompoundTexts(in TextSlice textSlice)
-    {
-        var compound = textSlice.Runes.FastToString();
-        var readings = cache.GetCompoundReadings(compound);
-        return [.. readings.Select(static r => r.Text)];
     }
 }

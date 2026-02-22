@@ -81,9 +81,10 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
         {
             var readingState = new ReadingState(entry, solution.ReadingLength());
 
-            foreach (var newParts in algorithm.Solve(entry, textSlice, readingState))
+            foreach (var nextParts in algorithm.Solve(entry, textSlice, readingState))
             {
-                var newSolution = new SolutionBuilder(solution.Parts.AddRange(newParts));
+                var newParts = solution.Parts.AddRange(nextParts);
+                var newSolution = new SolutionBuilder(newParts);
                 newSolutions.Add(newSolution);
             }
         }

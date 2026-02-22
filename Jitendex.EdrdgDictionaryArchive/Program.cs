@@ -49,12 +49,14 @@ public static class Program
         };
 
         var parseResult = rootCommand.Parse(args);
+
+        foreach (var parseError in parseResult.Errors)
+        {
+            Console.Error.WriteLine(parseError.Message);
+        }
+
         if (parseResult.Errors.Count > 0)
         {
-            foreach (var parseError in parseResult.Errors)
-            {
-                Console.Error.WriteLine(parseError.Message);
-            }
             return 1;
         }
 
@@ -78,16 +80,11 @@ public static class Program
     private static FileInfo? GetFile(DictionaryFile filename, DateOnly? date, DirectoryInfo? archiveDirectory)
     {
         var service = GetService();
-        if (date is null)
-        {
-            return service.GetLatestFile(filename, archiveDirectory) is (FileInfo latestFile, DateOnly _)
-                ? latestFile
-                : null;
-        }
-        else
-        {
-            return service.GetFile(filename, (DateOnly)date, archiveDirectory);
-        }
+        return date is not null
+            ? service.GetFile(filename, (DateOnly)date, archiveDirectory)
+            : service.GetLatestFile(filename, archiveDirectory) is (FileInfo latestFile, DateOnly _)
+            ? latestFile
+            : null;
     }
 
     private static IEdrdgArchiveService GetService()

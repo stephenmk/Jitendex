@@ -151,14 +151,27 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
         var strippedReading = StripHyphens(text);
         var normalizedReading = strippedReading.Text.KatakanaToHiragana();
 
-        var split = normalizedReading.Split('.');
-        if (split.Length == 1)
+        Span<Range> splitRanges = stackalloc Range[3];
+        int rangeCount = 0;
+        foreach (var range in normalizedReading.Split('.'))
         {
-            return GetDerivedKunStems(split[0], key, strippedReading.IsPrefix, strippedReading.IsSuffix);
+            splitRanges[rangeCount++] = range;
+            if (rangeCount == 3)
+            {
+                break;
+            }
         }
-        else if (split.Length == 2)
+
+        if (rangeCount == 1)
         {
-            return GetDerivedSuffixedKunReadings(split[0], split[1], key, strippedReading.IsPrefix, strippedReading.IsSuffix);
+            var split = normalizedReading[splitRanges[0]];
+            return GetDerivedKunStems(split, key, strippedReading.IsPrefix, strippedReading.IsSuffix);
+        }
+        else if (rangeCount == 2)
+        {
+            var split1 = normalizedReading[splitRanges[0]];
+            var split2 = normalizedReading[splitRanges[1]];
+            return GetDerivedSuffixedKunReadings(split1, split2, key, strippedReading.IsPrefix, strippedReading.IsSuffix);
         }
         else
         {
@@ -167,7 +180,7 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
         }
     }
 
-    private List<DerivedReadingElement> GetDerivedSuffixedKunReadings(string stem, string okurigana, ReadingKey key, bool isPrefix, bool isSuffix)
+    private List<DerivedReadingElement> GetDerivedSuffixedKunReadings(ReadOnlySpan<char> stem, ReadOnlySpan<char> okurigana, ReadingKey key, bool isPrefix, bool isSuffix)
     {
         var stems = GetDerivedKunStems(stem, key, false, isSuffix);
         var readings = new List<DerivedReadingElement>(stems);
@@ -181,13 +194,13 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
                     key.ReadingMeaningOrder,
                     key.ReadingOrder,
                     0,
-                    Text: derivedStem.Text + okurigana[..(i + 1)],
+                    Text: string.Concat(derivedStem.Text, okurigana[..(i + 1)]),
                     IsPrefix: isPrefix && i == okurigana.Length - 1,
                     IsSuffix: derivedStem.IsSuffix,
                     TypeName: $"{derivedStem.TypeName}-okurigana"
                 ));
             }
-            if ((derivedStem.Text + okurigana).VerbToMasuStem() is string masuStem)
+            if (string.Concat(derivedStem.Text, okurigana).VerbToMasuStem() is string masuStem)
             {
                 readings.Add(new(
                     key.EntryId,
@@ -205,7 +218,7 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
         return readings;
     }
 
-    private List<DerivedReadingElement> GetDerivedKunStems(string text, ReadingKey key, bool isPrefix, bool isSuffix)
+    private List<DerivedReadingElement> GetDerivedKunStems(ReadOnlySpan<char> text, ReadingKey key, bool isPrefix, bool isSuffix)
     {
         var reading = new DerivedReadingElement
         (
@@ -214,7 +227,7 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
             key.ReadingMeaningOrder,
             key.ReadingOrder,
             0,
-            text,
+            new(text),
             isPrefix,
             isSuffix,
             "kunyomi"
@@ -244,7 +257,7 @@ internal partial class DerivedReadingAnalyzer(ILogger<DerivedReadingAnalyzer> lo
     {
         var readings = new List<DerivedReadingElement>();
         var strippedReading = StripHyphens(text);
-        var normalizedReading = strippedReading.Text.KatakanaToHiragana();
+        var normalizedReading = new string(strippedReading.Text.KatakanaToHiragana());
 
         readings.Add(new
         (

@@ -39,8 +39,8 @@ internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
         }
 
         int halfLength = reading.Length / 2;
-        var reading1 = reading[..halfLength];
-        var reading2 = reading[halfLength..];
+        var reading1 = reading.AsSpan(0, halfLength);
+        var reading2 = reading.AsSpan(halfLength, halfLength);
 
         if (!IsValidReadingPair(reading1, reading2))
         {
@@ -49,8 +49,8 @@ internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
 
         return
         [[
-            new Solution.Part(textSlice.RawRunes[0].ToString(), reading1),
-            new Solution.Part(textSlice.RawRunes[1].ToString(), reading2),
+            new Solution.Part(textSlice.RawRunes[0].ToString(), new(reading1)),
+            new Solution.Part(textSlice.RawRunes[1].ToString(), new(reading2)),
         ]];
     }
 
@@ -72,14 +72,14 @@ internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
         return true;
     }
 
-    private bool IsValidReadingPair(string reading1, ReadOnlySpan<char> reading2)
+    private bool IsValidReadingPair(ReadOnlySpan<char> reading1, ReadOnlySpan<char> reading2)
     {
         if (reading1.IsKanaEquivalent(reading2))
         {
             return true;
         }
 
-        foreach (var rendakuForm in reading1.KatakanaToHiragana().ToRendakuForms())
+        foreach (var rendakuForm in reading1.ToRendakuForms())
         {
             if (rendakuForm.IsKanaEquivalent(reading2))
             {

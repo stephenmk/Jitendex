@@ -22,7 +22,7 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal;
 
-internal sealed class Service(ImmutableArray<IterationSolver> solvers, ReadingKnowledge cache) : IFuriganaService
+internal sealed class Service(ImmutableArray<IterationSolver> solvers, Knowledge cache) : IFuriganaService
 {
     public void AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false)
         => AddReading(character.Value, new Reading(reading, isPrefix, isSuffix), cache.Characters);

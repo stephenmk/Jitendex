@@ -27,7 +27,7 @@ public static class FuriganaServiceProvider
 {
     public static IFuriganaService GetFuriganaService()
     {
-        var knowledge = new ReadingKnowledge();
+        var knowledge = new Knowledge();
 
         var informedAlgo = new InformedAlgorithm(knowledge);
         var ignorantAlgo = new IgnorantAlgorithm

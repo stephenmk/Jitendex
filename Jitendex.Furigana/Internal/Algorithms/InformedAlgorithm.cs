@@ -22,7 +22,7 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal.Algorithms;
 
-internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
+internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
 {
     public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
     {
@@ -71,32 +71,9 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
         };
 
     private List<string> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
-        => entryType switch
-        {
-            EntryType.Default => GetCharacterReadings(textSlice),
-            EntryType.Name    => GetSpecialCharacterReadings(textSlice, cache.NameKanji),
-            EntryType.Chinese => GetSpecialCharacterReadings(textSlice, cache.Hanzi),
-            EntryType.Korean  => GetSpecialCharacterReadings(textSlice, cache.Hanja),
-                            _ => throw new ArgumentOutOfRangeException()
-        };
-
-    private List<string> GetSpecialCharacterReadings(in TextSlice textSlice, Dictionary<int, List<Reading>> dictionary)
     {
-        var characterReadings = GetCharacterReadings(textSlice);
-        if (dictionary.TryGetValue(textSlice.Runes[0].Value, out var readings))
-        {
-            characterReadings.AddRange(readings.Select(static r => r.Text));
-        }
-        return characterReadings;
-    }
-
-    private List<string> GetCharacterReadings(in TextSlice textSlice)
-    {
-        if (!cache.Characters.TryGetValue(textSlice.Runes[0].Value, out var readings))
-        {
-            return [];
-        }
-
+        var rune = textSlice.Runes[0];
+        var readings = cache.GetCharacterReadings(rune);
         var texts = new List<string>(readings.Count);
 
         foreach (var reading in readings)
@@ -112,11 +89,24 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
             texts.Add(reading.Text);
         }
 
+        var specialReadings = entryType switch
+        {
+            EntryType.Default => [],
+            EntryType.Name    => cache.GetNameKanjiReadings(rune),
+            EntryType.Chinese => cache.GetHanziReadings(rune),
+            EntryType.Korean  => cache.GetHanjaReadings(rune),
+                            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        texts.AddRange(specialReadings.Select(static r => r.Text));
+
         return texts;
     }
 
     private List<string> GetCompoundTexts(in TextSlice textSlice)
-        => cache.Compounds.TryGetValue(textSlice.Runes.FastToString(), out var readings)
-            ? new(readings.Select(static r => r.Text))
-            : [];
+    {
+        var compound = textSlice.Runes.FastToString();
+        var readings = cache.GetCompoundReadings(compound);
+        return [.. readings.Select(static r => r.Text)];
+    }
 }

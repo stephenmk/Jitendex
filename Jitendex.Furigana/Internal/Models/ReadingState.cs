@@ -32,12 +32,12 @@ internal readonly ref struct ReadingState
 
     public ReadingState(Entry entry, int readingIndex)
     {
-        FullText = entry.Reading.AsSpan();
+        FullText = entry.Reading;
         PriorText = FullText[..readingIndex];
         RemainingText = FullText[readingIndex..];
         FirstRemainingChar = RemainingText.Length > 0 ? RemainingText[0] : default;
 
-        FullTextNormalized = entry.NormalizedReading.AsSpan();
+        FullTextNormalized = entry.NormalizedReading;
         PriorTextNormalized = FullTextNormalized[..readingIndex];
         RemainingTextNormalized = FullTextNormalized[readingIndex..];
         FirstRemainingNormalizedChar = RemainingTextNormalized.Length > 0 ? RemainingTextNormalized[0] : default;

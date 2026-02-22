@@ -28,13 +28,13 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
     {
         var texts = GetValidReadingTexts(entryType, textSlice, readingState);
 
-        if (texts.Count == 0)
+        if (texts.Length == 0)
         {
             return [];
         }
 
         var baseText = textSlice.RawRunes.FastToString();
-        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(texts.Count);
+        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(texts.Length);
 
         foreach (var text in texts)
         {
@@ -49,32 +49,33 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
         return partsLists.MoveToImmutable();
     }
 
-    private HashSet<string> GetValidReadingTexts(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
+    private ReadOnlySpan<string> GetValidReadingTexts(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
     {
         var texts = GetCachedTexts(entryType, textSlice);
-        var validTexts = new HashSet<string>(texts.Count); // TODO: Is this really where I want to filter for uniqueness?
+        Span<string> validTexts = new string[texts.Count];
+        int validTextCount = 0;
         foreach (var text in texts)
         {
             if (readingState.RemainingTextNormalized.StartsWith(text, StringComparison.Ordinal))
             {
-                validTexts.Add(text);
+                validTexts[validTextCount++] = text;
             }
         }
-        return validTexts;
+        return validTexts[..validTextCount];
     }
 
-    private List<string> GetCachedTexts(EntryType entryType, in TextSlice textSlice)
+    private HashSet<string> GetCachedTexts(EntryType entryType, in TextSlice textSlice)
         => textSlice.Runes switch
         {
             { Length: 1 } => GetCharacterTexts(entryType, textSlice),
                         _ => GetCompoundTexts(textSlice)
         };
 
-    private List<string> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
+    private HashSet<string> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
     {
         var rune = textSlice.Runes[0];
         var readings = cache.GetCharacterReadings(rune);
-        var texts = new List<string>(readings.Count);
+        var texts = new HashSet<string>(readings.Count);
 
         foreach (var reading in readings)
         {
@@ -98,12 +99,12 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
                             _ => throw new ArgumentOutOfRangeException()
         };
 
-        texts.AddRange(specialReadings.Select(static r => r.Text));
+        texts.UnionWith(specialReadings.Select(static r => r.Text));
 
         return texts;
     }
 
-    private List<string> GetCompoundTexts(in TextSlice textSlice)
+    private HashSet<string> GetCompoundTexts(in TextSlice textSlice)
     {
         var compound = textSlice.Runes.FastToString();
         var readings = cache.GetCompoundReadings(compound);

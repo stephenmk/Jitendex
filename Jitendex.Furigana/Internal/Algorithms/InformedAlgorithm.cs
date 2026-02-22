@@ -40,7 +40,7 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
         {
             var furigana = baseText.IsKanaEquivalent(text)
                 ? null
-                : readingState.RemainingText[..text.Length].ToString();
+                : new string(readingState.RemainingText[..text.Length]);
 
             var part = new Solution.Part(baseText, furigana);
             partsLists.Add([part]);
@@ -67,17 +67,17 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
         => textSlice.Runes switch
         {
             { Length: 1 } => GetCharacterTexts(entryType, textSlice),
-            _ => GetCompoundTexts(textSlice)
+                        _ => GetCompoundTexts(textSlice)
         };
 
     private List<string> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
         => entryType switch
         {
+            EntryType.Default => GetCharacterReadings(textSlice),
             EntryType.Name    => GetSpecialCharacterReadings(textSlice, cache.NameKanji),
             EntryType.Chinese => GetSpecialCharacterReadings(textSlice, cache.Hanzi),
             EntryType.Korean  => GetSpecialCharacterReadings(textSlice, cache.Hanja),
-            EntryType.Default => GetCharacterReadings(textSlice),
-            _ => throw new ArgumentOutOfRangeException()
+                            _ => throw new ArgumentOutOfRangeException()
         };
 
     private List<string> GetSpecialCharacterReadings(in TextSlice textSlice, Dictionary<int, List<Reading>> dictionary)

@@ -34,15 +34,13 @@ internal readonly ref struct TextSlice
     public readonly bool ContainsFirstRune;
     public readonly bool ContainsFinalRune;
 
-    public TextSlice(Entry entry, int sliceStart, int sliceEnd)
+    public TextSlice(in Entry entry, int sliceStart, int sliceEnd)
     {
-        var normalizedRunesSpan = entry.NormalizedTextRunes.AsSpan();
+        PriorRunes = entry.NormalizedTextRunes[..sliceStart];
+        Runes = entry.NormalizedTextRunes[sliceStart..sliceEnd];
+        RemainingRunes = entry.NormalizedTextRunes[sliceEnd..];
 
-        PriorRunes = normalizedRunesSpan[..sliceStart];
-        Runes = normalizedRunesSpan[sliceStart..sliceEnd];
-        RemainingRunes = normalizedRunesSpan[sliceEnd..];
-
-        RawRunes = entry.TextRunes.AsSpan()[sliceStart..sliceEnd];
+        RawRunes = entry.TextRunes[sliceStart..sliceEnd];
 
         PreviousRune = PriorRunes.Length > 0 ? PriorRunes[^1] : default;
         NextRune = RemainingRunes.Length > 0 ? RemainingRunes[0] : default;

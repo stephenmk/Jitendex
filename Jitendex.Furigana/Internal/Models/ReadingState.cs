@@ -30,7 +30,7 @@ internal readonly ref struct ReadingState
     public readonly ReadOnlySpan<char> RemainingTextNormalized;
     public readonly char FirstRemainingNormalizedChar;
 
-    public ReadingState(Entry entry, int readingIndex)
+    public ReadingState(in Entry entry, int readingIndex)
     {
         FullText = entry.Reading;
         PriorText = FullText[..readingIndex];

@@ -24,9 +24,9 @@ namespace Jitendex.Furigana.Internal.Algorithms;
 
 internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
 {
-    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(Entry entry, in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
     {
-        var texts = GetValidReadingTexts(entry, textSlice, readingState);
+        var texts = GetValidReadingTexts(entryType, textSlice, readingState);
 
         if (texts.Count == 0)
         {
@@ -49,10 +49,10 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
         return partsLists.MoveToImmutable();
     }
 
-    private HashSet<string> GetValidReadingTexts(Entry entry, in TextSlice textSlice, in ReadingState readingState)
+    private HashSet<string> GetValidReadingTexts(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
     {
-        var texts = GetCachedTexts(entry, textSlice);
-        var validTexts = new HashSet<string>(texts.Count);
+        var texts = GetCachedTexts(entryType, textSlice);
+        var validTexts = new HashSet<string>(texts.Count); // TODO: Is this really where I want to filter for uniqueness?
         foreach (var text in texts)
         {
             if (readingState.RemainingTextNormalized.StartsWith(text, StringComparison.Ordinal))
@@ -63,20 +63,21 @@ internal sealed class InformedAlgorithm(ReadingKnowledge cache) : IAlgorithm
         return validTexts;
     }
 
-    private List<string> GetCachedTexts(Entry entry, in TextSlice textSlice)
+    private List<string> GetCachedTexts(EntryType entryType, in TextSlice textSlice)
         => textSlice.Runes switch
         {
-            { Length: 1 } => GetCharacterTexts(entry, textSlice),
+            { Length: 1 } => GetCharacterTexts(entryType, textSlice),
             _ => GetCompoundTexts(textSlice)
         };
 
-    private List<string> GetCharacterTexts(Entry entry, in TextSlice textSlice)
-        => entry switch
+    private List<string> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
+        => entryType switch
         {
-            NameEntry => GetSpecialCharacterReadings(textSlice, cache.NameKanji),
-            ChineseEntry => GetSpecialCharacterReadings(textSlice, cache.Hanzi),
-            KoreanEntry => GetSpecialCharacterReadings(textSlice, cache.Hanja),
-            Entry => GetCharacterReadings(textSlice),
+            EntryType.Name    => GetSpecialCharacterReadings(textSlice, cache.NameKanji),
+            EntryType.Chinese => GetSpecialCharacterReadings(textSlice, cache.Hanzi),
+            EntryType.Korean  => GetSpecialCharacterReadings(textSlice, cache.Hanja),
+            EntryType.Default => GetCharacterReadings(textSlice),
+            _ => throw new ArgumentOutOfRangeException()
         };
 
     private List<string> GetSpecialCharacterReadings(in TextSlice textSlice, Dictionary<int, List<Reading>> dictionary)

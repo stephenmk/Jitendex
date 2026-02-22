@@ -52,16 +52,16 @@ internal sealed class Service(ImmutableArray<IterationSolver> solvers, ReadingKn
     }
 
     public Solution? Solve(string text, string reading)
-        => Solve(new Entry(text, reading));
+        => Solve(new Entry(text, reading, EntryType.Default));
 
     public Solution? SolveName(string text, string reading)
-        => Solve(new NameEntry(text, reading));
+        => Solve(new Entry(text, reading, EntryType.Name));
 
     public Solution? SolveChineseLoanword(string text, string reading)
-        => Solve(new ChineseEntry(text, reading));
+        => Solve(new Entry(text, reading, EntryType.Chinese));
 
     public Solution? SolveKoreanLoanword(string text, string reading)
-        => Solve(new KoreanEntry(text, reading));
+        => Solve(new Entry(text, reading, EntryType.Korean));
 
     private Solution? Solve(Entry entry)
     {

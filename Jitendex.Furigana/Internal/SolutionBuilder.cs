@@ -28,11 +28,11 @@ internal sealed record SolutionBuilder(ImmutableList<Solution.Part> Parts)
     public int ReadingLength()
         => Parts.Sum(static part => (part.RubyText ?? part.BaseText).Length);
 
-    public Solution? ToSolution(Entry entry)
+    public Solution? ToSolution(in Entry entry)
         => !IsValid(entry) ? null : new Solution
         {
-            Text = entry.Text,
-            Reading = entry.Reading,
+            Text = new(entry.Text),
+            Reading = new(entry.Reading),
             Parts = GetNormalizedParts(),
         };
 
@@ -49,9 +49,9 @@ internal sealed record SolutionBuilder(ImmutableList<Solution.Part> Parts)
     /// </list>
     /// However, any part that contains a kanji rune must contain furigana.
     /// </remarks>
-    private bool IsValid(Entry entry)
-        => string.Equals(NormalizedReading, entry.NormalizedReading, StringComparison.Ordinal)
-        && string.Equals(Text, entry.Text, StringComparison.Ordinal)
+    private bool IsValid(in Entry entry)
+        => NormalizedReading.Equals(entry.NormalizedReading, StringComparison.Ordinal)
+        && Text.Equals(entry.Text, StringComparison.Ordinal)
         && Parts
             .Where(static part => part.BaseText.EnumerateRunes().Any(KanjiComparison.IsKanji))
             .All(static part => !string.IsNullOrWhiteSpace(part.RubyText));
@@ -81,10 +81,10 @@ internal sealed record SolutionBuilder(ImmutableList<Solution.Part> Parts)
         {
             parts.Add(new(mergedTexts.ToString(), null));
         }
-        return parts.ToImmutableArray();
+        return [.. parts];
     }
 
-    private string Text => string.Create
+    private ReadOnlySpan<char> Text => string.Create
     (
         length: Parts.Sum(static part => part.BaseText.Length),
         state: Parts,
@@ -101,7 +101,7 @@ internal sealed record SolutionBuilder(ImmutableList<Solution.Part> Parts)
         }
     );
 
-    private string NormalizedReading => string.Create
+    private ReadOnlySpan<char> NormalizedReading => string.Create
     (
         length: ReadingLength(),
         state: Parts,

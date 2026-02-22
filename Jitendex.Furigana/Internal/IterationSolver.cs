@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal;
 
 internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
 {
-    public List<Solution> Solve(Entry entry)
+    public List<Solution> Solve(in Entry entry)
     {
         var possibleSolutions = FindPossibleSolutions(entry);
         var validSolutions = new List<Solution>(possibleSolutions.Count);
@@ -40,7 +40,7 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
         return validSolutions;
     }
 
-    private List<SolutionBuilder> FindPossibleSolutions(Entry entry)
+    private List<SolutionBuilder> FindPossibleSolutions(in Entry entry)
     {
         var emptySolution = new SolutionBuilder([]); // Need an initial, empty solution to iterate upon.
         var solutions = new List<SolutionBuilder>() { emptySolution };
@@ -70,7 +70,7 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
     private static List<SolutionBuilder> IterateSolutions
     (
         IAlgorithm algorithm,
-        Entry entry,
+        in Entry entry,
         in TextSlice textSlice,
         List<SolutionBuilder> solutions
     )
@@ -81,7 +81,7 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
         {
             var readingState = new ReadingState(entry, solution.ReadingLength());
 
-            foreach (var nextParts in algorithm.Solve(entry, textSlice, readingState))
+            foreach (var nextParts in algorithm.Solve(entry.Type, textSlice, readingState))
             {
                 var newParts = solution.Parts.AddRange(nextParts);
                 var newSolution = new SolutionBuilder(newParts);

@@ -31,7 +31,7 @@ internal abstract class CharacterAlgorithm
     protected static string? RegexReading(in TextSlice textSlice, in ReadingState readingState)
     {
         var remainingText = textSlice.RemainingRunes.KatakanaToHiragana();
-        var remainingReading = readingState.RemainingTextNormalized.ToString();
+        var remainingReading = new string(readingState.RemainingTextNormalized);
 
         var greedyRegex = MakeRegex("(.+)", remainingText);
         var lazyRegex = MakeRegex("(.+?)", remainingText);
@@ -57,15 +57,15 @@ internal abstract class CharacterAlgorithm
         }
     }
 
-    private static Regex MakeRegex(ReadOnlySpan<char> groupPattern, ReadOnlySpan<char> text)
+    private static Regex MakeRegex(ReadOnlySpan<char> groupPattern, ReadOnlySpan<Rune> text)
     {
         var pattern = new StringBuilder($"^{groupPattern}");
         bool newGroup = false;
-        foreach (var character in text)
+        foreach (var rune in text)
         {
-            if (character.IsKana())
+            if (rune.IsKana())
             {
-                pattern.Append(character);
+                pattern.Append((char)rune.Value);
                 newGroup = true;
             }
             else if (newGroup)

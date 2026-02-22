@@ -48,7 +48,7 @@ public class NameKanji : ServiceTest
         var solution = Service.SolveName(_text, _reading);
         Assert.IsNotNull(solution);
 
-        var nameEntry = new NameEntry(_text, _reading);
+        var nameEntry = new Entry(_text, _reading, EntryType.Name);
         var expectedSolution = TextSolution.Parse(_solution, nameEntry);
         Assert.AreEqual(expectedSolution, solution);
     }

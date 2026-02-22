@@ -29,7 +29,7 @@ internal sealed class IgnorantAlgorithm
     ConsecutiveKanjiAlgorithm? consecutiveSolver = null
 ) : IAlgorithm
 {
-    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(Entry _, in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType _, in TextSlice textSlice, in ReadingState readingState)
         => textSlice.Runes switch
         {
             { Length: 1 } => SolveOneRuneLengthText(textSlice, readingState),

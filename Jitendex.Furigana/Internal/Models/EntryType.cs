@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
-using Jitendex.Furigana.Internal.Models;
+namespace Jitendex.Furigana.Internal.Models;
 
-namespace Jitendex.Furigana.Internal.Algorithms;
-
-internal interface IAlgorithm
+internal enum EntryType : byte
 {
-    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState);
+    Default,
+    Name,
+    Chinese,
+    Korean,
 }

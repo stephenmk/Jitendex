@@ -28,19 +28,36 @@ internal sealed class Knowledge : IReadOnlyKnowledge
     public Dictionary<int, List<Reading>> Hanzi { get; init; } = [];
     public Dictionary<int, List<Reading>> Hanja { get; init; } = [];
 
-    public IReadOnlyList<Reading> GetCompoundReadings(string compound) => GetReadings(compound, Compounds);
+    /// <remarks>
+    /// This dictionary will be queried A LOT, so it's very worthwhile to avoid new memory allocations here.
+    /// </remarks>
+    public IReadOnlyList<Reading> GetCompoundReadings(ReadOnlySpan<Rune> runes)
+    {
+        var compoundLength = runes.SumUtf16SequenceLengths();
+        var compound = compoundLength < 100
+            ? stackalloc char[compoundLength]
+            : new char[compoundLength];
+        int charsWritten = 0;
+        foreach (var rune in runes)
+        {
+            charsWritten += rune.EncodeToUtf16(compound[charsWritten..]);
+        }
+        var lookup = Compounds.GetAlternateLookup<ReadOnlySpan<char>>();
+        return lookup.TryGetValue(compound, out var readings) ? readings : [];
+    }
+
     public IReadOnlyList<Reading> GetCharacterReadings(Rune rune) => GetReadings(rune.Value, Characters);
     public IReadOnlyList<Reading> GetNameKanjiReadings(Rune rune) => GetReadings(rune.Value, NameKanji);
     public IReadOnlyList<Reading> GetHanziReadings(Rune rune) => GetReadings(rune.Value, Hanzi);
     public IReadOnlyList<Reading> GetHanjaReadings(Rune rune) => GetReadings(rune.Value, Hanja);
 
-    private static IReadOnlyList<Reading> GetReadings<T>(T key, Dictionary<T, List<Reading>> dictionary) where T : notnull
+    private static IReadOnlyList<Reading> GetReadings(int key, Dictionary<int, List<Reading>> dictionary)
         => dictionary.TryGetValue(key, out var readings) ? readings : [];
 }
 
 internal interface IReadOnlyKnowledge
 {
-    public IReadOnlyList<Reading> GetCompoundReadings(string compound);
+    public IReadOnlyList<Reading> GetCompoundReadings(ReadOnlySpan<Rune> runes);
     public IReadOnlyList<Reading> GetCharacterReadings(Rune rune);
     public IReadOnlyList<Reading> GetNameKanjiReadings(Rune rune);
     public IReadOnlyList<Reading> GetHanziReadings(Rune rune);

@@ -52,6 +52,10 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
     private ReadOnlySpan<string> GetValidReadingTexts(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
     {
         var texts = GetCachedTexts(entryType, textSlice);
+        if (texts.Count == 0)
+        {
+            return [];
+        }
         Span<string> validTexts = new string[texts.Count];
         int validTextCount = 0;
         foreach (var text in texts)
@@ -85,22 +89,29 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
                             _ => throw new ArgumentOutOfRangeException()
         };
 
-        var readings = characterReadings.Concat(specialReadings);
-        int maxCount = characterReadings.Count + specialReadings.Count;
+        int readingCount = characterReadings.Count + specialReadings.Count;
 
-        return FilterReadings(textSlice, readings, maxCount);
+        if (readingCount == 0)
+        {
+            return [];
+        }
+
+        var readings = characterReadings.Concat(specialReadings);
+
+        return FilterReadings(textSlice, readings, readingCount);
     }
 
     private HashSet<string> GetCompoundTexts(in TextSlice textSlice)
     {
-        var compound = textSlice.Runes.FastToString();
-        var readings = cache.GetCompoundReadings(compound);
-        return FilterReadings(textSlice, readings, readings.Count);
+        var readings = cache.GetCompoundReadings(textSlice.Runes);
+        return readings.Count == 0
+            ? []
+            : FilterReadings(textSlice, readings, readings.Count);
     }
 
-    private static HashSet<string> FilterReadings(in TextSlice textSlice, IEnumerable<Reading> readings, int maxCount)
+    private static HashSet<string> FilterReadings(in TextSlice textSlice, IEnumerable<Reading> readings, int readingCount)
     {
-        var texts = new HashSet<string>(maxCount);
+        var texts = new HashSet<string>(readingCount);
 
         foreach (var reading in readings)
         {

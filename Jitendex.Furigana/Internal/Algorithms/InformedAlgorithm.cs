@@ -82,7 +82,7 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
         var characterReadings = cache.GetCharacterReadings(rune);
         var specialReadings = entryType switch
         {
-            EntryType.Default => [],
+            EntryType.Regular => [],
             EntryType.Name    => cache.GetNameKanjiReadings(rune),
             EntryType.Chinese => cache.GetHanziReadings(rune),
             EntryType.Korean  => cache.GetHanjaReadings(rune),

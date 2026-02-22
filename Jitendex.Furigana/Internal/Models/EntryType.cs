@@ -20,7 +20,7 @@ namespace Jitendex.Furigana.Internal.Models;
 
 internal enum EntryType : byte
 {
-    Default,
+    Regular,
     Name,
     Chinese,
     Korean,

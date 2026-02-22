@@ -82,7 +82,7 @@ public class ServiceTest
         var solution = Service.Solve(text, reading);
         Assert.IsNotNull(solution, $"\n\n{text}【{reading}】\n");
 
-        var entry = new Entry(text, reading, EntryType.Default);
+        var entry = new Entry(text, reading, EntryType.Regular);
         var expectedSolution = TextSolution.Parse(expectedSolutionText, entry);
         Assert.AreEqual(expectedSolution, solution);
     }

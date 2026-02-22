@@ -52,7 +52,7 @@ internal sealed class Service(ImmutableArray<IterationSolver> solvers, Knowledge
     }
 
     public Solution? Solve(string text, string reading)
-        => Solve(new Entry(text, reading, EntryType.Default));
+        => Solve(new Entry(text, reading, EntryType.Regular));
 
     public Solution? SolveName(string text, string reading)
         => Solve(new Entry(text, reading, EntryType.Name));

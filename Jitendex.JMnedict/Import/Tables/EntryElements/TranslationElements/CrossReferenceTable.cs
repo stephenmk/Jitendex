@@ -32,7 +32,6 @@ internal sealed class CrossReferenceTable : Table<CrossReferenceElement>
         nameof(CrossReference.EntryId),
         nameof(CrossReference.TranslationOrder),
         nameof(CrossReference.Order),
-        nameof(CrossReference.TypeName),
         nameof(CrossReference.Text),
     ];
 

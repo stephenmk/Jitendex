@@ -28,7 +28,6 @@ public sealed class CrossReference
     public required int EntryId { get; init; }
     public required int TranslationOrder { get; init; }
     public required int Order { get; init; }
-    public required string TypeName { get; set; }
     public required string Text { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(TranslationOrder)}")]

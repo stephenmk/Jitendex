@@ -18,13 +18,20 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Dto.Kanjidic2;
 
-public sealed record SequenceDto(int Id, DateOnly CreatedDate)
+public sealed record SequenceDto
 {
+    public required int Id { get; init; }
+    public required DateOnly CreatedDate { get; init; }
     public ImmutableArray<RevisionDto> Revisions { get; init; } = [];
     public EntryDto? Entry { get; init; }
 }
 
-public sealed record RevisionDto(int Number, DateOnly CreatedDate, string DiffJson);
+public sealed record RevisionDto
+(
+    int Number,
+    DateOnly CreatedDate,
+    string DiffJson
+);
 
 public sealed record EntryDto
 {
@@ -46,8 +53,11 @@ public sealed record DictionaryGroupDto
     public ImmutableArray<DictionaryDto> Dictionaries { get; init; } = [];
 }
 
-public sealed record MiscGroupDto(int? Grade, int? Frequency, int? JlptLevel)
+public sealed record MiscGroupDto
 {
+    public required int? Grade { get; init; }
+    public required int? Frequency { get; init; }
+    public required int? JlptLevel { get; init; }
     public ImmutableArray<string> RadicalNames { get; init; } = [];
     public ImmutableArray<int> StrokeCounts { get; init; } = [];
     public ImmutableArray<VariantDto> Variants { get; init; } = [];
@@ -69,16 +79,49 @@ public sealed record ReadingMeaningGroupDto
     public ImmutableArray<string> Nanoris { get; init; } = [];
 }
 
-public sealed record ReadingMeaningDto(bool IsKokuji, bool IsGhost)
+public sealed record ReadingMeaningDto
 {
+    public required bool IsKokuji { get; init; }
+    public required bool IsGhost { get; init; }
     public ImmutableArray<string> Meanings { get; init; } = [];
     public ImmutableArray<ReadingDto> Readings { get; init; } = [];
 }
 
+public sealed record CodepointDto
+(
+    string Text,
+    string TypeName
+);
 
-public sealed record CodepointDto(string Text, string TypeName);
-public sealed record DictionaryDto(string Text, string TypeName, int? Volume, int? Page);
-public sealed record QueryCodeDto(string Text, string TypeName, string? Misclassification);
-public sealed record RadicalDto(int Number, string TypeName);
-public sealed record VariantDto(string Text, string TypeName);
-public sealed record ReadingDto(string Text, string TypeName);
+public sealed record DictionaryDto
+(
+    string Text,
+    string TypeName,
+    int? Volume,
+    int? Page
+);
+
+public sealed record QueryCodeDto
+(
+    string Text,
+    string TypeName,
+    string? Misclassification
+);
+
+public sealed record RadicalDto
+(
+    int Number,
+    string TypeName
+);
+
+public sealed record VariantDto
+(
+    string Text,
+    string TypeName
+);
+
+public sealed record ReadingDto
+(
+    string Text,
+    string TypeName
+);

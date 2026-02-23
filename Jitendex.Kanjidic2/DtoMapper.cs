@@ -36,8 +36,10 @@ public static class DtoMapper
             .ToDictionary(static dto => dto.Id);
 
     private static Expression<Func<Sequence, SequenceDto>> RevisionlessSequenceProjection =>
-        static seq => new SequenceDto(seq.Id, seq.CreatedDate)
+        static seq => new SequenceDto
         {
+            Id = seq.Id,
+            CreatedDate = seq.CreatedDate,
             Entry = seq.Entry == null ? null : new EntryDto
             {
                 CodepointGroups = seq.Entry.CodepointGroups
@@ -92,8 +94,11 @@ public static class DtoMapper
         };
 
     private static Expression<Func<MiscGroup, MiscGroupDto>> MiscGroupProjection =>
-        static group => new MiscGroupDto(group.Grade, group.Frequency, group.JlptLevel)
+        static group => new MiscGroupDto
         {
+            Grade = group.Grade,
+            Frequency = group.Frequency,
+            JlptLevel = group.JlptLevel,
             RadicalNames = group.RadicalNames
                 .OrderBy(static n => n.Order)
                 .Select(static n => n.Text)
@@ -141,8 +146,10 @@ public static class DtoMapper
         };
 
     private static Expression<Func<ReadingMeaning, ReadingMeaningDto>> ReadingMeaningProjection =>
-        static group => new ReadingMeaningDto(group.IsKokuji, group.IsGhost)
+        static group => new ReadingMeaningDto
         {
+            IsKokuji = group.IsKokuji,
+            IsGhost = group.IsGhost,
             Meanings = group.Meanings
                 .OrderBy(static m => m.Order)
                 .Select(static m => m.Text)

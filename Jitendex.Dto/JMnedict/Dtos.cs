@@ -51,9 +51,15 @@ public sealed record ReadingDto
 public sealed record TranslationDto
 {
     public ImmutableArray<string> NameTypes { get; init; } = [];
-    public ImmutableArray<string> Details { get; init; } = [];
+    public ImmutableArray<DetailDto> Details { get; init; } = [];
     public ImmutableArray<string> CrossReferences { get; init; } = [];
 }
+
+public sealed record DetailDto
+(
+    string Text,
+    string? Language
+);
 
 public sealed record RevisionDto
 (

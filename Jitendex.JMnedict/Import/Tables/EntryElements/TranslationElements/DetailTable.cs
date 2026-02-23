@@ -33,6 +33,7 @@ internal sealed class DetailTable : Table<DetailElement>
         nameof(Detail.TranslationOrder),
         nameof(Detail.Order),
         nameof(Detail.Text),
+        nameof(Detail.LanguageName),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
@@ -48,5 +49,6 @@ internal sealed class DetailTable : Table<DetailElement>
         new("@1", detail.ParentOrder),
         new("@2", detail.Order),
         new("@3", detail.Text),
+        new("@4", detail.LanguageName.Nullable()),
     ];
 }

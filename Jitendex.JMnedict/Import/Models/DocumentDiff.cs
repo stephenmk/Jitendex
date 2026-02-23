@@ -37,6 +37,7 @@ internal sealed class DocumentDiff
         FindNew<string, ReadingInfoTagElement>(docA, docB, nameof(Document.ReadingInfoTags));
         FindNew<string, KanjiFormInfoTagElement>(docA, docB, nameof(Document.KanjiFormInfoTags));
         FindNew<string, NameTypeTagElement>(docA, docB, nameof(Document.NameTypeTags));
+        FindNew<string, DetailLanguageElement>(docA, docB, nameof(Document.DetailLanguages));
 
         DiffDictionaryProperties<int, EntryElement>(docA, docB, nameof(Document.Entries));
 

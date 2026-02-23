@@ -44,7 +44,7 @@ internal sealed record CrossReferenceElement
     (int EntryId, int ParentOrder, int Order, string Text) : ISubElement;
 
 internal sealed record DetailElement
-    (int EntryId, int ParentOrder, int Order, string Text) : ISubElement;
+    (int EntryId, int ParentOrder, int Order, string Text, string? LanguageName) : ISubElement;
 
 internal sealed record NameTypeElement
     (int EntryId, int ParentOrder, int Order, string TagName) : ISubElement;

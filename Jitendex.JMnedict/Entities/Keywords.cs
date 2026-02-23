@@ -64,6 +64,17 @@ public sealed class NameTypeTag : IKeyword
     public List<NameType> NameTypes { get; init; } = [];
 }
 
+[Table(nameof(DetailLanguage))]
+public sealed class DetailLanguage : IKeyword
+{
+    [Key]
+    public required string Name { get; init; }
+    public required DateOnly CreatedDate { get; init; }
+
+    [InverseProperty(nameof(Detail.Language))]
+    public List<Detail> Details { get; init; } = [];
+}
+
 [Table(nameof(PriorityTag))]
 public sealed class PriorityTag : IKeyword
 {

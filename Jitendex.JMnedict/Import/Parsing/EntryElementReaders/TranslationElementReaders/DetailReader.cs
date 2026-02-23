@@ -22,14 +22,15 @@ using Jitendex.JMnedict.Import.Models;
 
 namespace Jitendex.JMnedict.Import.Parsing.EntryElementReaders.TranslationElementReaders;
 
-internal partial class DetailReader(ILogger<DetailReader> logger) : BaseReader(logger)
+internal sealed class DetailReader(ILogger<DetailReader> logger) : BaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationElement translation)
     {
-        if (xmlReader.GetAttribute(XmlAttributeName.DetailLanguage) is not null)
+        var languageName = xmlReader.GetAttribute(XmlAttributeName.DetailLanguage);
+        if (languageName is not null && !document.DetailLanguages.ContainsKey(languageName))
         {
-            LogNonEnglishTranslation(translation.EntryId);
-            await xmlReader.SkipAsync();
+            var language = new DetailLanguageElement(languageName, document.Header.Date);
+            document.DetailLanguages.Add(languageName, language);
         }
 
         var detail = new DetailElement
@@ -37,13 +38,10 @@ internal partial class DetailReader(ILogger<DetailReader> logger) : BaseReader(l
             EntryId: translation.EntryId,
             ParentOrder: translation.Order,
             Order: document.Details.NextOrder(translation.Key()),
-            Text: await xmlReader.ReadElementContentAsStringAsync()
+            Text: await xmlReader.ReadElementContentAsStringAsync(),
+            LanguageName: languageName
         );
 
         document.Details.Add(detail.Key(), detail);
     }
-
-    [LoggerMessage(LogLevel.Error,
-    "Entry `{EntryId}` contains a non-English translation")]
-    partial void LogNonEnglishTranslation(int entryId);
 }

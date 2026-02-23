@@ -62,6 +62,7 @@ internal sealed class Database(ILogger<Database> logger, JMnedictContext context
     private static readonly KeywordTable<ReadingInfoTagElement> ReadingInfoTagTable = new();
     private static readonly KeywordTable<KanjiFormInfoTagElement> KanjiFormInfoTagTable = new();
     private static readonly KeywordTable<NameTypeTagElement> NameTypeTagTable = new();
+    private static readonly KeywordTable<DetailLanguageElement> DetailLanguageTable = new();
     #endregion
 
     public void Initialize(Document document)
@@ -80,6 +81,7 @@ internal sealed class Database(ILogger<Database> logger, JMnedictContext context
         ReadingInfoTagTable.InsertItems(context, document.ReadingInfoTags.Values);
         KanjiFormInfoTagTable.InsertItems(context, document.KanjiFormInfoTags.Values);
         NameTypeTagTable.InsertItems(context, document.NameTypeTags.Values);
+        DetailLanguageTable.InsertItems(context, document.DetailLanguages.Values);
 
         EntryTable.InsertItems(context, document.Entries.Values);
         KanjiFormTable.InsertItems(context, document.KanjiForms.Values);
@@ -112,6 +114,7 @@ internal sealed class Database(ILogger<Database> logger, JMnedictContext context
         ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.ReadingInfoTags.Values);
         KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.KanjiFormInfoTags.Values);
         NameTypeTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.NameTypeTags.Values);
+        DetailLanguageTable.InsertItems(context, diff.InsertDocument.DetailLanguages.Values);
 
         EntryTable.InsertItems(context, diff.InsertDocument.Entries.Values);
         KanjiFormTable.InsertItems(context, diff.InsertDocument.KanjiForms.Values);

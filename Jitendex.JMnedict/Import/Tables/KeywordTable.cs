@@ -50,6 +50,7 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         nameof(KanjiFormInfoTagElement) => nameof(KanjiFormInfoTag),
         nameof(NameTypeTagElement) => nameof(NameTypeTag),
         nameof(PriorityTagElement) => nameof(PriorityTag),
+        nameof(DetailLanguageElement) => nameof(DetailLanguage),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
 }

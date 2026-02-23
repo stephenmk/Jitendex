@@ -28,4 +28,5 @@ internal sealed record PriorityTagElement(string Name, DateOnly Date) : IKeyword
 internal sealed record ReadingInfoTagElement(string Name, DateOnly Date) : IKeywordElement;
 internal sealed record KanjiFormInfoTagElement(string Name, DateOnly Date) : IKeywordElement;
 internal sealed record NameTypeTagElement(string Name, DateOnly Date) : IKeywordElement;
+internal sealed record DetailLanguageElement(string Name, DateOnly Date) : IKeywordElement;
 internal sealed record CrossReferenceTypeElement(string Name, DateOnly Date) : IKeywordElement;

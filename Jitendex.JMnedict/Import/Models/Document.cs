@@ -51,6 +51,7 @@ internal sealed class Document
     public Dictionary<string, ReadingInfoTagElement> ReadingInfoTags { get; init; } = [];
     public Dictionary<string, KanjiFormInfoTagElement> KanjiFormInfoTags { get; init; } = [];
     public Dictionary<string, NameTypeTagElement> NameTypeTags { get; init; } = [];
+    public Dictionary<string, DetailLanguageElement> DetailLanguages { get; init; } = [];
     #endregion
 
     public Dictionary<string, string> KeywordDescriptionToName { get; init; } = [];

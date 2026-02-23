@@ -100,7 +100,7 @@ public static class DtoMapper
                 .ToImmutableArray(),
             Details = translation.Details
                 .OrderBy(static detail => detail.Order)
-                .Select(static detail => detail.Text)
+                .Select(static detail => new DetailDto(detail.Text, detail.LanguageName))
                 .ToImmutableArray(),
             NameTypes = translation.NameTypes
                 .OrderBy(static m => m.Order)

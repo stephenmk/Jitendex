@@ -29,7 +29,11 @@ public sealed class Detail
     public required int TranslationOrder { get; init; }
     public required int Order { get; init; }
     public required string Text { get; set; }
+    public required string? LanguageName { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(TranslationOrder)}")]
     public Translation Translation { get; init; } = null!;
+
+    [ForeignKey(nameof(LanguageName))]
+    public DetailLanguage? Language { get; init; } = null!;
 }

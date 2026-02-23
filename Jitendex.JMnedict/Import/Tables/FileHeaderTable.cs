@@ -16,33 +16,27 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.SQLite.DatabaseFile;
+using Microsoft.Data.Sqlite;
+using Jitendex.SQLite;
+using Jitendex.JMnedict.Entities;
+using Jitendex.JMnedict.Import.Models;
 
-namespace Jitendex.SQLite;
+namespace Jitendex.JMnedict.Import.Tables;
 
-public enum DatabaseFile
+internal sealed class FileHeaderTable : Table<DocumentHeader>
 {
-    JMdict,
-    JMdictAnalysis,
-    JMnedict,
-    Kanjidic2,
-    Tatoeba,
-    KanjiVG,
-    ChiseIds,
-}
+    protected override string Name => nameof(FileHeader);
 
-internal static class DatabaseFileExtensions
-{
-    public static string ToFilename(this DatabaseFile databaseFile)
-        => databaseFile switch
-        {
-            JMdict => "jmdict.db",
-            JMdictAnalysis => "jmdict_analysis.db",
-            JMnedict => "jmnedict.db",
-            Kanjidic2 => "kanjidic2.db",
-            Tatoeba => "tatoeba.db",
-            KanjiVG => "kanjivg.db",
-            ChiseIds => "chise_ids.db",
-            _ => throw new ArgumentOutOfRangeException(nameof(databaseFile))
-        };
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(FileHeader.Date)
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames
+        => throw new NotImplementedException($"The primary key for table {nameof(FileHeader)} is auto-incremented.");
+
+    protected override SqliteParameter[] Parameters(DocumentHeader header) =>
+    [
+        new("@0", header.Date)
+    ];
 }

@@ -16,33 +16,19 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.SQLite.DatabaseFile;
+using System.ComponentModel.DataAnnotations.Schema;
+using Jitendex.JMnedict.Entities.EntryItems;
 
-namespace Jitendex.SQLite;
+namespace Jitendex.JMnedict.Entities;
 
-public enum DatabaseFile
+[Table(nameof(Entry))]
+public sealed class Entry
 {
-    JMdict,
-    JMdictAnalysis,
-    JMnedict,
-    Kanjidic2,
-    Tatoeba,
-    KanjiVG,
-    ChiseIds,
-}
+    public required int Id { get; init; }
+    public List<Reading> Readings { get; init; } = [];
+    public List<KanjiForm> KanjiForms { get; init; } = [];
+    public List<Translation> Translations { get; init; } = [];
 
-internal static class DatabaseFileExtensions
-{
-    public static string ToFilename(this DatabaseFile databaseFile)
-        => databaseFile switch
-        {
-            JMdict => "jmdict.db",
-            JMdictAnalysis => "jmdict_analysis.db",
-            JMnedict => "jmnedict.db",
-            Kanjidic2 => "kanjidic2.db",
-            Tatoeba => "tatoeba.db",
-            KanjiVG => "kanjivg.db",
-            ChiseIds => "chise_ids.db",
-            _ => throw new ArgumentOutOfRangeException(nameof(databaseFile))
-        };
+    [ForeignKey(nameof(Id))]
+    public Sequence Sequence { get; init; } = null!;
 }

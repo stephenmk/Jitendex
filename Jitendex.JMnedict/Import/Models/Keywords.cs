@@ -16,33 +16,16 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.SQLite.DatabaseFile;
+namespace Jitendex.JMnedict.Import.Models;
 
-namespace Jitendex.SQLite;
-
-public enum DatabaseFile
+internal interface IKeywordElement
 {
-    JMdict,
-    JMdictAnalysis,
-    JMnedict,
-    Kanjidic2,
-    Tatoeba,
-    KanjiVG,
-    ChiseIds,
+    string Name { get; init; }
+    DateOnly Date { get; init; }
 }
 
-internal static class DatabaseFileExtensions
-{
-    public static string ToFilename(this DatabaseFile databaseFile)
-        => databaseFile switch
-        {
-            JMdict => "jmdict.db",
-            JMdictAnalysis => "jmdict_analysis.db",
-            JMnedict => "jmnedict.db",
-            Kanjidic2 => "kanjidic2.db",
-            Tatoeba => "tatoeba.db",
-            KanjiVG => "kanjivg.db",
-            ChiseIds => "chise_ids.db",
-            _ => throw new ArgumentOutOfRangeException(nameof(databaseFile))
-        };
-}
+internal sealed record PriorityTagElement(string Name, DateOnly Date) : IKeywordElement;
+internal sealed record ReadingInfoTagElement(string Name, DateOnly Date) : IKeywordElement;
+internal sealed record KanjiFormInfoTagElement(string Name, DateOnly Date) : IKeywordElement;
+internal sealed record NameTypeTagElement(string Name, DateOnly Date) : IKeywordElement;
+internal sealed record CrossReferenceTypeElement(string Name, DateOnly Date) : IKeywordElement;

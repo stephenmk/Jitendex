@@ -16,33 +16,23 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.SQLite.DatabaseFile;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.SQLite;
+namespace Jitendex.JMnedict.Entities.EntryItems.ReadingItems;
 
-public enum DatabaseFile
+[Table(nameof(ReadingPriority))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]
+public sealed class ReadingPriority
 {
-    JMdict,
-    JMdictAnalysis,
-    JMnedict,
-    Kanjidic2,
-    Tatoeba,
-    KanjiVG,
-    ChiseIds,
-}
+    public required int EntryId { get; init; }
+    public required int ReadingOrder { get; init; }
+    public required int Order { get; init; }
+    public required string TagName { get; set; }
 
-internal static class DatabaseFileExtensions
-{
-    public static string ToFilename(this DatabaseFile databaseFile)
-        => databaseFile switch
-        {
-            JMdict => "jmdict.db",
-            JMdictAnalysis => "jmdict_analysis.db",
-            JMnedict => "jmnedict.db",
-            Kanjidic2 => "kanjidic2.db",
-            Tatoeba => "tatoeba.db",
-            KanjiVG => "kanjivg.db",
-            ChiseIds => "chise_ids.db",
-            _ => throw new ArgumentOutOfRangeException(nameof(databaseFile))
-        };
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
+    public Reading Reading { get; init; } = null!;
+
+    [ForeignKey(nameof(TagName))]
+    public PriorityTag Tag { get; set; } = null!;
 }

@@ -16,33 +16,23 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.SQLite.DatabaseFile;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.SQLite;
+namespace Jitendex.JMnedict.Entities;
 
-public enum DatabaseFile
+[Table(nameof(FileHeader))]
+[Index(nameof(Date), IsUnique = true)]
+public sealed class FileHeader
 {
-    JMdict,
-    JMdictAnalysis,
-    JMnedict,
-    Kanjidic2,
-    Tatoeba,
-    KanjiVG,
-    ChiseIds,
-}
+    [Key]
+    public required int Id { get; init; }
+    public required DateOnly Date { get; init; }
 
-internal static class DatabaseFileExtensions
-{
-    public static string ToFilename(this DatabaseFile databaseFile)
-        => databaseFile switch
-        {
-            JMdict => "jmdict.db",
-            JMdictAnalysis => "jmdict_analysis.db",
-            JMnedict => "jmnedict.db",
-            Kanjidic2 => "kanjidic2.db",
-            Tatoeba => "tatoeba.db",
-            KanjiVG => "kanjivg.db",
-            ChiseIds => "chise_ids.db",
-            _ => throw new ArgumentOutOfRangeException(nameof(databaseFile))
-        };
+    [InverseProperty(nameof(Sequence.OriginFile))]
+    public List<Sequence> NewSequences { get; init; } = [];
+
+    [InverseProperty(nameof(Revision.FileHeader))]
+    public List<Revision> SequenceRevisions { get; init; } = [];
 }

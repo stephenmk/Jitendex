@@ -27,17 +27,17 @@ internal sealed class Service(ImmutableArray<IterationSolver> solvers, Knowledge
     public void AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false)
         => AddReading(character.Value, new Reading(reading, isPrefix, isSuffix), cache.Characters);
 
-    public void AddNameReading(Rune kanji, string reading)
-        => AddReading(kanji.Value, new Reading(reading), cache.NameKanji);
+    public void AddNameReading(Rune kanji, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(kanji.Value, new Reading(reading, isPrefix, isSuffix), cache.NameKanji);
 
-    public void AddHanziReading(Rune hanzi, string reading)
-        => AddReading(hanzi.Value, new Reading(reading), cache.Hanzi);
+    public void AddHanziReading(Rune hanzi, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(hanzi.Value, new Reading(reading, isPrefix, isSuffix), cache.Hanzi);
 
-    public void AddHanjaReading(Rune hanja, string reading)
-        => AddReading(hanja.Value, new Reading(reading), cache.Hanja);
+    public void AddHanjaReading(Rune hanja, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(hanja.Value, new Reading(reading, isPrefix, isSuffix), cache.Hanja);
 
-    public void AddCompoundReading(string compound, string reading)
-        => AddReading(compound, new Reading(reading), cache.Compounds);
+    public void AddCompoundReading(string compound, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(compound, new Reading(reading, isPrefix, isSuffix), cache.Compounds);
 
     private void AddReading<T>(T key, Reading value, Dictionary<T, List<Reading>> dictionary) where T : notnull
     {

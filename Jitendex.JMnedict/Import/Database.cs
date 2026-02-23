@@ -104,6 +104,8 @@ internal sealed class Database(ILogger<Database> logger, JMnedictContext context
     {
         logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", diff.SequenceIds.Count, diff.FileHeader.Date);
 
+        using var transaction = context.Database.BeginTransaction();
+
         var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 
         FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
@@ -183,5 +185,6 @@ internal sealed class Database(ILogger<Database> logger, JMnedictContext context
         }
 
         RevisionTable.InsertItems(context, revisions);
+        transaction.Commit();
     }
 }

@@ -27,6 +27,7 @@ namespace Jitendex.Tatoeba.Import;
 internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
 {
     private static readonly FileHeaderTable FileHeaderTable = new();
+    private static readonly RevisionTable RevisionTable = new();
     private static readonly SequenceTable SequenceTable = new();
     private static readonly ExampleTable ExampleTable = new();
     private static readonly TranslationTable TranslationTable = new();
@@ -42,7 +43,9 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
         using var transaction = context.Database.BeginTransaction();
 
         FileHeaderTable.InsertItem(context, document.Header);
-        SequenceTable.InsertItems(context, document.GetSequences());
+        var fileHeaderId = (int)context.GetLastInsertRowId();
+        SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
+
         ExampleTable.InsertItems(context, document.Examples.Values);
         TranslationTable.InsertItems(context, document.Translations.Values);
         SegmentationTable.InsertItems(context, document.Segmentations.Values);
@@ -62,7 +65,8 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
         context.ExecuteDeferForeignKeysPragma();
 
         FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
-        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences());
+        var fileHeaderId = (int)context.GetLastInsertRowId();
+        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences(fileHeaderId));
 
         ExampleTable.InsertItems(context, diff.InsertDocument.Examples.Values);
         TranslationTable.InsertItems(context, diff.InsertDocument.Translations.Values);
@@ -86,25 +90,26 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
             .Include(static sequence => sequence.Revisions)
             .ToList();
 
+        var revisions = new List<DocumentRevision>(aSequences.Count);
+
         foreach (var sequence in sequences)
         {
             if (aSequences.TryGetValue(sequence.Id, out var aSequence))
             {
                 var bSequence = bSequences[sequence.Id];
                 var baDiff = JsonDiffer.Diff(a: bSequence, b: aSequence);
-                sequence.Revisions.Add(new()
-                {
-                    SequenceId = sequence.Id,
-                    Number = sequence.Revisions.Count,
-                    CreatedDate = diff.Date,
-                    IsPriority = diff.PrioritySequenceIds.Contains(sequence.Id),
-                    DiffJson = baDiff,
-                    Sequence = sequence,
-                });
+                revisions.Add(new
+                (
+                    SequenceId: sequence.Id,
+                    Number: sequence.Revisions.Count,
+                    FileHeaderId: fileHeaderId,
+                    IsPriority: diff.PrioritySequenceIds.Contains(sequence.Id),
+                    DiffJson: baDiff
+                ));
             }
         }
 
-        context.SaveChanges();
+        RevisionTable.InsertItems(context, revisions);
         transaction.Commit();
     }
 }

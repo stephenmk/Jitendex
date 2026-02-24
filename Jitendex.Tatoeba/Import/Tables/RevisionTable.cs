@@ -23,22 +23,28 @@ using Jitendex.Tatoeba.Import.Models;
 
 namespace Jitendex.Tatoeba.Import.Tables;
 
-internal sealed class SequenceTable : Table<SequenceElement>
+internal sealed class RevisionTable : Table<DocumentRevision>
 {
-    protected override string Name => nameof(Sequence);
+    protected override string Name => nameof(Revision);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Sequence.Id),
-        nameof(Sequence.OriginFileId),
+        nameof(Revision.SequenceId),
+        nameof(Revision.Number),
+        nameof(Revision.FileHeaderId),
+        nameof(Revision.IsPriority),
+        nameof(Revision.DiffJson),
     ];
 
     protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException();
+        => throw new NotImplementedException($"The primary key for table {nameof(Revision)} is auto-incremented.");
 
-    protected override SqliteParameter[] Parameters(SequenceElement sequence) =>
+    protected override SqliteParameter[] Parameters(DocumentRevision revision) =>
     [
-        new("@0", sequence.Id),
-        new("@1", sequence.FileHeaderId),
+        new("@0", revision.SequenceId),
+        new("@1", revision.Number),
+        new("@2", revision.FileHeaderId),
+        new("@3", revision.IsPriority),
+        new("@4", revision.DiffJson),
     ];
 }

@@ -26,7 +26,10 @@ public sealed class Sequence
 {
     [Key]
     public required int Id { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
 
     [InverseProperty(nameof(Entities.Example.Sequence))]
     public Example? Example { get; set; }

@@ -55,8 +55,8 @@ internal sealed class Document
         return index;
     }
 
-    public IEnumerable<SequenceElement> GetSequences()
-        => Examples.Select(e => new SequenceElement(e.Key, Header.Date));
+    public IEnumerable<SequenceElement> GetSequences(int fileHeaderId)
+        => Examples.Select(e => new SequenceElement(e.Key, fileHeaderId));
 
     public IEnumerable<int> ConcatAllExampleIds()
         => Examples.Keys

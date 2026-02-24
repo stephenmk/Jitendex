@@ -27,10 +27,13 @@ public sealed class Revision
 {
     public required int SequenceId { get; init; }
     public required int Number { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int FileHeaderId { get; init; }
     public required bool IsPriority { get; init; }
     public required string DiffJson { get; init; }
 
     [ForeignKey(nameof(SequenceId))]
     public Sequence Sequence { get; init; } = null!;
+
+    [ForeignKey(nameof(FileHeaderId))]
+    public FileHeader FileHeader { get; init; } = null!;
 }

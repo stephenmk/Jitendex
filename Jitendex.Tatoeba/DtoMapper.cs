@@ -34,7 +34,7 @@ public static class DtoMapper
             .ToDictionary(static dto => dto.Id);
 
     private static Expression<Func<Sequence, SequenceDto>> RevisionlessSequenceProjection =>
-        static seq => new SequenceDto(seq.Id, seq.CreatedDate)
+        static seq => new SequenceDto(seq.Id, seq.OriginFile.Date)
         {
             Example = seq.Example == null ? null : new ExampleDto(seq.Example.Text)
             {

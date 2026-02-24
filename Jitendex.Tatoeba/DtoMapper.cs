@@ -34,10 +34,13 @@ public static class DtoMapper
             .ToDictionary(static dto => dto.Id);
 
     private static Expression<Func<Sequence, SequenceDto>> RevisionlessSequenceProjection =>
-        static seq => new SequenceDto(seq.Id, seq.OriginFile.Date)
+        static seq => new SequenceDto
         {
-            Example = seq.Example == null ? null : new ExampleDto(seq.Example.Text)
+            Id = seq.Id,
+            CreatedDate = seq.OriginFile.Date,
+            Example = seq.Example == null ? null : new ExampleDto
             {
+                Text = seq.Example.Text,
                 Segmentations = seq.Example.Segmentations
                     .AsQueryable()
                     .OrderBy(static s => s.Index)

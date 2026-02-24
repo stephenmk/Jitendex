@@ -26,14 +26,17 @@ public sealed record RevisionDto
     string DiffJson
 );
 
-public sealed record SequenceDto(int Id, DateOnly CreatedDate)
+public sealed record SequenceDto
 {
+    public required int Id { get; init; }
+    public required DateOnly CreatedDate { get; init; }
     public ExampleDto? Example { get; init; }
     public ImmutableArray<RevisionDto> Revisions { get; init; } = [];
 }
 
-public sealed record ExampleDto(string Text)
+public sealed record ExampleDto
 {
+    public required string Text { get; init; }
     public ImmutableArray<SegmentationDto> Segmentations { get; init; } = [];
 }
 

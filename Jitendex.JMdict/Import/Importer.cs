@@ -48,9 +48,7 @@ internal sealed class Importer
             return;
         }
 
-        using var transaction = context.Database.BeginTransaction();
         await UpdateDatabaseAsync(archiveDirectory, previousDocument);
-        transaction.Commit();
     }
 
     private DateOnly GetPreviousDate() => context.FileHeaders

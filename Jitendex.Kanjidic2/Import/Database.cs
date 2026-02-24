@@ -78,7 +78,8 @@ internal sealed class Database(ILogger<Database> logger, Kanjidic2Context contex
         using var transaction = context.Database.BeginTransaction();
 
         FileHeaderTable.InsertItem(context, document.Header);
-        SequenceTable.InsertItems(context, document.GetSequences());
+        var fileHeaderId = (int)context.GetLastInsertRowId();
+        SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
         CodepointTypeTable.InsertItems(context, document.CodepointTypes.Values);
         DictionaryTypeTable.InsertItems(context, document.DictionaryTypes.Values);
@@ -122,7 +123,8 @@ internal sealed class Database(ILogger<Database> logger, Kanjidic2Context contex
         context.ExecuteDeferForeignKeysPragma();
 
         FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
-        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences());
+        var fileHeaderId = (int)context.GetLastInsertRowId();
+        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences(fileHeaderId));
 
         CodepointTypeTable.InsertOrIgnoreItems(context, diff.InsertDocument.CodepointTypes.Values);
         DictionaryTypeTable.InsertOrIgnoreItems(context, diff.InsertDocument.DictionaryTypes.Values);
@@ -210,7 +212,7 @@ internal sealed class Database(ILogger<Database> logger, Kanjidic2Context contex
                 revisions.Add(new(
                     SequenceId: seq.Id,
                     Number: seq.RevisionCount,
-                    CreatedDate: diff.FileHeader.Date,
+                    FileHeaderId: fileHeaderId,
                     DiffJson: baDiff
                 ));
             }

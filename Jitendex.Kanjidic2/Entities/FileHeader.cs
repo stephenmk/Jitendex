@@ -18,10 +18,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Kanjidic2.Entities;
 
 [Table(nameof(FileHeader))]
+[Index(nameof(Date), IsUnique = true)]
 public sealed class FileHeader
 {
     [Key]
@@ -29,4 +31,10 @@ public sealed class FileHeader
     public required string DatabaseVersion { get; set; }
     public required string FileVersion { get; set; }
     public required DateOnly Date { get; set; }
+
+    [InverseProperty(nameof(Sequence.OriginFile))]
+    public List<Sequence> NewSequences { get; init; } = [];
+
+    [InverseProperty(nameof(Revision.FileHeader))]
+    public List<Revision> SequenceRevisions { get; init; } = [];
 }

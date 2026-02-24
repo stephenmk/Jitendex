@@ -30,7 +30,7 @@ internal sealed class SequenceTable : Table<DocumentSequence>
     protected override IReadOnlyList<string> ColumnNames =>
     [
         nameof(Sequence.Id),
-        nameof(Sequence.CreatedDate),
+        nameof(Sequence.OriginFileId),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
@@ -41,6 +41,6 @@ internal sealed class SequenceTable : Table<DocumentSequence>
     protected override SqliteParameter[] Parameters(DocumentSequence sequence) =>
     [
         new("@0", sequence.Id),
-        new("@1", sequence.CreatedDate),
+        new("@1", sequence.FileHeaderId),
     ];
 }

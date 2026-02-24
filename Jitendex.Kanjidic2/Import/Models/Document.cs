@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Kanjidic2.Import.Models;
 
-internal sealed record DocumentSequence(int Id, DateOnly CreatedDate);
-internal sealed record DocumentRevision(int SequenceId, int Number, DateOnly CreatedDate, string DiffJson);
+internal sealed record DocumentSequence(int Id, int FileHeaderId);
+internal sealed record DocumentRevision(int SequenceId, int Number, int FileHeaderId, string DiffJson);
 
 internal sealed class Document
 {
@@ -87,8 +87,8 @@ internal sealed class Document
         Readings = new(expectedEntryCount * 7);
     }
 
-    public IEnumerable<DocumentSequence> GetSequences()
-        => Entries.Select(e => new DocumentSequence(e.Key, Header.Date));
+    public IEnumerable<DocumentSequence> GetSequences(int fileHeaderId)
+        => Entries.Select(e => new DocumentSequence(e.Key, fileHeaderId));
 
     public IEnumerable<int> ConcatAllEntryIds()
         => Entries.Keys

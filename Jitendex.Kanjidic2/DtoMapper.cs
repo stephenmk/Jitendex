@@ -39,7 +39,7 @@ public static class DtoMapper
         static seq => new SequenceDto
         {
             Id = seq.Id,
-            CreatedDate = seq.CreatedDate,
+            CreatedDate = seq.OriginFile.Date,
             Entry = seq.Entry == null ? null : new EntryDto
             {
                 CodepointGroups = seq.Entry.CodepointGroups

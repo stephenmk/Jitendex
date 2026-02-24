@@ -28,7 +28,7 @@ internal abstract partial class BaseReader
         => _logger = logger;
 
     protected bool IsClosingTag(XmlReader xmlReader, ReadOnlySpan<char> tagName)
-        => tagName.SequenceEqual(xmlReader.Name);
+        => tagName.Equals(xmlReader.Name, StringComparison.Ordinal);
 
     protected async Task LogUnexpectedTextNodeAsync(XmlReader xmlReader, string tagName)
     {

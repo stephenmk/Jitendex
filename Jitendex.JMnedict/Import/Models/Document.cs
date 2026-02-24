@@ -93,7 +93,3 @@ internal sealed class Document
             .Concat(Details.EntryIds())
             .Concat(NameTypes.EntryIds());
 }
-
-internal sealed record DocumentHeader(DateOnly Date);
-internal sealed record DocumentSequence(int Id, int FileHeaderId);
-internal sealed record DocumentRevision(int SequenceId, int Number, int FileHeaderId, string DiffJson);

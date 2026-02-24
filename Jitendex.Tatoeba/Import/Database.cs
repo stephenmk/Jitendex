@@ -86,9 +86,12 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
         var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 
         var sequences = context.Sequences
-            .Where(sequence => diff.SequenceIds.Contains(sequence.Id))
-            .Include(static sequence => sequence.Revisions)
-            .ToList();
+            .Where(seq => diff.SequenceIds.Contains(seq.Id))
+            .Select(seq => new
+            {
+                seq.Id,
+                RevisionCount = seq.Revisions.Count,
+            });
 
         var revisions = new List<DocumentRevision>(aSequences.Count);
 
@@ -101,7 +104,7 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
                 revisions.Add(new
                 (
                     SequenceId: sequence.Id,
-                    Number: sequence.Revisions.Count,
+                    Number: sequence.RevisionCount,
                     FileHeaderId: fileHeaderId,
                     IsPriority: diff.PrioritySequenceIds.Contains(sequence.Id),
                     DiffJson: baDiff

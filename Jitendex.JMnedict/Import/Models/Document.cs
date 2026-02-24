@@ -56,7 +56,7 @@ internal sealed class Document
 
     public Dictionary<string, string> KeywordDescriptionToName { get; init; } = [];
 
-    public Document(int expectedEntryCount = 250_000)
+    public Document(int expectedEntryCount = 800_000)
     {
         Entries = new(expectedEntryCount);
 
@@ -64,16 +64,16 @@ internal sealed class Document
         Readings = new(expectedEntryCount);
         Translations = new(expectedEntryCount);
 
-        KanjiFormInfos = new(expectedEntryCount / 20);
-        KanjiFormPriorities = new(expectedEntryCount / 4);
+        KanjiFormInfos = [];
+        KanjiFormPriorities = [];
 
-        ReadingInfos = new(expectedEntryCount / 30);
-        ReadingPriorities = new(expectedEntryCount / 4);
-        Restrictions = new(expectedEntryCount / 25);
+        ReadingInfos = [];
+        ReadingPriorities = new(expectedEntryCount / 80);
+        Restrictions = [];
 
         CrossReferences = [];
-        Details = new(expectedEntryCount * 2);
-        NameTypes = new(expectedEntryCount / 5);
+        Details = new(expectedEntryCount);
+        NameTypes = new(expectedEntryCount);
     }
 
     public IEnumerable<DocumentSequence> GetSequences(int fileHeaderId)

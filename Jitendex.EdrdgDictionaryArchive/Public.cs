@@ -17,26 +17,20 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.DependencyInjection;
+using Jitendex.Import;
 using Jitendex.EdrdgDictionaryArchive.Internal;
 
 namespace Jitendex.EdrdgDictionaryArchive;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddEdrdgArchiveService(this IServiceCollection services)
+    public static IServiceCollection AddEdrdgArchiveService(this IServiceCollection services, DictionaryFile file, DirectoryInfo? archiveDirectory)
         => services
-            .AddTransient<IEdrdgArchiveService, EdrdgArchiveService>()
+            .AddTransient<EdrdgArchiveServiceOptions>(_ => new(file, archiveDirectory))
+            .AddTransient<IFileArchive<DateOnly>, EdrdgArchiveService>()
             .AddTransient<FileBuilder>()
             .AddTransient<FileArchive>()
             .AddTransient<FileCache>();
-}
-
-public interface IEdrdgArchiveService
-{
-    public FileInfo? GetFile(DictionaryFile file, DateOnly date, DirectoryInfo? archiveDirectory = null);
-    public (FileInfo, DateOnly)? GetNextFile(DictionaryFile file, DateOnly previousDate, DirectoryInfo? archiveDirectory = null);
-    public (FileInfo, DateOnly)? GetEarliestFile(DictionaryFile file, DirectoryInfo? archiveDirectory = null);
-    public (FileInfo, DateOnly)? GetLatestFile(DictionaryFile file, DirectoryInfo? archiveDirectory = null);
 }
 
 public enum DictionaryFile : byte

@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.CommandLine;
+using Jitendex.Import;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -79,17 +80,17 @@ public static class Program
 
     private static FileInfo? GetFile(DictionaryFile filename, DateOnly? date, DirectoryInfo? archiveDirectory)
     {
-        var service = GetService();
-        return date is not null
-            ? service.GetFile(filename, (DateOnly)date, archiveDirectory)
-            : service.GetLatestFile(filename, archiveDirectory) is (FileInfo latestFile, DateOnly _)
+        var service = GetService(filename, archiveDirectory);
+        return date.HasValue
+            ? service.GetFile(date.Value)
+            : service.GetLatestFile() is (FileInfo latestFile, DateOnly _)
             ? latestFile
             : null;
     }
 
-    private static IEdrdgArchiveService GetService()
+    private static IFileArchive<DateOnly> GetService(DictionaryFile filename, DirectoryInfo? archiveDirectory)
         => new ServiceCollection()
-            .AddEdrdgArchiveService()
+            .AddEdrdgArchiveService(filename, archiveDirectory)
             .AddLogging(static builder =>
                 builder.AddSimpleConsole(static options =>
                 {
@@ -98,5 +99,5 @@ public static class Program
                     options.TimestampFormat = "HH:mm:ss ";
                 }))
             .BuildServiceProvider()
-            .GetRequiredService<IEdrdgArchiveService>();
+            .GetRequiredService<IFileArchive<DateOnly>>();
 }

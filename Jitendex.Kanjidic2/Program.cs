@@ -49,8 +49,8 @@ public static class Program
 
         var archiveDirectory = parseResult.GetValue(archiveDirOption);
 
-        var importer = ImporterProvider.GetImporter();
-        await importer.ImportAsync(archiveDirectory);
+        var importer = ImporterProvider.GetImporter(archiveDirectory);
+        await importer.ImportAsync();
 
         return 0;
     }

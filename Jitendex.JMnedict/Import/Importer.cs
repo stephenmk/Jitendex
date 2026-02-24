@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Jitendex.EdrdgDictionaryArchive;
+using Jitendex.Import;
 using Jitendex.JMnedict.Import.Models;
 using Jitendex.JMnedict.Import.Parsing;
 
@@ -26,20 +26,20 @@ namespace Jitendex.JMnedict.Import;
 internal sealed class Importer
 (
     ILogger<Importer> logger,
-    IEdrdgArchiveService fileArchive,
+    IFileArchive<DateOnly> fileArchive,
     JMnedictContext context,
     DocumentReader reader,
     Database database
 )
 {
-    public async Task ImportAsync(DirectoryInfo? archiveDirectory)
+    public async Task ImportAsync()
     {
         context.Database.EnsureCreated();
         var previousDate = GetPreviousDate();
 
         var previousDocument = previousDate == default
-            ? await InitializeDatabaseAsync(archiveDirectory)
-            : await GetPreviousDocumentAsync(archiveDirectory, previousDate);
+            ? await InitializeDatabaseAsync()
+            : await GetPreviousDocumentAsync(previousDate);
 
         if (previousDocument is null)
         {
@@ -47,7 +47,7 @@ internal sealed class Importer
             return;
         }
 
-        await UpdateDatabaseAsync(archiveDirectory, previousDocument);
+        await UpdateDatabaseAsync(previousDocument);
     }
 
     private DateOnly GetPreviousDate() => context.FileHeaders
@@ -56,9 +56,9 @@ internal sealed class Importer
         .Select(static x => x.Date)
         .FirstOrDefault();
 
-    private async Task<Document?> InitializeDatabaseAsync(DirectoryInfo? archiveDirectory)
+    private async Task<Document?> InitializeDatabaseAsync()
     {
-        if (fileArchive.GetEarliestFile(DictionaryFile.JMnedict, archiveDirectory) is (FileInfo file, DateOnly date))
+        if (fileArchive.GetEarliestFile() is (FileInfo file, DateOnly date))
         {
             var document = await reader.ReadAsync(file, date);
             database.Initialize(document);
@@ -70,9 +70,9 @@ internal sealed class Importer
         }
     }
 
-    private async Task<Document?> GetPreviousDocumentAsync(DirectoryInfo? archiveDirectory, DateOnly previousDate)
+    private async Task<Document?> GetPreviousDocumentAsync(DateOnly previousDate)
     {
-        if (fileArchive.GetFile(DictionaryFile.JMnedict, previousDate, archiveDirectory) is FileInfo file)
+        if (fileArchive.GetFile(previousDate) is FileInfo file)
         {
             return await reader.ReadAsync(file, previousDate);
         }
@@ -82,11 +82,11 @@ internal sealed class Importer
         }
     }
 
-    private async Task UpdateDatabaseAsync(DirectoryInfo? archiveDirectory, Document previousDocument)
+    private async Task UpdateDatabaseAsync(Document previousDocument)
     {
         while
         (
-            fileArchive.GetNextFile(DictionaryFile.JMnedict, previousDocument.Header.Date, archiveDirectory)
+            fileArchive.GetNextFile(previousDocument.Header.Date)
             is
             (FileInfo nextFile, DateOnly nextDate)
         )

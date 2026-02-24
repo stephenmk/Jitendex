@@ -16,5 +16,6 @@
     <ProjectReference Include="..\Libraries\MinimalJsonDiff\Jitendex.MinimalJsonDiff\Jitendex.MinimalJsonDiff.csproj" />
     <ProjectReference Include="..\Jitendex.Dto\Jitendex.Dto.csproj" />
     <ProjectReference Include="..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
+    <ProjectReference Include="..\Jitendex.Import\Jitendex.Import.csproj" />
   </ItemGroup>
 </Project>

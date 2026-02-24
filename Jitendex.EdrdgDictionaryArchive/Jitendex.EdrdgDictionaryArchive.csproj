@@ -12,5 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Jitendex.AppDirectory\Jitendex.AppDirectory.csproj" />
     <ProjectReference Include="..\Libraries\MinimalPatch\Jitendex.MinimalPatch\Jitendex.MinimalPatch.csproj" />
+    <ProjectReference Include="..\Jitendex.Import\Jitendex.Import.csproj" />
   </ItemGroup>
 </Project>

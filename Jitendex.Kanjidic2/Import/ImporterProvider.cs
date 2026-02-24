@@ -28,11 +28,11 @@ namespace Jitendex.Kanjidic2.Import;
 
 internal static class ImporterProvider
 {
-    public static Importer GetImporter() => new ServiceCollection()
+    public static Importer GetImporter(DirectoryInfo? archiveDirectory) => new ServiceCollection()
         .AddTransient<Importer>()
 
         // File archive
-        .AddEdrdgArchiveService()
+        .AddEdrdgArchiveService(DictionaryFile.kanjidic2, archiveDirectory)
 
         // Database
         .AddDbContext<Kanjidic2Context>()

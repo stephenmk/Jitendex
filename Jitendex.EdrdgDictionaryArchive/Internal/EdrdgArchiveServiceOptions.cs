@@ -16,21 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Import;
-
 namespace Jitendex.EdrdgDictionaryArchive.Internal;
 
-internal sealed class EdrdgArchiveService(EdrdgArchiveServiceOptions options, FileBuilder builder) : IFileArchive<DateOnly>
-{
-    public FileInfo? GetFile(DateOnly date)
-        => builder.GetFile(new(date, options));
-
-    public (FileInfo, DateOnly)? GetNextFile(DateOnly previousDate)
-        => builder.GetNextFile(new(previousDate, options));
-
-    public (FileInfo, DateOnly)? GetEarliestFile()
-        => builder.GetEarliestFile(new(default, options));
-
-    public (FileInfo, DateOnly)? GetLatestFile()
-        => builder.GetLatestFile(new(default, options));
-}
+internal sealed record EdrdgArchiveServiceOptions
+(
+    DictionaryFile File,
+    DirectoryInfo? ArchiveDirectory
+);

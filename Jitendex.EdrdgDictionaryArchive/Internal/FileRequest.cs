@@ -23,14 +23,14 @@ namespace Jitendex.EdrdgDictionaryArchive.Internal;
 
 internal sealed record FileRequest
 {
-    public DictionaryFile File { get; init; }
     public DateOnly Date { get; init; }
+    public DictionaryFile File { get; init; }
     public DirectoryInfo ArchiveDirectory { get; init; }
 
-    public FileRequest(DictionaryFile file, DateOnly date, DirectoryInfo? archiveDirectory)
+    public FileRequest(DateOnly date, EdrdgArchiveServiceOptions options)
     {
-        File = file;
         Date = date;
-        ArchiveDirectory = archiveDirectory ?? DataHome.Get(EdrdgArchiveDirectory);
+        File = options.File;
+        ArchiveDirectory = options.ArchiveDirectory ?? DataHome.Get(EdrdgArchiveDirectory);
     }
 }

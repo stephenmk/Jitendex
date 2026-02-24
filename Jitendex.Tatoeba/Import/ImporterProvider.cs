@@ -25,8 +25,8 @@ namespace Jitendex.Tatoeba.Import;
 
 internal static class ImporterProvider
 {
-    public static Importer GetImporter() => new ServiceCollection()
-        .AddEdrdgArchiveService()
+    public static Importer GetImporter(DirectoryInfo? archiveDirectory) => new ServiceCollection()
+        .AddEdrdgArchiveService(DictionaryFile.examples, archiveDirectory)
         .AddTransient<Importer>()
         .AddTransient<TatoebaReader>()
         .AddTransient<Database>()

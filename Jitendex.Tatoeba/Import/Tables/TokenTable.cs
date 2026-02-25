@@ -30,8 +30,8 @@ internal sealed class TokenTable : Table<TokenElement>
     protected override IReadOnlyList<string> ColumnNames =>
     [
         nameof(Token.ExampleId),
-        nameof(Token.SegmentationIndex),
-        nameof(Token.Index),
+        nameof(Token.SegmentationOrder),
+        nameof(Token.Order),
         nameof(Token.Headword),
         nameof(Token.Reading),
         nameof(Token.EntryId),
@@ -43,15 +43,15 @@ internal sealed class TokenTable : Table<TokenElement>
     protected override IReadOnlyList<string> KeyColNames =>
     [
         nameof(Token.ExampleId),
-        nameof(Token.SegmentationIndex),
-        nameof(Token.Index),
+        nameof(Token.SegmentationOrder),
+        nameof(Token.Order),
     ];
 
     protected override SqliteParameter[] Parameters(TokenElement token) =>
     [
         new("@0", token.ExampleId),
-        new("@1", token.SegmentationIndex),
-        new("@2", token.Index),
+        new("@1", token.SegmentationOrder),
+        new("@2", token.Order),
         new("@3", token.Headword),
         new("@4", token.Reading.Nullable()),
         new("@5", token.EntryId.Nullable()),

@@ -53,21 +53,21 @@ internal sealed record TranslationElement
 internal sealed record SegmentationElement
 {
     public required int ExampleId { get; init; }
-    public required int Index { get; init; }
+    public required int Order { get; init; }
     public required int TranslationId { get; init; }
-    public (int, int) GetKey() => (ExampleId, Index);
+    public (int, int) GetKey() => (ExampleId, Order);
 }
 
 internal sealed record TokenElement
 {
     public required int ExampleId { get; init; }
-    public required int SegmentationIndex { get; init; }
-    public required int Index { get; init; }
+    public required int SegmentationOrder { get; init; }
+    public required int Order { get; init; }
     public required string Headword { get; init; }
     public required string? Reading { get; init; }
     public required int? EntryId { get; init; }
     public required int? SenseNumber { get; init; }
     public required string? SentenceForm { get; init; }
     public required bool IsPriority { get; init; }
-    public (int, int, int) GetKey() => (ExampleId, SegmentationIndex, Index);
+    public (int, int, int) GetKey() => (ExampleId, SegmentationOrder, Order);
 }

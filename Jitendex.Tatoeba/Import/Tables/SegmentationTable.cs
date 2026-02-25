@@ -30,20 +30,20 @@ internal sealed class SegmentationTable : Table<SegmentationElement>
     protected override IReadOnlyList<string> ColumnNames =>
     [
         nameof(Segmentation.ExampleId),
-        nameof(Segmentation.Index),
+        nameof(Segmentation.Order),
         nameof(Segmentation.TranslationId),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
         nameof(Segmentation.ExampleId),
-        nameof(Segmentation.Index),
+        nameof(Segmentation.Order),
     ];
 
     protected override SqliteParameter[] Parameters(SegmentationElement sentence) =>
     [
         new("@0", sentence.ExampleId),
-        new("@1", sentence.Index),
+        new("@1", sentence.Order),
         new("@2", sentence.TranslationId),
     ];
 }

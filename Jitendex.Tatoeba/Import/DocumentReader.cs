@@ -71,26 +71,26 @@ internal sealed class DocumentReader(ILogger<DocumentReader> logger)
     {
         var example = GetExample(text, document);
         var translation = GetTranslation(text, document);
-        var index = document.NextSegmentationIndex(example.Id);
+        var index = document.Segmentations.NextOrder(example.Id);
 
         var segmentation = new SegmentationElement
         {
             ExampleId = example.Id,
-            Index = index,
+            Order = index,
             TranslationId = translation.Id,
         };
 
-        var key = segmentation.GetKey();
-        document.Segmentations.Add(key, segmentation);
+        document.Segmentations.Add(segmentation.GetKey(), segmentation);
 
+        int tokenOrder = 0;
         foreach (var range in text.ElementTextRanges())
         {
             var elementText = text.GetElementText(range);
             var token = new TokenElement
             {
                 ExampleId = segmentation.ExampleId,
-                SegmentationIndex = segmentation.Index,
-                Index = document.NextTokenIndex(key),
+                SegmentationOrder = segmentation.Order,
+                Order = tokenOrder++,
                 Headword = elementText.GetHeadword(),
                 Reading = elementText.GetReading(),
                 EntryId = elementText.GetEntryId(),

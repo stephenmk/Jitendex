@@ -43,7 +43,7 @@ public static class DtoMapper
                 Text = seq.Example.Text,
                 Segmentations = seq.Example.Segmentations
                     .AsQueryable()
-                    .OrderBy(static s => s.Index)
+                    .OrderBy(static s => s.Order)
                     .Select(SegmentationProjection)
                     .ToImmutableArray()
             }
@@ -55,7 +55,7 @@ public static class DtoMapper
             Translation = new TranslationDto(segmentation.Translation.Id, segmentation.Translation.Text),
             Tokens = segmentation.Tokens
                 .AsQueryable()
-                .OrderBy(static t => t.Index)
+                .OrderBy(static t => t.Order)
                 .Select(TokenProjection)
                 .ToImmutableArray()
         };

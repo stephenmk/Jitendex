@@ -36,26 +36,6 @@ internal sealed class Document : IDocument<DateOnly>
         Tokens = new(expectedExampleCount * 8);
     }
 
-    public int NextSegmentationIndex(int id)
-    {
-        int index = 0;
-        while (Segmentations.ContainsKey((id, index)))
-        {
-            index++;
-        }
-        return index;
-    }
-
-    public int NextTokenIndex((int, int) id)
-    {
-        int index = 0;
-        while (Tokens.ContainsKey((id.Item1, id.Item2, index)))
-        {
-            index++;
-        }
-        return index;
-    }
-
     public IEnumerable<SequenceElement> GetSequences(int fileHeaderId)
         => Examples.Select(e => new SequenceElement(e.Key, fileHeaderId));
 

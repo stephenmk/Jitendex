@@ -22,11 +22,11 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.Tatoeba.Entities;
 
 [Table(nameof(Segmentation))]
-[PrimaryKey(nameof(ExampleId), nameof(Index))]
+[PrimaryKey(nameof(ExampleId), nameof(Order))]
 public sealed class Segmentation
 {
     public required int ExampleId { get; init; }
-    public required int Index { get; init; }
+    public required int Order { get; init; }
     public required int TranslationId { get; set; }
 
     [ForeignKey(nameof(ExampleId))]

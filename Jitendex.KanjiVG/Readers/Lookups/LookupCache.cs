@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using Jitendex.KanjiVG.Models;
+using Jitendex.KanjiVG.Entities;
 using Microsoft.Extensions.Logging;
 
 namespace Jitendex.KanjiVG.Readers.Lookups;

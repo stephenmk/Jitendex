@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jitendex.KanjiVG.Models;
+namespace Jitendex.KanjiVG.Entities;
 
 public interface ILookup
 {

@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.KanjiVG.Database;
-using Jitendex.KanjiVG.Models;
+using Jitendex.KanjiVG.Entities;
 
 namespace Jitendex.KanjiVG;
 

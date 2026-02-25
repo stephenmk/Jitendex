@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Models;
+using Jitendex.KanjiVG.Entities;
 
 namespace Jitendex.KanjiVG.Readers;
 

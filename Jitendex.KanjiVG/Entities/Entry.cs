@@ -19,17 +19,26 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.KanjiVG.Models;
+namespace Jitendex.KanjiVG.Entities;
 
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Number))]
-public class StrokeNumber
+[Table("Entry")]
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId))]
+public class Entry
 {
     public required int UnicodeScalarValue { get; set; }
     public required int VariantTypeId { get; set; }
-    public required int Number { get; set; }
-    public required string TranslateX { get; set; }
-    public required string TranslateY { get; set; }
+    public required int CommentId { get; set; }
+    public required ComponentGroup ComponentGroup { get; set; }
+    public required StrokeNumberGroup StrokeNumberGroup { get; set; }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
-    public required StrokeNumberGroup Group { get; set; }
+    [ForeignKey(nameof(VariantTypeId))]
+    public required VariantType VariantType { get; set; }
+
+    [ForeignKey(nameof(CommentId))]
+    public required Comment Comment { get; set; }
+
+    public string FileNameFormat()
+        => $"{UnicodeScalarValue:x5}{VariantType.FileNameFormat()}";
+
+    public string FileName() => $"{FileNameFormat()}.svg";
 }

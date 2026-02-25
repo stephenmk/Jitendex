@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Models;
+using Jitendex.KanjiVG.Entities;
 
 namespace Jitendex.KanjiVG.Readers;
 

@@ -19,23 +19,17 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.KanjiVG.Models;
+namespace Jitendex.KanjiVG.Entities;
 
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId))]
-public class StrokeNumberGroup
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Number))]
+public class StrokeNumber
 {
     public required int UnicodeScalarValue { get; set; }
     public required int VariantTypeId { get; set; }
-    public required int StyleId { get; set; }
-
-    public List<StrokeNumber> StrokeNumbers { get; set; } = [];
+    public required int Number { get; set; }
+    public required string TranslateX { get; set; }
+    public required string TranslateY { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
-    public required Entry Entry { get; set; }
-
-    [ForeignKey(nameof(StyleId))]
-    public required StrokeNumberGroupStyle Style { get; set; }
-
-    public string XmlIdAttribute()
-        => $"kvg:StrokeNumbers_{Entry.FileNameFormat()}";
+    public required StrokeNumberGroup Group { get; set; }
 }

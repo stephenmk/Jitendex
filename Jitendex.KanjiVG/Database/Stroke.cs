@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.KanjiVG.Models;
+using Jitendex.KanjiVG.Entities;
 using Jitendex.SQLite;
 
 namespace Jitendex.KanjiVG.Database;

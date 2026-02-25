@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.KanjiVG.Models;
+namespace Jitendex.KanjiVG.Entities;
 
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId))]
 public class ComponentGroup

@@ -16,24 +16,24 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.KanjiVG.Models;
+using Jitendex.KanjiVG.Entities;
 using Jitendex.KanjiVG.Readers.Lookups;
 
 namespace Jitendex.KanjiVG.Readers;
 
 internal sealed class KanjiVGReader
 (
-        EntriesReader entriesReader,
-        VariantTypeCache variantTypeCache,
-        CommentCache commentCache,
-        ComponentGroupStyleCache componentGroupStyleCache,
-        StrokeNumberGroupStyleCache strokeNumberGroupStyleCache,
-        ComponentCharacterCache characterCache,
-        ComponentOriginalCache originalCache,
-        ComponentPositionCache positionCache,
-        ComponentRadicalCache radicalCache,
-        ComponentPhonCache phonCache,
-        StrokeTypeCache strokeTypeCache
+    EntriesReader entriesReader,
+    VariantTypeCache variantTypeCache,
+    CommentCache commentCache,
+    ComponentGroupStyleCache componentGroupStyleCache,
+    StrokeNumberGroupStyleCache strokeNumberGroupStyleCache,
+    ComponentCharacterCache characterCache,
+    ComponentOriginalCache originalCache,
+    ComponentPositionCache positionCache,
+    ComponentRadicalCache radicalCache,
+    ComponentPhonCache phonCache,
+    StrokeTypeCache strokeTypeCache
 )
 {
     public async Task<KanjiVGDocument> ReadAsync(FileInfo kanjivgFile)

@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Models;
+using Jitendex.KanjiVG.Entities;
 using Jitendex.KanjiVG.Readers.Lookups;
 
 namespace Jitendex.KanjiVG.Readers;

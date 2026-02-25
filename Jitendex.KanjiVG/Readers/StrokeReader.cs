@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Models;
+using Jitendex.KanjiVG.Entities;
 using Jitendex.KanjiVG.Readers.Lookups;
 using Attributes = (string Id, string TypeText, string PathData);
 

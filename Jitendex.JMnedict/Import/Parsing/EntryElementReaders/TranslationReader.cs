@@ -30,7 +30,7 @@ internal partial class TranslationReader
     CrossReferenceReader crossReferenceReader,
     DetailReader detailReader,
     NameTypeReader nameTypeReader
-) : ParentElementReader<TranslationElement>(logger)
+) : XmlParentElementReader<Document, TranslationElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -18,13 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMnedict.Import.Models;
 
-namespace Jitendex.JMnedict.Import.Parsing;
+namespace Jitendex.Import;
 
-internal abstract partial class ParentElementReader<T>(ILogger<ParentElementReader<T>> logger) : BaseReader(logger)
+public abstract partial class XmlParentElementReader<TDocument, TChild>(ILogger<XmlParentElementReader<TDocument, TChild>> logger)
+    : XmlBaseReader(logger)
 {
-    protected async Task ReadToEndAsync(XmlReader xmlReader, Document document, T childElement, string tagName)
+    protected async Task ReadToEndAsync(XmlReader xmlReader, TDocument document, TChild childElement, string tagName)
     {
         var exit = false;
         while (!exit && await xmlReader.ReadAsync())
@@ -48,7 +48,7 @@ internal abstract partial class ParentElementReader<T>(ILogger<ParentElementRead
         }
     }
 
-    protected abstract Task ReadChildElementAsync(XmlReader xmlReader, Document document, T childElement);
+    protected abstract Task ReadChildElementAsync(XmlReader xmlReader, TDocument document, TChild childElement);
 
     [LoggerMessage(LogLevel.Warning,
     "Unexpected XML text node found in element <{TagName}>: `{Text}`")]

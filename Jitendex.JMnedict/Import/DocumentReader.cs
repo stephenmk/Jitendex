@@ -31,7 +31,7 @@ internal partial class DocumentReader
     DocumentTypeReader docTypeReader,
     EntryReader entryReader
 ) :
-    ParentElementReader<byte>(logger),
+    XmlParentElementReader<Document, byte>(logger),
     IDocumentReader<DateOnly, Document>
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)

@@ -29,7 +29,7 @@ internal partial class KanjiFormReader
     ILogger<KanjiFormReader> logger,
     KInfoReader infoReader,
     KPriorityReader priorityReader
-) : ParentElementReader<KanjiFormElement>(logger)
+) : XmlParentElementReader<Document, KanjiFormElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {

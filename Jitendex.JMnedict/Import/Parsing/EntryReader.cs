@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using Jitendex.Import;
 using Jitendex.JMnedict.Import.Models;
 using Jitendex.JMnedict.Import.Parsing.EntryElementReaders;
 
@@ -29,7 +30,7 @@ internal partial class EntryReader
     KanjiFormReader kanjiFormReader,
     ReadingReader readingReader,
     TranslationReader translationReader
-) : ParentElementReader<EntryElement>(logger)
+) : XmlParentElementReader<Document, EntryElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {

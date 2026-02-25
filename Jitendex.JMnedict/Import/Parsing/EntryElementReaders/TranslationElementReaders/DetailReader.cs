@@ -23,7 +23,7 @@ using Jitendex.JMnedict.Import.Models;
 
 namespace Jitendex.JMnedict.Import.Parsing.EntryElementReaders.TranslationElementReaders;
 
-internal sealed class DetailReader(ILogger<DetailReader> logger) : BaseReader(logger)
+internal sealed class DetailReader(ILogger<DetailReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationElement translation)
     {

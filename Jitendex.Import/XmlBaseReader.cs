@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -19,12 +19,12 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Xml;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.JMnedict.Import.Parsing;
+namespace Jitendex.Import;
 
-internal abstract partial class BaseReader
+public abstract partial class XmlBaseReader
 {
-    protected readonly ILogger<BaseReader> _logger;
-    public BaseReader(ILogger<BaseReader> logger)
+    protected readonly ILogger<XmlBaseReader> _logger;
+    public XmlBaseReader(ILogger<XmlBaseReader> logger)
         => _logger = logger;
 
     protected void LogUnexpectedChildElement(XmlReader xmlReader, string parentTagName)
@@ -36,5 +36,5 @@ internal abstract partial class BaseReader
 
     [LoggerMessage(LogLevel.Warning,
     "Unexpected XML element node <{TagName}> found in element <{ParentTagName}>")]
-    partial void LogUnexpectedChildElement(string tagName, string parentTagName);
+    private partial void LogUnexpectedChildElement(string tagName, string parentTagName);
 }

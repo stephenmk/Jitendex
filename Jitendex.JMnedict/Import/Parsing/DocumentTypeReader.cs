@@ -19,11 +19,12 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using Jitendex.Import;
 using Jitendex.JMnedict.Import.Models;
 
 namespace Jitendex.JMnedict.Import.Parsing;
 
-internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : BaseReader(logger)
+internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {

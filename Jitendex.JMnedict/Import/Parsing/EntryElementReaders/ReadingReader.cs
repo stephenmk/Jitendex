@@ -30,7 +30,7 @@ internal partial class ReadingReader
     RestrictionReader restrictionReader,
     RInfoReader infoReader,
     RPriorityReader priorityReader
-) : ParentElementReader<ReadingElement>(logger)
+) : XmlParentElementReader<Document, ReadingElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {

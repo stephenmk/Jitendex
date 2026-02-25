@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.JMnedict.Import.Parsing;
+namespace Jitendex.JMdict.Import.Parsing;
 
 internal static class XmlTagName
 {
     public const string Root = "?xml";
-    public const string JMnedict = "JMnedict";
+    public const string Jmdict = "JMdict";
     public const string Entry = "entry";
     public const string Sequence = "ent_seq";
 
@@ -32,12 +32,30 @@ internal static class XmlTagName
 
     public const string Reading = "r_ele";
     public const string ReadingText = "reb";
+    public const string ReadingNoKanji = "re_nokanji";
     public const string ReadingInfo = "re_inf";
     public const string ReadingPriority = "re_pri";
     public const string ReadingRestriction = "re_restr";
 
-    public const string Translation = "trans";
+    public const string Sense = "sense";
+    public const string SenseNote = "s_inf";
     public const string CrossReference = "xref";
-    public const string Detail = "trans_det";
-    public const string NameType = "name_type";
+    public const string Antonym = "ant";
+    public const string Dialect = "dial";
+    public const string Example = "example";
+    public const string Field = "field";
+    public const string Gloss = "gloss";
+    public const string SenseKanjiFormRestriction = "stagk";
+    public const string LanguageSource = "lsource";
+    public const string Misc = "misc";
+    public const string PartOfSpeech = "pos";
+    public const string SenseReadingRestriction = "stagr";
+}
+
+internal static class XmlAttributeName
+{
+    public const string GlossType = "g_type";
+    public const string LanguageSourceType = "ls_type";
+    public const string LanguageSourceCode = "xml:lang";
+    public const string LanguageSourceWasei = "ls_wasei";
 }

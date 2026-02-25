@@ -146,7 +146,7 @@ internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger)
     private string GetVariantTypeName(XmlReader xmlReader, Document document, MiscGroupElement group)
     {
         string typeName;
-        var attribute = xmlReader.GetAttribute("var_type");
+        var attribute = xmlReader.GetAttribute(XmlAttributeName.VariantType);
 
         if (string.IsNullOrWhiteSpace(attribute))
         {

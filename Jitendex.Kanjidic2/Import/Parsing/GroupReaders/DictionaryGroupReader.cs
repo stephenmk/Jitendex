@@ -71,7 +71,7 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
     private string GetTypeName(XmlReader xmlReader, Document document, DictionaryGroupElement group)
     {
         string typeName;
-        var attribute = xmlReader.GetAttribute("dr_type");
+        var attribute = xmlReader.GetAttribute(XmlAttributeName.DictionaryType);
 
         if (string.IsNullOrWhiteSpace(attribute))
         {
@@ -90,7 +90,7 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
 
     private int? GetDictionaryVolume(XmlReader xmlReader, DictionaryGroupElement group)
     {
-        var volume = xmlReader.GetAttribute("m_vol");
+        var volume = xmlReader.GetAttribute(XmlAttributeName.Volume);
         if (volume is null)
         {
             // Not an error; allowed to be null
@@ -109,7 +109,7 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
 
     private int? GetDictionaryPage(XmlReader xmlReader, DictionaryGroupElement group)
     {
-        var page = xmlReader.GetAttribute("m_page");
+        var page = xmlReader.GetAttribute(XmlAttributeName.Page);
         if (page is null)
         {
             // Not an error; allowed to be null

@@ -68,8 +68,9 @@ internal partial class RadicalGroupReader(ILogger<RadicalGroupReader> logger)
 
     private string GetTypeName(XmlReader xmlReader, Document document, RadicalGroupElement group)
     {
+        var attribute = xmlReader.GetAttribute(XmlAttributeName.RadicalType);
+
         string typeName;
-        var attribute = xmlReader.GetAttribute("rad_type");
         if (string.IsNullOrWhiteSpace(attribute))
         {
             LogMissingTypeName(group.ToRune());

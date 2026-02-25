@@ -57,7 +57,7 @@ internal partial class EntryReader
 
     protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
-        if (xmlReader.Name != XmlTagName.EntryCharacter && entry.Id == default)
+        if (entry.Id == default && !string.Equals(xmlReader.Name, XmlTagName.EntryCharacter, StringComparison.Ordinal))
         {
             LogPrematureElement(xmlReader.Name);
             return;

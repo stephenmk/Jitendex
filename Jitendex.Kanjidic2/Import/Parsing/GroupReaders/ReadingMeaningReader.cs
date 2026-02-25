@@ -73,8 +73,9 @@ internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger
 
     private string GetReadingTypeName(XmlReader xmlReader, Document document, ReadingMeaningElement readingMeaning)
     {
+        var attribute = xmlReader.GetAttribute(XmlAttributeName.ReadingType);
+
         string typeName;
-        var attribute = xmlReader.GetAttribute("r_type");
         if (string.IsNullOrWhiteSpace(attribute))
         {
             LogMissingTypeName(readingMeaning.ToRune());
@@ -92,7 +93,7 @@ internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger
 
     private async Task ReadMeaning(XmlReader xmlReader, Document document, ReadingMeaningElement readingMeaning)
     {
-        if (xmlReader.GetAttribute("m_lang") is not null)
+        if (xmlReader.GetAttribute(XmlAttributeName.MeaningType) is not null)
         {
             // This is not an English-language meaning; skip.
             await xmlReader.SkipAsync();

@@ -40,22 +40,6 @@ public abstract class DocumentDiffer<TKey, TDocument, TDiff> : IDocumentDiffer<T
         }
     }
 
-    protected void FindNew<T1, T2>(TDiff diff, TDocument docA, TDocument docB, string propertyName) where T1 : notnull
-    {
-        var prop = typeof(TDocument).GetProperty(propertyName)!;
-        var dictA = (Dictionary<T1, T2>)prop.GetValue(docA)!;
-        var dictB = (Dictionary<T1, T2>)prop.GetValue(docB)!;
-        var inserts = (Dictionary<T1, T2>)prop.GetValue(diff.Inserts)!;
-
-        foreach (var (key, value) in dictB)
-        {
-            if (!dictA.ContainsKey(key))
-            {
-                inserts.Add(key, value);
-            }
-        }
-    }
-
     protected void DiffDictionaryProperties<T1, T2>(TDiff diff, TDocument docA, TDocument docB, string propertyName)
         where T1 : notnull
         where T2 : notnull

@@ -53,7 +53,7 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
                 for (int sliceEnd = entry.TextRunes.Length; sliceStart < sliceEnd; sliceEnd--)
                 {
                     var textSlice = new TextSlice(entry, sliceStart, sliceEnd);
-                    var newSolutions = IterateSolutions(algorithm, entry, textSlice, solutions);
+                    var newSolutions = IterateSolutions(entry, textSlice, algorithm, solutions);
                     if (newSolutions.Count > 0)
                     {
                         sliceStart += sliceEnd - sliceStart;
@@ -69,9 +69,9 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
 
     private static List<SolutionBuilder> IterateSolutions
     (
-        IAlgorithm algorithm,
         in Entry entry,
         in TextSlice textSlice,
+        IAlgorithm algorithm,
         List<SolutionBuilder> solutions
     )
     {

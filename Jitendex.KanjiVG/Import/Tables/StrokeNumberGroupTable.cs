@@ -20,14 +20,14 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Database;
+namespace Jitendex.KanjiVG.Tables;
 
-internal static class EntryData
+internal static class StrokeNumberGroupTable
 {
     // Column names
-    private const string C1 = nameof(Entry.UnicodeScalarValue);
-    private const string C2 = nameof(Entry.VariantTypeId);
-    private const string C3 = nameof(Entry.CommentId);
+    private const string C1 = nameof(StrokeNumberGroup.UnicodeScalarValue);
+    private const string C2 = nameof(StrokeNumberGroup.VariantTypeId);
+    private const string C3 = nameof(StrokeNumberGroup.StyleId);
 
     // Parameter names
     private const string P1 = $"@{C1}";
@@ -36,40 +36,37 @@ internal static class EntryData
 
     private const string InsertSql =
         $"""
-        INSERT INTO "{nameof(Entry)}"
+        INSERT INTO "{nameof(StrokeNumberGroup)}"
         ("{C1}", "{C2}", "{C3}") VALUES
         ( {P1} ,  {P2} ,  {P3} );
         """;
 
-    public static async Task InsertEntriesAsync(this Context db, List<Entry> entries)
+    public static async Task InsertStrokeNumberGroupsAsync(this KanjiVGContext db, List<StrokeNumberGroup> groups)
     {
-        var allComponentGroups = new List<ComponentGroup>(entries.Count);
-        var allStrokeNumberGroups = new List<StrokeNumberGroup>(entries.Count);
+        var allStrokeNumbers = new List<StrokeNumber>(groups.Count * 13);
 
         await using (var command = db.Database.GetDbConnection().CreateCommand())
         {
             command.CommandText = InsertSql;
 
-            foreach (var entry in entries)
+            foreach (var group in groups)
             {
                 command.Parameters.AddRange(new SqliteParameter[]
                 {
-                    new(P1, entry.UnicodeScalarValue),
-                    new(P2, entry.VariantTypeId),
-                    new(P3, entry.CommentId),
+                    new(P1, group.UnicodeScalarValue),
+                    new(P2, group.VariantTypeId),
+                    new(P3, group.StyleId),
                 });
 
                 var commandExecution = command.ExecuteNonQueryAsync();
 
-                allComponentGroups.Add(entry.ComponentGroup);
-                allStrokeNumberGroups.Add(entry.StrokeNumberGroup);
+                allStrokeNumbers.AddRange(group.StrokeNumbers);
 
                 await commandExecution;
                 command.Parameters.Clear();
             }
         }
 
-        await db.InsertComponentGroupsAsync(allComponentGroups);
-        await db.InsertStrokeNumberGroupsAsync(allStrokeNumberGroups);
+        await db.InsertStrokeNumbersAsync(allStrokeNumbers);
     }
 }

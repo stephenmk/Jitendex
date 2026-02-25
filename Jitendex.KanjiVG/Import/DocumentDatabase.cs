@@ -16,16 +16,16 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.KanjiVG.Database;
+using Jitendex.KanjiVG.Tables;
 using Jitendex.KanjiVG.Entities;
 
 namespace Jitendex.KanjiVG;
 
-internal static class DatabaseInitializer
+internal static class DocumentDatabase
 {
     public static async Task WriteAsync(KanjiVGDocument kanjivg)
     {
-        await using var context = new Context();
+        await using var context = new KanjiVGContext();
 
         // Delete and recreate the database file.
         await context.RecreateDatabaseAsync();

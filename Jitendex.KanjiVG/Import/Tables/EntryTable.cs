@@ -20,14 +20,14 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Database;
+namespace Jitendex.KanjiVG.Tables;
 
-internal static class ComponentGroupData
+internal static class EntryTable
 {
     // Column names
-    private const string C1 = nameof(ComponentGroup.UnicodeScalarValue);
-    private const string C2 = nameof(ComponentGroup.VariantTypeId);
-    private const string C3 = nameof(ComponentGroup.StyleId);
+    private const string C1 = nameof(Entry.UnicodeScalarValue);
+    private const string C2 = nameof(Entry.VariantTypeId);
+    private const string C3 = nameof(Entry.CommentId);
 
     // Parameter names
     private const string P1 = $"@{C1}";
@@ -36,49 +36,40 @@ internal static class ComponentGroupData
 
     private const string InsertSql =
         $"""
-        INSERT INTO "{nameof(ComponentGroup)}"
+        INSERT INTO "{nameof(Entry)}"
         ("{C1}", "{C2}", "{C3}") VALUES
         ( {P1} ,  {P2} ,  {P3} );
         """;
 
-    public static async Task InsertComponentGroupsAsync(this Context db, List<ComponentGroup> groups)
+    public static async Task InsertEntriesAsync(this KanjiVGContext db, List<Entry> entries)
     {
-        var allComponents = new List<Component>(groups.Count * 8);
+        var allComponentGroups = new List<ComponentGroup>(entries.Count);
+        var allStrokeNumberGroups = new List<StrokeNumberGroup>(entries.Count);
 
         await using (var command = db.Database.GetDbConnection().CreateCommand())
         {
             command.CommandText = InsertSql;
 
-            foreach (var group in groups)
+            foreach (var entry in entries)
             {
                 command.Parameters.AddRange(new SqliteParameter[]
                 {
-                    new(P1, group.UnicodeScalarValue),
-                    new(P2, group.VariantTypeId),
-                    new(P3, group.StyleId),
+                    new(P1, entry.UnicodeScalarValue),
+                    new(P2, entry.VariantTypeId),
+                    new(P3, entry.CommentId),
                 });
 
                 var commandExecution = command.ExecuteNonQueryAsync();
 
-                allComponents.AddRange(EnumerateComponents(group.Components));
+                allComponentGroups.Add(entry.ComponentGroup);
+                allStrokeNumberGroups.Add(entry.StrokeNumberGroup);
 
                 await commandExecution;
                 command.Parameters.Clear();
             }
         }
 
-        await db.InsertComponentsAsync(allComponents);
-    }
-
-    public static IEnumerable<Component> EnumerateComponents(List<Component> components)
-    {
-        foreach (var component in components)
-        {
-            yield return component;
-            foreach (var childComponent in EnumerateComponents(component.Children))
-            {
-                yield return childComponent;
-            }
-        }
+        await db.InsertComponentGroupsAsync(allComponentGroups);
+        await db.InsertStrokeNumberGroupsAsync(allStrokeNumberGroups);
     }
 }

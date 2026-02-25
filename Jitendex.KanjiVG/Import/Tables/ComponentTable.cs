@@ -21,9 +21,9 @@ using Microsoft.EntityFrameworkCore;
 using Jitendex.KanjiVG.Entities;
 using Jitendex.SQLite;
 
-namespace Jitendex.KanjiVG.Database;
+namespace Jitendex.KanjiVG.Tables;
 
-internal static class ComponentData
+internal static class ComponentTable
 {
     // Column names
     private const string C1 = nameof(Component.UnicodeScalarValue);
@@ -68,7 +68,7 @@ internal static class ComponentData
         ( {P1} ,  {P2} ,  {P3} ,  {P4} ,  {P5} ,  {P6} ,  {P7} ,  {P8} ,  {P9} ,  {P10} ,  {P11} ,  {P12} ,  {P13} ,  {P14} ,  {P15} ,  {P16} );
         """;
 
-    public static async Task InsertComponentsAsync(this Context db, List<Component> components)
+    public static async Task InsertComponentsAsync(this KanjiVGContext db, List<Component> components)
     {
         var allStrokes = new List<Stroke>(components.Count * 2);
 

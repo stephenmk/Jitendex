@@ -20,9 +20,9 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Database;
+namespace Jitendex.KanjiVG.Tables;
 
-internal static class StrokeNumberData
+internal static class StrokeNumberTable
 {
     // Column names
     private const string C1 = nameof(StrokeNumber.UnicodeScalarValue);
@@ -45,7 +45,7 @@ internal static class StrokeNumberData
         ( {P1} ,  {P2} ,  {P3} ,  {P4} ,  {P5} );
         """;
 
-    public static async Task InsertStrokeNumbersAsync(this Context db, List<StrokeNumber> strokeNumbers)
+    public static async Task InsertStrokeNumbersAsync(this KanjiVGContext db, List<StrokeNumber> strokeNumbers)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;

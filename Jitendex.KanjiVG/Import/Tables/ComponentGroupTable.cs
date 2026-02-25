@@ -20,14 +20,14 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Database;
+namespace Jitendex.KanjiVG.Tables;
 
-internal static class StrokeNumberGroupData
+internal static class ComponentGroupTable
 {
     // Column names
-    private const string C1 = nameof(StrokeNumberGroup.UnicodeScalarValue);
-    private const string C2 = nameof(StrokeNumberGroup.VariantTypeId);
-    private const string C3 = nameof(StrokeNumberGroup.StyleId);
+    private const string C1 = nameof(ComponentGroup.UnicodeScalarValue);
+    private const string C2 = nameof(ComponentGroup.VariantTypeId);
+    private const string C3 = nameof(ComponentGroup.StyleId);
 
     // Parameter names
     private const string P1 = $"@{C1}";
@@ -36,14 +36,14 @@ internal static class StrokeNumberGroupData
 
     private const string InsertSql =
         $"""
-        INSERT INTO "{nameof(StrokeNumberGroup)}"
+        INSERT INTO "{nameof(ComponentGroup)}"
         ("{C1}", "{C2}", "{C3}") VALUES
         ( {P1} ,  {P2} ,  {P3} );
         """;
 
-    public static async Task InsertStrokeNumberGroupsAsync(this Context db, List<StrokeNumberGroup> groups)
+    public static async Task InsertComponentGroupsAsync(this KanjiVGContext db, List<ComponentGroup> groups)
     {
-        var allStrokeNumbers = new List<StrokeNumber>(groups.Count * 13);
+        var allComponents = new List<Component>(groups.Count * 8);
 
         await using (var command = db.Database.GetDbConnection().CreateCommand())
         {
@@ -60,13 +60,25 @@ internal static class StrokeNumberGroupData
 
                 var commandExecution = command.ExecuteNonQueryAsync();
 
-                allStrokeNumbers.AddRange(group.StrokeNumbers);
+                allComponents.AddRange(EnumerateComponents(group.Components));
 
                 await commandExecution;
                 command.Parameters.Clear();
             }
         }
 
-        await db.InsertStrokeNumbersAsync(allStrokeNumbers);
+        await db.InsertComponentsAsync(allComponents);
+    }
+
+    public static IEnumerable<Component> EnumerateComponents(List<Component> components)
+    {
+        foreach (var component in components)
+        {
+            yield return component;
+            foreach (var childComponent in EnumerateComponents(component.Children))
+            {
+                yield return childComponent;
+            }
+        }
     }
 }

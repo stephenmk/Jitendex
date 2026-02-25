@@ -20,9 +20,9 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Database;
+namespace Jitendex.KanjiVG.Tables;
 
-internal static class LookupData
+internal static class LookupTable
 {
     // Column names
     private const string C1 = nameof(ILookup.Id);
@@ -32,7 +32,7 @@ internal static class LookupData
     private const string P1 = $"@{C1}";
     private const string P2 = $"@{C2}";
 
-    public static async Task InsertLookupsAsync<T>(this Context db, IEnumerable<T> lookups) where T : ILookup
+    public static async Task InsertLookupsAsync<T>(this KanjiVGContext db, IEnumerable<T> lookups) where T : ILookup
     {
         var InsertSql =
             $"""

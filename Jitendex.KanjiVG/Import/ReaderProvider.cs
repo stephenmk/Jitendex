@@ -23,9 +23,9 @@ using Jitendex.KanjiVG.Readers.Lookups;
 
 namespace Jitendex.KanjiVG;
 
-internal static class ReaderProvider
+internal static class ImporterProvider
 {
-    public static KanjiVGReader GetReader()
+    public static KanjiVGReader GetImporter()
         => new ServiceCollection()
 
         .AddLogging(builder =>

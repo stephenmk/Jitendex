@@ -36,11 +36,7 @@ internal sealed class KInfoReader(ILogger<KInfoReader> logger) : BaseReader(logg
             LogMissingEntityDefinition(description);
         }
 
-        if (!document.KanjiFormInfoTags.ContainsKey(tagName))
-        {
-            var tag = new KanjiFormInfoTagElement(tagName, document.ArchiveKey);
-            document.KanjiFormInfoTags.Add(tagName, tag);
-        }
+        document.KanjiFormInfoTags.Add(tagName);
 
         var info = new KanjiFormInfoElement
         (

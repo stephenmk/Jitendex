@@ -29,10 +29,9 @@ internal sealed class GlossReader(ILogger<GlossReader> logger) : BaseReader(logg
     {
         var typeName = xmlReader.GetAttribute(XmlAttributeName.GlossType);
 
-        if (typeName is not null && !document.GlossTypes.ContainsKey(typeName))
+        if (typeName is not null)
         {
-            var tag = new GlossTypeElement(typeName, document.ArchiveKey);
-            document.GlossTypes.Add(typeName, tag);
+            document.GlossTypes.Add(typeName);
         }
 
         var gloss = new GlossElement

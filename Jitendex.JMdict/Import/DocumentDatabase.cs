@@ -102,17 +102,17 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JmdictC
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
-        ReadingInfoTagTable.InsertItems(context, document.ReadingInfoTags.Values);
-        KanjiFormInfoTagTable.InsertItems(context, document.KanjiFormInfoTags.Values);
-        PartOfSpeechTagTable.InsertItems(context, document.PartOfSpeechTags.Values);
-        FieldTagTable.InsertItems(context, document.FieldTags.Values);
-        MiscTagTable.InsertItems(context, document.MiscTags.Values);
-        DialectTagTable.InsertItems(context, document.DialectTags.Values);
-        GlossTypeTable.InsertItems(context, document.GlossTypes.Values);
-        CrossReferenceTypeTable.InsertItems(context, document.CrossReferenceTypes.Values);
-        LanguageSourceTypeTable.InsertItems(context, document.LanguageSourceTypes.Values);
-        PriorityTagTable.InsertItems(context, document.PriorityTags.Values);
-        LanguageTable.InsertItems(context, document.Languages.Values);
+        ReadingInfoTagTable.InsertItems(context, document.GetReadingInfoTags(fileHeaderId));
+        KanjiFormInfoTagTable.InsertItems(context, document.GetKanjiFormInfoTags(fileHeaderId));
+        PartOfSpeechTagTable.InsertItems(context, document.GetPartOfSpeechTags(fileHeaderId));
+        FieldTagTable.InsertItems(context, document.GetFieldTags(fileHeaderId));
+        MiscTagTable.InsertItems(context, document.GetMiscTags(fileHeaderId));
+        DialectTagTable.InsertItems(context, document.GetDialectTags(fileHeaderId));
+        GlossTypeTable.InsertItems(context, document.GetGlossTypes(fileHeaderId));
+        CrossReferenceTypeTable.InsertItems(context, document.GetCrossReferenceTypes(fileHeaderId));
+        LanguageSourceTypeTable.InsertItems(context, document.GetLanguageSourceTypes(fileHeaderId));
+        PriorityTagTable.InsertItems(context, document.GetPriorityTags(fileHeaderId));
+        LanguageTable.InsertItems(context, document.GetLanguages(fileHeaderId));
 
         EntryTable.InsertItems(context, document.Entries.Values);
         KanjiFormTable.InsertItems(context, document.KanjiForms.Values);
@@ -152,17 +152,17 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JmdictC
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
 
-        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.ReadingInfoTags.Values);
-        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.KanjiFormInfoTags.Values);
-        PartOfSpeechTagTable.InsertOrIgnoreItems(context, diff.Inserts.PartOfSpeechTags.Values);
-        FieldTagTable.InsertOrIgnoreItems(context, diff.Inserts.FieldTags.Values);
-        MiscTagTable.InsertOrIgnoreItems(context, diff.Inserts.MiscTags.Values);
-        DialectTagTable.InsertOrIgnoreItems(context, diff.Inserts.DialectTags.Values);
-        GlossTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GlossTypes.Values);
-        CrossReferenceTypeTable.InsertOrIgnoreItems(context, diff.Inserts.CrossReferenceTypes.Values);
-        LanguageSourceTypeTable.InsertOrIgnoreItems(context, diff.Inserts.LanguageSourceTypes.Values);
-        PriorityTagTable.InsertOrIgnoreItems(context, diff.Inserts.PriorityTags.Values);
-        LanguageTable.InsertOrIgnoreItems(context, diff.Inserts.Languages.Values);
+        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetReadingInfoTags(fileHeaderId));
+        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetKanjiFormInfoTags(fileHeaderId));
+        PartOfSpeechTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetPartOfSpeechTags(fileHeaderId));
+        FieldTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetFieldTags(fileHeaderId));
+        MiscTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetMiscTags(fileHeaderId));
+        DialectTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetDialectTags(fileHeaderId));
+        GlossTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetGlossTypes(fileHeaderId));
+        CrossReferenceTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetCrossReferenceTypes(fileHeaderId));
+        LanguageSourceTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetLanguageSourceTypes(fileHeaderId));
+        PriorityTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetPriorityTags(fileHeaderId));
+        LanguageTable.InsertOrIgnoreItems(context, diff.Inserts.GetLanguages(fileHeaderId));
 
         EntryTable.InsertItems(context, diff.Inserts.Entries.Values);
         KanjiFormTable.InsertItems(context, diff.Inserts.KanjiForms.Values);

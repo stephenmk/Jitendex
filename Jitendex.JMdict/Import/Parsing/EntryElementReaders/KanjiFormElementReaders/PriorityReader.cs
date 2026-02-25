@@ -29,11 +29,7 @@ internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : BaseRea
     {
         var tagName = await xmlReader.ReadElementContentAsStringAsync();
 
-        if (!document.PriorityTags.ContainsKey(tagName))
-        {
-            var tag = new PriorityTagElement(tagName, document.ArchiveKey);
-            document.PriorityTags.Add(tagName, tag);
-        }
+        document.PriorityTags.Add(tagName);
 
         var priority = new KanjiFormPriorityElement
         (

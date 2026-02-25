@@ -28,11 +28,8 @@ internal sealed class CrossReferenceReader(ILogger<CrossReferenceReader> logger)
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
         var typeName = xmlReader.Name;
-        if (!document.CrossReferenceTypes.ContainsKey(typeName))
-        {
-            var tag = new CrossReferenceTypeElement(typeName, document.ArchiveKey);
-            document.CrossReferenceTypes.Add(typeName, tag);
-        }
+
+        document.CrossReferenceTypes.Add(typeName);
 
         var xref = new CrossReferenceElement
         (

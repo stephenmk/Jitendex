@@ -28,18 +28,10 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
         var typeName = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceType) ?? "full";
-        if (!document.LanguageSourceTypes.ContainsKey(typeName))
-        {
-            var tag = new LanguageSourceTypeElement(typeName, document.ArchiveKey);
-            document.LanguageSourceTypes.Add(typeName, tag);
-        }
+        document.LanguageSourceTypes.Add(typeName);
 
         var languageCode = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceCode) ?? "eng";
-        if (!document.Languages.ContainsKey(languageCode))
-        {
-            var tag = new LanguageElement(languageCode, document.ArchiveKey);
-            document.Languages.Add(languageCode, tag);
-        }
+        document.Languages.Add(languageCode);
 
         var wasei = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceWasei);
         if (wasei is not null && wasei != "y")

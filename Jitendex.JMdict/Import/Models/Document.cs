@@ -56,17 +56,17 @@ internal sealed class Document : IDocument<DateOnly>
     #endregion
 
     #region Keywords
-    public Dictionary<string, PriorityTagElement> PriorityTags { get; init; } = [];
-    public Dictionary<string, ReadingInfoTagElement> ReadingInfoTags { get; init; } = [];
-    public Dictionary<string, KanjiFormInfoTagElement> KanjiFormInfoTags { get; init; } = [];
-    public Dictionary<string, PartOfSpeechTagElement> PartOfSpeechTags { get; init; } = [];
-    public Dictionary<string, FieldTagElement> FieldTags { get; init; } = [];
-    public Dictionary<string, MiscTagElement> MiscTags { get; init; } = [];
-    public Dictionary<string, DialectTagElement> DialectTags { get; init; } = [];
-    public Dictionary<string, GlossTypeElement> GlossTypes { get; init; } = [];
-    public Dictionary<string, CrossReferenceTypeElement> CrossReferenceTypes { get; init; } = [];
-    public Dictionary<string, LanguageSourceTypeElement> LanguageSourceTypes { get; init; } = [];
-    public Dictionary<string, LanguageElement> Languages { get; init; } = [];
+    public HashSet<string> PriorityTags { get; init; } = [];
+    public HashSet<string> ReadingInfoTags { get; init; } = [];
+    public HashSet<string> KanjiFormInfoTags { get; init; } = [];
+    public HashSet<string> PartOfSpeechTags { get; init; } = [];
+    public HashSet<string> FieldTags { get; init; } = [];
+    public HashSet<string> MiscTags { get; init; } = [];
+    public HashSet<string> DialectTags { get; init; } = [];
+    public HashSet<string> GlossTypes { get; init; } = [];
+    public HashSet<string> CrossReferenceTypes { get; init; } = [];
+    public HashSet<string> LanguageSourceTypes { get; init; } = [];
+    public HashSet<string> Languages { get; init; } = [];
     #endregion
 
     public Dictionary<string, string> KeywordDescriptionToName { get; init; } = [];
@@ -100,6 +100,39 @@ internal sealed class Document : IDocument<DateOnly>
 
     public IEnumerable<DocumentSequence> GetSequences(int fileHeaderId)
         => Entries.Select(e => new DocumentSequence(e.Key, fileHeaderId));
+
+    public IEnumerable<PriorityTagElement> GetPriorityTags(int fileHeaderId)
+        => PriorityTags.Select(t => new PriorityTagElement(t, fileHeaderId));
+
+    public IEnumerable<ReadingInfoTagElement> GetReadingInfoTags(int fileHeaderId)
+        => ReadingInfoTags.Select(t => new ReadingInfoTagElement(t, fileHeaderId));
+
+    public IEnumerable<KanjiFormInfoTagElement> GetKanjiFormInfoTags(int fileHeaderId)
+        => KanjiFormInfoTags.Select(t => new KanjiFormInfoTagElement(t, fileHeaderId));
+
+    public IEnumerable<PartOfSpeechTagElement> GetPartOfSpeechTags(int fileHeaderId)
+        => PartOfSpeechTags.Select(t => new PartOfSpeechTagElement(t, fileHeaderId));
+
+    public IEnumerable<FieldTagElement> GetFieldTags(int fileHeaderId)
+        => FieldTags.Select(t => new FieldTagElement(t, fileHeaderId));
+
+    public IEnumerable<MiscTagElement> GetMiscTags(int fileHeaderId)
+        => MiscTags.Select(t => new MiscTagElement(t, fileHeaderId));
+
+    public IEnumerable<DialectTagElement> GetDialectTags(int fileHeaderId)
+        => DialectTags.Select(t => new DialectTagElement(t, fileHeaderId));
+
+    public IEnumerable<GlossTypeElement> GetGlossTypes(int fileHeaderId)
+        => GlossTypes.Select(t => new GlossTypeElement(t, fileHeaderId));
+
+    public IEnumerable<CrossReferenceTypeElement> GetCrossReferenceTypes(int fileHeaderId)
+        => CrossReferenceTypes.Select(t => new CrossReferenceTypeElement(t, fileHeaderId));
+
+    public IEnumerable<LanguageSourceTypeElement> GetLanguageSourceTypes(int fileHeaderId)
+        => LanguageSourceTypes.Select(t => new LanguageSourceTypeElement(t, fileHeaderId));
+
+    public IEnumerable<LanguageElement> GetLanguages(int fileHeaderId)
+        => Languages.Select(t => new LanguageElement(t, fileHeaderId));
 
     public IEnumerable<int> ConcatAllEntryIds()
         => Entries.Keys

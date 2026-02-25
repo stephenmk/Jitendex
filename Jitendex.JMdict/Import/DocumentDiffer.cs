@@ -33,17 +33,17 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
             Deletes = new Document(0) { ArchiveKey = docB.ArchiveKey },
         };
 
-        FindNew<string, ReadingInfoTagElement>(diff, docA, docB, nameof(Document.ReadingInfoTags));
-        FindNew<string, KanjiFormInfoTagElement>(diff, docA, docB, nameof(Document.KanjiFormInfoTags));
-        FindNew<string, PartOfSpeechTagElement>(diff, docA, docB, nameof(Document.PartOfSpeechTags));
-        FindNew<string, FieldTagElement>(diff, docA, docB, nameof(Document.FieldTags));
-        FindNew<string, MiscTagElement>(diff, docA, docB, nameof(Document.MiscTags));
-        FindNew<string, DialectTagElement>(diff, docA, docB, nameof(Document.DialectTags));
-        FindNew<string, GlossTypeElement>(diff, docA, docB, nameof(Document.GlossTypes));
-        FindNew<string, CrossReferenceTypeElement>(diff, docA, docB, nameof(Document.CrossReferenceTypes));
-        FindNew<string, LanguageSourceTypeElement>(diff, docA, docB, nameof(Document.LanguageSourceTypes));
-        FindNew<string, PriorityTagElement>(diff, docA, docB, nameof(Document.PriorityTags));
-        FindNew<string, LanguageElement>(diff, docA, docB, nameof(Document.Languages));
+        FindNew<string>(diff, docA, docB, nameof(Document.ReadingInfoTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.KanjiFormInfoTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.PartOfSpeechTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.FieldTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.MiscTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.DialectTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.GlossTypes));
+        FindNew<string>(diff, docA, docB, nameof(Document.CrossReferenceTypes));
+        FindNew<string>(diff, docA, docB, nameof(Document.LanguageSourceTypes));
+        FindNew<string>(diff, docA, docB, nameof(Document.PriorityTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.Languages));
 
         DiffDictionaryProperties<int, EntryElement>(diff, docA, docB, nameof(Document.Entries));
 

@@ -21,17 +21,17 @@ namespace Jitendex.JMdict.Import.Models;
 internal interface IKeywordElement
 {
     string Name { get; init; }
-    DateOnly Date { get; init; }
+    int OriginFileId { get; init; }
 }
 
-internal sealed record ReadingInfoTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record KanjiFormInfoTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record PartOfSpeechTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record FieldTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record MiscTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record DialectTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record GlossTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record CrossReferenceTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record LanguageSourceTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record PriorityTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record LanguageElement(string Name, DateOnly Date) : IKeywordElement;
+internal sealed record ReadingInfoTagElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record KanjiFormInfoTagElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record PartOfSpeechTagElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record FieldTagElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record MiscTagElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record DialectTagElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record GlossTypeElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record CrossReferenceTypeElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record LanguageSourceTypeElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record PriorityTagElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record LanguageElement(string Name, int OriginFileId) : IKeywordElement;

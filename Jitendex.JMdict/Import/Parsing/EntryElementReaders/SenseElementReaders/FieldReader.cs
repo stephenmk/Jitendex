@@ -36,11 +36,7 @@ internal sealed class FieldReader(ILogger<FieldReader> logger) : BaseReader(logg
             LogMissingEntityDefinition(description);
         }
 
-        if (!document.FieldTags.ContainsKey(tagName))
-        {
-            var tag = new FieldTagElement(tagName, document.ArchiveKey);
-            document.FieldTags.Add(tagName, tag);
-        }
+        document.FieldTags.Add(tagName);
 
         var field = new FieldElement
         (

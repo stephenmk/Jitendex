@@ -36,11 +36,7 @@ internal sealed class PartOfSpeechReader(ILogger<PartOfSpeechReader> logger) : B
             LogMissingEntityDefinition(description);
         }
 
-        if (!document.PartOfSpeechTags.ContainsKey(tagName))
-        {
-            var tag = new PartOfSpeechTagElement(tagName, document.ArchiveKey);
-            document.PartOfSpeechTags.Add(tagName, tag);
-        }
+        document.PartOfSpeechTags.Add(tagName);
 
         var partOfSpeech = new PartOfSpeechElement
         (

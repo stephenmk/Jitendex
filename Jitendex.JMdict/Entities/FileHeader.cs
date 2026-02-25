@@ -30,9 +30,42 @@ public sealed class FileHeader
     public required int Id { get; init; }
     public required DateOnly Date { get; init; }
 
+    [InverseProperty(nameof(Revision.FileHeader))]
+    public List<Revision> SequenceRevisions { get; init; } = [];
+
     [InverseProperty(nameof(Sequence.OriginFile))]
     public List<Sequence> NewSequences { get; init; } = [];
 
-    [InverseProperty(nameof(Revision.FileHeader))]
-    public List<Revision> SequenceRevisions { get; init; } = [];
+    [InverseProperty(nameof(ReadingInfoTag.OriginFile))]
+    public List<ReadingInfoTag> NewReadingInfoTags { get; init; } = [];
+
+    [InverseProperty(nameof(KanjiFormInfoTag.OriginFile))]
+    public List<KanjiFormInfoTag> NewKanjiFormInfoTags { get; init; } = [];
+
+    [InverseProperty(nameof(PartOfSpeechTag.OriginFile))]
+    public List<PartOfSpeechTag> NewPartOfSpeechTags { get; init; } = [];
+
+    [InverseProperty(nameof(FieldTag.OriginFile))]
+    public List<FieldTag> NewFieldTags { get; init; } = [];
+
+    [InverseProperty(nameof(MiscTag.OriginFile))]
+    public List<MiscTag> NewMiscTags { get; init; } = [];
+
+    [InverseProperty(nameof(DialectTag.OriginFile))]
+    public List<DialectTag> NewDialectTags { get; init; } = [];
+
+    [InverseProperty(nameof(GlossType.OriginFile))]
+    public List<GlossType> NewGlossTypes { get; init; } = [];
+
+    [InverseProperty(nameof(CrossReferenceType.OriginFile))]
+    public List<CrossReferenceType> NewCrossReferenceTypes { get; init; } = [];
+
+    [InverseProperty(nameof(LanguageSourceType.OriginFile))]
+    public List<LanguageSourceType> NewLanguageSourceTypes { get; init; } = [];
+
+    [InverseProperty(nameof(PriorityTag.OriginFile))]
+    public List<PriorityTag> NewPriorityTags { get; init; } = [];
+
+    [InverseProperty(nameof(Language.OriginFile))]
+    public List<Language> NewLanguages { get; init; } = [];
 }

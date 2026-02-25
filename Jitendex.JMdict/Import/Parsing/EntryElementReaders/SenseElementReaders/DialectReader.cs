@@ -36,11 +36,7 @@ internal sealed class DialectReader(ILogger<DialectReader> logger) : BaseReader(
             LogMissingEntityDefinition(description);
         }
 
-        if (!document.DialectTags.ContainsKey(tagName))
-        {
-            var tag = new DialectTagElement(tagName, document.ArchiveKey);
-            document.DialectTags.Add(tagName, tag);
-        }
+        document.DialectTags.Add(tagName);
 
         var dialect = new DialectElement
         (

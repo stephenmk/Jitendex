@@ -36,11 +36,7 @@ internal sealed class RInfoReader(ILogger<RInfoReader> logger) : BaseReader(logg
             LogMissingEntityDefinition(description);
         }
 
-        if (!document.ReadingInfoTags.ContainsKey(tagName))
-        {
-            var tag = new ReadingInfoTagElement(tagName, document.ArchiveKey);
-            document.ReadingInfoTags.Add(tagName, tag);
-        }
+        document.ReadingInfoTags.Add(tagName);
 
         var info = new ReadingInfoElement
         (

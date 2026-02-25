@@ -30,7 +30,7 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
     protected override IReadOnlyList<string> ColumnNames =>
     [
         nameof(IKeyword.Name),
-        nameof(IKeyword.CreatedDate),
+        nameof(IKeyword.OriginFileId),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
@@ -41,7 +41,7 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
     protected override SqliteParameter[] Parameters(T keyword) =>
     [
         new("@0", keyword.Name),
-        new("@1", keyword.Date),
+        new("@1", keyword.OriginFileId),
     ];
 
     private static string ElementNameToEntityName(string elementName) => elementName switch

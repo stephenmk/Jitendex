@@ -22,7 +22,7 @@ namespace Jitendex.KanjiVG;
 
 public class Program
 {
-    public static async Task Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
         var kanjivgFileArgument = new Argument<FileInfo>("kanjivg-file")
         {
@@ -35,13 +35,15 @@ public class Program
         };
 
         var parseResult = rootCommand.Parse(args);
+
+        foreach (var parseError in parseResult.Errors)
+        {
+            Console.Error.WriteLine(parseError.Message);
+        }
+
         if (parseResult.Errors.Count > 0)
         {
-            foreach (var parseError in parseResult.Errors)
-            {
-                Console.Error.WriteLine(parseError.Message);
-            }
-            return;
+            return 1;
         }
 
         var kanjivgFile = parseResult.GetRequiredValue(kanjivgFileArgument);
@@ -50,5 +52,7 @@ public class Program
         var kanjivg = await reader.ReadAsync(kanjivgFile);
 
         await DocumentDatabase.WriteAsync(kanjivg);
+
+        return 0;
     }
 }

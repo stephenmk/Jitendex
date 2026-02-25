@@ -29,7 +29,7 @@ internal sealed class DetailReader(ILogger<DetailReader> logger) : BaseReader(lo
         var languageName = xmlReader.GetAttribute(XmlAttributeName.DetailLanguage);
         if (languageName is not null && !document.DetailLanguages.ContainsKey(languageName))
         {
-            var language = new DetailLanguageElement(languageName, document.Header.Date);
+            var language = new DetailLanguageElement(languageName, document.ArchiveKey);
             document.DetailLanguages.Add(languageName, language);
         }
 

@@ -37,7 +37,7 @@ internal sealed class RInfoReader(ILogger<RInfoReader> logger) : BaseReader(logg
 
         if (!document.ReadingInfoTags.ContainsKey(tagName))
         {
-            var tag = new ReadingInfoTagElement(tagName, document.Header.Date);
+            var tag = new ReadingInfoTagElement(tagName, document.ArchiveKey);
             document.ReadingInfoTags.Add(tagName, tag);
         }
 

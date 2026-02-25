@@ -37,7 +37,7 @@ internal sealed class NameTypeReader(ILogger<NameTypeReader> logger) : BaseReade
 
         if (!document.NameTypeTags.ContainsKey(tagName))
         {
-            var tag = new NameTypeTagElement(tagName, document.Header.Date);
+            var tag = new NameTypeTagElement(tagName, document.ArchiveKey);
             document.NameTypeTags.Add(tagName, tag);
         }
 

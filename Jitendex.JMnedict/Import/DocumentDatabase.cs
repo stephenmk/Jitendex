@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
+using Jitendex.Import;
 using Jitendex.JMnedict.Import.Models;
 using Jitendex.JMnedict.Import.Tables;
 using Jitendex.JMnedict.Import.Tables.EntryElements;
@@ -27,7 +28,8 @@ using Jitendex.JMnedict.Import.Tables.EntryElements.TranslationElements;
 
 namespace Jitendex.JMnedict.Import;
 
-internal sealed class Database(ILogger<Database> logger, JMnedictContext context)
+internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMnedictContext context)
+    : IDocumentDatabase<DateOnly, Document, DocumentDiff>
 {
     private static readonly FileHeaderTable FileHeaderTable = new();
     private static readonly RevisionTable RevisionTable = new();
@@ -65,15 +67,25 @@ internal sealed class Database(ILogger<Database> logger, JMnedictContext context
     private static readonly KeywordTable<DetailLanguageElement> DetailLanguageTable = new();
     #endregion
 
+    public void EnsureCreated()
+        => context.Database.EnsureCreated();
+
+    public DateOnly? GetLastKey()
+        => context.FileHeaders
+            .OrderByDescending(static x => x.Id)
+            .Take(1)
+            .Select(static x => (DateOnly?)x.Date)
+            .FirstOrDefault();
+
     public void Initialize(Document document)
     {
-        logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.Header.Date);
+        logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.ArchiveKey);
 
         context.RecreateDatabase();
 
         using var transaction = context.Database.BeginTransaction();
 
-        FileHeaderTable.InsertItem(context, document.Header);
+        FileHeaderTable.InsertItem(context, new(document.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
@@ -102,65 +114,67 @@ internal sealed class Database(ILogger<Database> logger, JMnedictContext context
 
     public void Update(DocumentDiff diff)
     {
-        logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", diff.SequenceIds.Count, diff.FileHeader.Date);
+        var sequenceIds = diff.SequenceIds();
+
+        logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", sequenceIds.Count, diff.ArchiveKey);
 
         using var transaction = context.Database.BeginTransaction();
 
-        var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
+        var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
 
-        FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
+        FileHeaderTable.InsertItem(context, new(diff.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
-        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences(fileHeaderId));
+        SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
 
-        PriorityTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.PriorityTags.Values);
-        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.ReadingInfoTags.Values);
-        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.KanjiFormInfoTags.Values);
-        NameTypeTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.NameTypeTags.Values);
-        DetailLanguageTable.InsertItems(context, diff.InsertDocument.DetailLanguages.Values);
+        PriorityTagTable.InsertOrIgnoreItems(context, diff.Inserts.PriorityTags.Values);
+        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.ReadingInfoTags.Values);
+        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.KanjiFormInfoTags.Values);
+        NameTypeTagTable.InsertOrIgnoreItems(context, diff.Inserts.NameTypeTags.Values);
+        DetailLanguageTable.InsertItems(context, diff.Inserts.DetailLanguages.Values);
 
-        EntryTable.InsertItems(context, diff.InsertDocument.Entries.Values);
-        KanjiFormTable.InsertItems(context, diff.InsertDocument.KanjiForms.Values);
-        ReadingTable.InsertItems(context, diff.InsertDocument.Readings.Values);
-        TranslationTable.InsertItems(context, diff.InsertDocument.Translations.Values);
-        KanjiFormInfoTable.InsertItems(context, diff.InsertDocument.KanjiFormInfos.Values);
-        KanjiFormPriorityTable.InsertItems(context, diff.InsertDocument.KanjiFormPriorities.Values);
-        ReadingInfoTable.InsertItems(context, diff.InsertDocument.ReadingInfos.Values);
-        ReadingPriorityTable.InsertItems(context, diff.InsertDocument.ReadingPriorities.Values);
-        RestrictionTable.InsertItems(context, diff.InsertDocument.Restrictions.Values);
-        CrossReferenceTable.InsertItems(context, diff.InsertDocument.CrossReferences.Values);
-        DetailTable.InsertItems(context, diff.InsertDocument.Details.Values);
-        NameTypeTable.InsertItems(context, diff.InsertDocument.NameTypes.Values);
+        EntryTable.InsertItems(context, diff.Inserts.Entries.Values);
+        KanjiFormTable.InsertItems(context, diff.Inserts.KanjiForms.Values);
+        ReadingTable.InsertItems(context, diff.Inserts.Readings.Values);
+        TranslationTable.InsertItems(context, diff.Inserts.Translations.Values);
+        KanjiFormInfoTable.InsertItems(context, diff.Inserts.KanjiFormInfos.Values);
+        KanjiFormPriorityTable.InsertItems(context, diff.Inserts.KanjiFormPriorities.Values);
+        ReadingInfoTable.InsertItems(context, diff.Inserts.ReadingInfos.Values);
+        ReadingPriorityTable.InsertItems(context, diff.Inserts.ReadingPriorities.Values);
+        RestrictionTable.InsertItems(context, diff.Inserts.Restrictions.Values);
+        CrossReferenceTable.InsertItems(context, diff.Inserts.CrossReferences.Values);
+        DetailTable.InsertItems(context, diff.Inserts.Details.Values);
+        NameTypeTable.InsertItems(context, diff.Inserts.NameTypes.Values);
 
-        EntryTable.UpdateItems(context, diff.UpdateDocument.Entries.Values);
-        KanjiFormTable.UpdateItems(context, diff.UpdateDocument.KanjiForms.Values);
-        ReadingTable.UpdateItems(context, diff.UpdateDocument.Readings.Values);
-        TranslationTable.UpdateItems(context, diff.UpdateDocument.Translations.Values);
-        KanjiFormInfoTable.UpdateItems(context, diff.UpdateDocument.KanjiFormInfos.Values);
-        KanjiFormPriorityTable.UpdateItems(context, diff.UpdateDocument.KanjiFormPriorities.Values);
-        ReadingInfoTable.UpdateItems(context, diff.UpdateDocument.ReadingInfos.Values);
-        ReadingPriorityTable.UpdateItems(context, diff.UpdateDocument.ReadingPriorities.Values);
-        RestrictionTable.UpdateItems(context, diff.UpdateDocument.Restrictions.Values);
-        CrossReferenceTable.UpdateItems(context, diff.UpdateDocument.CrossReferences.Values);
-        DetailTable.UpdateItems(context, diff.UpdateDocument.Details.Values);
-        NameTypeTable.UpdateItems(context, diff.UpdateDocument.NameTypes.Values);
+        EntryTable.UpdateItems(context, diff.Updates.Entries.Values);
+        KanjiFormTable.UpdateItems(context, diff.Updates.KanjiForms.Values);
+        ReadingTable.UpdateItems(context, diff.Updates.Readings.Values);
+        TranslationTable.UpdateItems(context, diff.Updates.Translations.Values);
+        KanjiFormInfoTable.UpdateItems(context, diff.Updates.KanjiFormInfos.Values);
+        KanjiFormPriorityTable.UpdateItems(context, diff.Updates.KanjiFormPriorities.Values);
+        ReadingInfoTable.UpdateItems(context, diff.Updates.ReadingInfos.Values);
+        ReadingPriorityTable.UpdateItems(context, diff.Updates.ReadingPriorities.Values);
+        RestrictionTable.UpdateItems(context, diff.Updates.Restrictions.Values);
+        CrossReferenceTable.UpdateItems(context, diff.Updates.CrossReferences.Values);
+        DetailTable.UpdateItems(context, diff.Updates.Details.Values);
+        NameTypeTable.UpdateItems(context, diff.Updates.NameTypes.Values);
 
-        NameTypeTable.DeleteItems(context, diff.DeleteDocument.NameTypes.Values);
-        DetailTable.DeleteItems(context, diff.DeleteDocument.Details.Values);
-        CrossReferenceTable.DeleteItems(context, diff.DeleteDocument.CrossReferences.Values);
-        RestrictionTable.DeleteItems(context, diff.DeleteDocument.Restrictions.Values);
-        ReadingPriorityTable.DeleteItems(context, diff.DeleteDocument.ReadingPriorities.Values);
-        ReadingInfoTable.DeleteItems(context, diff.DeleteDocument.ReadingInfos.Values);
-        KanjiFormPriorityTable.DeleteItems(context, diff.DeleteDocument.KanjiFormPriorities.Values);
-        KanjiFormInfoTable.DeleteItems(context, diff.DeleteDocument.KanjiFormInfos.Values);
-        TranslationTable.DeleteItems(context, diff.DeleteDocument.Translations.Values);
-        ReadingTable.DeleteItems(context, diff.DeleteDocument.Readings.Values);
-        KanjiFormTable.DeleteItems(context, diff.DeleteDocument.KanjiForms.Values);
-        EntryTable.DeleteItems(context, diff.DeleteDocument.Entries.Values);
+        NameTypeTable.DeleteItems(context, diff.Deletes.NameTypes.Values);
+        DetailTable.DeleteItems(context, diff.Deletes.Details.Values);
+        CrossReferenceTable.DeleteItems(context, diff.Deletes.CrossReferences.Values);
+        RestrictionTable.DeleteItems(context, diff.Deletes.Restrictions.Values);
+        ReadingPriorityTable.DeleteItems(context, diff.Deletes.ReadingPriorities.Values);
+        ReadingInfoTable.DeleteItems(context, diff.Deletes.ReadingInfos.Values);
+        KanjiFormPriorityTable.DeleteItems(context, diff.Deletes.KanjiFormPriorities.Values);
+        KanjiFormInfoTable.DeleteItems(context, diff.Deletes.KanjiFormInfos.Values);
+        TranslationTable.DeleteItems(context, diff.Deletes.Translations.Values);
+        ReadingTable.DeleteItems(context, diff.Deletes.Readings.Values);
+        KanjiFormTable.DeleteItems(context, diff.Deletes.KanjiForms.Values);
+        EntryTable.DeleteItems(context, diff.Deletes.Entries.Values);
 
-        var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
+        var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
 
         var sequences = context.Sequences
-            .Where(seq => diff.SequenceIds.Contains(seq.Id))
+            .Where(seq => sequenceIds.Contains(seq.Id))
             .Select(seq => new
             {
                 seq.Id,

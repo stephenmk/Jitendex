@@ -19,6 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
+using Jitendex.Import;
+using Jitendex.JMnedict.Import.Models;
 using Jitendex.JMnedict.Import.Parsing;
 using Jitendex.JMnedict.Import.Parsing.EntryElementReaders;
 using Jitendex.JMnedict.Import.Parsing.EntryElementReaders.KanjiFormElementReaders;
@@ -29,18 +31,19 @@ namespace Jitendex.JMnedict.Import;
 
 internal static class ImporterProvider
 {
-    public static Importer GetImporter(DirectoryInfo? archiveDirectory) => new ServiceCollection()
-        .AddTransient<Importer>()
+    public static Importer<DateOnly, Document, DocumentDiff> GetImporter(DirectoryInfo? archiveDirectory)
+        => new ServiceCollection()
 
-        // File archive
-        .AddEdrdgArchiveService(DictionaryFile.JMnedict, archiveDirectory)
-
-        // Databases
+        // Database context.
         .AddDbContext<JMnedictContext>()
-        .AddTransient<Database>()
+
+        // Import interfaces
+        .AddEdrdgArchiveService(DictionaryFile.JMnedict, archiveDirectory)
+        .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
+        .AddTransient<IDocumentDiffer<DateOnly, Document, DocumentDiff>, DocumentDiffer>()
+        .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, DocumentDatabase>()
 
         // Top-level readers.
-        .AddTransient<DocumentReader>()
         .AddTransient<DocumentTypeReader>()
         .AddTransient<EntriesReader>()
         .AddTransient<EntryReader>()
@@ -73,7 +76,8 @@ internal static class ImporterProvider
                 options.TimestampFormat = "HH:mm:ss ";
             }))
 
-        // Build and return the JMnedict service.
+        // Build and return the importer service.
+        .AddTransient<Importer<DateOnly, Document, DocumentDiff>>()
         .BuildServiceProvider()
-        .GetRequiredService<Importer>();
+        .GetRequiredService<Importer<DateOnly, Document, DocumentDiff>>();
 }

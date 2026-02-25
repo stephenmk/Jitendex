@@ -37,7 +37,7 @@ internal sealed class KInfoReader(ILogger<KInfoReader> logger) : BaseReader(logg
 
         if (!document.KanjiFormInfoTags.ContainsKey(tagName))
         {
-            var tag = new KanjiFormInfoTagElement(tagName, document.Header.Date);
+            var tag = new KanjiFormInfoTagElement(tagName, document.ArchiveKey);
             document.KanjiFormInfoTags.Add(tagName, tag);
         }
 

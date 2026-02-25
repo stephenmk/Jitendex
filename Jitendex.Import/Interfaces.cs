@@ -31,6 +31,12 @@ public interface IDocument<TKey>
     TKey ArchiveKey { get; init; }
 }
 
+public interface IDocumentReader<TKey, TDocument>
+    where TDocument : IDocument<TKey>
+{
+    Task<TDocument> ReadAsync(FileInfo file, TKey archiveKey);
+}
+
 public interface IDocumentDiff<TKey, TDocument>
     where TDocument : IDocument<TKey>
 {
@@ -38,6 +44,13 @@ public interface IDocumentDiff<TKey, TDocument>
     TDocument Inserts { get; init; }
     TDocument Updates { get; init; }
     TDocument Deletes { get; init; }
+}
+
+public interface IDocumentDiffer<TKey, TDocument, TDiff>
+    where TDocument : IDocument<TKey>
+    where TDiff : IDocumentDiff<TKey, TDocument>
+{
+    TDiff Diff(TDocument docA, TDocument docB);
 }
 
 public interface IDocumentDatabase<TKey, TDocument, TDiff>
@@ -49,17 +62,4 @@ public interface IDocumentDatabase<TKey, TDocument, TDiff>
     TKey? GetLastKey();
     void Initialize(TDocument document);
     void Update(TDiff diff);
-}
-
-public interface IDocumentReader<TKey, TDocument>
-    where TDocument : IDocument<TKey>
-{
-    Task<TDocument> ReadAsync(FileInfo file, TKey archiveKey);
-}
-
-public interface IDocumentDiffer<TKey, TDocument, TDiff>
-    where TDocument : IDocument<TKey>
-    where TDiff : IDocumentDiff<TKey, TDocument>
-{
-    TDiff Diff(TDocument docA, TDocument docB);
 }

@@ -19,16 +19,20 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.IO.Compression;
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using Jitendex.Import;
 using Jitendex.JMnedict.Import.Models;
+using Jitendex.JMnedict.Import.Parsing;
 
-namespace Jitendex.JMnedict.Import.Parsing;
+namespace Jitendex.JMnedict.Import;
 
 internal partial class DocumentReader
 (
     ILogger<DocumentReader> logger,
     DocumentTypeReader docTypeReader,
     EntriesReader entriesReader
-) : BaseReader(logger)
+) :
+    BaseReader(logger),
+    IDocumentReader<DateOnly, Document>
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
     {
@@ -38,7 +42,7 @@ internal partial class DocumentReader
 
         var document = new Document
         {
-            Header = new(fileDate)
+            ArchiveKey = fileDate
         };
 
         await docTypeReader.ReadAsync(xmlReader, document);

@@ -30,7 +30,7 @@ internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : BaseRea
 
         if (!document.PriorityTags.ContainsKey(tagName))
         {
-            var tag = new PriorityTagElement(tagName, document.Header.Date);
+            var tag = new PriorityTagElement(tagName, document.ArchiveKey);
             document.PriorityTags.Add(tagName, tag);
         }
 

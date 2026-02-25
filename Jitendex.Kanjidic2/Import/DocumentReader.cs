@@ -68,7 +68,7 @@ internal partial class DocumentReader
         }
     }
 
-    public async Task ReadDocumentType(XmlReader xmlReader)
+    private async Task ReadDocumentType(XmlReader xmlReader)
     {
         var exit = false;
         while (!exit && await xmlReader.ReadAsync())
@@ -77,6 +77,9 @@ internal partial class DocumentReader
             {
                 case XmlNodeType.DocumentType:
                     exit = true;
+                    break;
+                case XmlNodeType.Element:
+                    LogUnexpectedChildElement(xmlReader, "?xml");
                     break;
             }
         }

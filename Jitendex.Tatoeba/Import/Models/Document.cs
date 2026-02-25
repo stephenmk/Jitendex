@@ -41,8 +41,8 @@ internal sealed class Document : IDocument<DateOnly>
 
     public IEnumerable<int> ConcatAllExampleIds()
         => Examples.Keys
-            .Concat(Segmentations.Keys.Select(static key => key.Item1))
-            .Concat(Tokens.Keys.Select(static key => key.Item1));
+            .Concat(Segmentations.EntryIds())
+            .Concat(Tokens.EntryIds());
 
     public IEnumerable<int> PriorityEntryIds()
         => Tokens.Values

@@ -40,77 +40,77 @@ internal sealed class Database(JmdictAnalysisContext context)
     /// </remarks>
     private const string TransferCommandText =
         $"""
-        INSERT INTO "{nameof(ReadingInfoTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(ReadingInfoTag)}";
-
-        INSERT INTO "{nameof(KanjiFormInfoTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(KanjiFormInfoTag)}";
-
-        INSERT INTO "{nameof(PartOfSpeechTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(PartOfSpeechTag)}";
-
-        INSERT INTO "{nameof(FieldTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(FieldTag)}";
-
-        INSERT INTO "{nameof(MiscTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(MiscTag)}";
-
-        INSERT INTO "{nameof(DialectTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(DialectTag)}";
-
-        INSERT INTO "{nameof(GlossType)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(GlossType)}";
-
-        INSERT INTO "{nameof(CrossReferenceType)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(CrossReferenceType)}";
-
-        INSERT INTO "{nameof(LanguageSourceType)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(LanguageSourceType)}";
-
-        INSERT INTO "{nameof(PriorityTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(PriorityTag)}";
-
-        INSERT INTO "{nameof(Language)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.CreatedDate)}"
-             )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Language)}";
-
         INSERT INTO "{nameof(FileHeader)}"
         SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(FileHeader)}";
 
         INSERT INTO "{nameof(Sequence)}"
         SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Sequence)}";
+
+        INSERT INTO "{nameof(ReadingInfoTag)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(ReadingInfoTag)}";
+
+        INSERT INTO "{nameof(KanjiFormInfoTag)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(KanjiFormInfoTag)}";
+
+        INSERT INTO "{nameof(PartOfSpeechTag)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(PartOfSpeechTag)}";
+
+        INSERT INTO "{nameof(FieldTag)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(FieldTag)}";
+
+        INSERT INTO "{nameof(MiscTag)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(MiscTag)}";
+
+        INSERT INTO "{nameof(DialectTag)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(DialectTag)}";
+
+        INSERT INTO "{nameof(GlossType)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(GlossType)}";
+
+        INSERT INTO "{nameof(CrossReferenceType)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(CrossReferenceType)}";
+
+        INSERT INTO "{nameof(LanguageSourceType)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(LanguageSourceType)}";
+
+        INSERT INTO "{nameof(PriorityTag)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(PriorityTag)}";
+
+        INSERT INTO "{nameof(Language)}"
+             ( "{nameof(IKeyword.Name)}"
+             , "{nameof(IKeyword.OriginFileId)}"
+             )
+        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Language)}";
 
         INSERT INTO "{nameof(Revision)}"
         SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Revision)}";

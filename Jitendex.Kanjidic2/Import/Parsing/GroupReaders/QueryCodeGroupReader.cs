@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text;
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using Jitendex.Import;
 using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;

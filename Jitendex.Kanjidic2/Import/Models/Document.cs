@@ -16,6 +16,8 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.Import;
+
 namespace Jitendex.Kanjidic2.Import.Models;
 
 internal sealed record DocumentSequence(int Id, int FileHeaderId);

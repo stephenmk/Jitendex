@@ -40,9 +40,22 @@ public static class DictionaryExtentions
         return i;
     }
 
+    public static int NextOrder<T>(this Dictionary<(int, int, int, int), T> dictionary, (int, int, int) parentKey)
+    {
+        int i = 0;
+        while (dictionary.ContainsKey((parentKey.Item1, parentKey.Item2, parentKey.Item3, i)))
+        {
+            i++;
+        }
+        return i;
+    }
+
     public static IEnumerable<int> EntryIds<T>(this Dictionary<(int, int), T> dictionary)
         => dictionary.Keys.Select(static k => k.Item1);
 
     public static IEnumerable<int> EntryIds<T>(this Dictionary<(int, int, int), T> dictionary)
+        => dictionary.Keys.Select(static k => k.Item1);
+
+    public static IEnumerable<int> EntryIds<T>(this Dictionary<(int, int, int, int), T> dictionary)
         => dictionary.Keys.Select(static k => k.Item1);
 }

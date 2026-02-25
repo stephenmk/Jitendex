@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -24,20 +24,13 @@ using Attributes = (string Id, string TypeText, string PathData);
 
 namespace Jitendex.KanjiVG.Readers;
 
-internal partial class StrokeReader
+internal partial class StrokeReader(ILogger<StrokeReader> logger, StrokeTypeCache strokeTypeCache)
 {
-    private readonly ILogger<StrokeReader> _logger;
-    private readonly StrokeTypeCache _strokeTypeCache;
-
-    public StrokeReader(ILogger<StrokeReader> logger, StrokeTypeCache strokeTypeCache) =>
-        (_logger, _strokeTypeCache) =
-        (@logger, @strokeTypeCache);
-
     public void Read(XmlReader xmlReader, Component component)
     {
         var (id, typeText, pathData) = GetAttributes(xmlReader, component);
 
-        var type = _strokeTypeCache.Get(typeText);
+        var type = strokeTypeCache.Get(typeText);
 
         var stroke = new Stroke
         {

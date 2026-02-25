@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -22,13 +22,8 @@ using Jitendex.KanjiVG.Models;
 
 namespace Jitendex.KanjiVG.Readers;
 
-internal partial class ComponentAttributesReader
+internal partial class ComponentAttributesReader(ILogger<ComponentAttributesReader> logger)
 {
-    private readonly ILogger<ComponentAttributesReader> _logger;
-
-    public ComponentAttributesReader(ILogger<ComponentAttributesReader> logger)
-        => _logger = logger;
-
     public ComponentAttributes Read(XmlReader xmlReader, ComponentGroup group)
     {
         var attributes = new ComponentAttributes

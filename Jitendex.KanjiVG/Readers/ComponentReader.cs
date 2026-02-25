@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -24,36 +24,25 @@ using Jitendex.KanjiVG.Readers.Lookups;
 namespace Jitendex.KanjiVG.Readers;
 
 internal partial class ComponentReader
+(
+    ILogger<ComponentReader> logger,
+    ComponentAttributesReader attributesReader,
+    StrokeReader strokeReader,
+    ComponentCharacterCache characterCache,
+    ComponentOriginalCache originalCache,
+    ComponentPositionCache positionCache,
+    ComponentRadicalCache radicalCache,
+    ComponentPhonCache phonCache
+)
 {
-    private readonly ILogger<ComponentReader> _logger;
-    private readonly ComponentAttributesReader _attributesReader;
-    private readonly StrokeReader _strokeReader;
-    private readonly ComponentCharacterCache _characterCache;
-    private readonly ComponentOriginalCache _originalCache;
-    private readonly ComponentPositionCache _positionCache;
-    private readonly ComponentRadicalCache _radicalCache;
-    private readonly ComponentPhonCache _phonCache;
-
-    public ComponentReader(
-        ILogger<ComponentReader> logger,
-        ComponentAttributesReader attributesReader,
-        StrokeReader strokeReader,
-        ComponentCharacterCache characterCache,
-        ComponentOriginalCache originalCache,
-        ComponentPositionCache positionCache,
-        ComponentRadicalCache radicalCache,
-        ComponentPhonCache phonCache) =>
-        (_logger, _attributesReader, _strokeReader, _characterCache, _originalCache, _positionCache, _radicalCache, _phonCache) =
-        (@logger, @attributesReader, @strokeReader, @characterCache, @originalCache, @positionCache, @radicalCache, @phonCache);
-
     public async Task ReadAsync(XmlReader xmlReader, ComponentGroup group)
     {
-        var attributes = _attributesReader.Read(xmlReader, group);
-        var character = _characterCache.Get(attributes.Text);
-        var original = _originalCache.Get(attributes.Original);
-        var position = _positionCache.Get(attributes.Position);
-        var radical = _radicalCache.Get(attributes.Radical);
-        var phon = _phonCache.Get(attributes.Phon);
+        var attributes = attributesReader.Read(xmlReader, group);
+        var character = characterCache.Get(attributes.Text);
+        var original = originalCache.Get(attributes.Original);
+        var position = positionCache.Get(attributes.Position);
+        var radical = radicalCache.Get(attributes.Radical);
+        var phon = phonCache.Get(attributes.Phon);
 
         var component = new Component
         {
@@ -115,12 +104,12 @@ internal partial class ComponentReader
 
     private async Task ReadAsync(XmlReader xmlReader, Component parent)
     {
-        var attributes = _attributesReader.Read(xmlReader, parent.Group);
-        var character = _characterCache.Get(attributes.Text);
-        var original = _originalCache.Get(attributes.Original);
-        var position = _positionCache.Get(attributes.Position);
-        var radical = _radicalCache.Get(attributes.Radical);
-        var phon = _phonCache.Get(attributes.Phon);
+        var attributes = attributesReader.Read(xmlReader, parent.Group);
+        var character = characterCache.Get(attributes.Text);
+        var original = originalCache.Get(attributes.Original);
+        var position = positionCache.Get(attributes.Position);
+        var radical = radicalCache.Get(attributes.Radical);
+        var phon = phonCache.Get(attributes.Phon);
 
         var component = new Component
         {
@@ -188,7 +177,7 @@ internal partial class ComponentReader
                 await ReadAsync(xmlReader, component);
                 break;
             case "path":
-                _strokeReader.Read(xmlReader, component);
+                strokeReader.Read(xmlReader, component);
                 break;
             default:
                 LogUnexpectedComponentName(xmlReader.Name, component.Group.Entry.FileName(), component.XmlIdAttribute());

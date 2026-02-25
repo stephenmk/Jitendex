@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -23,17 +23,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Jitendex.KanjiVG.Readers;
 
-internal class KanjiFiles
+internal class KanjiFiles(ILogger<KanjiFiles> logger, Files files)
 {
-    private readonly ILogger<KanjiFiles> _logger;
-    private readonly Files _files;
-    public KanjiFiles(ILogger<KanjiFiles> logger, Files files) =>
-        (_logger, _files) =
-        (@logger, @files);
-
     public async IAsyncEnumerable<(string Name, XmlReader Reader)> EnumerateAsync()
     {
-        await using FileStream fs = new(_files.SvgArchive.FullName, FileMode.Open, FileAccess.Read);
+        await using FileStream fs = new(files.SvgArchive.FullName, FileMode.Open, FileAccess.Read);
         await using BrotliStream br = new(fs, CompressionMode.Decompress);
         await using TarReader tarReader = new(br);
 
@@ -41,7 +35,7 @@ internal class KanjiFiles
         {
             if (entry.DataStream is null)
             {
-                _logger.LogWarning("Data stream for file {Name} is empty", entry.Name);
+                logger.LogWarning("Data stream for file {Name} is empty", entry.Name);
                 continue;
             }
             using var xmlReader = XmlReader.Create(entry.DataStream, _xmlReaderSettings);

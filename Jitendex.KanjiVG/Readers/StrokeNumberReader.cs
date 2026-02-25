@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -23,15 +23,8 @@ using Jitendex.KanjiVG.Models;
 
 namespace Jitendex.KanjiVG.Readers;
 
-internal partial class StrokeNumberReader
+internal partial class StrokeNumberReader(ILogger<StrokeNumberReader> logger)
 {
-    private readonly ILogger<StrokeNumberReader> _logger;
-
-    public StrokeNumberReader(ILogger<StrokeNumberReader> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task ReadAsync(XmlReader xmlReader, StrokeNumberGroup group)
     {
         var (translateX, translateY) = GetTranslation(xmlReader, group);

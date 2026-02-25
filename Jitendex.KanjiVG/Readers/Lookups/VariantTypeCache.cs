@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -22,10 +22,8 @@ using Jitendex.KanjiVG.Models;
 
 namespace Jitendex.KanjiVG.Readers.Lookups;
 
-internal partial class VariantTypeCache : LookupCache<VariantType>
+internal partial class VariantTypeCache(ILogger<VariantTypeCache> logger) : LookupCache<VariantType>(logger)
 {
-    public VariantTypeCache(ILogger<VariantTypeCache> logger) : base(logger) { }
-
     protected override VariantType NewLookup(int id, string text) => new()
     {
         Id = id,

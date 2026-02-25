@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -26,21 +26,14 @@ using Jitendex.KanjiVG.Readers.Lookups;
 namespace Jitendex.KanjiVG.Readers;
 
 internal partial class EntryReader
+(
+    ILogger<EntryReader> logger,
+    ComponentGroupReader componentGroupReader,
+    StrokeNumberGroupReader strokeNumberGroupReader,
+    VariantTypeCache variantTypeCache,
+    CommentCache commentCache
+)
 {
-    private readonly ILogger<EntryReader> _logger;
-    private readonly ComponentGroupReader _componentGroupReader;
-    private readonly StrokeNumberGroupReader _strokeNumberGroupReader;
-    private readonly VariantTypeCache _variantTypeCache;
-    private readonly CommentCache _commentCache;
-
-    public EntryReader(ILogger<EntryReader> logger,
-                       ComponentGroupReader componentGroupReader,
-                       StrokeNumberGroupReader strokeNumberGroupReader,
-                       VariantTypeCache variantTypeCache,
-                       CommentCache commentCache) =>
-        (_logger, _componentGroupReader, _strokeNumberGroupReader, _variantTypeCache, _commentCache) =
-        (@logger, @componentGroupReader, @strokeNumberGroupReader, @variantTypeCache, @commentCache);
-
     public async Task<Entry?> ReadAsync(string fileName, XmlReader xmlReader)
     {
         var (unicodeScalarValue, variantTypeName) = Parse(fileName);
@@ -49,7 +42,7 @@ internal partial class EntryReader
             return null;
         }
 
-        var variantType = _variantTypeCache.Get(variantTypeName);
+        var variantType = variantTypeCache.Get(variantTypeName);
 
         var entry = new Entry
         {
@@ -114,7 +107,7 @@ internal partial class EntryReader
         Match match = FileNameRegex().Match(fileName);
         if (!match.Success)
         {
-            _logger.LogError("Cannot parse filename {FileName}", fileName);
+            logger.LogError("Cannot parse filename {FileName}", fileName);
             return (default, string.Empty);
         }
         else if (int.TryParse(match.Groups[1].Value, NumberStyles.AllowHexSpecifier, provider: null, out int value))
@@ -123,7 +116,7 @@ internal partial class EntryReader
         }
         else
         {
-            _logger.LogError("Hex code in filename {FileName} is invalid", fileName);
+            logger.LogError("Hex code in filename {FileName} is invalid", fileName);
             return (default, string.Empty);
         }
     }
@@ -132,10 +125,10 @@ internal partial class EntryReader
     {
         if (entry.Comment is not null)
         {
-            _logger.LogWarning("File `{File}` contains multiple header comments", entry.FileName());
+            logger.LogWarning("File `{File}` contains multiple header comments", entry.FileName());
         }
         var commentText = await xmlReader.GetValueAsync();
-        entry.Comment = _commentCache.Get(commentText);
+        entry.Comment = commentCache.Get(commentText);
         entry.Comment.Entries.Add(entry);
         entry.CommentId = entry.Comment.Id;
     }
@@ -165,11 +158,11 @@ internal partial class EntryReader
         }
         else if (id.StartsWith("kvg:StrokePaths", StringComparison.Ordinal))
         {
-            await _componentGroupReader.ReadAsync(xmlReader, entry);
+            await componentGroupReader.ReadAsync(xmlReader, entry);
         }
         else if (id.StartsWith("kvg:StrokeNumbers", StringComparison.Ordinal))
         {
-            await _strokeNumberGroupReader.ReadAsync(xmlReader, entry);
+            await strokeNumberGroupReader.ReadAsync(xmlReader, entry);
         }
         else
         {
@@ -221,7 +214,6 @@ internal partial class EntryReader
 
     [GeneratedRegex(pattern: @"^(.+?)(?:-(.+?))?\.svg$", RegexOptions.None)]
     private static partial Regex FileNameRegex();
-
 
     [LoggerMessage(LogLevel.Warning,
     "{File}: Unexpected XML text node `{Text}`")]

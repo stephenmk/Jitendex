@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -24,22 +24,17 @@ using Jitendex.KanjiVG.Readers.Lookups;
 namespace Jitendex.KanjiVG.Readers;
 
 internal partial class ComponentGroupReader
+(
+    ILogger<ComponentGroupReader> logger,
+    ComponentReader componentReader,
+    ComponentGroupStyleCache componentGroupStyleCache
+)
 {
-    private readonly ILogger<ComponentGroupReader> _logger;
-    private readonly ComponentReader _componentReader;
-    private readonly ComponentGroupStyleCache _componentGroupStyleCache;
-
-    public ComponentGroupReader(ILogger<ComponentGroupReader> logger,
-                                ComponentReader componentReader,
-                                ComponentGroupStyleCache componentGroupStyleCache) =>
-        (_logger, _componentReader, _componentGroupStyleCache) =
-        (@logger, @componentReader, @componentGroupStyleCache);
-
     public async Task ReadAsync(XmlReader xmlReader, Entry entry)
     {
         var (id, styleText) = GetAttributes(xmlReader, entry);
 
-        var style = _componentGroupStyleCache.Get(styleText);
+        var style = componentGroupStyleCache.Get(styleText);
 
         var group = new ComponentGroup
         {
@@ -127,7 +122,7 @@ internal partial class ComponentGroupReader
         switch (xmlReader.Name)
         {
             case "g":
-                await _componentReader.ReadAsync(xmlReader, group);
+                await componentReader.ReadAsync(xmlReader, group);
                 break;
             default:
                 LogUnexpectedElementName(xmlReader.Name, group.Entry.FileName(), group.XmlIdAttribute());

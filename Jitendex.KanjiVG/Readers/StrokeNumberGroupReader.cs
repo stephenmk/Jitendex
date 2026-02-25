@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -24,21 +24,16 @@ using Jitendex.KanjiVG.Readers.Lookups;
 namespace Jitendex.KanjiVG.Readers;
 
 internal partial class StrokeNumberGroupReader
+(
+    ILogger<StrokeNumberGroupReader> logger,
+    StrokeNumberReader strokeNumberReader,
+    StrokeNumberGroupStyleCache groupStyleCache
+)
 {
-    private readonly ILogger<StrokeNumberGroupReader> _logger;
-    private readonly StrokeNumberReader _strokeNumberReader;
-    private readonly StrokeNumberGroupStyleCache _groupStyleCache;
-
-    public StrokeNumberGroupReader(ILogger<StrokeNumberGroupReader> logger,
-                                   StrokeNumberReader strokeNumberReader,
-                                   StrokeNumberGroupStyleCache groupStyleCache) =>
-        (_logger, _strokeNumberReader, _groupStyleCache) =
-        (@logger, @strokeNumberReader, @groupStyleCache);
-
     public async Task ReadAsync(XmlReader xmlReader, Entry entry)
     {
         var (id, styleText) = GetAttributes(xmlReader, entry);
-        var style = _groupStyleCache.Get(styleText);
+        var style = groupStyleCache.Get(styleText);
 
         var group = new StrokeNumberGroup
         {
@@ -126,7 +121,7 @@ internal partial class StrokeNumberGroupReader
         switch (xmlReader.Name)
         {
             case "text":
-                await _strokeNumberReader.ReadAsync(xmlReader, group);
+                await strokeNumberReader.ReadAsync(xmlReader, group);
                 break;
             default:
                 LogUnexpectedElementName(xmlReader.Name, group.Entry.FileName(), group.XmlIdAttribute());

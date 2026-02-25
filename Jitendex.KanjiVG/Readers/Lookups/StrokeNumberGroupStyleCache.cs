@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -22,10 +22,8 @@ using Jitendex.KanjiVG.Models;
 
 namespace Jitendex.KanjiVG.Readers.Lookups;
 
-internal partial class StrokeNumberGroupStyleCache : LookupCache<StrokeNumberGroupStyle>
+internal partial class StrokeNumberGroupStyleCache(ILogger<StrokeNumberGroupStyleCache> logger) : LookupCache<StrokeNumberGroupStyle>(logger)
 {
-    public StrokeNumberGroupStyleCache(ILogger<StrokeNumberGroupStyleCache> logger) : base(logger) { }
-
     protected override StrokeNumberGroupStyle NewLookup(int id, string text) => new()
     {
         Id = id,

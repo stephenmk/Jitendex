@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,29 +16,13 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
 using Jitendex.KanjiVG.Models;
 using Jitendex.KanjiVG.Readers.Lookups;
 
 namespace Jitendex.KanjiVG.Readers;
 
-internal partial class KanjiVGReader
-{
-    private readonly ILogger<KanjiVGReader> _logger;
-    private readonly EntriesReader _entriesReader;
-    private readonly VariantTypeCache _variantTypeCache;
-    private readonly CommentCache _commentCache;
-    private readonly ComponentGroupStyleCache _componentGroupStyleCache;
-    private readonly StrokeNumberGroupStyleCache _strokeNumberGroupStyleCache;
-    private readonly ComponentCharacterCache _characterCache;
-    private readonly ComponentOriginalCache _originalCache;
-    private readonly ComponentPositionCache _positionCache;
-    private readonly ComponentRadicalCache _radicalCache;
-    private readonly ComponentPhonCache _phonCache;
-    private readonly StrokeTypeCache _strokeTypeCache;
-
-    public KanjiVGReader(
-        ILogger<KanjiVGReader> logger,
+internal sealed class KanjiVGReader
+(
         EntriesReader entriesReader,
         VariantTypeCache variantTypeCache,
         CommentCache commentCache,
@@ -49,27 +33,26 @@ internal partial class KanjiVGReader
         ComponentPositionCache positionCache,
         ComponentRadicalCache radicalCache,
         ComponentPhonCache phonCache,
-        StrokeTypeCache strokeTypeCache) =>
-        (_logger, _entriesReader, _variantTypeCache, _commentCache, _componentGroupStyleCache, _strokeNumberGroupStyleCache, _characterCache, _originalCache, _positionCache, _radicalCache, _phonCache, _strokeTypeCache) =
-        (@logger, @entriesReader, @variantTypeCache, @commentCache, @componentGroupStyleCache, @strokeNumberGroupStyleCache, @characterCache, @originalCache, @positionCache, @radicalCache, @phonCache, @strokeTypeCache);
-
+        StrokeTypeCache strokeTypeCache
+)
+{
     public async Task<KanjiVGDocument> ReadAsync()
     {
-        var entries = await _entriesReader.ReadAsync();
+        var entries = await entriesReader.ReadAsync();
 
         var kanjivg = new KanjiVGDocument
         {
             Entries = entries,
-            VariantTypes = [.. _variantTypeCache.Values],
-            Comments = [.. _commentCache.Values],
-            ComponentGroupStyles = [.. _componentGroupStyleCache.Values],
-            StrokeNumberGroupStyles = [.. _strokeNumberGroupStyleCache.Values],
-            ComponentCharacters = [.. _characterCache.Values],
-            ComponentOriginals = [.. _originalCache.Values],
-            ComponentPositions = [.. _positionCache.Values],
-            ComponentRadicals = [.. _radicalCache.Values],
-            ComponentPhons = [.. _phonCache.Values],
-            StrokeTypes = [.. _strokeTypeCache.Values],
+            VariantTypes = [.. variantTypeCache.Values],
+            Comments = [.. commentCache.Values],
+            ComponentGroupStyles = [.. componentGroupStyleCache.Values],
+            StrokeNumberGroupStyles = [.. strokeNumberGroupStyleCache.Values],
+            ComponentCharacters = [.. characterCache.Values],
+            ComponentOriginals = [.. originalCache.Values],
+            ComponentPositions = [.. positionCache.Values],
+            ComponentRadicals = [.. radicalCache.Values],
+            ComponentPhons = [.. phonCache.Values],
+            StrokeTypes = [.. strokeTypeCache.Values],
         };
 
         return kanjivg;

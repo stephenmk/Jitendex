@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -22,22 +22,19 @@ using Jitendex.KanjiVG.Models;
 namespace Jitendex.KanjiVG.Readers;
 
 internal partial class EntriesReader
+(
+    ILogger<EntriesReader> logger,
+    KanjiFiles kanjiFiles,
+    EntryReader entryReader
+)
 {
-    private readonly ILogger<EntriesReader> _logger;
-    private readonly KanjiFiles _kanjiFiles;
-    private readonly EntryReader _entryReader;
-
-    public EntriesReader(ILogger<EntriesReader> logger, KanjiFiles kanjiFiles, EntryReader entryReader) =>
-        (_logger, _kanjiFiles, _entryReader) =
-        (@logger, @kanjiFiles, @entryReader);
-
     public async Task<List<Entry>> ReadAsync()
     {
         var entries = new List<Entry>(12_000);
 
-        await foreach (var (fileName, xmlReader) in _kanjiFiles.EnumerateAsync())
+        await foreach (var (fileName, xmlReader) in kanjiFiles.EnumerateAsync())
         {
-            var entry = await _entryReader.ReadAsync(fileName, xmlReader);
+            var entry = await entryReader.ReadAsync(fileName, xmlReader);
             if (entry is not null)
             {
                 CheckStrokeNumberCount(entry);

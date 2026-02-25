@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using Jitendex.KanjiVG.Readers;
-using Jitendex.KanjiVG.Readers.Lookups;
+using Jitendex.KanjiVG.Import.Readers;
+using Jitendex.KanjiVG.Import.Readers.Lookups;
 
-namespace Jitendex.KanjiVG;
+namespace Jitendex.KanjiVG.Import;
 
 internal static class ImporterProvider
 {

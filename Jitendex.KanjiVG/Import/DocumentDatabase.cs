@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.KanjiVG.Tables;
-using Jitendex.KanjiVG.Entities;
+using Jitendex.KanjiVG.Import.Tables;
+using Jitendex.KanjiVG.Import.Models;
 
-namespace Jitendex.KanjiVG;
+namespace Jitendex.KanjiVG.Import;
 
 internal static class DocumentDatabase
 {

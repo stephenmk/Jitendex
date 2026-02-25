@@ -16,10 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.KanjiVG.Entities;
-using Jitendex.KanjiVG.Readers.Lookups;
+using Jitendex.KanjiVG.Import.Models;
+using Jitendex.KanjiVG.Import.Readers;
+using Jitendex.KanjiVG.Import.Readers.Lookups;
 
-namespace Jitendex.KanjiVG.Readers;
+namespace Jitendex.KanjiVG.Import;
 
 internal sealed class KanjiVGReader
 (

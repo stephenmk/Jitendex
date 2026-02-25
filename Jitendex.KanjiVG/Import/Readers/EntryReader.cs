@@ -21,9 +21,9 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.KanjiVG.Entities;
-using Jitendex.KanjiVG.Readers.Lookups;
+using Jitendex.KanjiVG.Import.Readers.Lookups;
 
-namespace Jitendex.KanjiVG.Readers;
+namespace Jitendex.KanjiVG.Import.Readers;
 
 internal partial class EntryReader
 (

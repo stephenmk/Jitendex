@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Readers;
+namespace Jitendex.KanjiVG.Import.Readers;
 
 internal partial class EntriesReader
 (

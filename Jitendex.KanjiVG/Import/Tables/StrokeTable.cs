@@ -21,7 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Jitendex.KanjiVG.Entities;
 using Jitendex.SQLite;
 
-namespace Jitendex.KanjiVG.Tables;
+namespace Jitendex.KanjiVG.Import.Tables;
 
 internal static class StrokeTable
 {

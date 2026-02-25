@@ -20,7 +20,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Tables;
+namespace Jitendex.KanjiVG.Import.Tables;
 
 internal static class LookupTable
 {

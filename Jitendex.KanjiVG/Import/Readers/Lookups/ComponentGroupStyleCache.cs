@@ -20,7 +20,7 @@ using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Readers.Lookups;
+namespace Jitendex.KanjiVG.Import.Readers.Lookups;
 
 internal partial class ComponentGroupStyleCache(ILogger<ComponentGroupStyleCache> logger) : LookupCache<ComponentGroupStyle>(logger)
 {

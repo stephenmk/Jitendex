@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jitendex.KanjiVG.Entities;
+namespace Jitendex.KanjiVG.Import.Models;
 
 [NotMapped]
 public class ComponentAttributes

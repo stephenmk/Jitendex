@@ -21,7 +21,7 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.KanjiVG.Entities;
 
-namespace Jitendex.KanjiVG.Readers;
+namespace Jitendex.KanjiVG.Import.Readers;
 
 internal partial class StrokeNumberReader(ILogger<StrokeNumberReader> logger)
 {

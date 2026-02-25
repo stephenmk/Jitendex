@@ -20,7 +20,7 @@ using System.Collections.Immutable;
 using Jitendex.KanjiVG.Entities;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.KanjiVG.Readers.Lookups;
+namespace Jitendex.KanjiVG.Import.Readers.Lookups;
 
 internal abstract class LookupCache<T> where T : ILookup
 {

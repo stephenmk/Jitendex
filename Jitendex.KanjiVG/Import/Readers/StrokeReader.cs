@@ -19,10 +19,10 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.KanjiVG.Entities;
-using Jitendex.KanjiVG.Readers.Lookups;
+using Jitendex.KanjiVG.Import.Readers.Lookups;
 using Attributes = (string Id, string TypeText, string PathData);
 
-namespace Jitendex.KanjiVG.Readers;
+namespace Jitendex.KanjiVG.Import.Readers;
 
 internal partial class StrokeReader(ILogger<StrokeReader> logger, StrokeTypeCache strokeTypeCache)
 {

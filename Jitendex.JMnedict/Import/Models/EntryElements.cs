@@ -21,12 +21,7 @@ namespace Jitendex.JMnedict.Import.Models;
 internal sealed record EntryElement
 {
     public required int Id { get; set; }
-
-    public bool IsJmnedictEntry() => Id switch
-    {
-        >= 5_000_000 and <= 6_000_000 => true,
-        _ => false,
-    };
+    public bool IsJmnedictEntry() => Id != 9999990; // Date entry
 }
 
 internal interface IEntryElement

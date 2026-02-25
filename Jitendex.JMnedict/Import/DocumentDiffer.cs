@@ -33,11 +33,11 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
             Deletes = new Document(0) { ArchiveKey = docB.ArchiveKey },
         };
 
-        FindNew<string, PriorityTagElement>(diff, docA, docB, nameof(Document.PriorityTags));
-        FindNew<string, ReadingInfoTagElement>(diff, docA, docB, nameof(Document.ReadingInfoTags));
-        FindNew<string, KanjiFormInfoTagElement>(diff, docA, docB, nameof(Document.KanjiFormInfoTags));
-        FindNew<string, NameTypeTagElement>(diff, docA, docB, nameof(Document.NameTypeTags));
-        FindNew<string, DetailLanguageElement>(diff, docA, docB, nameof(Document.DetailLanguages));
+        FindNew<string>(diff, docA, docB, nameof(Document.PriorityTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.ReadingInfoTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.KanjiFormInfoTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.NameTypeTags));
+        FindNew<string>(diff, docA, docB, nameof(Document.DetailLanguages));
 
         DiffDictionaryProperties<int, EntryElement>(diff, docA, docB, nameof(Document.Entries));
 

@@ -21,12 +21,12 @@ namespace Jitendex.JMnedict.Import.Models;
 internal interface IKeywordElement
 {
     string Name { get; init; }
-    DateOnly Date { get; init; }
+    int FileHeaderId { get; init; }
 }
 
-internal sealed record PriorityTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record ReadingInfoTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record KanjiFormInfoTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record NameTypeTagElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record DetailLanguageElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record CrossReferenceTypeElement(string Name, DateOnly Date) : IKeywordElement;
+internal sealed record PriorityTagElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record ReadingInfoTagElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record KanjiFormInfoTagElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record NameTypeTagElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record DetailLanguageElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record CrossReferenceTypeElement(string Name, int FileHeaderId) : IKeywordElement;

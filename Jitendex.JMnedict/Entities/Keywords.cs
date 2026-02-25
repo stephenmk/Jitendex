@@ -28,7 +28,8 @@ namespace Jitendex.JMnedict.Entities;
 public interface IKeyword
 {
     string Name { get; init; }
-    DateOnly CreatedDate { get; init; }
+    int OriginFileId { get; init; }
+    FileHeader OriginFile { get; init; }
 }
 
 [Table(nameof(ReadingInfoTag))]
@@ -36,7 +37,10 @@ public sealed class ReadingInfoTag : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
 
     [InverseProperty(nameof(ReadingInfo.Tag))]
     public List<ReadingInfo> Infos { get; init; } = [];
@@ -47,7 +51,10 @@ public sealed class KanjiFormInfoTag : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
 
     [InverseProperty(nameof(KanjiFormInfo.Tag))]
     public List<KanjiFormInfo> Infos { get; init; } = [];
@@ -58,7 +65,10 @@ public sealed class NameTypeTag : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
 
     [InverseProperty(nameof(NameType.Tag))]
     public List<NameType> NameTypes { get; init; } = [];
@@ -69,7 +79,10 @@ public sealed class DetailLanguage : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
 
     [InverseProperty(nameof(Detail.Language))]
     public List<Detail> Details { get; init; } = [];
@@ -80,7 +93,10 @@ public sealed class PriorityTag : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
 
     [InverseProperty(nameof(KanjiFormPriority.Tag))]
     public List<KanjiFormPriority> KanjiFormPriorities { get; init; } = [];

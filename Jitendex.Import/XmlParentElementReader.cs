@@ -34,15 +34,15 @@ public abstract partial class XmlParentElementReader<TDocument, TChild>(ILogger<
                 case XmlNodeType.Element:
                     await ReadChildElementAsync(xmlReader, document, childElement);
                     break;
+                case XmlNodeType.EndElement:
+                    exit = tagName.Equals(xmlReader.Name, StringComparison.Ordinal);
+                    break;
                 case XmlNodeType.Text:
                     var text = await xmlReader.GetValueAsync();
                     LogUnexpectedTextNode(tagName, text);
                     break;
                 case XmlNodeType.DocumentType:
                     LogUnexpectedDocumentType(xmlReader.Name);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = tagName.Equals(xmlReader.Name, StringComparison.Ordinal);
                     break;
             }
         }

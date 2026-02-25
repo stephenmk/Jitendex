@@ -28,10 +28,9 @@ internal sealed class DetailReader(ILogger<DetailReader> logger) : XmlBaseReader
     public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationElement translation)
     {
         var languageName = xmlReader.GetAttribute(XmlAttributeName.DetailLanguage);
-        if (languageName is not null && !document.DetailLanguages.ContainsKey(languageName))
+        if (languageName is not null)
         {
-            var language = new DetailLanguageElement(languageName, document.ArchiveKey);
-            document.DetailLanguages.Add(languageName, language);
+            document.DetailLanguages.Add(languageName);
         }
 
         var detail = new DetailElement

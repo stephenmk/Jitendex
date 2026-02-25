@@ -49,11 +49,11 @@ internal sealed class Document : IDocument<DateOnly>
     #endregion
 
     #region Keywords
-    public Dictionary<string, PriorityTagElement> PriorityTags { get; init; } = [];
-    public Dictionary<string, ReadingInfoTagElement> ReadingInfoTags { get; init; } = [];
-    public Dictionary<string, KanjiFormInfoTagElement> KanjiFormInfoTags { get; init; } = [];
-    public Dictionary<string, NameTypeTagElement> NameTypeTags { get; init; } = [];
-    public Dictionary<string, DetailLanguageElement> DetailLanguages { get; init; } = [];
+    public HashSet<string> PriorityTags { get; init; } = [];
+    public HashSet<string> ReadingInfoTags { get; init; } = [];
+    public HashSet<string> KanjiFormInfoTags { get; init; } = [];
+    public HashSet<string> NameTypeTags { get; init; } = [];
+    public HashSet<string> DetailLanguages { get; init; } = [];
     #endregion
 
     public Dictionary<string, string> KeywordDescriptionToName { get; init; } = [];
@@ -80,6 +80,21 @@ internal sealed class Document : IDocument<DateOnly>
 
     public IEnumerable<DocumentSequence> GetSequences(int fileHeaderId)
         => Entries.Select(e => new DocumentSequence(e.Key, fileHeaderId));
+
+    public IEnumerable<PriorityTagElement> GetPriorityTags(int fileHeaderId)
+        => PriorityTags.Select(e => new PriorityTagElement(e, fileHeaderId));
+
+    public IEnumerable<ReadingInfoTagElement> GetReadingInfoTags(int fileHeaderId)
+        => ReadingInfoTags.Select(e => new ReadingInfoTagElement(e, fileHeaderId));
+
+    public IEnumerable<KanjiFormInfoTagElement> GetKanjiFormInfoTags(int fileHeaderId)
+        => KanjiFormInfoTags.Select(e => new KanjiFormInfoTagElement(e, fileHeaderId));
+
+    public IEnumerable<NameTypeTagElement> GetNameTypeTags(int fileHeaderId)
+        => NameTypeTags.Select(e => new NameTypeTagElement(e, fileHeaderId));
+
+    public IEnumerable<DetailLanguageElement> GetDetailLanguages(int fileHeaderId)
+        => DetailLanguages.Select(e => new DetailLanguageElement(e, fileHeaderId));
 
     public IEnumerable<int> ConcatAllEntryIds()
         => Entries.Keys

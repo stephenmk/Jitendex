@@ -29,11 +29,7 @@ internal sealed class RPriorityReader(ILogger<RPriorityReader> logger) : XmlBase
     {
         var tagName = await xmlReader.ReadElementContentAsStringAsync();
 
-        if (!document.PriorityTags.ContainsKey(tagName))
-        {
-            var tag = new PriorityTagElement(tagName, document.ArchiveKey);
-            document.PriorityTags.Add(tagName, tag);
-        }
+        document.PriorityTags.Add(tagName);
 
         var priority = new ReadingPriorityElement
         (

@@ -89,11 +89,11 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMnedic
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
-        PriorityTagTable.InsertItems(context, document.PriorityTags.Values);
-        ReadingInfoTagTable.InsertItems(context, document.ReadingInfoTags.Values);
-        KanjiFormInfoTagTable.InsertItems(context, document.KanjiFormInfoTags.Values);
-        NameTypeTagTable.InsertItems(context, document.NameTypeTags.Values);
-        DetailLanguageTable.InsertItems(context, document.DetailLanguages.Values);
+        PriorityTagTable.InsertItems(context, document.GetPriorityTags(fileHeaderId));
+        ReadingInfoTagTable.InsertItems(context, document.GetReadingInfoTags(fileHeaderId));
+        KanjiFormInfoTagTable.InsertItems(context, document.GetKanjiFormInfoTags(fileHeaderId));
+        NameTypeTagTable.InsertItems(context, document.GetNameTypeTags(fileHeaderId));
+        DetailLanguageTable.InsertItems(context, document.GetDetailLanguages(fileHeaderId));
 
         EntryTable.InsertItems(context, document.Entries.Values);
         KanjiFormTable.InsertItems(context, document.KanjiForms.Values);
@@ -126,11 +126,11 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMnedic
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
 
-        PriorityTagTable.InsertOrIgnoreItems(context, diff.Inserts.PriorityTags.Values);
-        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.ReadingInfoTags.Values);
-        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.KanjiFormInfoTags.Values);
-        NameTypeTagTable.InsertOrIgnoreItems(context, diff.Inserts.NameTypeTags.Values);
-        DetailLanguageTable.InsertItems(context, diff.Inserts.DetailLanguages.Values);
+        PriorityTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetPriorityTags(fileHeaderId));
+        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetReadingInfoTags(fileHeaderId));
+        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetKanjiFormInfoTags(fileHeaderId));
+        NameTypeTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetNameTypeTags(fileHeaderId));
+        DetailLanguageTable.InsertItems(context, diff.Inserts.GetDetailLanguages(fileHeaderId));
 
         EntryTable.InsertItems(context, diff.Inserts.Entries.Values);
         KanjiFormTable.InsertItems(context, diff.Inserts.KanjiForms.Values);

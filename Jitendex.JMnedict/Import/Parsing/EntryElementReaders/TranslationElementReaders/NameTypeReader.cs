@@ -36,11 +36,7 @@ internal sealed class NameTypeReader(ILogger<NameTypeReader> logger) : XmlBaseRe
             LogMissingEntityDefinition(description);
         }
 
-        if (!document.NameTypeTags.ContainsKey(tagName))
-        {
-            var tag = new NameTypeTagElement(tagName, document.ArchiveKey);
-            document.NameTypeTags.Add(tagName, tag);
-        }
+        document.NameTypeTags.Add(tagName);
 
         var nameType = new NameTypeElement
         (

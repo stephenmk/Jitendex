@@ -22,39 +22,37 @@ using Jitendex.JMnedict.Import.Models;
 
 namespace Jitendex.JMnedict.Import.Parsing;
 
-internal partial class EntriesReader(ILogger<EntriesReader> logger, EntryReader entryReader) : BaseReader(logger)
+internal abstract partial class ParentElementReader<T>(ILogger<ParentElementReader<T>> logger) : BaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document)
+    protected async Task ReadToEndAsync(XmlReader xmlReader, Document document, T childElement, string tagName)
     {
-        while (await xmlReader.ReadAsync())
+        var exit = false;
+        while (!exit && await xmlReader.ReadAsync())
         {
             switch (xmlReader.NodeType)
             {
                 case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document);
+                    await ReadChildElementAsync(xmlReader, document, childElement);
                     break;
                 case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.JMnedict);
+                    var text = await xmlReader.GetValueAsync();
+                    LogUnexpectedTextNode(tagName, text);
                     break;
                 case XmlNodeType.DocumentType:
                     LogUnexpectedDocumentType(xmlReader.Name);
+                    break;
+                case XmlNodeType.EndElement:
+                    exit = tagName.Equals(xmlReader.Name, StringComparison.Ordinal);
                     break;
             }
         }
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document)
-    {
-        switch (xmlReader.Name)
-        {
-            case XmlTagName.Entry:
-                await entryReader.ReadAsync(xmlReader, document);
-                break;
-            default:
-                LogUnexpectedChildElement(xmlReader, XmlTagName.JMnedict);
-                break;
-        }
-    }
+    protected abstract Task ReadChildElementAsync(XmlReader xmlReader, Document document, T childElement);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Unexpected XML text node found in element <{TagName}>: `{Text}`")]
+    partial void LogUnexpectedTextNode(string tagName, string text);
 
     [LoggerMessage(LogLevel.Warning, "Unexpected document type node `{Name}`")]
     partial void LogUnexpectedDocumentType(string name);

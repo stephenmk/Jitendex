@@ -29,7 +29,7 @@ internal partial class EntryReader
     KanjiFormReader kanjiFormReader,
     ReadingReader readingReader,
     TranslationReader translationReader
-) : BaseReader(logger)
+) : ParentElementReader<EntryElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {
@@ -38,22 +38,7 @@ internal partial class EntryReader
             Id = default
         };
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, entry);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.Entry);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = IsClosingTag(xmlReader, XmlTagName.Entry);
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, entry, XmlTagName.Entry);
 
         if (entry.Id.Equals(default))
         {
@@ -65,7 +50,7 @@ internal partial class EntryReader
         }
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, EntryElement entry)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         if (entry.Id.Equals(default))
         {

@@ -41,7 +41,8 @@ internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : 
                     LogUnexpectedChildElement(xmlReader, XmlTagName.Root);
                     break;
                 case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.Root);
+                    var text = await xmlReader.GetValueAsync();
+                    LogUnexpectedTextNode(XmlTagName.Root, text);
                     break;
             }
         }
@@ -71,4 +72,8 @@ internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : 
     [LoggerMessage(LogLevel.Warning,
     "Keyword description `{Description}` corresponds to multiple keyword names in the JMnedict DTD")]
     partial void LogMultipleDescriptions(string description);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Unexpected XML text node found before DTD: <{TagName}>: `{Text}`")]
+    partial void LogUnexpectedTextNode(string tagName, string text);
 }

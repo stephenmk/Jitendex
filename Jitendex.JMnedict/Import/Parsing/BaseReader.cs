@@ -23,18 +23,9 @@ namespace Jitendex.JMnedict.Import.Parsing;
 
 internal abstract partial class BaseReader
 {
-    protected readonly ILogger _logger;
-    public BaseReader(ILogger logger)
+    protected readonly ILogger<BaseReader> _logger;
+    public BaseReader(ILogger<BaseReader> logger)
         => _logger = logger;
-
-    protected bool IsClosingTag(XmlReader xmlReader, ReadOnlySpan<char> tagName)
-        => tagName.Equals(xmlReader.Name, StringComparison.Ordinal);
-
-    protected async Task LogUnexpectedTextNodeAsync(XmlReader xmlReader, string tagName)
-    {
-        var text = await xmlReader.GetValueAsync();
-        LogUnexpectedTextNode(tagName, text);
-    }
 
     protected void LogUnexpectedChildElement(XmlReader xmlReader, string parentTagName)
         => LogUnexpectedChildElement(xmlReader.Name, parentTagName);
@@ -42,10 +33,6 @@ internal abstract partial class BaseReader
     [LoggerMessage(LogLevel.Warning,
     "XML document type `{Entity}` was not defined in DTD preamble")]
     protected partial void LogMissingEntityDefinition(string entity);
-
-    [LoggerMessage(LogLevel.Warning,
-    "Unexpected XML text node found in element <{TagName}>: `{Text}`")]
-    partial void LogUnexpectedTextNode(string tagName, string text);
 
     [LoggerMessage(LogLevel.Warning,
     "Unexpected XML element node <{TagName}> found in element <{ParentTagName}>")]

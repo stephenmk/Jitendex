@@ -30,7 +30,7 @@ internal partial class TranslationReader
     CrossReferenceReader crossReferenceReader,
     DetailReader detailReader,
     NameTypeReader nameTypeReader
-) : BaseReader(logger)
+) : ParentElementReader<TranslationElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -40,27 +40,12 @@ internal partial class TranslationReader
             Order = document.Translations.NextOrder(entry.Id),
         };
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, translation);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.Translation);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = IsClosingTag(xmlReader, XmlTagName.Translation);
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, translation, XmlTagName.Translation);
 
         document.Translations.Add(translation.Key(), translation);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, TranslationElement translation)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, TranslationElement translation)
     {
         switch (xmlReader.Name)
         {

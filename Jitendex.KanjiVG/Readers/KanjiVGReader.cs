@@ -36,9 +36,9 @@ internal sealed class KanjiVGReader
         StrokeTypeCache strokeTypeCache
 )
 {
-    public async Task<KanjiVGDocument> ReadAsync()
+    public async Task<KanjiVGDocument> ReadAsync(FileInfo kanjivgFile)
     {
-        var entries = await entriesReader.ReadAsync();
+        var entries = await entriesReader.ReadAsync(kanjivgFile);
 
         var kanjivg = new KanjiVGDocument
         {

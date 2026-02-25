@@ -44,13 +44,10 @@ public class Program
             return;
         }
 
-        var files = new Files
-        {
-            SvgArchive = parseResult.GetRequiredValue(kanjivgFileArgument)
-        };
+        var kanjivgFile = parseResult.GetRequiredValue(kanjivgFileArgument);
 
-        var reader = ReaderProvider.GetReader(files);
-        var kanjivg = await reader.ReadAsync();
+        var reader = ReaderProvider.GetReader();
+        var kanjivg = await reader.ReadAsync(kanjivgFile);
 
         await DatabaseInitializer.WriteAsync(kanjivg);
     }

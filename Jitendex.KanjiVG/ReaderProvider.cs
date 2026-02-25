@@ -23,14 +23,11 @@ using Jitendex.KanjiVG.Readers.Lookups;
 
 namespace Jitendex.KanjiVG;
 
-internal record Files
-{
-    public required FileInfo SvgArchive { get; init; }
-}
-
 internal static class ReaderProvider
 {
-    public static KanjiVGReader GetReader(Files paths) => new ServiceCollection()
+    public static KanjiVGReader GetReader()
+        => new ServiceCollection()
+
         .AddLogging(builder =>
             builder.AddSimpleConsole(options =>
             {
@@ -40,7 +37,6 @@ internal static class ReaderProvider
             }))
 
         // XML file resource.
-        .AddTransient<Files>(provider => paths)
         .AddTransient<KanjiFiles>()
 
         // Global lookup types

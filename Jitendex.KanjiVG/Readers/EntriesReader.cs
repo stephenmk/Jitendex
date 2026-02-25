@@ -28,11 +28,11 @@ internal partial class EntriesReader
     EntryReader entryReader
 )
 {
-    public async Task<List<Entry>> ReadAsync()
+    public async Task<List<Entry>> ReadAsync(FileInfo kanjivgFile)
     {
         var entries = new List<Entry>(12_000);
 
-        await foreach (var (fileName, xmlReader) in kanjiFiles.EnumerateAsync())
+        await foreach (var (fileName, xmlReader) in kanjiFiles.EnumerateAsync(kanjivgFile))
         {
             var entry = await entryReader.ReadAsync(fileName, xmlReader);
             if (entry is not null)

@@ -23,11 +23,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Jitendex.KanjiVG.Readers;
 
-internal class KanjiFiles(ILogger<KanjiFiles> logger, Files files)
+internal class KanjiFiles(ILogger<KanjiFiles> logger)
 {
-    public async IAsyncEnumerable<(string Name, XmlReader Reader)> EnumerateAsync()
+    public async IAsyncEnumerable<(string Name, XmlReader Reader)> EnumerateAsync(FileInfo kanjivgFile)
     {
-        await using FileStream fs = new(files.SvgArchive.FullName, FileMode.Open, FileAccess.Read);
+        await using FileStream fs = new(kanjivgFile.FullName, FileMode.Open, FileAccess.Read);
         await using BrotliStream br = new(fs, CompressionMode.Decompress);
         await using TarReader tarReader = new(br);
 

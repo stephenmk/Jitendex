@@ -30,7 +30,7 @@ internal sealed class GlossReader(ILogger<GlossReader> logger) : BaseReader(logg
 
         if (typeName is not null && !document.GlossTypes.ContainsKey(typeName))
         {
-            var tag = new GlossTypeElement(typeName, document.Header.Date);
+            var tag = new GlossTypeElement(typeName, document.ArchiveKey);
             document.GlossTypes.Add(typeName, tag);
         }
 

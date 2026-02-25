@@ -18,13 +18,15 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Import;
 
-public sealed class Importer<TKey>
+public sealed class Importer<TKey, TDocument, TDiff>
 (
-    IDocumentDatabase<TKey> database,
     IFileArchive<TKey> fileArchive,
-    IDocumentReader<TKey> reader,
-    IDocumentDiffer<TKey> documentDiffer
+    IDocumentReader<TKey, TDocument> reader,
+    IDocumentDiffer<TKey, TDocument, TDiff> differ,
+    IDocumentDatabase<TKey, TDocument, TDiff> database
 )
+    where TDocument : IDocument<TKey>
+    where TDiff : IDocumentDiff<TKey, TDocument>
 {
     public async Task ImportAsync()
     {
@@ -42,7 +44,7 @@ public sealed class Importer<TKey>
         await UpdateDatabaseAsync(previousDocument);
     }
 
-    private async Task<IDocument<TKey>?> InitializeDatabaseAsync()
+    private async Task<TDocument?> InitializeDatabaseAsync()
     {
         if (fileArchive.GetEarliestFile() is (FileInfo file, TKey key))
         {
@@ -52,11 +54,11 @@ public sealed class Importer<TKey>
         }
         else
         {
-            return null;
+            return default;
         }
     }
 
-    private async Task<IDocument<TKey>?> GetPreviousDocumentAsync(TKey lastKey)
+    private async Task<TDocument?> GetPreviousDocumentAsync(TKey lastKey)
     {
         if (fileArchive.GetFile(lastKey) is FileInfo file)
         {
@@ -64,16 +66,16 @@ public sealed class Importer<TKey>
         }
         else
         {
-            return null;
+            return default;
         }
     }
 
-    private async Task UpdateDatabaseAsync(IDocument<TKey> previousDoc)
+    private async Task UpdateDatabaseAsync(TDocument previousDoc)
     {
         while (fileArchive.GetNextFile(previousDoc.ArchiveKey) is (FileInfo nextFile, TKey nextKey))
         {
             var nextDoc = await reader.ReadAsync(nextFile, nextKey);
-            var diff = documentDiffer.Diff(previousDoc, nextDoc);
+            var diff = differ.Diff(previousDoc, nextDoc);
             database.Update(diff);
             previousDoc = nextDoc;
         }

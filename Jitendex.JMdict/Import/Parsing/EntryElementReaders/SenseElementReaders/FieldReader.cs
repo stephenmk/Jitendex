@@ -37,7 +37,7 @@ internal sealed class FieldReader(ILogger<FieldReader> logger) : BaseReader(logg
 
         if (!document.FieldTags.ContainsKey(tagName))
         {
-            var tag = new FieldTagElement(tagName, document.Header.Date);
+            var tag = new FieldTagElement(tagName, document.ArchiveKey);
             document.FieldTags.Add(tagName, tag);
         }
 

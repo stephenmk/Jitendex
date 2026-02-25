@@ -16,11 +16,13 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.Import;
+
 namespace Jitendex.JMdict.Import.Models;
 
-internal sealed class Document
+internal sealed class Document : IDocument<DateOnly>
 {
-    public required DocumentHeader Header { get; init; }
+    public required DateOnly ArchiveKey { get; init; }
     public Dictionary<int, EntryElement> Entries { get; init; }
 
     #region Entry Elements

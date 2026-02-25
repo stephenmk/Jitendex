@@ -29,14 +29,14 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
         var typeName = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceType) ?? "full";
         if (!document.LanguageSourceTypes.ContainsKey(typeName))
         {
-            var tag = new LanguageSourceTypeElement(typeName, document.Header.Date);
+            var tag = new LanguageSourceTypeElement(typeName, document.ArchiveKey);
             document.LanguageSourceTypes.Add(typeName, tag);
         }
 
         var languageCode = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceCode) ?? "eng";
         if (!document.Languages.ContainsKey(languageCode))
         {
-            var tag = new LanguageElement(languageCode, document.Header.Date);
+            var tag = new LanguageElement(languageCode, document.ArchiveKey);
             document.Languages.Add(languageCode, tag);
         }
 

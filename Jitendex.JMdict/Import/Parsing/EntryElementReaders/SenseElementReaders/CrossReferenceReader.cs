@@ -29,7 +29,7 @@ internal sealed class CrossReferenceReader(ILogger<CrossReferenceReader> logger)
         var typeName = xmlReader.Name;
         if (!document.CrossReferenceTypes.ContainsKey(typeName))
         {
-            var tag = new CrossReferenceTypeElement(typeName, document.Header.Date);
+            var tag = new CrossReferenceTypeElement(typeName, document.ArchiveKey);
             document.CrossReferenceTypes.Add(typeName, tag);
         }
 

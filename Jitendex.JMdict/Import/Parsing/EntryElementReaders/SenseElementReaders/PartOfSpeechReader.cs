@@ -37,7 +37,7 @@ internal sealed class PartOfSpeechReader(ILogger<PartOfSpeechReader> logger) : B
 
         if (!document.PartOfSpeechTags.ContainsKey(tagName))
         {
-            var tag = new PartOfSpeechTagElement(tagName, document.Header.Date);
+            var tag = new PartOfSpeechTagElement(tagName, document.ArchiveKey);
             document.PartOfSpeechTags.Add(tagName, tag);
         }
 

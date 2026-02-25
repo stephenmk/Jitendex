@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
 using Jitendex.Import;
 using Jitendex.JMdict.Import.Models;
 using Jitendex.JMdict.Import.Parsing;
@@ -25,17 +24,15 @@ namespace Jitendex.JMdict.Import;
 
 internal sealed class Importer
 (
-    ILogger<Importer> logger,
     IFileArchive<DateOnly> fileArchive,
-    JmdictContext context,
     DocumentReader reader,
-    Database database
+    IDocumentDatabase<DateOnly, Document, DocumentDiff> database
 )
 {
     public async Task ImportAsync()
     {
-        context.Database.EnsureCreated();
-        var previousDate = GetPreviousDate();
+        database.EnsureCreated();
+        var previousDate = database.GetLastKey();
 
         var previousDocument = previousDate == default
             ? await InitializeDatabaseAsync()
@@ -43,18 +40,11 @@ internal sealed class Importer
 
         if (previousDocument is null)
         {
-            logger.LogWarning("Unable to retrieve previous document");
             return;
         }
 
         await UpdateDatabaseAsync(previousDocument);
     }
-
-    private DateOnly GetPreviousDate() => context.FileHeaders
-        .OrderByDescending(static x => x.Id)
-        .Take(1)
-        .Select(static x => x.Date)
-        .FirstOrDefault();
 
     private async Task<Document?> InitializeDatabaseAsync()
     {
@@ -84,7 +74,7 @@ internal sealed class Importer
 
     private async Task UpdateDatabaseAsync(Document previousDocument)
     {
-        while (fileArchive.GetNextFile(previousDocument.Header.Date) is (FileInfo nextFile, DateOnly nextDate))
+        while (fileArchive.GetNextFile(previousDocument.ArchiveKey) is (FileInfo nextFile, DateOnly nextDate))
         {
             var nextDocument = await reader.ReadAsync(nextFile, nextDate);
             var diff = new DocumentDiff(previousDocument, nextDocument);

@@ -19,6 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
+using Jitendex.Import;
+using Jitendex.JMdict.Import.Models;
 using Jitendex.JMdict.Import.Parsing;
 using Jitendex.JMdict.Import.Parsing.EntryElementReaders;
 using Jitendex.JMdict.Import.Parsing.EntryElementReaders.KanjiFormElementReaders;
@@ -29,7 +31,8 @@ namespace Jitendex.JMdict.Import;
 
 internal static class ImporterProvider
 {
-    public static Importer GetImporter(DirectoryInfo? archiveDirectory) => new ServiceCollection()
+    public static Importer GetImporter(DirectoryInfo? archiveDirectory)
+        => new ServiceCollection()
         .AddTransient<Importer>()
 
         // File archive
@@ -37,7 +40,7 @@ internal static class ImporterProvider
 
         // Databases
         .AddDbContext<JmdictContext>()
-        .AddTransient<Database>()
+        .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, Database>()
 
         // Top-level readers.
         .AddTransient<DocumentReader>()

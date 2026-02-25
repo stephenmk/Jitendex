@@ -31,27 +31,34 @@ public interface IDocument<TKey>
     TKey ArchiveKey { get; init; }
 }
 
-public interface IDocumentDiff<TKey>
+public interface IDocumentDiff<TKey, TDocument>
+    where TDocument : IDocument<TKey>
 {
-    IDocument<TKey> Inserts { get; init; }
-    IDocument<TKey> Updates { get; init; }
-    IDocument<TKey> Deletes { get; init; }
+    TKey ArchiveKey { get; init; }
+    TDocument Inserts { get; init; }
+    TDocument Updates { get; init; }
+    TDocument Deletes { get; init; }
 }
 
-public interface IDocumentDatabase<TKey>
+public interface IDocumentDatabase<TKey, TDocument, TDiff>
+    where TDocument : IDocument<TKey>
+    where TDiff : IDocumentDiff<TKey, TDocument>
 {
     void EnsureCreated();
     TKey? GetLastKey();
-    void Initialize(IDocument<TKey> document);
-    void Update(IDocumentDiff<TKey> diff);
+    void Initialize(TDocument document);
+    void Update(TDiff diff);
 }
 
-public interface IDocumentReader<TKey>
+public interface IDocumentReader<TKey, TDocument>
+    where TDocument : IDocument<TKey>
 {
-    Task<IDocument<TKey>> ReadAsync(FileInfo file, TKey archiveKey);
+    Task<TDocument> ReadAsync(FileInfo file, TKey archiveKey);
 }
 
-public interface IDocumentDiffer<TKey>
+public interface IDocumentDiffer<TKey, TDocument, TDiff>
+    where TDocument : IDocument<TKey>
+    where TDiff : IDocumentDiff<TKey, TDocument>
 {
-    IDocumentDiff<TKey> Diff(IDocument<TKey> docA, IDocument<TKey> docB);
+    TDiff Diff(TDocument docA, TDocument docB);
 }

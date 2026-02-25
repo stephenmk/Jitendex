@@ -37,7 +37,7 @@ internal sealed class MiscReader(ILogger<MiscReader> logger) : BaseReader(logger
 
         if (!document.MiscTags.ContainsKey(tagName))
         {
-            var tag = new MiscTagElement(tagName, document.Header.Date);
+            var tag = new MiscTagElement(tagName, document.ArchiveKey);
             document.MiscTags.Add(tagName, tag);
         }
 

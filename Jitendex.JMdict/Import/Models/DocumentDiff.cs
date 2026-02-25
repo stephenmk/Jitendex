@@ -16,22 +16,24 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.Import;
+
 namespace Jitendex.JMdict.Import.Models;
 
-internal sealed class DocumentDiff
+internal sealed class DocumentDiff : IDocumentDiff<DateOnly, Document>
 {
-    public DocumentHeader FileHeader { get; init; }
-    public Document InsertDocument { get; init; }
-    public Document UpdateDocument { get; init; }
-    public Document DeleteDocument { get; init; }
+    public DateOnly ArchiveKey { get; init; }
+    public Document Inserts { get; init; }
+    public Document Updates { get; init; }
+    public Document Deletes { get; init; }
     public IReadOnlySet<int> SequenceIds { get; init; }
 
     public DocumentDiff(Document docA, Document docB)
     {
-        FileHeader = docB.Header;
-        InsertDocument = new Document(0) { Header = docB.Header };
-        UpdateDocument = new Document(0) { Header = docB.Header };
-        DeleteDocument = new Document(0) { Header = docB.Header };
+        ArchiveKey = docB.ArchiveKey;
+        Inserts = new Document(0) { ArchiveKey = docB.ArchiveKey };
+        Updates = new Document(0) { ArchiveKey = docB.ArchiveKey };
+        Deletes = new Document(0) { ArchiveKey = docB.ArchiveKey };
 
         FindNew<string, ReadingInfoTagElement>(docA, docB, nameof(Document.ReadingInfoTags));
         FindNew<string, KanjiFormInfoTagElement>(docA, docB, nameof(Document.KanjiFormInfoTags));
@@ -69,9 +71,9 @@ internal sealed class DocumentDiff
         DiffDictionaryProperties<(int, int, int), PartOfSpeechElement>(docA, docB, nameof(Document.PartsOfSpeech));
         DiffDictionaryProperties<(int, int, int), ReadingRestrictionElement>(docA, docB, nameof(Document.ReadingRestrictions));
 
-        SequenceIds = InsertDocument.ConcatAllEntryIds()
-            .Concat(UpdateDocument.ConcatAllEntryIds())
-            .Concat(DeleteDocument.ConcatAllEntryIds())
+        SequenceIds = Inserts.ConcatAllEntryIds()
+            .Concat(Updates.ConcatAllEntryIds())
+            .Concat(Deletes.ConcatAllEntryIds())
             .ToHashSet();
     }
 
@@ -80,7 +82,7 @@ internal sealed class DocumentDiff
         var prop = typeof(Document).GetProperty(propertyName)!;
         var dictA = (Dictionary<TKey, TValue>)prop.GetValue(docA)!;
         var dictB = (Dictionary<TKey, TValue>)prop.GetValue(docB)!;
-        var inserts = (Dictionary<TKey, TValue>)prop.GetValue(InsertDocument)!;
+        var inserts = (Dictionary<TKey, TValue>)prop.GetValue(Inserts)!;
 
         foreach (var (key, value) in dictB)
         {
@@ -98,9 +100,9 @@ internal sealed class DocumentDiff
         var prop = typeof(Document).GetProperty(propertyName)!;
         var dictA = (Dictionary<TKey, TValue>)prop.GetValue(docA)!;
         var dictB = (Dictionary<TKey, TValue>)prop.GetValue(docB)!;
-        var inserts = (Dictionary<TKey, TValue>)prop.GetValue(InsertDocument)!;
-        var updates = (Dictionary<TKey, TValue>)prop.GetValue(UpdateDocument)!;
-        var deletes = (Dictionary<TKey, TValue>)prop.GetValue(DeleteDocument)!;
+        var inserts = (Dictionary<TKey, TValue>)prop.GetValue(Inserts)!;
+        var updates = (Dictionary<TKey, TValue>)prop.GetValue(Updates)!;
+        var deletes = (Dictionary<TKey, TValue>)prop.GetValue(Deletes)!;
         var comparer = EqualityComparer<TValue>.Default;
 
         foreach (var (key, valueA) in dictA)

@@ -18,16 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Import;
 
-public abstract class DocumentDiffer<T> : IDocumentDiffer<T>
+public abstract class DocumentDiffer<TKey, TDocument, TDiff> : IDocumentDiffer<TKey, TDocument, TDiff>
+    where TDocument : IDocument<TKey>
+    where TDiff : IDocumentDiff<TKey, TDocument>
 {
-    public abstract IDocumentDiff<T> Diff(IDocument<T> docA, IDocument<T> docB);
+    public abstract TDiff Diff(TDocument docA, TDocument docB);
 
-    protected void FindNew<TKey, TValue>(IDocumentDiff<T> diff, IDocument<T> docA, IDocument<T> docB, string propertyName) where TKey : notnull
+    protected void FindNew<T1, T2>(TDiff diff, TDocument docA, TDocument docB, string propertyName) where T1 : notnull
     {
         var prop = docA.GetType().GetProperty(propertyName)!;
-        var dictA = (Dictionary<TKey, TValue>)prop.GetValue(docA)!;
-        var dictB = (Dictionary<TKey, TValue>)prop.GetValue(docB)!;
-        var inserts = (Dictionary<TKey, TValue>)prop.GetValue(diff.Inserts)!;
+        var dictA = (Dictionary<T1, T2>)prop.GetValue(docA)!;
+        var dictB = (Dictionary<T1, T2>)prop.GetValue(docB)!;
+        var inserts = (Dictionary<T1, T2>)prop.GetValue(diff.Inserts)!;
 
         foreach (var (key, value) in dictB)
         {
@@ -38,17 +40,17 @@ public abstract class DocumentDiffer<T> : IDocumentDiffer<T>
         }
     }
 
-    protected void DiffDictionaryProperties<TKey, TValue>(IDocumentDiff<T> diff, IDocument<T> docA, IDocument<T> docB, string propertyName)
-        where TKey : notnull
-        where TValue : notnull
+    protected void DiffDictionaryProperties<T1, T2>(TDiff diff, TDocument docA, TDocument docB, string propertyName)
+        where T1 : notnull
+        where T2 : notnull
     {
         var prop = docA.GetType().GetProperty(propertyName)!;
-        var dictA = (Dictionary<TKey, TValue>)prop.GetValue(docA)!;
-        var dictB = (Dictionary<TKey, TValue>)prop.GetValue(docB)!;
-        var inserts = (Dictionary<TKey, TValue>)prop.GetValue(diff.Inserts)!;
-        var updates = (Dictionary<TKey, TValue>)prop.GetValue(diff.Updates)!;
-        var deletes = (Dictionary<TKey, TValue>)prop.GetValue(diff.Deletes)!;
-        var comparer = EqualityComparer<TValue>.Default;
+        var dictA = (Dictionary<T1, T2>)prop.GetValue(docA)!;
+        var dictB = (Dictionary<T1, T2>)prop.GetValue(docB)!;
+        var inserts = (Dictionary<T1, T2>)prop.GetValue(diff.Inserts)!;
+        var updates = (Dictionary<T1, T2>)prop.GetValue(diff.Updates)!;
+        var deletes = (Dictionary<T1, T2>)prop.GetValue(diff.Deletes)!;
+        var comparer = EqualityComparer<T2>.Default;
 
         foreach (var (key, valueA) in dictA)
         {

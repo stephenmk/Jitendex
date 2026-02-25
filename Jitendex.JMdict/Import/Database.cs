@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
+using Jitendex.Import;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.JMdict.Import.Models;
 using Jitendex.JMdict.Import.Tables;
@@ -28,6 +29,7 @@ using Jitendex.JMdict.Import.Tables.EntryElements.SenseElements;
 namespace Jitendex.JMdict.Import;
 
 internal sealed class Database(ILogger<Database> logger, JmdictContext context)
+    : IDocumentDatabase<DateOnly, Document, DocumentDiff>
 {
     private static readonly FileHeaderTable FileHeaderTable = new();
     private static readonly RevisionTable RevisionTable = new();
@@ -78,15 +80,25 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
     private static readonly KeywordTable<LanguageElement> LanguageTable = new();
     #endregion
 
+    public void EnsureCreated()
+        => context.Database.EnsureCreated();
+
+    public DateOnly GetLastKey()
+        => context.FileHeaders
+            .OrderByDescending(static x => x.Id)
+            .Take(1)
+            .Select(static x => x.Date)
+            .FirstOrDefault();
+
     public void Initialize(Document document)
     {
-        logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.Header.Date);
+        logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.ArchiveKey);
 
         context.RecreateDatabase();
 
         using var transaction = context.Database.BeginTransaction();
 
-        FileHeaderTable.InsertItem(context, document.Header);
+        FileHeaderTable.InsertItem(context, new(document.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
@@ -128,87 +140,87 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
 
     public void Update(DocumentDiff diff)
     {
-        logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", diff.SequenceIds.Count, diff.FileHeader.Date);
+        logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", diff.SequenceIds.Count, diff.ArchiveKey);
 
         using var transaction = context.Database.BeginTransaction();
 
         var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 
-        FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
+        FileHeaderTable.InsertItem(context, new(diff.Inserts.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
-        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences(fileHeaderId));
+        SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
 
-        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.ReadingInfoTags.Values);
-        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.KanjiFormInfoTags.Values);
-        PartOfSpeechTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.PartOfSpeechTags.Values);
-        FieldTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.FieldTags.Values);
-        MiscTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.MiscTags.Values);
-        DialectTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.DialectTags.Values);
-        GlossTypeTable.InsertOrIgnoreItems(context, diff.InsertDocument.GlossTypes.Values);
-        CrossReferenceTypeTable.InsertOrIgnoreItems(context, diff.InsertDocument.CrossReferenceTypes.Values);
-        LanguageSourceTypeTable.InsertOrIgnoreItems(context, diff.InsertDocument.LanguageSourceTypes.Values);
-        PriorityTagTable.InsertOrIgnoreItems(context, diff.InsertDocument.PriorityTags.Values);
-        LanguageTable.InsertOrIgnoreItems(context, diff.InsertDocument.Languages.Values);
+        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.ReadingInfoTags.Values);
+        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.KanjiFormInfoTags.Values);
+        PartOfSpeechTagTable.InsertOrIgnoreItems(context, diff.Inserts.PartOfSpeechTags.Values);
+        FieldTagTable.InsertOrIgnoreItems(context, diff.Inserts.FieldTags.Values);
+        MiscTagTable.InsertOrIgnoreItems(context, diff.Inserts.MiscTags.Values);
+        DialectTagTable.InsertOrIgnoreItems(context, diff.Inserts.DialectTags.Values);
+        GlossTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GlossTypes.Values);
+        CrossReferenceTypeTable.InsertOrIgnoreItems(context, diff.Inserts.CrossReferenceTypes.Values);
+        LanguageSourceTypeTable.InsertOrIgnoreItems(context, diff.Inserts.LanguageSourceTypes.Values);
+        PriorityTagTable.InsertOrIgnoreItems(context, diff.Inserts.PriorityTags.Values);
+        LanguageTable.InsertOrIgnoreItems(context, diff.Inserts.Languages.Values);
 
-        EntryTable.InsertItems(context, diff.InsertDocument.Entries.Values);
-        KanjiFormTable.InsertItems(context, diff.InsertDocument.KanjiForms.Values);
-        ReadingTable.InsertItems(context, diff.InsertDocument.Readings.Values);
-        SenseTable.InsertItems(context, diff.InsertDocument.Senses.Values);
-        KanjiFormInfoTable.InsertItems(context, diff.InsertDocument.KanjiFormInfos.Values);
-        KanjiFormPriorityTable.InsertItems(context, diff.InsertDocument.KanjiFormPriorities.Values);
-        ReadingInfoTable.InsertItems(context, diff.InsertDocument.ReadingInfos.Values);
-        ReadingPriorityTable.InsertItems(context, diff.InsertDocument.ReadingPriorities.Values);
-        RestrictionTable.InsertItems(context, diff.InsertDocument.Restrictions.Values);
-        CrossReferenceTable.InsertItems(context, diff.InsertDocument.CrossReferences.Values);
-        DialectTable.InsertItems(context, diff.InsertDocument.Dialects.Values);
-        FieldTable.InsertItems(context, diff.InsertDocument.Fields.Values);
-        GlossTable.InsertItems(context, diff.InsertDocument.Glosses.Values);
-        KanjiFormRestrictionTable.InsertItems(context, diff.InsertDocument.KanjiFormRestrictions.Values);
-        LanguageSourceTable.InsertItems(context, diff.InsertDocument.LanguageSources.Values);
-        MiscTable.InsertItems(context, diff.InsertDocument.Miscs.Values);
-        NoteTable.InsertItems(context, diff.InsertDocument.Notes.Values);
-        PartOfSpeechTable.InsertItems(context, diff.InsertDocument.PartsOfSpeech.Values);
-        ReadingRestrictionTable.InsertItems(context, diff.InsertDocument.ReadingRestrictions.Values);
+        EntryTable.InsertItems(context, diff.Inserts.Entries.Values);
+        KanjiFormTable.InsertItems(context, diff.Inserts.KanjiForms.Values);
+        ReadingTable.InsertItems(context, diff.Inserts.Readings.Values);
+        SenseTable.InsertItems(context, diff.Inserts.Senses.Values);
+        KanjiFormInfoTable.InsertItems(context, diff.Inserts.KanjiFormInfos.Values);
+        KanjiFormPriorityTable.InsertItems(context, diff.Inserts.KanjiFormPriorities.Values);
+        ReadingInfoTable.InsertItems(context, diff.Inserts.ReadingInfos.Values);
+        ReadingPriorityTable.InsertItems(context, diff.Inserts.ReadingPriorities.Values);
+        RestrictionTable.InsertItems(context, diff.Inserts.Restrictions.Values);
+        CrossReferenceTable.InsertItems(context, diff.Inserts.CrossReferences.Values);
+        DialectTable.InsertItems(context, diff.Inserts.Dialects.Values);
+        FieldTable.InsertItems(context, diff.Inserts.Fields.Values);
+        GlossTable.InsertItems(context, diff.Inserts.Glosses.Values);
+        KanjiFormRestrictionTable.InsertItems(context, diff.Inserts.KanjiFormRestrictions.Values);
+        LanguageSourceTable.InsertItems(context, diff.Inserts.LanguageSources.Values);
+        MiscTable.InsertItems(context, diff.Inserts.Miscs.Values);
+        NoteTable.InsertItems(context, diff.Inserts.Notes.Values);
+        PartOfSpeechTable.InsertItems(context, diff.Inserts.PartsOfSpeech.Values);
+        ReadingRestrictionTable.InsertItems(context, diff.Inserts.ReadingRestrictions.Values);
 
-        EntryTable.UpdateItems(context, diff.UpdateDocument.Entries.Values);
-        KanjiFormTable.UpdateItems(context, diff.UpdateDocument.KanjiForms.Values);
-        ReadingTable.UpdateItems(context, diff.UpdateDocument.Readings.Values);
-        SenseTable.UpdateItems(context, diff.UpdateDocument.Senses.Values);
-        KanjiFormInfoTable.UpdateItems(context, diff.UpdateDocument.KanjiFormInfos.Values);
-        KanjiFormPriorityTable.UpdateItems(context, diff.UpdateDocument.KanjiFormPriorities.Values);
-        ReadingInfoTable.UpdateItems(context, diff.UpdateDocument.ReadingInfos.Values);
-        ReadingPriorityTable.UpdateItems(context, diff.UpdateDocument.ReadingPriorities.Values);
-        RestrictionTable.UpdateItems(context, diff.UpdateDocument.Restrictions.Values);
-        CrossReferenceTable.UpdateItems(context, diff.UpdateDocument.CrossReferences.Values);
-        DialectTable.UpdateItems(context, diff.UpdateDocument.Dialects.Values);
-        FieldTable.UpdateItems(context, diff.UpdateDocument.Fields.Values);
-        GlossTable.UpdateItems(context, diff.UpdateDocument.Glosses.Values);
-        KanjiFormRestrictionTable.UpdateItems(context, diff.UpdateDocument.KanjiFormRestrictions.Values);
-        LanguageSourceTable.UpdateItems(context, diff.UpdateDocument.LanguageSources.Values);
-        MiscTable.UpdateItems(context, diff.UpdateDocument.Miscs.Values);
-        NoteTable.UpdateItems(context, diff.UpdateDocument.Notes.Values);
-        PartOfSpeechTable.UpdateItems(context, diff.UpdateDocument.PartsOfSpeech.Values);
-        ReadingRestrictionTable.UpdateItems(context, diff.UpdateDocument.ReadingRestrictions.Values);
+        EntryTable.UpdateItems(context, diff.Updates.Entries.Values);
+        KanjiFormTable.UpdateItems(context, diff.Updates.KanjiForms.Values);
+        ReadingTable.UpdateItems(context, diff.Updates.Readings.Values);
+        SenseTable.UpdateItems(context, diff.Updates.Senses.Values);
+        KanjiFormInfoTable.UpdateItems(context, diff.Updates.KanjiFormInfos.Values);
+        KanjiFormPriorityTable.UpdateItems(context, diff.Updates.KanjiFormPriorities.Values);
+        ReadingInfoTable.UpdateItems(context, diff.Updates.ReadingInfos.Values);
+        ReadingPriorityTable.UpdateItems(context, diff.Updates.ReadingPriorities.Values);
+        RestrictionTable.UpdateItems(context, diff.Updates.Restrictions.Values);
+        CrossReferenceTable.UpdateItems(context, diff.Updates.CrossReferences.Values);
+        DialectTable.UpdateItems(context, diff.Updates.Dialects.Values);
+        FieldTable.UpdateItems(context, diff.Updates.Fields.Values);
+        GlossTable.UpdateItems(context, diff.Updates.Glosses.Values);
+        KanjiFormRestrictionTable.UpdateItems(context, diff.Updates.KanjiFormRestrictions.Values);
+        LanguageSourceTable.UpdateItems(context, diff.Updates.LanguageSources.Values);
+        MiscTable.UpdateItems(context, diff.Updates.Miscs.Values);
+        NoteTable.UpdateItems(context, diff.Updates.Notes.Values);
+        PartOfSpeechTable.UpdateItems(context, diff.Updates.PartsOfSpeech.Values);
+        ReadingRestrictionTable.UpdateItems(context, diff.Updates.ReadingRestrictions.Values);
 
-        ReadingRestrictionTable.DeleteItems(context, diff.DeleteDocument.ReadingRestrictions.Values);
-        PartOfSpeechTable.DeleteItems(context, diff.DeleteDocument.PartsOfSpeech.Values);
-        NoteTable.DeleteItems(context, diff.DeleteDocument.Notes.Values);
-        MiscTable.DeleteItems(context, diff.DeleteDocument.Miscs.Values);
-        LanguageSourceTable.DeleteItems(context, diff.DeleteDocument.LanguageSources.Values);
-        KanjiFormRestrictionTable.DeleteItems(context, diff.DeleteDocument.KanjiFormRestrictions.Values);
-        GlossTable.DeleteItems(context, diff.DeleteDocument.Glosses.Values);
-        FieldTable.DeleteItems(context, diff.DeleteDocument.Fields.Values);
-        DialectTable.DeleteItems(context, diff.DeleteDocument.Dialects.Values);
-        CrossReferenceTable.DeleteItems(context, diff.DeleteDocument.CrossReferences.Values);
-        RestrictionTable.DeleteItems(context, diff.DeleteDocument.Restrictions.Values);
-        ReadingPriorityTable.DeleteItems(context, diff.DeleteDocument.ReadingPriorities.Values);
-        ReadingInfoTable.DeleteItems(context, diff.DeleteDocument.ReadingInfos.Values);
-        KanjiFormPriorityTable.DeleteItems(context, diff.DeleteDocument.KanjiFormPriorities.Values);
-        KanjiFormInfoTable.DeleteItems(context, diff.DeleteDocument.KanjiFormInfos.Values);
-        SenseTable.DeleteItems(context, diff.DeleteDocument.Senses.Values);
-        ReadingTable.DeleteItems(context, diff.DeleteDocument.Readings.Values);
-        KanjiFormTable.DeleteItems(context, diff.DeleteDocument.KanjiForms.Values);
-        EntryTable.DeleteItems(context, diff.DeleteDocument.Entries.Values);
+        ReadingRestrictionTable.DeleteItems(context, diff.Deletes.ReadingRestrictions.Values);
+        PartOfSpeechTable.DeleteItems(context, diff.Deletes.PartsOfSpeech.Values);
+        NoteTable.DeleteItems(context, diff.Deletes.Notes.Values);
+        MiscTable.DeleteItems(context, diff.Deletes.Miscs.Values);
+        LanguageSourceTable.DeleteItems(context, diff.Deletes.LanguageSources.Values);
+        KanjiFormRestrictionTable.DeleteItems(context, diff.Deletes.KanjiFormRestrictions.Values);
+        GlossTable.DeleteItems(context, diff.Deletes.Glosses.Values);
+        FieldTable.DeleteItems(context, diff.Deletes.Fields.Values);
+        DialectTable.DeleteItems(context, diff.Deletes.Dialects.Values);
+        CrossReferenceTable.DeleteItems(context, diff.Deletes.CrossReferences.Values);
+        RestrictionTable.DeleteItems(context, diff.Deletes.Restrictions.Values);
+        ReadingPriorityTable.DeleteItems(context, diff.Deletes.ReadingPriorities.Values);
+        ReadingInfoTable.DeleteItems(context, diff.Deletes.ReadingInfos.Values);
+        KanjiFormPriorityTable.DeleteItems(context, diff.Deletes.KanjiFormPriorities.Values);
+        KanjiFormInfoTable.DeleteItems(context, diff.Deletes.KanjiFormInfos.Values);
+        SenseTable.DeleteItems(context, diff.Deletes.Senses.Values);
+        ReadingTable.DeleteItems(context, diff.Deletes.Readings.Values);
+        KanjiFormTable.DeleteItems(context, diff.Deletes.KanjiForms.Values);
+        EntryTable.DeleteItems(context, diff.Deletes.Entries.Values);
 
         var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
 

@@ -38,7 +38,7 @@ internal partial class DocumentReader
 
         var document = new Document
         {
-            Header = new(fileDate)
+            ArchiveKey = fileDate
         };
 
         await docTypeReader.ReadAsync(xmlReader, document);

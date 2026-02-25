@@ -73,17 +73,11 @@ internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger
 
     private string GetReadingTypeName(XmlReader xmlReader, Document document, ReadingMeaningElement readingMeaning)
     {
-        var attribute = xmlReader.GetAttribute(XmlAttributeName.ReadingType);
+        var typeName = xmlReader.GetAttribute(XmlAttributeName.ReadingType) ?? string.Empty;
 
-        string typeName;
-        if (string.IsNullOrWhiteSpace(attribute))
+        if (string.IsNullOrWhiteSpace(typeName))
         {
             LogMissingTypeName(readingMeaning.ToRune());
-            typeName = string.Empty;
-        }
-        else
-        {
-            typeName = attribute;
         }
 
         document.ReadingTypes.Add(typeName);

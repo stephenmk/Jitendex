@@ -69,16 +69,11 @@ internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger
 
     private string GetTypeName(XmlReader xmlReader, Document document, QueryCodeGroupElement group)
     {
-        string typeName;
-        var attribute = xmlReader.GetAttribute(XmlAttributeName.QueryCodeType);
-        if (string.IsNullOrWhiteSpace(attribute))
+        var typeName = xmlReader.GetAttribute(XmlAttributeName.QueryCodeType) ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(typeName))
         {
             LogMissingTypeName(group.ToRune());
-            typeName = string.Empty;
-        }
-        else
-        {
-            typeName = attribute;
         }
 
         document.QueryCodeTypes.Add(typeName);
@@ -89,6 +84,7 @@ internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger
     private string? GetMisclassification(XmlReader xmlReader, Document document)
     {
         var typeName = xmlReader.GetAttribute(XmlAttributeName.MisclassificationType);
+
         if (string.IsNullOrWhiteSpace(typeName))
         {
             return null;

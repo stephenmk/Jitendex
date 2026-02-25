@@ -70,17 +70,11 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
 
     private string GetTypeName(XmlReader xmlReader, Document document, DictionaryGroupElement group)
     {
-        string typeName;
-        var attribute = xmlReader.GetAttribute(XmlAttributeName.DictionaryType);
+        var typeName = xmlReader.GetAttribute(XmlAttributeName.DictionaryType) ?? string.Empty;
 
-        if (string.IsNullOrWhiteSpace(attribute))
+        if (string.IsNullOrWhiteSpace(typeName))
         {
             LogMissingTypeName(group.ToRune());
-            typeName = string.Empty;
-        }
-        else
-        {
-            typeName = attribute;
         }
 
         document.DictionaryTypes.Add(typeName);

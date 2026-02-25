@@ -68,17 +68,12 @@ internal partial class CodepointGroupReader(ILogger<CodepointGroupReader> logger
 
     private string GetTypeName(XmlReader xmlReader, Document document, CodepointGroupElement group)
     {
-        string typeName;
-        var attribute = xmlReader.GetAttribute(XmlAttributeName.CodepointType);
 
-        if (string.IsNullOrWhiteSpace(attribute))
+        var typeName = xmlReader.GetAttribute(XmlAttributeName.CodepointType) ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(typeName))
         {
             LogMissingTypeName(group.ToRune());
-            typeName = string.Empty;
-        }
-        else
-        {
-            typeName = attribute;
         }
 
         document.CodepointTypes.Add(typeName);

@@ -110,16 +110,13 @@ internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger)
     private async Task ReadStrokeCount(XmlReader xmlReader, Document document, MiscGroupElement group)
     {
         var text = await xmlReader.ReadElementContentAsStringAsync();
-        int value;
-        if (int.TryParse(text, out int x))
-        {
-            value = x;
-        }
-        else
+
+        if (!int.TryParse(text, out int value))
         {
             LogNonNumeric(group.ToRune(), XmlTagName.StrokeCount, text);
             return;
         }
+
         var strokeCount = new StrokeCountElement
         (
             EntryId: group.EntryId,
@@ -127,6 +124,7 @@ internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger)
             Order: document.StrokeCounts.NextOrder(group.Key()),
             Value: value
         );
+
         document.StrokeCounts.Add(strokeCount.Key(), strokeCount);
     }
 
@@ -145,17 +143,11 @@ internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger)
 
     private string GetVariantTypeName(XmlReader xmlReader, Document document, MiscGroupElement group)
     {
-        string typeName;
-        var attribute = xmlReader.GetAttribute(XmlAttributeName.VariantType);
+        var typeName = xmlReader.GetAttribute(XmlAttributeName.VariantType) ?? string.Empty;
 
-        if (string.IsNullOrWhiteSpace(attribute))
+        if (string.IsNullOrWhiteSpace(typeName))
         {
             LogMissingTypeName(group.ToRune());
-            typeName = string.Empty;
-        }
-        else
-        {
-            typeName = attribute;
         }
 
         document.VariantTypes.Add(typeName);

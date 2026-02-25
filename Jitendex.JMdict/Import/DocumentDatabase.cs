@@ -28,7 +28,7 @@ using Jitendex.JMdict.Import.Tables.EntryElements.SenseElements;
 
 namespace Jitendex.JMdict.Import;
 
-internal sealed class Database(ILogger<Database> logger, JmdictContext context)
+internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JmdictContext context)
     : IDocumentDatabase<DateOnly, Document, DocumentDiff>
 {
     private static readonly FileHeaderTable FileHeaderTable = new();
@@ -83,11 +83,11 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
     public void EnsureCreated()
         => context.Database.EnsureCreated();
 
-    public DateOnly GetLastKey()
+    public DateOnly? GetLastKey()
         => context.FileHeaders
             .OrderByDescending(static x => x.Id)
             .Take(1)
-            .Select(static x => x.Date)
+            .Select(static x => (DateOnly?)x.Date)
             .FirstOrDefault();
 
     public void Initialize(Document document)
@@ -140,11 +140,13 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
 
     public void Update(DocumentDiff diff)
     {
-        logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", diff.SequenceIds.Count, diff.ArchiveKey);
+        var sequenceIds = diff.SequenceIds();
+
+        logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", sequenceIds.Count, diff.ArchiveKey);
 
         using var transaction = context.Database.BeginTransaction();
 
-        var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
+        var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
 
         FileHeaderTable.InsertItem(context, new(diff.Inserts.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
@@ -222,10 +224,10 @@ internal sealed class Database(ILogger<Database> logger, JmdictContext context)
         KanjiFormTable.DeleteItems(context, diff.Deletes.KanjiForms.Values);
         EntryTable.DeleteItems(context, diff.Deletes.Entries.Values);
 
-        var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
+        var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
 
         var sequences = context.Sequences
-            .Where(seq => diff.SequenceIds.Contains(seq.Id))
+            .Where(seq => sequenceIds.Contains(seq.Id))
             .Select(seq => new
             {
                 seq.Id,

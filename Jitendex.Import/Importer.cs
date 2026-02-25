@@ -25,6 +25,7 @@ public sealed class Importer<TKey, TDocument, TDiff>
     IDocumentDiffer<TKey, TDocument, TDiff> differ,
     IDocumentDatabase<TKey, TDocument, TDiff> database
 )
+    where TKey : struct
     where TDocument : IDocument<TKey>
     where TDiff : IDocumentDiff<TKey, TDocument>
 {

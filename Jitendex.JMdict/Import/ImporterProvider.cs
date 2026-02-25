@@ -31,19 +31,19 @@ namespace Jitendex.JMdict.Import;
 
 internal static class ImporterProvider
 {
-    public static Importer GetImporter(DirectoryInfo? archiveDirectory)
+    public static Importer<DateOnly, Document, DocumentDiff> GetImporter(DirectoryInfo? archiveDirectory)
         => new ServiceCollection()
-        .AddTransient<Importer>()
 
-        // File archive
-        .AddEdrdgArchiveService(DictionaryFile.JMdict_e_examp, archiveDirectory)
-
-        // Databases
+        // Database context
         .AddDbContext<JmdictContext>()
-        .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, Database>()
+
+        // Import interfaces
+        .AddEdrdgArchiveService(DictionaryFile.JMdict_e_examp, archiveDirectory)
+        .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
+        .AddTransient<IDocumentDiffer<DateOnly, Document, DocumentDiff>, DocumentDiffer>()
+        .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, DocumentDatabase>()
 
         // Top-level readers.
-        .AddTransient<DocumentReader>()
         .AddTransient<DocumentTypeReader>()
         .AddTransient<EntriesReader>()
         .AddTransient<EntryReader>()
@@ -83,7 +83,8 @@ internal static class ImporterProvider
                 options.TimestampFormat = "HH:mm:ss ";
             }))
 
-        // Build and return the Jmdict service.
+        // Build and return the importer service.
+        .AddTransient<Importer<DateOnly, Document, DocumentDiff>>()
         .BuildServiceProvider()
-        .GetRequiredService<Importer>();
+        .GetRequiredService<Importer<DateOnly, Document, DocumentDiff>>();
 }

@@ -95,7 +95,7 @@ internal partial class RadicalGroupReader(ILogger<RadicalGroupReader> logger) : 
         }
         if (!document.RadicalTypes.ContainsKey(typeName))
         {
-            var type = new RadicalTypeElement(typeName, document.Header.Date);
+            var type = new RadicalTypeElement(typeName, document.ArchiveKey);
             document.RadicalTypes.Add(typeName, type);
         }
         return typeName;

@@ -20,6 +20,7 @@ namespace Jitendex.Kanjidic2.Import.Parsing;
 
 internal static class XmlTagName
 {
+    public const string Kanjidic2 = "kanjidic2";
     public const string Entry = "character";
     public const string EntryCharacter = "literal";
 

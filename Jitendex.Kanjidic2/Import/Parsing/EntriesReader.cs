@@ -48,6 +48,12 @@ internal partial class EntriesReader(ILogger<EntriesReader> logger, EntryReader 
             case XmlTagName.Entry:
                 await entryReader.ReadAsync(xmlReader, document);
                 break;
+            case XmlTagName.Header:
+                await xmlReader.SkipAsync();
+                break;
+            case XmlTagName.Kanjidic2:
+                // Nothing to do
+                break;
             default:
                 LogUnexpectedElement(xmlReader.Name);
                 break;

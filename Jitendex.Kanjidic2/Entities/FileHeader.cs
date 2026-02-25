@@ -28,8 +28,6 @@ public sealed class FileHeader
 {
     [Key]
     public required int Id { get; init; }
-    public required string DatabaseVersion { get; set; }
-    public required string FileVersion { get; set; }
     public required DateOnly Date { get; set; }
 
     [InverseProperty(nameof(Sequence.OriginFile))]

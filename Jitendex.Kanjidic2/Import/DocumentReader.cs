@@ -18,11 +18,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.IO.Compression;
 using System.Xml;
+using Jitendex.Import;
 using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing;
 
-internal partial class Kanjidic2Reader(HeaderReader headerReader, EntriesReader entriesReader)
+internal partial class DocumentReader(EntriesReader entriesReader) : IDocumentReader<DateOnly, Document>
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
     {
@@ -32,10 +33,8 @@ internal partial class Kanjidic2Reader(HeaderReader headerReader, EntriesReader 
 
         var document = new Document
         {
-            Header = await headerReader.ReadAsync(xmlReader)
+            ArchiveKey = fileDate
         };
-
-        // TODO: Compare fileDate to header date
 
         await entriesReader.ReadAsync(xmlReader, document);
 

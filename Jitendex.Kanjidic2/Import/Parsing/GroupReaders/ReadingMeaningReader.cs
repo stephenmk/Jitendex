@@ -100,7 +100,7 @@ internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger
         }
         if (!document.ReadingTypes.ContainsKey(typeName))
         {
-            var type = new ReadingTypeElement(typeName, document.Header.Date);
+            var type = new ReadingTypeElement(typeName, document.ArchiveKey);
             document.ReadingTypes.Add(typeName, type);
         }
         return typeName;

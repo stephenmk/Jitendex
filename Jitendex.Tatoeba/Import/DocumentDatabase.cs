@@ -63,6 +63,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
         TokenTable.InsertItems(context, document.Tokens.Values);
 
         transaction.Commit();
+        context.ExecuteVacuum();
     }
 
     public void Update(DocumentDiff diff)

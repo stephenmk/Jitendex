@@ -20,12 +20,9 @@ using Jitendex.Import;
 
 namespace Jitendex.Kanjidic2.Import.Models;
 
-internal sealed record DocumentSequence(int Id, int FileHeaderId);
-internal sealed record DocumentRevision(int SequenceId, int Number, int FileHeaderId, string DiffJson);
-
-internal sealed class Document
+internal sealed class Document : IDocument<DateOnly>
 {
-    public required DocumentHeader Header { get; init; }
+    public required DateOnly ArchiveKey { get; init; }
     public Dictionary<int, EntryElement> Entries { get; init; }
 
     #region Keywords

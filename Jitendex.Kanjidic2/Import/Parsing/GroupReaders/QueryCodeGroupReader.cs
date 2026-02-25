@@ -96,7 +96,7 @@ internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger
         }
         if (!document.QueryCodeTypes.ContainsKey(typeName))
         {
-            var type = new QueryCodeTypeElement(typeName, document.Header.Date);
+            var type = new QueryCodeTypeElement(typeName, document.ArchiveKey);
             document.QueryCodeTypes.Add(typeName, type);
         }
         return typeName;
@@ -111,7 +111,7 @@ internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger
         }
         if (!document.MisclassificationTypes.ContainsKey(typeName))
         {
-            var type = new MisclassificationTypeElement(typeName, document.Header.Date);
+            var type = new MisclassificationTypeElement(typeName, document.ArchiveKey);
             document.MisclassificationTypes.Add(typeName, type);
         }
         return typeName;

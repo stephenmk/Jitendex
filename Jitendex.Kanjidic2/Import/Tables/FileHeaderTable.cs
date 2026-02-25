@@ -29,8 +29,6 @@ internal sealed class FileHeaderTable : Table<DocumentHeader>
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(FileHeader.DatabaseVersion),
-        nameof(FileHeader.FileVersion),
         nameof(FileHeader.Date),
     ];
 
@@ -39,8 +37,6 @@ internal sealed class FileHeaderTable : Table<DocumentHeader>
 
     protected override SqliteParameter[] Parameters(DocumentHeader header) =>
     [
-        new("@0", header.DatabaseVersion),
-        new("@1", header.FileVersion),
-        new("@2", header.Date),
+        new("@0", header.Date),
     ];
 }

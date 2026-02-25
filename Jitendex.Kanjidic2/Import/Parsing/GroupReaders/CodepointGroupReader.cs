@@ -97,7 +97,7 @@ internal partial class CodepointGroupReader(ILogger<CodepointGroupReader> logger
 
         if (!document.CodepointTypes.ContainsKey(typeName))
         {
-            var type = new CodepointTypeElement(typeName, document.Header.Date);
+            var type = new CodepointTypeElement(typeName, document.ArchiveKey);
             document.CodepointTypes.Add(typeName, type);
         }
 

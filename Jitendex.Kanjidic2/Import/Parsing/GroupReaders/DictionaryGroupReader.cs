@@ -100,7 +100,7 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
 
         if (!document.DictionaryTypes.ContainsKey(typeName))
         {
-            var type = new DictionaryTypeElement(typeName, document.Header.Date);
+            var type = new DictionaryTypeElement(typeName, document.ArchiveKey);
             document.DictionaryTypes.Add(typeName, type);
         }
 

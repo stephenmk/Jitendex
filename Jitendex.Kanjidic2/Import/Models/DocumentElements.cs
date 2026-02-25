@@ -18,9 +18,21 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Kanjidic2.Import.Models;
 
+internal sealed record DocumentSequence
+(
+    int Id,
+    int FileHeaderId
+);
+
+internal sealed record DocumentRevision
+(
+    int SequenceId,
+    int Number,
+    int FileHeaderId,
+    string DiffJson
+);
+
 internal sealed record DocumentHeader
-{
-    public required string DatabaseVersion { get; set; }
-    public required string FileVersion { get; set; }
-    public required DateOnly Date { get; set; }
-}
+(
+    DateOnly Date
+);

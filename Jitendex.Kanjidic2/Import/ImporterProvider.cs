@@ -18,9 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-
 using Jitendex.EdrdgDictionaryArchive;
+using Jitendex.Import;
 using Jitendex.Kanjidic2.Import.Analysis;
+using Jitendex.Kanjidic2.Import.Models;
 using Jitendex.Kanjidic2.Import.Parsing;
 using Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
@@ -28,19 +29,19 @@ namespace Jitendex.Kanjidic2.Import;
 
 internal static class ImporterProvider
 {
-    public static Importer GetImporter(DirectoryInfo? archiveDirectory) => new ServiceCollection()
-        .AddTransient<Importer>()
+    public static Importer GetImporter(DirectoryInfo? archiveDirectory)
+        => new ServiceCollection()
+
+        // Database context
+        .AddDbContext<Kanjidic2Context>()
 
         // File archive
         .AddEdrdgArchiveService(DictionaryFile.kanjidic2, archiveDirectory)
-
-        // Database
-        .AddDbContext<Kanjidic2Context>()
-        .AddTransient<Database>()
+        .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
+        .AddTransient<IDocumentDiffer<DateOnly, Document, DocumentDiff>, DocumentDiffer>()
+        .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, DocumentDatabase>()
 
         // Top-level readers.
-        .AddTransient<Kanjidic2Reader>()
-        .AddTransient<HeaderReader>()
         .AddTransient<EntriesReader>()
         .AddTransient<EntryReader>()
 
@@ -68,7 +69,8 @@ internal static class ImporterProvider
                 options.TimestampFormat = "HH:mm:ss ";
             }))
 
-        // Build and return the Kanjidic2 service.
+        // Build and return the importer service.
+        .AddTransient<Importer>()
         .BuildServiceProvider()
         .GetRequiredService<Importer>();
 }

@@ -16,36 +16,32 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
 using Jitendex.Import;
 using Jitendex.Kanjidic2.Import.Analysis;
 using Jitendex.Kanjidic2.Import.Models;
-using Jitendex.Kanjidic2.Import.Parsing;
 
 namespace Jitendex.Kanjidic2.Import;
 
 internal sealed class Importer
 (
-    ILogger<Importer> logger,
     IFileArchive<DateOnly> fileArchive,
+    IDocumentReader<DateOnly, Document> reader,
+    IDocumentDiffer<DateOnly, Document, DocumentDiff> differ,
+    IDocumentDatabase<DateOnly, Document, DocumentDiff> database,
     Kanjidic2Context context,
-    Kanjidic2Reader reader,
-    Database database,
     Analyzer analyzer
 )
 {
     public async Task ImportAsync()
     {
-        context.Database.EnsureCreated();
-        var previousDate = GetPreviousDate();
+        database.EnsureCreated();
 
-        var previousDocument = previousDate == default
-            ? await InitializeDatabaseAsync()
-            : await GetPreviousDocumentAsync(previousDate);
+        var previousDocument = database.GetLastKey() is DateOnly lastKey
+            ? await GetPreviousDocumentAsync(lastKey)
+            : await InitializeDatabaseAsync();
 
         if (previousDocument is null)
         {
-            logger.LogWarning("Unable to retrieve previous document");
             return;
         }
 
@@ -58,19 +54,12 @@ internal sealed class Importer
         transaction.Commit();
     }
 
-    private DateOnly GetPreviousDate() => context.FileHeaders
-        .OrderByDescending(static x => x.Id)
-        .Take(1)
-        .Select(static x => x.Date)
-        .FirstOrDefault();
-
     private async Task<Document?> InitializeDatabaseAsync()
     {
         if (fileArchive.GetEarliestFile() is (FileInfo file, DateOnly date))
         {
             var document = await reader.ReadAsync(file, date);
             database.Initialize(document);
-            context.ExecuteVacuum();
             return document;
         }
         else
@@ -91,14 +80,14 @@ internal sealed class Importer
         }
     }
 
-    private async Task UpdateDatabaseAsync(Document previousDocument)
+    private async Task UpdateDatabaseAsync(Document previousDoc)
     {
-        while (fileArchive.GetNextFile(previousDocument.Header.Date) is (FileInfo nextFile, DateOnly nextDate))
+        while (fileArchive.GetNextFile(previousDoc.ArchiveKey) is (FileInfo nextFile, DateOnly nextDate))
         {
-            var nextDocument = await reader.ReadAsync(nextFile, nextDate);
-            var diff = new DocumentDiff(previousDocument, nextDocument);
+            var nextDoc = await reader.ReadAsync(nextFile, nextDate);
+            var diff = differ.Diff(previousDoc, nextDoc);
             database.Update(diff);
-            previousDocument = nextDocument;
+            previousDoc = nextDoc;
         }
     }
 }

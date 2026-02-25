@@ -174,7 +174,7 @@ internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger) : BaseRe
 
         if (!document.VariantTypes.ContainsKey(typeName))
         {
-            var type = new VariantTypeElement(typeName, document.Header.Date);
+            var type = new VariantTypeElement(typeName, document.ArchiveKey);
             document.VariantTypes.Add(typeName, type);
         }
 

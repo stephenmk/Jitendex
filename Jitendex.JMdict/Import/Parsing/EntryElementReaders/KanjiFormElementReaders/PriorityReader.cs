@@ -23,7 +23,7 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.KanjiFormElementReaders;
 
-internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : BaseReader(logger)
+internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormElement kanjiForm)
     {

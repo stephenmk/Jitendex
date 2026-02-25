@@ -29,9 +29,9 @@ internal partial class DocumentReader
 (
     ILogger<DocumentReader> logger,
     DocumentTypeReader docTypeReader,
-    EntriesReader entriesReader
+    EntryReader entryReader
 ) :
-    BaseReader(logger),
+    XmlParentElementReader<Document, byte>(logger),
     IDocumentReader<DateOnly, Document>
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
@@ -46,33 +46,23 @@ internal partial class DocumentReader
         };
 
         await docTypeReader.ReadAsync(xmlReader, document);
-
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.Root);
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, 0, XmlTagName.Jmdict);
 
         return document;
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, byte _)
     {
         switch (xmlReader.Name)
         {
+            case XmlTagName.Entry:
+                await entryReader.ReadAsync(xmlReader, document);
+                break;
             case XmlTagName.Jmdict:
-                await entriesReader.ReadAsync(xmlReader, document);
+                // Nothing to do.
                 break;
             default:
-                LogUnexpectedChildElement(xmlReader, XmlTagName.Root);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.Jmdict);
                 break;
         }
     }

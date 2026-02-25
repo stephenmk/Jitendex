@@ -29,7 +29,7 @@ internal partial class KanjiFormReader
     ILogger<KanjiFormReader> logger,
     KInfoReader infoReader,
     KPriorityReader priorityReader
-) : BaseReader(logger)
+) : XmlParentElementReader<Document, KanjiFormElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -40,22 +40,7 @@ internal partial class KanjiFormReader
             Text = null!,
         };
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, kanjiForm);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.KanjiForm);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = IsClosingTag(xmlReader, XmlTagName.KanjiForm);
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, kanjiForm, XmlTagName.KanjiForm);
 
         if (kanjiForm.Text is not null)
         {
@@ -67,7 +52,7 @@ internal partial class KanjiFormReader
         }
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, KanjiFormElement kanjiForm)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, KanjiFormElement kanjiForm)
     {
         switch (xmlReader.Name)
         {

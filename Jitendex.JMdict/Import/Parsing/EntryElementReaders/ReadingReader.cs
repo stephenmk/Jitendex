@@ -30,7 +30,7 @@ internal partial class ReadingReader
     RestrictionReader restrictionReader,
     RInfoReader infoReader,
     RPriorityReader priorityReader
-) : BaseReader(logger)
+) : XmlParentElementReader<Document, ReadingElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -42,22 +42,7 @@ internal partial class ReadingReader
             NoKanji = false,
         };
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, reading);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.Reading);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = IsClosingTag(xmlReader, XmlTagName.Reading);
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, reading, XmlTagName.Reading);
 
         if (reading.Text is not null)
         {
@@ -69,7 +54,7 @@ internal partial class ReadingReader
         }
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ReadingElement reading)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ReadingElement reading)
     {
         switch (xmlReader.Name)
         {

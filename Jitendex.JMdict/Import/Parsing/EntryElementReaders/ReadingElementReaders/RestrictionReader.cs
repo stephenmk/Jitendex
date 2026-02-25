@@ -23,7 +23,7 @@ using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing.EntryElementReaders.ReadingElementReaders;
 
-internal sealed class RestrictionReader(ILogger<RestrictionReader> logger) : BaseReader(logger)
+internal sealed class RestrictionReader(ILogger<RestrictionReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingElement reading)
     {

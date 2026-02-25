@@ -45,7 +45,6 @@ internal static class ImporterProvider
 
         // Top-level readers.
         .AddTransient<DocumentTypeReader>()
-        .AddTransient<EntriesReader>()
         .AddTransient<EntryReader>()
 
         // Entry element readers.

@@ -19,11 +19,12 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using Jitendex.Import;
 using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Parsing;
 
-internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : BaseReader(logger)
+internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {
@@ -41,7 +42,8 @@ internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : 
                     LogUnexpectedChildElement(xmlReader, XmlTagName.Root);
                     break;
                 case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.Root);
+                    var text = await xmlReader.GetValueAsync();
+                    LogUnexpectedTextNode(XmlTagName.Root, text);
                     break;
             }
         }
@@ -71,4 +73,8 @@ internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : 
     [LoggerMessage(LogLevel.Warning,
     "Keyword description `{Description}` corresponds to multiple keyword names in the Jmdict DTD")]
     partial void LogMultipleDescriptions(string description);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Unexpected XML text node found before DTD: <{TagName}>: `{Text}`")]
+    partial void LogUnexpectedTextNode(string tagName, string text);
 }

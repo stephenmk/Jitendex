@@ -29,20 +29,20 @@ internal sealed record EntryElement
     };
 }
 
-internal interface IEntryElement
+internal interface IEntryChildElement
 {
     public int EntryId { get; init; }
     public int Order { get; init; }
 }
 
-internal sealed record KanjiFormElement : IEntryElement
+internal sealed record KanjiFormElement : IEntryChildElement
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
     public required string Text { get; set; }
 }
 
-internal sealed record ReadingElement : IEntryElement
+internal sealed record ReadingElement : IEntryChildElement
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
@@ -50,14 +50,14 @@ internal sealed record ReadingElement : IEntryElement
     public required bool NoKanji { get; set; }
 }
 
-internal sealed record SenseElement : IEntryElement
+internal sealed record SenseElement : IEntryChildElement
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
 }
 
-internal static class EntryElementExtensions
+internal static class EntryChildElementExtensions
 {
-    public static (int, int) Key(this IEntryElement element)
+    public static (int, int) Key(this IEntryChildElement element)
         => (element.EntryId, element.Order);
 }

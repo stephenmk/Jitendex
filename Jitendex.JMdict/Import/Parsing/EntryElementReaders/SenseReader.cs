@@ -37,7 +37,7 @@ internal partial class SenseReader
     MiscReader miscReader,
     NoteReader noteReader,
     PartOfSpeechReader partOfSpeechReader
-) : BaseReader(logger)
+) : XmlParentElementReader<Document, SenseElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -47,27 +47,12 @@ internal partial class SenseReader
             Order = document.Senses.NextOrder(entry.Id),
         };
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, sense);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, XmlTagName.Sense);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = IsClosingTag(xmlReader, XmlTagName.Sense);
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, sense, XmlTagName.Sense);
 
         document.Senses.Add(sense.Key(), sense);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, SenseElement sense)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
         switch (xmlReader.Name)
         {

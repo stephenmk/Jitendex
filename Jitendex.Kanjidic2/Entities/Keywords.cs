@@ -26,7 +26,8 @@ namespace Jitendex.Kanjidic2.Entities;
 public interface IKeyword
 {
     string Name { get; init; }
-    DateOnly CreatedDate { get; init; }
+    int OriginFileId { get; init; }
+    FileHeader OriginFile { get; init; }
 }
 
 [Table(nameof(CodepointType))]
@@ -34,7 +35,12 @@ public sealed class CodepointType : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(Codepoint.Type))]
     public List<Codepoint> Codepoints { get; init; } = [];
 }
 
@@ -43,7 +49,12 @@ public sealed class DictionaryType : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(Dictionary.Type))]
     public List<Dictionary> Dictionaries { get; init; } = [];
 }
 
@@ -52,7 +63,12 @@ public sealed class QueryCodeType : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(QueryCode.Type))]
     public List<QueryCode> QueryCodes { get; init; } = [];
 }
 
@@ -61,7 +77,12 @@ public sealed class MisclassificationType : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(QueryCode.MisclassificationType))]
     public List<QueryCode> QueryCodes { get; init; } = [];
 }
 
@@ -70,7 +91,12 @@ public sealed class RadicalType : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(Radical.Type))]
     public List<Radical> Radicals { get; init; } = [];
 }
 
@@ -79,7 +105,12 @@ public sealed class ReadingType : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(Reading.Type))]
     public List<Reading> Readings { get; init; } = [];
 }
 
@@ -88,6 +119,11 @@ public sealed class VariantType : IKeyword
 {
     [Key]
     public required string Name { get; init; }
-    public required DateOnly CreatedDate { get; init; }
+    public required int OriginFileId { get; init; }
+
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(Variant.Type))]
     public List<Variant> Variants { get; init; } = [];
 }

@@ -20,6 +20,12 @@ using System.Text;
 
 namespace Jitendex.Kanjidic2.Import.Models;
 
+internal sealed record EntryElement
+{
+    public required int Id { get; set; }
+    public Rune ToRune() => new(Id);
+}
+
 internal interface IGroup
 {
     int EntryId { get; init; }

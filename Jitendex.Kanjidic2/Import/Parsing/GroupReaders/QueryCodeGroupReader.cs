@@ -24,7 +24,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger) : BaseReader(logger)
+internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger)
+    : XmlParentElementReader<Document, QueryCodeGroupElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -34,27 +35,12 @@ internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger
             Order: document.QueryCodeGroups.NextOrder(entry.Id)
         );
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, group);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, entry.Id, XmlTagName.QueryCodeGroup);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == XmlTagName.QueryCodeGroup;
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, group, XmlTagName.QueryCodeGroup);
 
         document.QueryCodeGroups.Add(group.Key(), group);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, QueryCodeGroupElement group)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, QueryCodeGroupElement group)
     {
         switch (xmlReader.Name)
         {
@@ -62,7 +48,7 @@ internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger
                 await ReadQueryCode(xmlReader, document, group);
                 break;
             default:
-                LogUnexpectedChildElement(group.ToRune(), xmlReader.Name, XmlTagName.QueryCodeGroup);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.QueryCodeGroup);
                 break;
         }
     }
@@ -94,11 +80,9 @@ internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger
         {
             typeName = attribute;
         }
-        if (!document.QueryCodeTypes.ContainsKey(typeName))
-        {
-            var type = new QueryCodeTypeElement(typeName, document.ArchiveKey);
-            document.QueryCodeTypes.Add(typeName, type);
-        }
+
+        document.QueryCodeTypes.Add(typeName);
+
         return typeName;
     }
 
@@ -109,11 +93,9 @@ internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger
         {
             return null;
         }
-        if (!document.MisclassificationTypes.ContainsKey(typeName))
-        {
-            var type = new MisclassificationTypeElement(typeName, document.ArchiveKey);
-            document.MisclassificationTypes.Add(typeName, type);
-        }
+
+        document.MisclassificationTypes.Add(typeName);
+
         return typeName;
     }
 

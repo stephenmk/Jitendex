@@ -74,11 +74,12 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Kanjidi
     public void EnsureCreated()
         => context.Database.EnsureCreated();
 
-    public DateOnly? GetLastKey() => context.FileHeaders
-        .OrderByDescending(static x => x.Id)
-        .Take(1)
-        .Select(static x => (DateOnly?)x.Date)
-        .FirstOrDefault();
+    public DateOnly? GetLastKey()
+        => context.FileHeaders
+            .OrderByDescending(static x => x.Id)
+            .Take(1)
+            .Select(static x => (DateOnly?)x.Date)
+            .FirstOrDefault();
 
     public void Initialize(Document document)
     {
@@ -92,13 +93,13 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Kanjidi
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
-        CodepointTypeTable.InsertItems(context, document.CodepointTypes.Values);
-        DictionaryTypeTable.InsertItems(context, document.DictionaryTypes.Values);
-        QueryCodeTypeTable.InsertItems(context, document.QueryCodeTypes.Values);
-        MisclassificationTypeTable.InsertItems(context, document.MisclassificationTypes.Values);
-        RadicalTypeTable.InsertItems(context, document.RadicalTypes.Values);
-        ReadingTypeTable.InsertItems(context, document.ReadingTypes.Values);
-        VariantTypeTable.InsertItems(context, document.VariantTypes.Values);
+        CodepointTypeTable.InsertItems(context, document.GetCodepointTypes(fileHeaderId));
+        DictionaryTypeTable.InsertItems(context, document.GetDictionaryTypes(fileHeaderId));
+        QueryCodeTypeTable.InsertItems(context, document.GetQueryCodeTypes(fileHeaderId));
+        MisclassificationTypeTable.InsertItems(context, document.GetMisclassificationTypes(fileHeaderId));
+        RadicalTypeTable.InsertItems(context, document.GetRadicalTypes(fileHeaderId));
+        ReadingTypeTable.InsertItems(context, document.GetReadingTypes(fileHeaderId));
+        VariantTypeTable.InsertItems(context, document.GetVariantTypes(fileHeaderId));
 
         EntryTable.InsertItems(context, document.Entries.Values);
 
@@ -140,13 +141,13 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Kanjidi
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
 
-        CodepointTypeTable.InsertOrIgnoreItems(context, diff.Inserts.CodepointTypes.Values);
-        DictionaryTypeTable.InsertOrIgnoreItems(context, diff.Inserts.DictionaryTypes.Values);
-        QueryCodeTypeTable.InsertOrIgnoreItems(context, diff.Inserts.QueryCodeTypes.Values);
-        MisclassificationTypeTable.InsertOrIgnoreItems(context, diff.Inserts.MisclassificationTypes.Values);
-        RadicalTypeTable.InsertOrIgnoreItems(context, diff.Inserts.RadicalTypes.Values);
-        ReadingTypeTable.InsertOrIgnoreItems(context, diff.Inserts.ReadingTypes.Values);
-        VariantTypeTable.InsertOrIgnoreItems(context, diff.Inserts.VariantTypes.Values);
+        CodepointTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetCodepointTypes(fileHeaderId));
+        DictionaryTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetDictionaryTypes(fileHeaderId));
+        QueryCodeTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetQueryCodeTypes(fileHeaderId));
+        MisclassificationTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetMisclassificationTypes(fileHeaderId));
+        RadicalTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetRadicalTypes(fileHeaderId));
+        ReadingTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetReadingTypes(fileHeaderId));
+        VariantTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetVariantTypes(fileHeaderId));
 
         EntryTable.InsertItems(context, diff.Inserts.Entries.Values);
         CodepointGroupTable.InsertItems(context, diff.Inserts.CodepointGroups.Values);

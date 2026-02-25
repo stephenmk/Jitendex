@@ -24,7 +24,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class CodepointGroupReader(ILogger<CodepointGroupReader> logger) : BaseReader(logger)
+internal partial class CodepointGroupReader(ILogger<CodepointGroupReader> logger)
+    : XmlParentElementReader<Document, CodepointGroupElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -34,27 +35,12 @@ internal partial class CodepointGroupReader(ILogger<CodepointGroupReader> logger
             Order: document.CodepointGroups.NextOrder(entry.Id)
         );
 
-        document.CodepointGroups.Add(group.Key(), group);
+        await ReadToEndAsync(xmlReader, document, group, XmlTagName.CodepointGroup);
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, group);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, entry.Id, XmlTagName.CodepointGroup);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == XmlTagName.CodepointGroup;
-                    break;
-            }
-        }
+        document.CodepointGroups.Add(group.Key(), group);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, CodepointGroupElement group)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, CodepointGroupElement group)
     {
         switch (xmlReader.Name)
         {
@@ -62,7 +48,7 @@ internal partial class CodepointGroupReader(ILogger<CodepointGroupReader> logger
                 await ReadCodepoint(xmlReader, document, group);
                 break;
             default:
-                LogUnexpectedChildElement(group.ToRune(), xmlReader.Name, XmlTagName.CodepointGroup);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.CodepointGroup);
                 break;
         }
     }
@@ -95,11 +81,7 @@ internal partial class CodepointGroupReader(ILogger<CodepointGroupReader> logger
             typeName = attribute;
         }
 
-        if (!document.CodepointTypes.ContainsKey(typeName))
-        {
-            var type = new CodepointTypeElement(typeName, document.ArchiveKey);
-            document.CodepointTypes.Add(typeName, type);
-        }
+        document.CodepointTypes.Add(typeName);
 
         return typeName;
     }

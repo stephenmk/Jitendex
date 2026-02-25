@@ -24,7 +24,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger) : BaseReader(logger)
+internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger)
+    : XmlParentElementReader<Document, MiscGroupElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -34,27 +35,12 @@ internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger) : BaseRe
             Order: document.MiscGroups.NextOrder(entry.Id)
         );
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, group);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, entry.Id, XmlTagName.MiscGroup);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == XmlTagName.MiscGroup;
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, group, XmlTagName.MiscGroup);
 
         document.MiscGroups.Add(group.Key(), group);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, MiscGroupElement group)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, MiscGroupElement group)
     {
         switch (xmlReader.Name)
         {
@@ -77,7 +63,7 @@ internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger) : BaseRe
                 await ReadRadicalName(xmlReader, document, group);
                 break;
             default:
-                LogUnexpectedChildElement(group.ToRune(), xmlReader.Name, XmlTagName.MiscGroup);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.MiscGroup);
                 break;
         }
     }
@@ -172,11 +158,7 @@ internal partial class MiscGroupReader(ILogger<MiscGroupReader> logger) : BaseRe
             typeName = attribute;
         }
 
-        if (!document.VariantTypes.ContainsKey(typeName))
-        {
-            var type = new VariantTypeElement(typeName, document.ArchiveKey);
-            document.VariantTypes.Add(typeName, type);
-        }
+        document.VariantTypes.Add(typeName);
 
         return typeName;
     }

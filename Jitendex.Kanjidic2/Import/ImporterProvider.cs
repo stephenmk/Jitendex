@@ -35,14 +35,13 @@ internal static class ImporterProvider
         // Database context
         .AddDbContext<Kanjidic2Context>()
 
-        // File archive
+        // Importer interfaces.
         .AddEdrdgArchiveService(DictionaryFile.kanjidic2, archiveDirectory)
         .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
         .AddTransient<IDocumentDiffer<DateOnly, Document, DocumentDiff>, DocumentDiffer>()
         .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, DocumentDatabase>()
 
-        // Top-level readers.
-        .AddTransient<EntriesReader>()
+        // Top-level reader.
         .AddTransient<EntryReader>()
 
         // Group readers.

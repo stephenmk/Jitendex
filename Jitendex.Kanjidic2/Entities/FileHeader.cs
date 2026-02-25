@@ -30,9 +30,30 @@ public sealed class FileHeader
     public required int Id { get; init; }
     public required DateOnly Date { get; set; }
 
+    [InverseProperty(nameof(Revision.FileHeader))]
+    public List<Revision> SequenceRevisions { get; init; } = [];
+
     [InverseProperty(nameof(Sequence.OriginFile))]
     public List<Sequence> NewSequences { get; init; } = [];
 
-    [InverseProperty(nameof(Revision.FileHeader))]
-    public List<Revision> SequenceRevisions { get; init; } = [];
+    [InverseProperty(nameof(CodepointType.OriginFile))]
+    public List<CodepointType> NewCodepointTypes { get; init; } = [];
+
+    [InverseProperty(nameof(DictionaryType.OriginFile))]
+    public List<DictionaryType> NewDictionaryTypes { get; init; } = [];
+
+    [InverseProperty(nameof(QueryCodeType.OriginFile))]
+    public List<QueryCodeType> NewQueryCodeTypes { get; init; } = [];
+
+    [InverseProperty(nameof(MisclassificationType.OriginFile))]
+    public List<MisclassificationType> NewMisclassificationTypes { get; init; } = [];
+
+    [InverseProperty(nameof(RadicalType.OriginFile))]
+    public List<RadicalType> NewRadicalTypes { get; init; } = [];
+
+    [InverseProperty(nameof(ReadingType.OriginFile))]
+    public List<ReadingType> NewReadingTypes { get; init; } = [];
+
+    [InverseProperty(nameof(VariantType.OriginFile))]
+    public List<VariantType> NewVariantTypes { get; init; } = [];
 }

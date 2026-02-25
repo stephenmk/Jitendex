@@ -24,7 +24,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logger) : BaseReader(logger)
+internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logger)
+    : XmlParentElementReader<Document, DictionaryGroupElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -34,27 +35,12 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
             Order: document.DictionaryGroups.NextOrder(entry.Id)
         );
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, group);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, entry.Id, XmlTagName.DictionaryGroup);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == XmlTagName.DictionaryGroup;
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, group, XmlTagName.DictionaryGroup);
 
         document.DictionaryGroups.Add(group.Key(), group);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, DictionaryGroupElement group)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, DictionaryGroupElement group)
     {
         switch (xmlReader.Name)
         {
@@ -62,7 +48,7 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
                 await ReadDictionary(xmlReader, document, group);
                 break;
             default:
-                LogUnexpectedChildElement(group.ToRune(), xmlReader.Name, XmlTagName.DictionaryGroup);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.DictionaryGroup);
                 break;
         }
     }
@@ -79,7 +65,6 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
             Page: GetDictionaryPage(xmlReader, group),
             Text: await xmlReader.ReadElementContentAsStringAsync()
         );
-
         document.Dictionaries.Add(dictionary.Key(), dictionary);
     }
 
@@ -98,11 +83,7 @@ internal partial class DictionaryGroupReader(ILogger<DictionaryGroupReader> logg
             typeName = attribute;
         }
 
-        if (!document.DictionaryTypes.ContainsKey(typeName))
-        {
-            var type = new DictionaryTypeElement(typeName, document.ArchiveKey);
-            document.DictionaryTypes.Add(typeName, type);
-        }
+        document.DictionaryTypes.Add(typeName);
 
         return typeName;
     }

@@ -24,7 +24,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger) : BaseReader(logger)
+internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger)
+    : XmlParentElementReader<Document, ReadingMeaningElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingMeaningGroupElement group)
     {
@@ -35,27 +36,12 @@ internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger
             Order: document.ReadingMeanings.NextOrder(group.Key())
         );
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, readingMeaning);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, group.EntryId, XmlTagName.ReadingMeaning);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == XmlTagName.ReadingMeaning;
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, readingMeaning, XmlTagName.ReadingMeaning);
 
         document.ReadingMeanings.Add(readingMeaning.Key(), readingMeaning);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ReadingMeaningElement readingMeaning)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ReadingMeaningElement readingMeaning)
     {
         switch (xmlReader.Name)
         {
@@ -66,7 +52,7 @@ internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger
                 await ReadMeaning(xmlReader, document, readingMeaning);
                 break;
             default:
-                LogUnexpectedChildElement(readingMeaning.ToRune(), xmlReader.Name, XmlTagName.ReadingMeaning);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.ReadingMeaning);
                 break;
         }
     }
@@ -98,11 +84,9 @@ internal partial class ReadingMeaningReader(ILogger<ReadingMeaningReader> logger
         {
             typeName = attribute;
         }
-        if (!document.ReadingTypes.ContainsKey(typeName))
-        {
-            var type = new ReadingTypeElement(typeName, document.ArchiveKey);
-            document.ReadingTypes.Add(typeName, type);
-        }
+
+        document.ReadingTypes.Add(typeName);
+
         return typeName;
     }
 

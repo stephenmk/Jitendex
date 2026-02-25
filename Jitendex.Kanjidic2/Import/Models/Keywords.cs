@@ -21,13 +21,13 @@ namespace Jitendex.Kanjidic2.Import.Models;
 internal interface IKeywordElement
 {
     string Name { get; init; }
-    DateOnly Date { get; init; }
+    int FileHeaderId { get; init; }
 }
 
-internal sealed record CodepointTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record DictionaryTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record QueryCodeTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record MisclassificationTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record RadicalTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record ReadingTypeElement(string Name, DateOnly Date) : IKeywordElement;
-internal sealed record VariantTypeElement(string Name, DateOnly Date) : IKeywordElement;
+internal sealed record CodepointTypeElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record DictionaryTypeElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record QueryCodeTypeElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record MisclassificationTypeElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record RadicalTypeElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record ReadingTypeElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record VariantTypeElement(string Name, int FileHeaderId) : IKeywordElement;

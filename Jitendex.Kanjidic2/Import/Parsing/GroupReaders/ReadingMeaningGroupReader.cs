@@ -28,7 +28,7 @@ internal partial class ReadingMeaningGroupReader
 (
     ILogger<ReadingMeaningGroupReader> logger,
     ReadingMeaningReader readingMeaningReader
-) : BaseReader(logger)
+) : XmlParentElementReader<Document, ReadingMeaningGroupElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -38,27 +38,12 @@ internal partial class ReadingMeaningGroupReader
             Order: document.ReadingMeaningGroups.NextOrder(entry.Id)
         );
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, group);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, entry.Id, XmlTagName.ReadingMeaningGroup);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == XmlTagName.ReadingMeaningGroup;
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, group, XmlTagName.ReadingMeaningGroup);
 
         document.ReadingMeaningGroups.Add(group.Key(), group);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ReadingMeaningGroupElement group)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ReadingMeaningGroupElement group)
     {
         switch (xmlReader.Name)
         {
@@ -69,7 +54,7 @@ internal partial class ReadingMeaningGroupReader
                 await ReadNanori(xmlReader, document, group);
                 break;
             default:
-                LogUnexpectedChildElement(group.ToRune(), xmlReader.Name, XmlTagName.ReadingMeaningGroup);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.ReadingMeaningGroup);
                 break;
         }
     }

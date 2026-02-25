@@ -24,7 +24,8 @@ using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
 
-internal partial class RadicalGroupReader(ILogger<RadicalGroupReader> logger) : BaseReader(logger)
+internal partial class RadicalGroupReader(ILogger<RadicalGroupReader> logger)
+    : XmlParentElementReader<Document, RadicalGroupElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
@@ -34,27 +35,12 @@ internal partial class RadicalGroupReader(ILogger<RadicalGroupReader> logger) : 
             Order: document.RadicalGroups.NextOrder(entry.Id)
         );
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, group);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, entry.Id, XmlTagName.RadicalGroup);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == XmlTagName.RadicalGroup;
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, group, XmlTagName.RadicalGroup);
 
         document.RadicalGroups.Add(group.Key(), group);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, RadicalGroupElement group)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, RadicalGroupElement group)
     {
         switch (xmlReader.Name)
         {
@@ -62,7 +48,7 @@ internal partial class RadicalGroupReader(ILogger<RadicalGroupReader> logger) : 
                 await ReadRadical(xmlReader, document, group);
                 break;
             default:
-                LogUnexpectedChildElement(group.ToRune(), xmlReader.Name, XmlTagName.RadicalGroup);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.RadicalGroup);
                 break;
         }
     }
@@ -93,11 +79,9 @@ internal partial class RadicalGroupReader(ILogger<RadicalGroupReader> logger) : 
         {
             typeName = attribute;
         }
-        if (!document.RadicalTypes.ContainsKey(typeName))
-        {
-            var type = new RadicalTypeElement(typeName, document.ArchiveKey);
-            document.RadicalTypes.Add(typeName, type);
-        }
+
+        document.RadicalTypes.Add(typeName);
+
         return typeName;
     }
 

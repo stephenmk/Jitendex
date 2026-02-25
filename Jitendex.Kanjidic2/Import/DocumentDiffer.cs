@@ -33,13 +33,13 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
             Deletes = new Document(0) { ArchiveKey = docB.ArchiveKey },
         };
 
-        FindNew<string, CodepointTypeElement>(diff, docA, docB, propertyName: nameof(Document.CodepointTypes));
-        FindNew<string, DictionaryTypeElement>(diff, docA, docB, propertyName: nameof(Document.DictionaryTypes));
-        FindNew<string, QueryCodeTypeElement>(diff, docA, docB, propertyName: nameof(Document.QueryCodeTypes));
-        FindNew<string, MisclassificationTypeElement>(diff, docA, docB, propertyName: nameof(Document.MisclassificationTypes));
-        FindNew<string, RadicalTypeElement>(diff, docA, docB, propertyName: nameof(Document.RadicalTypes));
-        FindNew<string, ReadingTypeElement>(diff, docA, docB, propertyName: nameof(Document.ReadingTypes));
-        FindNew<string, VariantTypeElement>(diff, docA, docB, propertyName: nameof(Document.VariantTypes));
+        FindNew<string>(diff, docA, docB, propertyName: nameof(Document.CodepointTypes));
+        FindNew<string>(diff, docA, docB, propertyName: nameof(Document.DictionaryTypes));
+        FindNew<string>(diff, docA, docB, propertyName: nameof(Document.QueryCodeTypes));
+        FindNew<string>(diff, docA, docB, propertyName: nameof(Document.MisclassificationTypes));
+        FindNew<string>(diff, docA, docB, propertyName: nameof(Document.RadicalTypes));
+        FindNew<string>(diff, docA, docB, propertyName: nameof(Document.ReadingTypes));
+        FindNew<string>(diff, docA, docB, propertyName: nameof(Document.VariantTypes));
 
         DiffDictionaryProperties<int, EntryElement>(diff, docA, docB, propertyName: nameof(Document.Entries));
 

@@ -26,13 +26,13 @@ internal sealed class Document : IDocument<DateOnly>
     public Dictionary<int, EntryElement> Entries { get; init; }
 
     #region Keywords
-    public Dictionary<string, CodepointTypeElement> CodepointTypes { get; init; } = [];
-    public Dictionary<string, DictionaryTypeElement> DictionaryTypes { get; init; } = [];
-    public Dictionary<string, QueryCodeTypeElement> QueryCodeTypes { get; init; } = [];
-    public Dictionary<string, MisclassificationTypeElement> MisclassificationTypes { get; init; } = [];
-    public Dictionary<string, RadicalTypeElement> RadicalTypes { get; init; } = [];
-    public Dictionary<string, ReadingTypeElement> ReadingTypes { get; init; } = [];
-    public Dictionary<string, VariantTypeElement> VariantTypes { get; init; } = [];
+    public HashSet<string> CodepointTypes { get; init; } = [];
+    public HashSet<string> DictionaryTypes { get; init; } = [];
+    public HashSet<string> QueryCodeTypes { get; init; } = [];
+    public HashSet<string> MisclassificationTypes { get; init; } = [];
+    public HashSet<string> RadicalTypes { get; init; } = [];
+    public HashSet<string> ReadingTypes { get; init; } = [];
+    public HashSet<string> VariantTypes { get; init; } = [];
     #endregion
 
     #region Groups
@@ -88,6 +88,27 @@ internal sealed class Document : IDocument<DateOnly>
 
     public IEnumerable<DocumentSequence> GetSequences(int fileHeaderId)
         => Entries.Select(e => new DocumentSequence(e.Key, fileHeaderId));
+
+    public IEnumerable<CodepointTypeElement> GetCodepointTypes(int fileHeaderId)
+        => CodepointTypes.Select(t => new CodepointTypeElement(t, fileHeaderId));
+
+    public IEnumerable<DictionaryTypeElement> GetDictionaryTypes(int fileHeaderId)
+        => DictionaryTypes.Select(t => new DictionaryTypeElement(t, fileHeaderId));
+
+    public IEnumerable<QueryCodeTypeElement> GetQueryCodeTypes(int fileHeaderId)
+        => QueryCodeTypes.Select(t => new QueryCodeTypeElement(t, fileHeaderId));
+
+    public IEnumerable<MisclassificationTypeElement> GetMisclassificationTypes(int fileHeaderId)
+        => MisclassificationTypes.Select(t => new MisclassificationTypeElement(t, fileHeaderId));
+
+    public IEnumerable<RadicalTypeElement> GetRadicalTypes(int fileHeaderId)
+        => RadicalTypes.Select(t => new RadicalTypeElement(t, fileHeaderId));
+
+    public IEnumerable<ReadingTypeElement> GetReadingTypes(int fileHeaderId)
+        => ReadingTypes.Select(t => new ReadingTypeElement(t, fileHeaderId));
+
+    public IEnumerable<VariantTypeElement> GetVariantTypes(int fileHeaderId)
+        => VariantTypes.Select(t => new VariantTypeElement(t, fileHeaderId));
 
     public IEnumerable<int> ConcatAllEntryIds()
         => Entries.Keys

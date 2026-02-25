@@ -21,6 +21,7 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Kanjidic2.Import.Models;
 using Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
+using Jitendex.Import;
 
 namespace Jitendex.Kanjidic2.Import.Parsing;
 
@@ -33,7 +34,7 @@ internal partial class EntryReader
     QueryCodeGroupReader queryCodeGroupReader,
     RadicalGroupReader radicalGroupReader,
     ReadingMeaningGroupReader readingMeaningGroupReader
-) : BaseReader(logger)
+) : XmlParentElementReader<Document, EntryElement>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {
@@ -42,22 +43,7 @@ internal partial class EntryReader
             Id = default
         };
 
-        var exit = false;
-        while (!exit && await xmlReader.ReadAsync())
-        {
-            switch (xmlReader.NodeType)
-            {
-                case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, document, entry);
-                    break;
-                case XmlNodeType.Text:
-                    await LogUnexpectedTextNodeAsync(xmlReader, entry.Id, XmlTagName.Entry);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == XmlTagName.Entry;
-                    break;
-            }
-        }
+        await ReadToEndAsync(xmlReader, document, entry, XmlTagName.Entry);
 
         if (entry.Id != default)
         {
@@ -69,7 +55,7 @@ internal partial class EntryReader
         }
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, EntryElement entry)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
         if (xmlReader.Name != XmlTagName.EntryCharacter && entry.Id == default)
         {
@@ -101,7 +87,7 @@ internal partial class EntryReader
                 await readingMeaningGroupReader.ReadAsync(xmlReader, document, entry);
                 break;
             default:
-                LogUnexpectedChildElement(entry.ToRune(), xmlReader.Name, XmlTagName.Entry);
+                LogUnexpectedChildElement(xmlReader, XmlTagName.Entry);
                 break;
         }
     }

@@ -18,12 +18,19 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.IO.Compression;
 using System.Xml;
+using Microsoft.Extensions.Logging;
 using Jitendex.Import;
 using Jitendex.Kanjidic2.Import.Models;
+using Jitendex.Kanjidic2.Import.Parsing;
 
-namespace Jitendex.Kanjidic2.Import.Parsing;
+namespace Jitendex.Kanjidic2.Import;
 
-internal partial class DocumentReader(EntriesReader entriesReader) : IDocumentReader<DateOnly, Document>
+internal partial class DocumentReader
+(
+    ILogger<DocumentReader> logger,
+    EntryReader entryReader
+) : XmlParentElementReader<Document, byte>(logger),
+    IDocumentReader<DateOnly, Document>
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
     {
@@ -36,9 +43,43 @@ internal partial class DocumentReader(EntriesReader entriesReader) : IDocumentRe
             ArchiveKey = fileDate
         };
 
-        await entriesReader.ReadAsync(xmlReader, document);
+        await ReadDocumentType(xmlReader);
+        await ReadToEndAsync(xmlReader, document, 0, XmlTagName.Kanjidic2);
 
         return document;
+    }
+
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, byte _)
+    {
+        switch (xmlReader.Name)
+        {
+            case XmlTagName.Entry:
+                await entryReader.ReadAsync(xmlReader, document);
+                break;
+            case XmlTagName.Header:
+                await xmlReader.SkipAsync();
+                break;
+            case XmlTagName.Kanjidic2:
+                // Nothing to do
+                break;
+            default:
+                LogUnexpectedChildElement(xmlReader, XmlTagName.Kanjidic2);
+                break;
+        }
+    }
+
+    public async Task ReadDocumentType(XmlReader xmlReader)
+    {
+        var exit = false;
+        while (!exit && await xmlReader.ReadAsync())
+        {
+            switch (xmlReader.NodeType)
+            {
+                case XmlNodeType.DocumentType:
+                    exit = true;
+                    break;
+            }
+        }
     }
 
     private static readonly XmlReaderSettings XmlReaderSettings = new()

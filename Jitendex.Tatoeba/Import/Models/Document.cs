@@ -16,19 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.Import;
+
 namespace Jitendex.Tatoeba.Import.Models;
 
-internal sealed class Document
+internal sealed class Document : IDocument<DateOnly>
 {
-    public DocumentHeader Header { get; init; }
+    public required DateOnly ArchiveKey { get; init; }
     public Dictionary<int, ExampleElement> Examples { get; init; }
     public Dictionary<int, TranslationElement> Translations { get; init; }
     public Dictionary<(int, int), SegmentationElement> Segmentations { get; init; }
     public Dictionary<(int, int, int), TokenElement> Tokens { get; init; }
 
-    public Document(DateOnly date, int expectedExampleCount = 150_000)
+    public Document(int expectedExampleCount = 150_000)
     {
-        Header = new(date);
         Examples = new(expectedExampleCount);
         Translations = new(expectedExampleCount);
         Segmentations = new(expectedExampleCount);

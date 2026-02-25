@@ -19,18 +19,24 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
-using Jitendex.Tatoeba.Import.Parsing;
+using Jitendex.Import;
+using Jitendex.Tatoeba.Import.Models;
 
 namespace Jitendex.Tatoeba.Import;
 
 internal static class ImporterProvider
 {
-    public static Importer GetImporter(DirectoryInfo? archiveDirectory) => new ServiceCollection()
-        .AddEdrdgArchiveService(DictionaryFile.examples, archiveDirectory)
-        .AddTransient<Importer>()
-        .AddTransient<TatoebaReader>()
-        .AddTransient<Database>()
+    public static Importer<DateOnly, Document, DocumentDiff> GetImporter(DirectoryInfo? archiveDirectory)
+        => new ServiceCollection()
+
+        // Database context.
         .AddDbContext<TatoebaContext>()
+
+        // Import interfaces.
+        .AddEdrdgArchiveService(DictionaryFile.examples, archiveDirectory)
+        .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
+        .AddTransient<IDocumentDiffer<DateOnly, Document, DocumentDiff>, DocumentDiffer>()
+        .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, DocumentDatabase>()
 
         .AddLogging(static builder =>
             builder.AddSimpleConsole(options =>
@@ -40,6 +46,7 @@ internal static class ImporterProvider
                 options.TimestampFormat = "HH:mm:ss ";
             }))
 
+        .AddTransient<Importer<DateOnly, Document, DocumentDiff>>()
         .BuildServiceProvider()
-        .GetRequiredService<Importer>();
+        .GetRequiredService<Importer<DateOnly, Document, DocumentDiff>>();
 }

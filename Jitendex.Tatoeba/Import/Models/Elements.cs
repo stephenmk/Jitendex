@@ -18,14 +18,43 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Tatoeba.Import.Models;
 
-internal sealed record DocumentHeader(DateOnly Date);
-internal sealed record DocumentRevision(int SequenceId, int Number, int FileHeaderId, bool IsPriority, string DiffJson);
-internal sealed record SequenceElement(int Id, int FileHeaderId);
-internal sealed record ExampleElement(int Id, string Text);
-internal sealed record TranslationElement(int Id, string Text);
+internal sealed record DocumentHeader
+(
+    DateOnly Date
+);
 
-internal sealed record SegmentationElement(int ExampleId, int Index, int TranslationId)
+internal sealed record DocumentRevision
+(
+    int SequenceId,
+    int Number,
+    int FileHeaderId,
+    bool IsPriority,
+    string DiffJson
+);
+
+internal sealed record SequenceElement
+(
+    int Id,
+    int FileHeaderId
+);
+
+internal sealed record ExampleElement
+(
+    int Id,
+    string Text
+);
+
+internal sealed record TranslationElement
+(
+    int Id,
+    string Text
+);
+
+internal sealed record SegmentationElement
 {
+    public required int ExampleId { get; init; }
+    public required int Index { get; init; }
+    public required int TranslationId { get; init; }
     public (int, int) GetKey() => (ExampleId, Index);
 }
 

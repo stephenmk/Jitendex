@@ -18,39 +18,38 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.IO.Compression;
 using Microsoft.Extensions.Logging;
+using Jitendex.Import;
 using Jitendex.Tatoeba.Import.Models;
+using Jitendex.Tatoeba.Import.Parsing;
 
-namespace Jitendex.Tatoeba.Import.Parsing;
+namespace Jitendex.Tatoeba.Import;
 
-internal sealed class TatoebaReader
+internal sealed class DocumentReader(ILogger<DocumentReader> logger)
+    : IDocumentReader<DateOnly, Document>
 {
-    private readonly ILogger<TatoebaReader> _logger;
-    public TatoebaReader(ILogger<TatoebaReader> logger)
-        => _logger = logger;
-
     public async Task<Document> ReadAsync(FileInfo file, DateOnly date)
     {
         await using FileStream fs = new(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
         await using BrotliStream bs = new(fs, CompressionMode.Decompress);
         using StreamReader reader = new(bs);
 
-        Document document = new(date);
+        var document = new Document { ArchiveKey = date };
 
         while (await reader.ReadLineAsync() is string lineA)
         {
             if (!lineA.StartsWith("A: ", StringComparison.Ordinal))
             {
-                _logger.LogError("Expected `{LineA}` to start with \"A: \"", lineA);
+                logger.LogError("Expected `{LineA}` to start with \"A: \"", lineA);
                 continue;
             }
             if (await reader.ReadLineAsync() is not string lineB)
             {
-                _logger.LogError("No B-line found for A-line `{LineA}`", lineA);
+                logger.LogError("No B-line found for A-line `{LineA}`", lineA);
                 continue;
             }
             if (!lineB.StartsWith("B: ", StringComparison.Ordinal))
             {
-                _logger.LogError("Expected `{LineB}` to start with \"B: \"", lineB);
+                logger.LogError("Expected `{LineB}` to start with \"B: \"", lineB);
                 continue;
             }
 
@@ -61,7 +60,7 @@ internal sealed class TatoebaReader
             }
             catch (Exception ex)
             {
-                _logger.LogError("Exception caught while parsing text: `{Message}`", ex.Message);
+                logger.LogError("Exception caught while parsing text: `{Message}`", ex.Message);
             }
         }
 
@@ -74,7 +73,12 @@ internal sealed class TatoebaReader
         var translation = GetTranslation(text, document);
         var index = document.NextSegmentationIndex(example.Id);
 
-        var segmentation = new SegmentationElement(example.Id, index, translation.Id);
+        var segmentation = new SegmentationElement
+        {
+            ExampleId = example.Id,
+            Index = index,
+            TranslationId = translation.Id,
+        };
 
         var key = segmentation.GetKey();
         document.Segmentations.Add(key, segmentation);
@@ -104,7 +108,7 @@ internal sealed class TatoebaReader
 
         if (document.Translations.ContainsKey(id))
         {
-            _logger.LogWarning("Sequence ID {Id} is used for different language sentences", id);
+            logger.LogWarning("Sequence ID {Id} is used for different language sentences", id);
         }
 
         var example = new ExampleElement(id, text.GetExampleText());
@@ -115,7 +119,7 @@ internal sealed class TatoebaReader
         }
         else if (!string.Equals(example.Text, oldSentence.Text, StringComparison.Ordinal))
         {
-            _logger.LogWarning("Japanese sentence #{ID} has more than one distinct text", id);
+            logger.LogWarning("Japanese sentence #{ID} has more than one distinct text", id);
         }
 
         return example;
@@ -127,7 +131,7 @@ internal sealed class TatoebaReader
 
         if (document.Examples.ContainsKey(id))
         {
-            _logger.LogWarning("Sequence ID {Id} is used for different language sentences", id);
+            logger.LogWarning("Sequence ID {Id} is used for different language sentences", id);
         }
 
         var translation = new TranslationElement(id, text.GetTranslationText());
@@ -138,7 +142,7 @@ internal sealed class TatoebaReader
         }
         else if (!string.Equals(translation.Text, oldSentence.Text, StringComparison.Ordinal))
         {
-            _logger.LogWarning("English sentence #{ID} has more than one distinct text", id);
+            logger.LogWarning("English sentence #{ID} has more than one distinct text", id);
         }
 
         return translation;

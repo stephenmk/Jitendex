@@ -18,12 +18,14 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
+using Jitendex.Import;
 using Jitendex.Tatoeba.Import.Models;
 using Jitendex.Tatoeba.Import.Tables;
 
 namespace Jitendex.Tatoeba.Import;
 
-internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
+internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, TatoebaContext context)
+    : IDocumentDatabase<DateOnly, Document, DocumentDiff>
 {
     private static readonly FileHeaderTable FileHeaderTable = new();
     private static readonly RevisionTable RevisionTable = new();
@@ -33,15 +35,25 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
     private static readonly SegmentationTable SegmentationTable = new();
     private static readonly TokenTable TokenTable = new();
 
+    public void EnsureCreated()
+        => context.Database.EnsureCreated();
+
+    public DateOnly? GetLastKey()
+        => context.FileHeaders
+            .OrderByDescending(static x => x.Id)
+            .Take(1)
+            .Select(static x => (DateOnly?)x.Date)
+            .FirstOrDefault();
+
     public void Initialize(Document document)
     {
-        logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.Header.Date);
+        logger.LogInformation("Initializing database with data from {Date:yyyy-MM-dd}", document.ArchiveKey);
 
         context.RecreateDatabase();
 
         using var transaction = context.Database.BeginTransaction();
 
-        FileHeaderTable.InsertItem(context, document.Header);
+        FileHeaderTable.InsertItem(context, new(document.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
@@ -55,37 +67,40 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
 
     public void Update(DocumentDiff diff)
     {
-        logger.LogInformation("Updating {Count} sequences with data from {Date:yyyy-MM-dd}", diff.SequenceIds.Count, diff.Date);
+        var sequenceIds = diff.SequenceIds();
+        var prioritySequenceIds = diff.PrioritySequenceIds();
+
+        logger.LogInformation("Updating {Count} sequences with data from {Date:yyyy-MM-dd}", sequenceIds.Count, diff.ArchiveKey);
 
         using var transaction = context.Database.BeginTransaction();
 
-        var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
+        var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
 
         context.ExecuteDeferForeignKeysPragma();
 
-        FileHeaderTable.InsertItem(context, diff.InsertDocument.Header);
+        FileHeaderTable.InsertItem(context, new(diff.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
-        SequenceTable.InsertOrIgnoreItems(context, diff.InsertDocument.GetSequences(fileHeaderId));
+        SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
 
-        ExampleTable.InsertItems(context, diff.InsertDocument.Examples.Values);
-        TranslationTable.InsertItems(context, diff.InsertDocument.Translations.Values);
-        SegmentationTable.InsertItems(context, diff.InsertDocument.Segmentations.Values);
-        TokenTable.InsertItems(context, diff.InsertDocument.Tokens.Values);
+        ExampleTable.InsertItems(context, diff.Inserts.Examples.Values);
+        TranslationTable.InsertItems(context, diff.Inserts.Translations.Values);
+        SegmentationTable.InsertItems(context, diff.Inserts.Segmentations.Values);
+        TokenTable.InsertItems(context, diff.Inserts.Tokens.Values);
 
-        ExampleTable.UpdateItems(context, diff.UpdateDocument.Examples.Values);
-        TranslationTable.UpdateItems(context, diff.UpdateDocument.Translations.Values);
-        SegmentationTable.UpdateItems(context, diff.UpdateDocument.Segmentations.Values);
-        TokenTable.UpdateItems(context, diff.UpdateDocument.Tokens.Values);
+        ExampleTable.UpdateItems(context, diff.Updates.Examples.Values);
+        TranslationTable.UpdateItems(context, diff.Updates.Translations.Values);
+        SegmentationTable.UpdateItems(context, diff.Updates.Segmentations.Values);
+        TokenTable.UpdateItems(context, diff.Updates.Tokens.Values);
 
-        TokenTable.DeleteItems(context, diff.DeleteDocument.Tokens.Values);
-        SegmentationTable.DeleteItems(context, diff.DeleteDocument.Segmentations.Values);
-        TranslationTable.DeleteItems(context, diff.DeleteDocument.Translations.Values);
-        ExampleTable.DeleteItems(context, diff.DeleteDocument.Examples.Values);
+        TokenTable.DeleteItems(context, diff.Deletes.Tokens.Values);
+        SegmentationTable.DeleteItems(context, diff.Deletes.Segmentations.Values);
+        TranslationTable.DeleteItems(context, diff.Deletes.Translations.Values);
+        ExampleTable.DeleteItems(context, diff.Deletes.Examples.Values);
 
-        var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, diff.SequenceIds);
+        var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
 
         var sequences = context.Sequences
-            .Where(seq => diff.SequenceIds.Contains(seq.Id))
+            .Where(seq => sequenceIds.Contains(seq.Id))
             .Select(seq => new
             {
                 seq.Id,
@@ -105,7 +120,7 @@ internal sealed class Database(ILogger<Database> logger, TatoebaContext context)
                     SequenceId: sequence.Id,
                     Number: sequence.RevisionCount,
                     FileHeaderId: fileHeaderId,
-                    IsPriority: diff.PrioritySequenceIds.Contains(sequence.Id),
+                    IsPriority: prioritySequenceIds.Contains(sequence.Id),
                     DiffJson: baDiff
                 ));
             }

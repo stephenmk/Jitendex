@@ -25,9 +25,10 @@ namespace Jitendex.KanjiVG.Entities;
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Order))]
 public sealed class Component
 {
-    public required int UnicodeScalarValue { get; set; }
-    public required int VariantTypeId { get; set; }
-    public required int Order { get; set; }
+    public required int UnicodeScalarValue { get; init; }
+    public required int VariantTypeId { get; init; }
+    public required int Order { get; init; }
+    public required string IdAttribute { get; set; }
     public required int? ParentOrder { get; set; }
     public required int? CharacterId { get; set; }
     public required bool IsVariant { get; set; }
@@ -42,7 +43,7 @@ public sealed class Component
     public required int? PhonId { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
-    public required ComponentGroup Group { get; set; }
+    public required ComponentGroup Group { get; init; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}, {nameof(ParentOrder)}")]
     public required Component? Parent { get; set; }
@@ -63,10 +64,10 @@ public sealed class Component
     public required ComponentPhon? Phon { get; set; }
 
     [InverseProperty(nameof(Parent))]
-    public List<Component> Children { get; set; } = [];
+    public List<Component> Children { get; init; } = [];
 
     [InverseProperty(nameof(Stroke.Component))]
-    public List<Stroke> Strokes { get; set; } = [];
+    public List<Stroke> Strokes { get; init; } = [];
 
     public string XmlIdAttribute() => Order == 1
         ? $"kvg:{Group.Variant.FileNameFormat()}"

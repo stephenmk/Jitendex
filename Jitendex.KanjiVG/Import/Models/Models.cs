@@ -34,8 +34,8 @@ internal sealed record ComponentGroupElement
 {
     public required int UnicodeScalarValue { get; init; }
     public required int VariantTypeId { get; init; }
-    public required int StyleId { get; init; }
     public required string IdAttribute { get; init; }
+    public required int StyleId { get; init; }
     public (int, int) Key() => (UnicodeScalarValue, VariantTypeId);
 }
 
@@ -43,8 +43,8 @@ internal sealed record StrokeNumberGroupElement
 {
     public required int UnicodeScalarValue { get; init; }
     public required int VariantTypeId { get; init; }
-    public required int StyleId { get; init; }
     public required string IdAttribute { get; init; }
+    public required int StyleId { get; init; }
     public (int, int) Key() => (UnicodeScalarValue, VariantTypeId);
 }
 
@@ -62,8 +62,8 @@ internal sealed record ComponentElement
     public required int UnicodeScalarValue { get; init; }
     public required int VariantTypeId { get; init; }
     public required int Order { get; init; }
-    public required int? ParentOrder { get; init; }
     public required string IdAttribute { get; init; }
+    public required int? ParentOrder { get; init; }
     public required int? CharacterId { get; init; }
     public required bool IsVariant { get; init; }
     public required bool IsPartial { get; init; }
@@ -83,8 +83,8 @@ internal sealed record StrokeElement
     public required int UnicodeScalarValue { get; init; }
     public required int VariantTypeId { get; init; }
     public required int Order { get; init; }
-    public required int ComponentOrder { get; init; }
     public required string IdAttribute { get; init; }
+    public required int ComponentOrder { get; init; }
     public required int? TypeId { get; init; }
     public required string PathData { get; init; }
     public (int, int, int) Key() => (UnicodeScalarValue, VariantTypeId, Order);

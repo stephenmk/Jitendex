@@ -25,9 +25,10 @@ namespace Jitendex.KanjiVG.Entities;
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Order))]
 public sealed class Stroke
 {
-    public required int UnicodeScalarValue { get; set; }
-    public required int VariantTypeId { get; set; }
-    public required int Order { get; set; }
+    public required int UnicodeScalarValue { get; init; }
+    public required int VariantTypeId { get; init; }
+    public required int Order { get; init; }
+    public required string IdAttribute { get; set; }
     public required int ComponentOrder { get; set; }
     public required int? TypeId { get; set; }
     public required string PathData { get; set; }

@@ -36,8 +36,8 @@ internal partial class StrokeReader(ILogger<StrokeReader> logger)
             UnicodeScalarValue = component.UnicodeScalarValue,
             VariantTypeId = component.VariantTypeId,
             Order = document.Strokes.NextOrder(group.Key()),
-            ComponentOrder = component.Order,
             IdAttribute = attributes.Id,
+            ComponentOrder = component.Order,
             TypeId = document.StrokeTypes.GetNullableLookupId(attributes.TypeText),
             PathData = attributes.PathData,
         };

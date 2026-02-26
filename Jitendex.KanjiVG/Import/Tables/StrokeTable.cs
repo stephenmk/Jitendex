@@ -32,6 +32,7 @@ internal sealed class StrokeTable : Table<StrokeElement>
         nameof(Stroke.UnicodeScalarValue),
         nameof(Stroke.VariantTypeId),
         nameof(Stroke.Order),
+        nameof(Stroke.IdAttribute),
         nameof(Stroke.ComponentOrder),
         nameof(Stroke.TypeId),
         nameof(Stroke.PathData),
@@ -49,8 +50,9 @@ internal sealed class StrokeTable : Table<StrokeElement>
         new("@0", stroke.UnicodeScalarValue),
         new("@1", stroke.VariantTypeId),
         new("@2", stroke.Order),
-        new("@3", stroke.ComponentOrder),
-        new("@4", stroke.TypeId.Nullable()),
-        new("@5", stroke.PathData),
+        new("@3", stroke.IdAttribute),
+        new("@4", stroke.ComponentOrder),
+        new("@5", stroke.TypeId.Nullable()),
+        new("@6", stroke.PathData),
     ];
 }

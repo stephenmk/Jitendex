@@ -24,7 +24,7 @@ namespace Jitendex.KanjiVG;
 
 public class KanjiVGContext() : SqliteContext(DatabaseFile.KanjiVG)
 {
-    public DbSet<Entry> Entries { get; set; } = null!;
+    public DbSet<Kanji> Kanjis { get; set; } = null!;
 
     #region Keywords
     public DbSet<VariantType> VariantTypes { get; set; } = null!;

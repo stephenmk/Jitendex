@@ -32,7 +32,7 @@ public sealed class Variant
     public StrokeNumberGroup StrokeNumberGroup { get; init; } = null!;
 
     [ForeignKey(nameof(UnicodeScalarValue))]
-    public Entry Entry { get; init; } = null!;
+    public Kanji Kanji { get; init; } = null!;
 
     [ForeignKey(nameof(TypeId))]
     public VariantType Type { get; init; } = null!;

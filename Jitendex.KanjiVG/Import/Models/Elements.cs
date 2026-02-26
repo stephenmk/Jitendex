@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.KanjiVG.Import.Models;
 
-internal sealed record EntryElement
+internal sealed record KanjiElement
 (
     int UnicodeScalarValue
 );

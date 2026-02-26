@@ -20,7 +20,7 @@ namespace Jitendex.KanjiVG.Import.Models;
 
 internal sealed class Document
 {
-    public HashSet<int> Entries { get; init; }
+    public HashSet<int> Kanjis { get; init; }
     public Dictionary<(int, int), VariantElement> Variants { get; init; }
     public Dictionary<(int, int, int), VariantCommentElement> VariantComments { get; init; }
 
@@ -50,7 +50,7 @@ internal sealed class Document
 
     public Document(int expectedEntryCount = 7_000)
     {
-        Entries = new(expectedEntryCount);
+        Kanjis = new(expectedEntryCount);
         Variants = new(expectedEntryCount * 2);
         VariantComments = new(expectedEntryCount * 2);
         ComponentGroups = new(expectedEntryCount * 2);
@@ -60,8 +60,8 @@ internal sealed class Document
         StrokeNumbers = new(expectedEntryCount * 22);
     }
 
-    public IEnumerable<EntryElement> GetEntries()
-        => Entries.Select(id => new EntryElement(id));
+    public IEnumerable<KanjiElement> GetKanjis()
+        => Kanjis.Select(id => new KanjiElement(id));
 
     public IEnumerable<VariantTypeElement> GetVariantTypes()
         => VariantTypes.Select(kvp => new VariantTypeElement(kvp.Value, kvp.Key));

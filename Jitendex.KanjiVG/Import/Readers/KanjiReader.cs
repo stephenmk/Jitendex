@@ -26,9 +26,9 @@ using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Readers;
 
-internal partial class EntryReader
+internal partial class KanjiReader
 (
-    ILogger<EntryReader> logger,
+    ILogger<KanjiReader> logger,
     ComponentGroupReader componentGroupReader,
     StrokeNumberGroupReader strokeNumberGroupReader
 )
@@ -40,18 +40,12 @@ internal partial class EntryReader
             return;
         }
 
-        document.Entries.Add(unicodeScalarValue);
-
-        if (!document.VariantTypes.TryGetValue(variantTypeName, out var variantTypeId))
-        {
-            variantTypeId = document.VariantTypes.Count;
-            document.VariantTypes.Add(variantTypeName, variantTypeId);
-        }
+        document.Kanjis.Add(unicodeScalarValue);
 
         var variant = new VariantElement
         {
             UnicodeScalarValue = unicodeScalarValue,
-            TypeId = variantTypeId
+            TypeId = document.VariantTypes.GetLookupId(variantTypeName),
         };
 
         if (!document.Variants.TryAdd(variant.Key(), variant))

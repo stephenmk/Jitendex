@@ -33,7 +33,7 @@ internal static class ImporterProvider
         .AddTransient<DocumentDatabase>()
 
         // Top-level readers.
-        .AddTransient<EntryReader>()
+        .AddTransient<KanjiReader>()
 
         // Stroke Path Components
         .AddTransient<ComponentGroupReader>()

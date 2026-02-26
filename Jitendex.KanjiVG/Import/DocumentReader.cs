@@ -22,7 +22,7 @@ using Jitendex.KanjiVG.Import.Readers;
 
 namespace Jitendex.KanjiVG.Import;
 
-internal sealed class DocumentReader(EntryReader entryReader)
+internal sealed class DocumentReader(KanjiReader kanjiReader)
 {
     public async Task<Document> ReadAsync(DirectoryInfo kanjiDirectory)
     {
@@ -30,7 +30,7 @@ internal sealed class DocumentReader(EntryReader entryReader)
 
         await foreach (var (xmlReader, fileName) in EnumerateAsync(kanjiDirectory))
         {
-            await entryReader.ReadAsync(xmlReader, document, fileName);
+            await kanjiReader.ReadAsync(xmlReader, document, fileName);
         }
 
         return document;

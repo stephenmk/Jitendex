@@ -16,17 +16,29 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+using Jitendex.SQLite;
+using Jitendex.KanjiVG.Entities;
+using Jitendex.KanjiVG.Import.Models;
 
-namespace Jitendex.KanjiVG.Entities;
+namespace Jitendex.KanjiVG.Import.Tables;
 
-[Table(nameof(Entry))]
-[PrimaryKey(nameof(UnicodeScalarValue))]
-public sealed class Entry
+internal sealed class KanjiTable : Table<KanjiElement>
 {
-    public required int UnicodeScalarValue { get; set; }
+    protected override string Name => nameof(Kanji);
 
-    [InverseProperty(nameof(Variant.Entry))]
-    public List<Variant> Variants { get; init; } = [];
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Kanji.UnicodeScalarValue)
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(Kanji.UnicodeScalarValue)
+    ];
+
+    protected override SqliteParameter[] Parameters(KanjiElement kanji) =>
+    [
+        new("@0", kanji.UnicodeScalarValue)
+    ];
 }

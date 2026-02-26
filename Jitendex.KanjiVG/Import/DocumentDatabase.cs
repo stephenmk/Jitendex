@@ -23,7 +23,7 @@ namespace Jitendex.KanjiVG.Import;
 
 internal sealed class DocumentDatabase(KanjiVGContext context)
 {
-    private readonly static EntryTable EntryTable = new();
+    private readonly static KanjiTable EntryTable = new();
     private readonly static VariantTable VariantTable = new();
     private readonly static VariantCommentTable VariantCommentTable = new();
     private readonly static ComponentGroupTable ComponentGroupTable = new();
@@ -62,7 +62,7 @@ internal sealed class DocumentDatabase(KanjiVGContext context)
         ComponentPhonsTable.InsertItems(context, document.GetComponentPhons());
         StrokeTypesTable.InsertItems(context, document.GetStrokeTypes());
 
-        EntryTable.InsertItems(context, document.GetEntries());
+        EntryTable.InsertItems(context, document.GetKanjis());
         VariantTable.InsertItems(context, document.Variants.Values);
         VariantCommentTable.InsertItems(context, document.VariantComments.Values);
 

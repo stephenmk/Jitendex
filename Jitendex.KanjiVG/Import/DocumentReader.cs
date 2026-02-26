@@ -28,22 +28,14 @@ internal sealed class DocumentReader(KanjiReader kanjiReader)
     {
         var document = new Document();
 
-        await foreach (var (xmlReader, fileName) in EnumerateAsync(kanjiDirectory))
-        {
-            await kanjiReader.ReadAsync(xmlReader, document, fileName);
-        }
-
-        return document;
-    }
-
-    public async IAsyncEnumerable<(XmlReader, string)> EnumerateAsync(DirectoryInfo kanjiDirectory)
-    {
         foreach (var file in kanjiDirectory.EnumerateFiles())
         {
             await using var stream = file.OpenRead();
             using var xmlReader = XmlReader.Create(stream, XmlReaderSettings);
-            yield return (xmlReader, file.Name);
+            await kanjiReader.ReadAsync(xmlReader, document, file.Name);
         }
+
+        return document;
     }
 
     private static readonly XmlReaderSettings XmlReaderSettings = new()

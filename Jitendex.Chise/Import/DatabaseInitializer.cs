@@ -25,7 +25,7 @@ internal static class DatabaseInitializer
 {
     public static async Task WriteAsync(IdsCollector collector)
     {
-        await using var context = new Context();
+        await using var context = new ChiseContext();
 
         // Delete and recreate the database file.
         await context.RecreateDatabaseAsync();

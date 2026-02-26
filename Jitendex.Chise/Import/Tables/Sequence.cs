@@ -37,7 +37,7 @@ internal static class SequenceData
         ( {P1} );
         """;
 
-    public static async Task InsertSequencesAsync(this Context db, IEnumerable<Sequence> sequences)
+    public static async Task InsertSequencesAsync(this ChiseContext db, IEnumerable<Sequence> sequences)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;

@@ -37,7 +37,7 @@ internal static class ComponentPositionData
         ( {P1} );
         """;
 
-    public static async Task InsertComponentPositionsAsync(this Context db, IEnumerable<ComponentPosition> positions)
+    public static async Task InsertComponentPositionsAsync(this ChiseContext db, IEnumerable<ComponentPosition> positions)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;

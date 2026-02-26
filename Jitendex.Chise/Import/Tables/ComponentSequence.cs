@@ -41,7 +41,7 @@ internal static class ComponentSequenceData
         ( {P1} ,  {P2} ,  {P3} );
         """;
 
-    public static async Task InsertComponentSequencesAsync(this Context db, IEnumerable<Component> components)
+    public static async Task InsertComponentSequencesAsync(this ChiseContext db, IEnumerable<Component> components)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;

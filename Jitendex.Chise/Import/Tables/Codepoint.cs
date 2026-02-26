@@ -44,7 +44,7 @@ internal static class CodepointData
         ( {P1} ,  {P2} ,  {P3} ,  {P4} );
         """;
 
-    public static async Task InsertCodepointsAsync(this Context db, IEnumerable<Codepoint> codepoints)
+    public static async Task InsertCodepointsAsync(this ChiseContext db, IEnumerable<Codepoint> codepoints)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;

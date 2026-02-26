@@ -39,7 +39,7 @@ internal static class ComponentData
         ( {P1} ,  {P2} );
         """;
 
-    public static async Task InsertComponentsAsync(this Context db, IEnumerable<Component> components)
+    public static async Task InsertComponentsAsync(this ChiseContext db, IEnumerable<Component> components)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;

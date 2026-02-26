@@ -22,7 +22,7 @@ using Jitendex.SQLite;
 
 namespace Jitendex.Chise;
 
-public class Context() : SqliteContext(DatabaseFile.ChiseIds)
+public class ChiseContext() : SqliteContext(DatabaseFile.ChiseIds)
 {
     public DbSet<Codepoint> Codepoints { get; } = null!;
     public DbSet<Component> Components { get; } = null!;

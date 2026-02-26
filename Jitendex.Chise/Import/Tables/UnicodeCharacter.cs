@@ -39,7 +39,7 @@ internal static class UnicodeCharacterData
         ( {P1} ,  {P2} );
         """;
 
-    public static async Task InsertUnicodeCharactersAsync(this Context db, IEnumerable<UnicodeCharacter> characters)
+    public static async Task InsertUnicodeCharactersAsync(this ChiseContext db, IEnumerable<UnicodeCharacter> characters)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;

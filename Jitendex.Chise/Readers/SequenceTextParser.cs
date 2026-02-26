@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
 using System.Text;
 using Jitendex.Chise.Models;
 using static Jitendex.Chise.Models.ComponentPositionId;
@@ -164,7 +163,7 @@ internal static class SequenceTextParser
             ? NewSequence(idc, arguments, positionIds)
             : null;
 
-    private static ImmutableArray<ComponentPositionId> IdcToPositionIds(ReadOnlySpan<char> idc) => idc switch
+    private static ReadOnlySpan<ComponentPositionId> IdcToPositionIds(ReadOnlySpan<char> idc) => idc switch
     {
         ['⿰'] => [LeftHalf, RightHalf],
         ['⿱'] => [TopHalf, BottomHalf],
@@ -186,7 +185,7 @@ internal static class SequenceTextParser
         _ => [],
     };
 
-    private static Sequence NewSequence(ReadOnlySpan<char> idc, Stack<Codepoint> arguments, in ImmutableArray<ComponentPositionId> positionIds)
+    private static Sequence NewSequence(ReadOnlySpan<char> idc, Stack<Codepoint> arguments, ReadOnlySpan<ComponentPositionId> positionIds)
     {
         var textBuilder = new StringBuilder(new string(idc));
         var components = new List<Component>(positionIds.Length);

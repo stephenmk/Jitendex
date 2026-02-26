@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Chise.Models;
 
-public enum ComponentPositionId
+public enum ComponentPositionId : byte
 {
     LeftHalf,
     RightHalf,

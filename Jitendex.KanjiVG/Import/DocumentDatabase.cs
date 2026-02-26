@@ -51,8 +51,6 @@ internal sealed class DocumentDatabase(KanjiVGContext context)
 
         using var transaction = context.Database.BeginTransaction();
 
-        // context.ExecuteDeferForeignKeysPragma();
-
         VariantTypesTable.InsertItems(context, document.GetVariantTypes());
         CommentsTable.InsertItems(context, document.GetComments());
         ComponentGroupStylesTable.InsertItems(context, document.GetComponentGroupStyles());

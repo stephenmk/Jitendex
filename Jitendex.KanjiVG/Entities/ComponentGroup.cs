@@ -25,18 +25,19 @@ namespace Jitendex.KanjiVG.Entities;
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId))]
 public sealed class ComponentGroup
 {
-    public required int UnicodeScalarValue { get; set; }
-    public required int VariantTypeId { get; set; }
+    public required int UnicodeScalarValue { get; init; }
+    public required int VariantTypeId { get; init; }
     public required int StyleId { get; set; }
+    public required string IdAttribute { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
-    public required Variant Variant { get; set; }
+    public required Variant Variant { get; init; }
 
     [ForeignKey(nameof(StyleId))]
     public required ComponentGroupStyle Style { get; set; }
 
     [InverseProperty(nameof(Component.Group))]
-    public List<Component> Components { get; set; } = [];
+    public List<Component> Components { get; init; } = [];
 
     public string XmlIdAttribute()
         => $"kvg:StrokePaths_{Variant.FileNameFormat()}";

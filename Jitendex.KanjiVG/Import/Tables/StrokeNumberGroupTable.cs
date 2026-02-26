@@ -32,6 +32,7 @@ internal sealed class StrokeNumberGroupTable : Table<StrokeNumberGroupElement>
         nameof(StrokeNumberGroup.UnicodeScalarValue),
         nameof(StrokeNumberGroup.VariantTypeId),
         nameof(StrokeNumberGroup.StyleId),
+        nameof(StrokeNumberGroup.IdAttribute),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
@@ -45,5 +46,6 @@ internal sealed class StrokeNumberGroupTable : Table<StrokeNumberGroupElement>
         new("@0", group.UnicodeScalarValue),
         new("@1", group.VariantTypeId),
         new("@2", group.StyleId),
+        new("@3", group.IdAttribute),
     ];
 }

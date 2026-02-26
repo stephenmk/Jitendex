@@ -32,6 +32,7 @@ internal sealed class ComponentGroupTable : Table<ComponentGroupElement>
         nameof(ComponentGroup.UnicodeScalarValue),
         nameof(ComponentGroup.VariantTypeId),
         nameof(ComponentGroup.StyleId),
+        nameof(ComponentGroup.IdAttribute),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
@@ -45,5 +46,6 @@ internal sealed class ComponentGroupTable : Table<ComponentGroupElement>
         new("@0", group.UnicodeScalarValue),
         new("@1", group.VariantTypeId),
         new("@2", group.StyleId),
+        new("@3", group.IdAttribute),
     ];
 }

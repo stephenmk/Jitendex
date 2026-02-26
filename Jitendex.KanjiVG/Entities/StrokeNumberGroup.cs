@@ -28,6 +28,7 @@ public sealed class StrokeNumberGroup
     public required int UnicodeScalarValue { get; init; }
     public required int VariantTypeId { get; init; }
     public required int StyleId { get; set; }
+    public required string IdAttribute { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
     public required Variant Variant { get; init; }

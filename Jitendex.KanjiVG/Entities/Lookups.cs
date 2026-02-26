@@ -22,16 +22,16 @@ namespace Jitendex.KanjiVG.Entities;
 
 public interface ILookup
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
     public string Text { get; set; }
 }
 
 [Table(nameof(VariantType))]
 public sealed class VariantType : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<Variant> Variants { get; } = [];
+    public List<Variant> Variants { get; init; } = [];
     public string FileNameFormat()
         => Text.Length == 0 ? string.Empty : $"-{Text}";
 }
@@ -39,71 +39,71 @@ public sealed class VariantType : ILookup
 [Table(nameof(Comment))]
 public sealed class Comment : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<VariantComment> VariantCommments { get; } = [];
+    public List<VariantComment> VariantCommments { get; init; } = [];
 }
 
 [Table(nameof(ComponentGroupStyle))]
 public sealed class ComponentGroupStyle : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<ComponentGroup> Groups { get; } = [];
+    public List<ComponentGroup> Groups { get; init; } = [];
 }
 
 [Table(nameof(StrokeNumberGroupStyle))]
 public sealed class StrokeNumberGroupStyle : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<StrokeNumberGroup> Groups { get; } = [];
+    public List<StrokeNumberGroup> Groups { get; init; } = [];
 }
 
 [Table(nameof(ComponentCharacter))]
 public sealed class ComponentCharacter : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<Component> Components { get; } = [];
+    public List<Component> Components { get; init; } = [];
 }
 
 [Table(nameof(ComponentOriginal))]
 public sealed class ComponentOriginal : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<Component> Components { get; } = [];
+    public List<Component> Components { get; init; } = [];
 }
 
 [Table(nameof(ComponentPosition))]
 public sealed class ComponentPosition : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<Component> Components { get; } = [];
+    public List<Component> Components { get; init; } = [];
 }
 
 [Table(nameof(ComponentRadical))]
 public sealed class ComponentRadical : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<Component> Components { get; } = [];
+    public List<Component> Components { get; init; } = [];
 }
 
 [Table(nameof(ComponentPhon))]
 public sealed class ComponentPhon : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<Component> Components { get; } = [];
+    public List<Component> Components { get; init; } = [];
 }
 
 [Table(nameof(StrokeType))]
 public sealed class StrokeType : ILookup
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
     public required string Text { get; set; }
-    public List<Stroke> Strokes { get; } = [];
+    public List<Stroke> Strokes { get; init; } = [];
 }

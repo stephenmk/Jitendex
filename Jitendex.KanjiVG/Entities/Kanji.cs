@@ -25,7 +25,7 @@ namespace Jitendex.KanjiVG.Entities;
 [PrimaryKey(nameof(UnicodeScalarValue))]
 public sealed class Kanji
 {
-    public required int UnicodeScalarValue { get; set; }
+    public required int UnicodeScalarValue { get; init; }
 
     [InverseProperty(nameof(Variant.Kanji))]
     public List<Variant> Variants { get; init; } = [];

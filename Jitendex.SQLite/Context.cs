@@ -50,11 +50,6 @@ public abstract class SqliteContext : DbContext
         Database.EnsureDeleted();
         Database.EnsureCreated();
     }
-    public async Task RecreateDatabaseAsync()
-    {
-        await Database.EnsureDeletedAsync();
-        await Database.EnsureCreatedAsync();
-    }
 
     public long GetLastInsertRowId()
     {
@@ -71,9 +66,42 @@ public abstract class SqliteContext : DbContext
     }
 
     /// <summary>
-    /// For faster importing into a new db file, write data to memory rather than to the disk.
+    /// Wait until all data is imported before checking foreign key constraints.
     /// </summary>
-    /// <remarks>See: https://www.sqlite.org/pragma.html</remarks>
+    public void ExecuteDeferForeignKeysPragma()
+        => Database.ExecuteSqlRaw("PRAGMA defer_foreign_keys = ON;");
+
+    /// <summary>
+    /// Rebuild the database file compactly.
+    /// </summary>
+    public void ExecuteVacuum()
+        => Database.ExecuteSqlRaw("VACUUM;");
+
+#pragma warning disable EF1002
+
+    public void AttachDatabase(DatabaseFile databaseFile)
+        => Database.ExecuteSqlRaw($"ATTACH DATABASE '{GetDataSource(databaseFile)}' AS '{databaseFile}';");
+
+    public void DetachDatabase(DatabaseFile databaseFile)
+        => Database.ExecuteSqlRaw($"DETACH DATABASE '{databaseFile}';");
+
+#pragma warning restore EF1002
+
+    private static string GetDataSource(DatabaseFile databaseFile)
+        => Path.Join
+        (
+            AppDirectory.Cache.Get(SqliteDirectory).FullName,
+            databaseFile.ToFilename()
+        );
+
+    [Obsolete]
+    public async Task RecreateDatabaseAsync()
+    {
+        await Database.EnsureDeletedAsync();
+        await Database.EnsureCreatedAsync();
+    }
+
+    [Obsolete]
     public async Task ExecuteFastNewDatabasePragmaAsync()
         => await Database.ExecuteSqlRawAsync
         (
@@ -86,31 +114,10 @@ public abstract class SqliteContext : DbContext
             """
         );
 
-    /// <summary>
-    /// Wait until all data is imported before checking foreign key constraints.
-    /// </summary>
-    public void ExecuteDeferForeignKeysPragma()
-        => Database.ExecuteSqlRaw("PRAGMA defer_foreign_keys = ON;");
+    [Obsolete]
     public async Task ExecuteDeferForeignKeysPragmaAsync()
         => await Database.ExecuteSqlRawAsync("PRAGMA defer_foreign_keys = ON;");
 
-    /// <summary>
-    /// Rebuild the database file compactly.
-    /// </summary>
-    public void ExecuteVacuum() => Database.ExecuteSqlRaw("VACUUM;");
+    [Obsolete]
     public async Task ExecuteVacuumAsync() => await Database.ExecuteSqlRawAsync("VACUUM;");
-
-#pragma warning disable EF1002
-    public void AttachDatabase(DatabaseFile databaseFile)
-        => Database.ExecuteSqlRaw($"ATTACH DATABASE '{GetDataSource(databaseFile)}' AS '{databaseFile}';");
-    public void DetachDatabase(DatabaseFile databaseFile)
-        => Database.ExecuteSqlRaw($"DETACH DATABASE '{databaseFile}';");
-#pragma warning restore EF1002
-
-    private static string GetDataSource(DatabaseFile databaseFile)
-        => Path.Join
-        (
-            AppDirectory.Cache.Get(SqliteDirectory).FullName,
-            databaseFile.ToFilename()
-        );
 }

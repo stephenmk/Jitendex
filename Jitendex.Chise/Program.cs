@@ -50,10 +50,10 @@ public class Program
         var chiseIdsDir = parseResult.GetRequiredValue(chiseIdsDirectoryArgument);
 
         var logger = new Logger();
-        var reader = new ChiseIdsReader(logger);
+        var reader = new DocumentReader(logger);
         var collector = reader.Read(chiseIdsDir);
 
-        await DatabaseInitializer.WriteAsync(collector);
+        await DocumentDatabase.WriteAsync(collector);
 
         return 0;
     }

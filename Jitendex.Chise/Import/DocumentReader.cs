@@ -23,7 +23,7 @@ using static Jitendex.Chise.Import.Parsing.UnicodeConverter;
 
 namespace Jitendex.Chise.Import;
 
-internal class ChiseIdsReader(Logger logger)
+internal class DocumentReader(Logger logger)
 {
     public Document Read(DirectoryInfo chiseIdsDir)
     {

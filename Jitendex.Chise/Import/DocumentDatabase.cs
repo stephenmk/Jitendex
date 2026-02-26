@@ -21,7 +21,7 @@ using Jitendex.Chise.Import.Tables;
 
 namespace Jitendex.Chise.Import;
 
-internal static class DatabaseInitializer
+internal static class DocumentDatabase
 {
     public static async Task WriteAsync(Document collector)
     {

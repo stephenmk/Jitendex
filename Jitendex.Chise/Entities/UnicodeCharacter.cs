@@ -18,29 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace Jitendex.Chise.Models;
+namespace Jitendex.Chise.Entities;
 
-[Table(nameof(Codepoint))]
-public class Codepoint
+[Table(nameof(UnicodeCharacter))]
+public class UnicodeCharacter
 {
     [Key]
-    public required string Id { get; init; }
-    public required int? UnicodeScalarValue { get; init; }
-    public required string? SequenceText { get; init; }
-    public required string? AltSequenceText { get; init; }
+    public required int ScalarValue { get; init; }
+    public required string CodepointId { get; init; }
+    public Rune Character() => new(ScalarValue);
 
-    [ForeignKey(nameof(UnicodeScalarValue))]
-    public required UnicodeCharacter? UnicodeCharacter { get; init; }
-
-    [ForeignKey(nameof(SequenceText))]
-    public required Sequence? Sequence { get; init; }
-
-    [ForeignKey(nameof(AltSequenceText))]
-    public required Sequence? AltSequence { get; init; }
-
-    [InverseProperty(nameof(Component.Codepoint))]
-    public List<Component> Components { get; } = [];
-
-    public string ToCharacter() => UnicodeCharacter?.Character().ToString() ?? Id;
+    [ForeignKey(nameof(CodepointId))]
+    public Codepoint Codepoint { get; } = null!;
 }

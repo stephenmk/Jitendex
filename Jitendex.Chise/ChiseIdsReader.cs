@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Chise.Models;
+using Jitendex.Chise.Entities;
 using Jitendex.Chise.Readers;
 using static Jitendex.Chise.Readers.UnicodeConverter;
 

@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Chise.Models;
+using Jitendex.Chise.Entities;
 using Jitendex.SQLite;
 
 namespace Jitendex.Chise;

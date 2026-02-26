@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Text;
-using Jitendex.Chise.Models;
-using static Jitendex.Chise.Models.ComponentPositionId;
+using Jitendex.Chise.Entities;
+using static Jitendex.Chise.Entities.ComponentPositionId;
 using static Jitendex.Chise.Readers.UnicodeConverter;
 
 namespace Jitendex.Chise.Readers;

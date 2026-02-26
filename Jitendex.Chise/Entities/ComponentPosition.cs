@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Jitendex.Chise.Models.ComponentPositionId;
+using static Jitendex.Chise.Entities.ComponentPositionId;
 
-namespace Jitendex.Chise.Models;
+namespace Jitendex.Chise.Entities;
 
 [Table(nameof(ComponentPosition))]
 public class ComponentPosition

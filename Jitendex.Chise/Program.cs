@@ -22,7 +22,7 @@ namespace Jitendex.Chise;
 
 public class Program
 {
-    public static async Task Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
         var chiseIdsDirectoryArgument = new Argument<DirectoryInfo>("chise-ids-dir")
         {
@@ -35,13 +35,15 @@ public class Program
         };
 
         var parseResult = rootCommand.Parse(args);
+
+        foreach (var parseError in parseResult.Errors)
+        {
+            Console.Error.WriteLine(parseError.Message);
+        }
+
         if (parseResult.Errors.Count > 0)
         {
-            foreach (var parseError in parseResult.Errors)
-            {
-                Console.Error.WriteLine(parseError.Message);
-            }
-            return;
+            return 1;
         }
 
         var chiseIdsDir = parseResult.GetRequiredValue(chiseIdsDirectoryArgument);
@@ -50,5 +52,7 @@ public class Program
         var collector = reader.Read(chiseIdsDir);
 
         await DatabaseInitializer.WriteAsync(collector);
+
+        return 0;
     }
 }

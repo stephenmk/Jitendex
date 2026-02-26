@@ -22,7 +22,7 @@ using Jitendex.Chise.Entities;
 
 namespace Jitendex.Chise.Import.Tables;
 
-internal static class ComponentData
+internal static class ComponentTable
 {
     // Column names
     private const string C1 = nameof(Component.CodepointId);

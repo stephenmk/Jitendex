@@ -22,31 +22,34 @@ using Jitendex.Chise.Entities;
 
 namespace Jitendex.Chise.Import.Tables;
 
-internal static class ComponentPositionData
+internal static class UnicodeCharacterTable
 {
     // Column names
-    private const string C1 = nameof(ComponentPosition.Id);
+    private const string C1 = nameof(UnicodeCharacter.ScalarValue);
+    private const string C2 = nameof(UnicodeCharacter.CodepointId);
 
     // Parameter names
     private const string P1 = $"@{C1}";
+    private const string P2 = $"@{C2}";
 
     private const string InsertSql =
         $"""
-        INSERT INTO "{nameof(ComponentPosition)}"
-        ("{C1}") VALUES
-        ( {P1} );
+        INSERT INTO "{nameof(UnicodeCharacter)}"
+        ("{C1}", "{C2}") VALUES
+        ( {P1} ,  {P2} );
         """;
 
-    public static async Task InsertComponentPositionsAsync(this ChiseContext db, IEnumerable<ComponentPosition> positions)
+    public static async Task InsertUnicodeCharactersAsync(this ChiseContext db, IEnumerable<UnicodeCharacter> characters)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;
 
-        foreach (var position in positions)
+        foreach (var character in characters)
         {
             command.Parameters.AddRange(new SqliteParameter[]
             {
-                new(P1, position.Id),
+                new(P1, character.ScalarValue),
+                new(P2, character.CodepointId),
             });
 
             await command.ExecuteNonQueryAsync();

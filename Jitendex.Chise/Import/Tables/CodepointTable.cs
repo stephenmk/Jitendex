@@ -18,48 +18,49 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.SQLite;
 using Jitendex.Chise.Entities;
 
 namespace Jitendex.Chise.Import.Tables;
 
-internal static class ComponentSequenceData
+internal static class CodepointTable
 {
     // Column names
-    private const string C1 = $"{nameof(Component.Sequences)}{nameof(Sequence.Text)}";
-    private const string C2 = $"{nameof(Sequence.Components)}{nameof(Component.CodepointId)}";
-    private const string C3 = $"{nameof(Sequence.Components)}{nameof(Component.PositionId)}";
+    private const string C1 = nameof(Codepoint.Id);
+    private const string C2 = nameof(Codepoint.UnicodeScalarValue);
+    private const string C3 = nameof(Codepoint.SequenceText);
+    private const string C4 = nameof(Codepoint.AltSequenceText);
 
     // Parameter names
     private const string P1 = $"@{C1}";
     private const string P2 = $"@{C2}";
     private const string P3 = $"@{C3}";
+    private const string P4 = $"@{C4}";
 
     private const string InsertSql =
         $"""
-        INSERT INTO "{nameof(Component)}{nameof(Sequence)}"
-        ("{C1}", "{C2}", "{C3}") VALUES
-        ( {P1} ,  {P2} ,  {P3} );
+        INSERT INTO "{nameof(Codepoint)}"
+        ("{C1}", "{C2}", "{C3}", "{C4}") VALUES
+        ( {P1} ,  {P2} ,  {P3} ,  {P4} );
         """;
 
-    public static async Task InsertComponentSequencesAsync(this ChiseContext db, IEnumerable<Component> components)
+    public static async Task InsertCodepointsAsync(this ChiseContext db, IEnumerable<Codepoint> codepoints)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;
 
-        foreach (var component in components)
+        foreach (var codepoint in codepoints)
         {
-            foreach (var sequence in component.Sequences)
+            command.Parameters.AddRange(new SqliteParameter[]
             {
-                command.Parameters.AddRange(new SqliteParameter[]
-                {
-                    new(P1, sequence.Text),
-                    new(P2, component.CodepointId),
-                    new(P3, component.PositionId),
-                });
+                new(P1, codepoint.Id),
+                new(P2, codepoint.UnicodeScalarValue.Nullable()),
+                new(P3, codepoint.SequenceText.Nullable()),
+                new(P4, codepoint.AltSequenceText.Nullable()),
+            });
 
-                await command.ExecuteNonQueryAsync();
-                command.Parameters.Clear();
-            }
+            await command.ExecuteNonQueryAsync();
+            command.Parameters.Clear();
         }
     }
 }

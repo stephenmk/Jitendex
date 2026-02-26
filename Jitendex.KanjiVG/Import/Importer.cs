@@ -20,9 +20,9 @@ namespace Jitendex.KanjiVG.Import;
 
 internal sealed class Importer(DocumentReader reader, DocumentDatabase database)
 {
-    public async Task ImportAsync(FileInfo kanjivgFile)
+    public async Task ImportAsync(DirectoryInfo kanjiDirectory)
     {
-        var document = await reader.ReadAsync(kanjivgFile);
+        var document = await reader.ReadAsync(kanjiDirectory);
         database.Initialize(document);
     }
 }

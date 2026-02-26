@@ -25,14 +25,14 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var kanjivgFileArgument = new Argument<FileInfo>("kanjivg-file")
+        var kanjiDirectoryArgument = new Argument<DirectoryInfo>("kanjivg-kanji-directory")
         {
-            Description = "Path to a Brotli-compressed tar of KanjiVG files",
+            Description = "Path to KanjiVG kanji directory",
         };
 
         var rootCommand = new RootCommand("Jitendex.KanjiVG: Import KanjiVG data")
         {
-            kanjivgFileArgument
+            kanjiDirectoryArgument
         };
 
         var parseResult = rootCommand.Parse(args);
@@ -47,10 +47,10 @@ public class Program
             return 1;
         }
 
-        var kanjivgFile = parseResult.GetRequiredValue(kanjivgFileArgument);
+        var kanjiDirectory = parseResult.GetRequiredValue(kanjiDirectoryArgument);
 
         var importer = ImporterProvider.GetImporter();
-        await importer.ImportAsync(kanjivgFile);
+        await importer.ImportAsync(kanjiDirectory);
 
         return 0;
     }

@@ -16,26 +16,19 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Formats.Tar;
-using System.IO.Compression;
 using System.Xml;
-using Microsoft.Extensions.Logging;
 using Jitendex.KanjiVG.Import.Models;
 using Jitendex.KanjiVG.Import.Readers;
 
 namespace Jitendex.KanjiVG.Import;
 
-internal sealed class DocumentReader
-(
-    ILogger<DocumentReader> logger,
-    EntryReader entryReader
-)
+internal sealed class DocumentReader(EntryReader entryReader)
 {
-    public async Task<Document> ReadAsync(FileInfo kanjivgFile)
+    public async Task<Document> ReadAsync(DirectoryInfo kanjiDirectory)
     {
         var document = new Document();
 
-        await foreach (var (xmlReader, fileName) in EnumerateAsync(kanjivgFile))
+        await foreach (var (xmlReader, fileName) in EnumerateAsync(kanjiDirectory))
         {
             await entryReader.ReadAsync(xmlReader, document, fileName);
         }
@@ -43,21 +36,13 @@ internal sealed class DocumentReader
         return document;
     }
 
-    public async IAsyncEnumerable<(XmlReader Reader, string Name)> EnumerateAsync(FileInfo kanjivgFile)
+    public async IAsyncEnumerable<(XmlReader, string)> EnumerateAsync(DirectoryInfo kanjiDirectory)
     {
-        await using FileStream fs = new(kanjivgFile.FullName, FileMode.Open, FileAccess.Read);
-        await using BrotliStream br = new(fs, CompressionMode.Decompress);
-        await using TarReader tarReader = new(br);
-
-        while (await tarReader.GetNextEntryAsync() is TarEntry entry)
+        foreach (var file in kanjiDirectory.EnumerateFiles())
         {
-            if (entry.DataStream is null)
-            {
-                logger.LogWarning("Data stream for file {Name} is empty", entry.Name);
-                continue;
-            }
-            using var xmlReader = XmlReader.Create(entry.DataStream, XmlReaderSettings);
-            yield return (xmlReader, entry.Name);
+            await using var stream = file.OpenRead();
+            using var xmlReader = XmlReader.Create(stream, XmlReaderSettings);
+            yield return (xmlReader, file.Name);
         }
     }
 

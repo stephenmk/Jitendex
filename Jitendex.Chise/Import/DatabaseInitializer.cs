@@ -16,14 +16,14 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Chise.Import.Parsing;
+using Jitendex.Chise.Import.Models;
 using Jitendex.Chise.Import.Tables;
 
 namespace Jitendex.Chise.Import;
 
 internal static class DatabaseInitializer
 {
-    public static async Task WriteAsync(IdsCollector collector)
+    public static async Task WriteAsync(Document collector)
     {
         await using var context = new ChiseContext();
 

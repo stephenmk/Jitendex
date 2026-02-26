@@ -18,21 +18,15 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Chise.Entities;
 
-namespace Jitendex.Chise.Import.Parsing;
+namespace Jitendex.Chise.Import.Models;
 
-internal class IdsCollector
+internal sealed class Document
 {
-    private readonly Logger _logger;
     public Dictionary<string, Codepoint> Codepoints { get; } = [];
     public Dictionary<(string CodepointId, ComponentPositionId PositionId), Component> Components = [];
     public Dictionary<ComponentPositionId, ComponentPosition> ComponentPositions = [];
     public Dictionary<string, Sequence> Sequences { get; } = [];
     public Dictionary<int, UnicodeCharacter> UnicodeCharacters { get; } = [];
-
-    public IdsCollector(Logger logger)
-    {
-        _logger = logger;
-    }
 
     public void AddCodepoint(Codepoint codepoint, bool topLevel = true)
     {

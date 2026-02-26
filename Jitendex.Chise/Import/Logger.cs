@@ -17,8 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using static Jitendex.Chise.Import.Parsing.ChiseError;
+using Jitendex.Chise.Import.Parsing;
 
-namespace Jitendex.Chise.Import.Parsing;
+namespace Jitendex.Chise.Import;
 
 internal class Logger
 {

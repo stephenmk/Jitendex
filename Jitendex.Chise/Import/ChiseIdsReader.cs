@@ -17,23 +17,17 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Chise.Entities;
+using Jitendex.Chise.Import.Models;
 using Jitendex.Chise.Import.Parsing;
 using static Jitendex.Chise.Import.Parsing.UnicodeConverter;
 
 namespace Jitendex.Chise.Import;
 
-internal class ChiseIdsReader
+internal class ChiseIdsReader(Logger logger)
 {
-    private readonly Logger _logger;
-
-    public ChiseIdsReader()
+    public Document Read(DirectoryInfo chiseIdsDir)
     {
-        _logger = new Logger();
-    }
-
-    public IdsCollector Read(DirectoryInfo chiseIdsDir)
-    {
-        var IdsCollector = new IdsCollector(_logger);
+        var IdsCollector = new Document();
         foreach (var file in chiseIdsDir.EnumerateFiles("*.txt"))
         {
             foreach (var codepoint in ReadFile(file))
@@ -41,7 +35,7 @@ internal class ChiseIdsReader
                 IdsCollector.AddCodepoint(codepoint);
             }
         }
-        _logger.WriteLogs();
+        logger.WriteLogs();
         return IdsCollector;
     }
 
@@ -61,7 +55,7 @@ internal class ChiseIdsReader
 
             var lineElements = new LineElements(file.Name, lineNumber, line);
 
-            _logger.LogLineErrors(lineElements);
+            logger.LogLineErrors(lineElements);
 
             if (lineElements.InsufficientElementsError)
             {
@@ -80,8 +74,8 @@ internal class ChiseIdsReader
         var unicodeCharacter = MakeUnicodeCharacter(lineElements);
 
         var id = unicodeCharacter is null
-                 ? new string(lineElements.Codepoint)
-                 : unicodeCharacter.CodepointId;
+            ? new string(lineElements.Codepoint)
+            : unicodeCharacter.CodepointId;
 
         var sequence = MakeSequence(lineElements);
         var altSequence = MakeAltSequence(lineElements);
@@ -106,14 +100,14 @@ internal class ChiseIdsReader
 
     private UnicodeCharacter? MakeUnicodeCharacter(in LineElements lineElements)
     {
-        if (!lineElements.Codepoint.StartsWith("&U"))
+        if (!lineElements.Codepoint.StartsWith("&U", StringComparison.Ordinal))
         {
             return null;
         }
 
         if (ScalarValue(lineElements.Character) is not int scalarValue)
         {
-            _logger.LogInvalidUnicodeCodepoint(lineElements);
+            logger.LogInvalidUnicodeCodepoint(lineElements);
             return null;
         }
 
@@ -124,7 +118,7 @@ internal class ChiseIdsReader
             var shortId = GetShortCodepointId(scalarValue);
             if (!shortId.SequenceEqual(lineElements.Codepoint))
             {
-                _logger.LogUnicodeCharacterInequality(lineElements);
+                logger.LogUnicodeCharacterInequality(lineElements);
             }
         }
 
@@ -145,13 +139,13 @@ internal class ChiseIdsReader
         }
         catch (InvalidOperationException)
         {
-            _logger.LogInsufficientIdsArgs(lineElements);
+            logger.LogInsufficientIdsArgs(lineElements);
             return null;
         }
 
         if (sequenceArguments.Count != 1)
         {
-            _logger.LogInsufficientIdsOps(lineElements);
+            logger.LogInsufficientIdsOps(lineElements);
             return null;
         }
 
@@ -173,13 +167,13 @@ internal class ChiseIdsReader
         }
         catch (InvalidOperationException)
         {
-            _logger.LogInsufficientAltIdsArgs(lineElements);
+            logger.LogInsufficientAltIdsArgs(lineElements);
             return null;
         }
 
         if (altSequenceArguments.Count != 1)
         {
-            _logger.LogInsufficientAltIdsOps(lineElements);
+            logger.LogInsufficientAltIdsOps(lineElements);
             return null;
         }
 

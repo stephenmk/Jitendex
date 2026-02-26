@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Chise.Entities;
 using Jitendex.SQLite;
+using Jitendex.Chise.Entities;
 
 namespace Jitendex.Chise.Import.Tables;
 

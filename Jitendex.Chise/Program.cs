@@ -49,7 +49,8 @@ public class Program
 
         var chiseIdsDir = parseResult.GetRequiredValue(chiseIdsDirectoryArgument);
 
-        var reader = new ChiseIdsReader();
+        var logger = new Logger();
+        var reader = new ChiseIdsReader(logger);
         var collector = reader.Read(chiseIdsDir);
 
         await DatabaseInitializer.WriteAsync(collector);

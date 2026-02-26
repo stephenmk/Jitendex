@@ -17,43 +17,45 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.SQLite;
 using Jitendex.KanjiVG.Entities;
+using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Tables;
 
-internal static class LookupTable
+internal sealed class LookupTable<T> : Table<T> where T : ILookupElement
 {
-    // Column names
-    private const string C1 = nameof(ILookup.Id);
-    private const string C2 = nameof(ILookup.Text);
+    protected override string Name => ElementNameToEntityName(typeof(T).Name);
 
-    // Parameter names
-    private const string P1 = $"@{C1}";
-    private const string P2 = $"@{C2}";
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(ILookup.Id),
+        nameof(ILookup.Text),
+    ];
 
-    public static async Task InsertLookupsAsync<T>(this KanjiVGContext db, IEnumerable<T> lookups) where T : ILookup
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(ILookup.Id)
+    ];
+
+    protected override SqliteParameter[] Parameters(T lookup) =>
+    [
+        new("@0", lookup.Id),
+        new("@1", lookup.Text),
+    ];
+
+    private static string ElementNameToEntityName(string elementName) => elementName switch
     {
-        var InsertSql =
-            $"""
-            INSERT INTO "{typeof(T).Name}"
-            ("{C1}", "{C2}") VALUES
-            ( {P1} ,  {P2} );
-            """;
-
-        await using var command = db.Database.GetDbConnection().CreateCommand();
-        command.CommandText = InsertSql;
-
-        foreach (var lookup in lookups)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new(P1, lookup.Id),
-                new(P2, lookup.Text),
-            });
-
-            await command.ExecuteNonQueryAsync();
-            command.Parameters.Clear();
-        }
-    }
+        nameof(VariantTypeElement)            => nameof(VariantType),
+        nameof(CommentElement)                => nameof(Comment),
+        nameof(ComponentGroupStyleElement)    => nameof(ComponentGroupStyle),
+        nameof(StrokeNumberGroupStyleElement) => nameof(StrokeNumberGroupStyle),
+        nameof(ComponentCharacterElement)     => nameof(ComponentCharacter),
+        nameof(ComponentOriginalElement)      => nameof(ComponentOriginal),
+        nameof(ComponentPositionElement)      => nameof(ComponentPosition),
+        nameof(ComponentRadicalElement)       => nameof(ComponentRadical),
+        nameof(ComponentPhonElement)          => nameof(ComponentPhon),
+        nameof(StrokeTypeElement)             => nameof(StrokeType),
+        _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
+    };
 }

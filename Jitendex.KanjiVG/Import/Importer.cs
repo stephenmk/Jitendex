@@ -16,19 +16,13 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
-using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
+namespace Jitendex.KanjiVG.Import;
 
-namespace Jitendex.KanjiVG.Import.Readers.Lookups;
-
-internal partial class ComponentCharacterCache(ILogger<ComponentCharacterCache> logger) : LookupCache<ComponentCharacter>(logger)
+internal sealed class Importer(DocumentReader reader, DocumentDatabase database)
 {
-    protected override ComponentCharacter NewLookup(int id, string text) => new()
+    public async Task ImportAsync(FileInfo kanjivgFile)
     {
-        Id = id,
-        Text = text,
-    };
-
-    protected override ImmutableArray<string> KnownLookups() => [];
+        var document = await reader.ReadAsync(kanjivgFile);
+        database.Initialize(document);
+    }
 }

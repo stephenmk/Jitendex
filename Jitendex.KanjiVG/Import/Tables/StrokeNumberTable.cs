@@ -17,52 +17,38 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.SQLite;
 using Jitendex.KanjiVG.Entities;
+using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Tables;
 
-internal static class StrokeNumberTable
+internal sealed class StrokeNumberTable : Table<StrokeNumberElement>
 {
-    // Column names
-    private const string C1 = nameof(StrokeNumber.UnicodeScalarValue);
-    private const string C2 = nameof(StrokeNumber.VariantTypeId);
-    private const string C3 = nameof(StrokeNumber.Number);
-    private const string C4 = nameof(StrokeNumber.TranslateX);
-    private const string C5 = nameof(StrokeNumber.TranslateY);
+    protected override string Name => nameof(StrokeNumber);
 
-    // Parameter names
-    private const string P1 = $"@{C1}";
-    private const string P2 = $"@{C2}";
-    private const string P3 = $"@{C3}";
-    private const string P4 = $"@{C4}";
-    private const string P5 = $"@{C5}";
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(StrokeNumber.UnicodeScalarValue),
+        nameof(StrokeNumber.VariantTypeId),
+        nameof(StrokeNumber.Order),
+        nameof(StrokeNumber.Number),
+        nameof(StrokeNumber.TransformAttribute),
+    ];
 
-    private const string InsertSql =
-        $"""
-        INSERT INTO "{nameof(StrokeNumber)}"
-        ("{C1}", "{C2}", "{C3}", "{C4}", "{C5}") VALUES
-        ( {P1} ,  {P2} ,  {P3} ,  {P4} ,  {P5} );
-        """;
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(StrokeNumber.UnicodeScalarValue),
+        nameof(StrokeNumber.VariantTypeId),
+        nameof(StrokeNumber.Order),
+    ];
 
-    public static async Task InsertStrokeNumbersAsync(this KanjiVGContext db, List<StrokeNumber> strokeNumbers)
-    {
-        await using var command = db.Database.GetDbConnection().CreateCommand();
-        command.CommandText = InsertSql;
-
-        foreach (var strokeNumber in strokeNumbers)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new(P1, strokeNumber.UnicodeScalarValue),
-                new(P2, strokeNumber.VariantTypeId),
-                new(P3, strokeNumber.Number),
-                new(P4, strokeNumber.TranslateX),
-                new(P5, strokeNumber.TranslateY),
-            });
-
-            await command.ExecuteNonQueryAsync();
-            command.Parameters.Clear();
-        }
-    }
+    protected override SqliteParameter[] Parameters(StrokeNumberElement strokeNumber) =>
+    [
+        new("@0", strokeNumber.UnicodeScalarValue),
+        new("@1", strokeNumber.VariantTypeId),
+        new("@2", strokeNumber.Order),
+        new("@3", strokeNumber.Number),
+        new("@4", strokeNumber.TransformAttribute),
+    ];
 }

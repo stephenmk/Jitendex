@@ -21,24 +21,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.KanjiVG.Entities;
 
-[Table("Entry")]
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId))]
-public class Entry
+[Table(nameof(Entry))]
+[PrimaryKey(nameof(UnicodeScalarValue))]
+public sealed class Entry
 {
     public required int UnicodeScalarValue { get; set; }
-    public required int VariantTypeId { get; set; }
-    public required int CommentId { get; set; }
-    public required ComponentGroup ComponentGroup { get; set; }
-    public required StrokeNumberGroup StrokeNumberGroup { get; set; }
 
-    [ForeignKey(nameof(VariantTypeId))]
-    public required VariantType VariantType { get; set; }
-
-    [ForeignKey(nameof(CommentId))]
-    public required Comment Comment { get; set; }
-
-    public string FileNameFormat()
-        => $"{UnicodeScalarValue:x5}{VariantType.FileNameFormat()}";
-
-    public string FileName() => $"{FileNameFormat()}.svg";
+    [InverseProperty(nameof(Variant.Entry))]
+    public List<Variant> Variants { get; init; } = [];
 }

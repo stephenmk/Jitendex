@@ -12,5 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jitendex.SQLite\Jitendex.SQLite.csproj" />
+    <ProjectReference Include="..\Jitendex.Import\Jitendex.Import.csproj" />
   </ItemGroup>
 </Project>

@@ -16,67 +16,30 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
+using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import;
 
 namespace Jitendex.KanjiVG.Import.Readers;
 
 internal partial class StrokeNumberReader(ILogger<StrokeNumberReader> logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, StrokeNumberGroup group)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, StrokeNumberGroupElement group)
     {
-        var (translateX, translateY) = GetTranslation(xmlReader, group);
-
-        var strokeNumber = new StrokeNumber
+        var strokeNumber = new StrokeNumberElement
         {
-            UnicodeScalarValue = group.Entry.UnicodeScalarValue,
-            VariantTypeId = group.Entry.VariantTypeId,
-            TranslateX = translateX,
-            TranslateY = translateY,
-            Number = await GetNumberAsync(xmlReader),
-            Group = group,
+            UnicodeScalarValue = group.UnicodeScalarValue,
+            VariantTypeId = group.VariantTypeId,
+            Order = document.StrokeNumbers.NextOrder(group.Key()),
+            TransformAttribute = GetTransformAttribute(xmlReader, group),
+            Number = await xmlReader.ReadElementContentAsStringAsync(),
         };
 
-        int order = group.StrokeNumbers.Count + 1;
-        if (strokeNumber.Number != order)
-        {
-            LogNumberOutOfOrder(group.Entry.FileName(), strokeNumber.Number, order);
-        }
-
-        group.StrokeNumbers.Add(strokeNumber);
+        document.StrokeNumbers.Add(strokeNumber.Key(), strokeNumber);
     }
 
-    private (string X, string Y) GetTranslation(XmlReader xmlReader, StrokeNumberGroup group)
-    {
-        var transform = GetTransformAttribute(xmlReader, group);
-
-        Match match = TransformRegex().Match(transform);
-
-        if (!match.Success)
-        {
-            LogMalformattedTransform(group.Entry.FileName(), transform);
-            return (string.Empty, string.Empty);
-        }
-
-        var translateX = match.Groups[1].Value;
-        var translateY = match.Groups[2].Value;
-
-        if (!decimal.TryParse(translateX, out decimal _))
-        {
-            LogMalformattedTranslation(group.Entry.FileName(), "x", translateX);
-        }
-
-        if (!decimal.TryParse(translateY, out decimal _))
-        {
-            LogMalformattedTranslation(group.Entry.FileName(), "y", translateY);
-        }
-
-        return (translateX, translateY);
-    }
-
-    private string GetTransformAttribute(XmlReader xmlReader, StrokeNumberGroup group)
+    private string GetTransformAttribute(XmlReader xmlReader, StrokeNumberGroupElement group)
     {
         string? transform = null;
 
@@ -85,14 +48,14 @@ internal partial class StrokeNumberReader(ILogger<StrokeNumberReader> logger)
             xmlReader.MoveToAttribute(i);
             switch (xmlReader.Name)
             {
-                case "transform":
+                case XmlAttributeName.Transform:
                     transform = xmlReader.Value;
                     break;
-                case "xmlns:kvg":
+                case XmlAttributeName.KvgNamespace:
                     // Nothing to be done.
                     break;
                 default:
-                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, group.Entry.FileName());
+                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, group);
                     break;
             }
         }
@@ -101,52 +64,18 @@ internal partial class StrokeNumberReader(ILogger<StrokeNumberReader> logger)
 
         if (transform is null)
         {
-            LogMissingAttribute(group.Entry.FileName(), nameof(transform));
+            LogMissingAttribute(group, XmlAttributeName.Transform);
             transform = string.Empty;
         }
 
         return transform;
     }
 
-    private async Task<int> GetNumberAsync(XmlReader xmlReader)
-    {
-        var text = await xmlReader.ReadElementContentAsStringAsync();
-        if (int.TryParse(text, out int value))
-        {
-            return value;
-        }
-        else
-        {
-            LogUnparsableStrokeNumber(text);
-            return -1;
-        }
-    }
-
-    [GeneratedRegex(@"^matrix\(1 0 0 1 (-?[0-9.]+) (-?[0-9.]+)\)$", RegexOptions.None)]
-    private static partial Regex TransformRegex();
-
+    [LoggerMessage(LogLevel.Warning,
+    "Unknown component attribute name `{Name}` with value `{Value}` in stroke number group `{Group}`")]
+    partial void LogUnknownAttributeName(string name, string value, StrokeNumberGroupElement group);
 
     [LoggerMessage(LogLevel.Warning,
-    "Unknown component attribute name `{Name}` with value `{Value}` in file `{File}`")]
-    partial void LogUnknownAttributeName(string name, string value, string file);
-
-    [LoggerMessage(LogLevel.Warning,
-    "Cannot find stroke number `{AttributeName}` attribute in file `{File}`")]
-    partial void LogMissingAttribute(string file, string attributeName);
-
-    [LoggerMessage(LogLevel.Warning,
-    "Stroke number text `{Text}` is not an integer")]
-    partial void LogUnparsableStrokeNumber(string text);
-
-    [LoggerMessage(LogLevel.Warning,
-    "In file `{FileName}`, stroke number `{Number}` is not equal to its order `{Order}`")]
-    partial void LogNumberOutOfOrder(string fileName, int number, int order);
-
-    [LoggerMessage(LogLevel.Warning,
-    "In file `{FileName}`, stroke number transform attribute `{Attribute}` is not in the expected format")]
-    partial void LogMalformattedTransform(string fileName, string attribute);
-
-    [LoggerMessage(LogLevel.Warning,
-    "In file `{FileName}`, stroke number {Axis}-axis translation `{Value}` is not a valid decimal number")]
-    partial void LogMalformattedTranslation(string fileName, string axis, string value);
+    "Cannot find stroke number `{AttributeName}` attribute in stroke number group `{Group}`")]
+    partial void LogMissingAttribute(StrokeNumberGroupElement group, string attributeName);
 }

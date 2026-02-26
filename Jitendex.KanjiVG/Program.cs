@@ -49,10 +49,8 @@ public class Program
 
         var kanjivgFile = parseResult.GetRequiredValue(kanjivgFileArgument);
 
-        var reader = ImporterProvider.GetImporter();
-        var kanjivg = await reader.ReadAsync(kanjivgFile);
-
-        await DocumentDatabase.WriteAsync(kanjivg);
+        var importer = ImporterProvider.GetImporter();
+        await importer.ImportAsync(kanjivgFile);
 
         return 0;
     }

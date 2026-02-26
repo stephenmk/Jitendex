@@ -17,59 +17,40 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Jitendex.KanjiVG.Entities;
 using Jitendex.SQLite;
+using Jitendex.KanjiVG.Entities;
+using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Tables;
 
-internal static class StrokeTable
+internal sealed class StrokeTable : Table<StrokeElement>
 {
-    // Column names
-    private const string C1 = nameof(Stroke.UnicodeScalarValue);
-    private const string C2 = nameof(Stroke.VariantTypeId);
-    private const string C3 = nameof(Stroke.GlobalOrder);
-    private const string C4 = nameof(Stroke.LocalOrder);
-    private const string C5 = nameof(Stroke.ComponentGlobalOrder);
-    private const string C6 = nameof(Stroke.TypeId);
-    private const string C7 = nameof(Stroke.PathData);
+    protected override string Name => nameof(Stroke);
 
-    // Parameter names
-    private const string P1 = $"@{C1}";
-    private const string P2 = $"@{C2}";
-    private const string P3 = $"@{C3}";
-    private const string P4 = $"@{C4}";
-    private const string P5 = $"@{C5}";
-    private const string P6 = $"@{C6}";
-    private const string P7 = $"@{C7}";
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Stroke.UnicodeScalarValue),
+        nameof(Stroke.VariantTypeId),
+        nameof(Stroke.Order),
+        nameof(Stroke.ComponentOrder),
+        nameof(Stroke.TypeId),
+        nameof(Stroke.PathData),
+    ];
 
-    private const string InsertSql =
-        $"""
-        INSERT INTO "{nameof(Stroke)}"
-        ("{C1}", "{C2}", "{C3}", "{C4}", "{C5}", "{C6}", "{C7}") VALUES
-        ( {P1} ,  {P2} ,  {P3} ,  {P4} ,  {P5} ,  {P6} ,  {P7} );
-        """;
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(Stroke.UnicodeScalarValue),
+        nameof(Stroke.VariantTypeId),
+        nameof(Stroke.Order),
+    ];
 
-    public static async Task InsertStrokesAsync(this KanjiVGContext db, List<Stroke> strokes)
-    {
-        await using var command = db.Database.GetDbConnection().CreateCommand();
-        command.CommandText = InsertSql;
-
-        foreach (var stroke in strokes)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new(P1, stroke.UnicodeScalarValue),
-                new(P2, stroke.VariantTypeId),
-                new(P3, stroke.GlobalOrder),
-                new(P4, stroke.LocalOrder),
-                new(P5, stroke.ComponentGlobalOrder),
-                new(P6, stroke.TypeId),
-                new(P7, stroke.PathData),
-            });
-
-            await command.ExecuteNonQueryAsync();
-            command.Parameters.Clear();
-        }
-    }
+    protected override SqliteParameter[] Parameters(StrokeElement stroke) =>
+    [
+        new("@0", stroke.UnicodeScalarValue),
+        new("@1", stroke.VariantTypeId),
+        new("@2", stroke.Order),
+        new("@3", stroke.ComponentOrder),
+        new("@4", stroke.TypeId),
+        new("@5", stroke.PathData),
+    ];
 }

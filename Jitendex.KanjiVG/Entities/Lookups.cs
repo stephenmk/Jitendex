@@ -27,25 +27,25 @@ public interface ILookup
 }
 
 [Table(nameof(VariantType))]
-public class VariantType : ILookup
+public sealed class VariantType : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
-    public List<Entry> Entries { get; } = [];
+    public List<Variant> Variants { get; } = [];
     public string FileNameFormat()
-        => Text == string.Empty ? string.Empty : $"-{Text}";
+        => Text.Length == 0 ? string.Empty : $"-{Text}";
 }
 
 [Table(nameof(Comment))]
-public class Comment : ILookup
+public sealed class Comment : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
-    public List<Entry> Entries { get; } = [];
+    public List<Variant> Variants { get; } = [];
 }
 
 [Table(nameof(ComponentGroupStyle))]
-public class ComponentGroupStyle : ILookup
+public sealed class ComponentGroupStyle : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
@@ -53,7 +53,7 @@ public class ComponentGroupStyle : ILookup
 }
 
 [Table(nameof(StrokeNumberGroupStyle))]
-public class StrokeNumberGroupStyle : ILookup
+public sealed class StrokeNumberGroupStyle : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
@@ -61,7 +61,7 @@ public class StrokeNumberGroupStyle : ILookup
 }
 
 [Table(nameof(ComponentCharacter))]
-public class ComponentCharacter : ILookup
+public sealed class ComponentCharacter : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
@@ -69,7 +69,7 @@ public class ComponentCharacter : ILookup
 }
 
 [Table(nameof(ComponentOriginal))]
-public class ComponentOriginal : ILookup
+public sealed class ComponentOriginal : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
@@ -77,7 +77,7 @@ public class ComponentOriginal : ILookup
 }
 
 [Table(nameof(ComponentPosition))]
-public class ComponentPosition : ILookup
+public sealed class ComponentPosition : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
@@ -85,7 +85,7 @@ public class ComponentPosition : ILookup
 }
 
 [Table(nameof(ComponentRadical))]
-public class ComponentRadical : ILookup
+public sealed class ComponentRadical : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
@@ -93,7 +93,7 @@ public class ComponentRadical : ILookup
 }
 
 [Table(nameof(ComponentPhon))]
-public class ComponentPhon : ILookup
+public sealed class ComponentPhon : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
@@ -101,7 +101,7 @@ public class ComponentPhon : ILookup
 }
 
 [Table(nameof(StrokeType))]
-public class StrokeType : ILookup
+public sealed class StrokeType : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }

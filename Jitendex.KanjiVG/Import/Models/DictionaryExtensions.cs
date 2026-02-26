@@ -16,37 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
-using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
+namespace Jitendex.KanjiVG.Import.Models;
 
-namespace Jitendex.KanjiVG.Import.Readers.Lookups;
-
-internal partial class ComponentPositionCache(ILogger<ComponentPositionCache> logger) : LookupCache<ComponentPosition>(logger)
+internal static class DictionaryExtensions
 {
-    protected override ComponentPosition NewLookup(int id, string text) => new()
+    public static int GetLookupId(this Dictionary<string, int> dictionary, string key)
     {
-        Id = id,
-        Text = text,
-    };
+        if (!dictionary.TryGetValue(key, out var id))
+        {
+            id = dictionary.Count;
+            dictionary.Add(key, id);
+        }
+        return id;
+    }
 
-    protected override ImmutableArray<string> KnownLookups() =>
-    [
-        "",
-        "top",
-        "bottom",
-        "left",
-        "right",
-        "middle",
-        "tare",
-        "tarec",
-        "kamae",
-        "kamaec",
-        "nyo",
-        "nyoc",
-        "⿵A",
-        "⿵B",
-        "⿶1",
-        "⿶2",
-    ];
+    public static int? GetNullableLookupId(this Dictionary<string, int> dictionary, string? key)
+        => key is null ? null : dictionary.GetLookupId(key);
 }

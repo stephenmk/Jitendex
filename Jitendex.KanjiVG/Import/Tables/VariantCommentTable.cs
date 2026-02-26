@@ -23,27 +23,30 @@ using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Tables;
 
-internal sealed class ComponentGroupTable : Table<ComponentGroupElement>
+internal sealed class VariantCommentTable : Table<VariantCommentElement>
 {
-    protected override string Name => nameof(ComponentGroup);
+    protected override string Name => nameof(VariantComment);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(ComponentGroup.UnicodeScalarValue),
-        nameof(ComponentGroup.VariantTypeId),
-        nameof(ComponentGroup.StyleId),
+        nameof(VariantComment.UnicodeScalarValue),
+        nameof(VariantComment.VariantTypeId),
+        nameof(VariantComment.Order),
+        nameof(VariantComment.CommentId),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(ComponentGroup.UnicodeScalarValue),
-        nameof(ComponentGroup.VariantTypeId),
+        nameof(VariantComment.UnicodeScalarValue),
+        nameof(VariantComment.VariantTypeId),
+        nameof(VariantComment.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(ComponentGroupElement group) =>
+    protected override SqliteParameter[] Parameters(VariantCommentElement variant) =>
     [
-        new("@0", group.UnicodeScalarValue),
-        new("@1", group.VariantTypeId),
-        new("@2", group.StyleId),
+        new("@0", variant.UnicodeScalarValue),
+        new("@1", variant.VariantTypeId),
+        new("@2", variant.Order),
+        new("@3", variant.CommentId),
     ];
 }

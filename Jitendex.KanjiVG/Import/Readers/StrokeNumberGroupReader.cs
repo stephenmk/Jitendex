@@ -18,38 +18,28 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Readers.Lookups;
+using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Readers;
 
 internal partial class StrokeNumberGroupReader
 (
     ILogger<StrokeNumberGroupReader> logger,
-    StrokeNumberReader strokeNumberReader,
-    StrokeNumberGroupStyleCache groupStyleCache
+    StrokeNumberReader strokeNumberReader
 )
 {
-    public async Task ReadAsync(XmlReader xmlReader, Entry entry)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, VariantElement variant)
     {
-        var (id, styleText) = GetAttributes(xmlReader, entry);
-        var style = groupStyleCache.Get(styleText);
+        var (id, styleText) = GetAttributes(xmlReader, variant);
+        var styleId = document.StrokeNumberGroupStyles.GetLookupId(styleText);
 
-        var group = new StrokeNumberGroup
+        var group = new StrokeNumberGroupElement
         {
-            UnicodeScalarValue = entry.UnicodeScalarValue,
-            VariantTypeId = entry.VariantTypeId,
-            StyleId = style.Id,
-            Entry = entry,
-            Style = style,
+            UnicodeScalarValue = variant.UnicodeScalarValue,
+            VariantTypeId = variant.TypeId,
+            StyleId = styleId,
+            IdAttribute = id,
         };
-
-        style.Groups.Add(group);
-
-        if (!string.Equals(id, group.XmlIdAttribute(), StringComparison.Ordinal))
-        {
-            LogWrongId(entry.FileName(), id, group.XmlIdAttribute());
-        }
 
         bool exit = false;
         while (!exit && await xmlReader.ReadAsync())
@@ -57,99 +47,96 @@ internal partial class StrokeNumberGroupReader
             switch (xmlReader.NodeType)
             {
                 case XmlNodeType.Element:
-                    await ReadElementAsync(xmlReader, group);
+                    await ReadElementAsync(xmlReader, document, group);
+                    break;
+                case XmlNodeType.EndElement:
+                    exit = string.Equals(xmlReader.Name, XmlTagName.Group, StringComparison.Ordinal);
                     break;
                 case XmlNodeType.Text:
                     var text = await xmlReader.GetValueAsync();
-                    LogUnexpectedTextNode(entry.FileName(), text);
-                    break;
-                case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == "g";
+                    LogUnexpectedTextNode(variant, text);
                     break;
             }
         }
 
-        if (entry.StrokeNumberGroup is null)
+        if (!document.StrokeNumberGroups.TryAdd(group.Key(), group))
         {
-            entry.StrokeNumberGroup = group;
-        }
-        else
-        {
-            LogMultipleGroups(entry.FileName());
+            LogMultipleGroups(variant);
         }
     }
 
-    private (string, string) GetAttributes(XmlReader xmlReader, Entry entry)
+    private (string, string) GetAttributes(XmlReader xmlReader, VariantElement variant)
     {
-        string? id = null,
-                style = null;
+        string? id = null;
+        string? style = null;
+
         for (int i = 0; i < xmlReader.AttributeCount; i++)
         {
             xmlReader.MoveToAttribute(i);
             switch (xmlReader.Name)
             {
-                case nameof(id):
+                case XmlAttributeName.Id:
                     id = xmlReader.Value;
                     break;
-                case nameof(style):
+                case XmlAttributeName.Style:
                     style = xmlReader.Value;
                     break;
-                case "xmlns:kvg":
+                case XmlAttributeName.KvgNamespace:
                     // Nothing to be done.
                     break;
                 default:
-                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, entry.FileName());
+                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, variant);
                     break;
             }
         }
+
         xmlReader.MoveToElement();
+
         if (id is null)
         {
-            LogMissingAttribute(entry.FileName(), nameof(id));
+            LogMissingAttribute(variant, nameof(id));
             id = Guid.NewGuid().ToString();
         }
+
         if (style is null)
         {
-            LogMissingAttribute(entry.FileName(), nameof(style));
+            LogMissingAttribute(variant, nameof(style));
             style = string.Empty;
         }
+
         return (id, style);
     }
 
-    private async Task ReadElementAsync(XmlReader xmlReader, StrokeNumberGroup group)
+    private async Task ReadElementAsync(XmlReader xmlReader, Document document, StrokeNumberGroupElement group)
     {
         switch (xmlReader.Name)
         {
-            case "text":
-                await strokeNumberReader.ReadAsync(xmlReader, group);
+            case XmlTagName.Text:
+                await strokeNumberReader.ReadAsync(xmlReader, document, group);
                 break;
             default:
-                LogUnexpectedElementName(xmlReader.Name, group.Entry.FileName(), group.XmlIdAttribute());
+                LogUnexpectedElementName(xmlReader.Name, group.IdAttribute);
                 break;
         }
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Unknown stroke number group attribute name `{Name}` with value `{Value}` in file `{File}`")]
-    partial void LogUnknownAttributeName(string name, string value, string file);
+    "Unknown stroke number group attribute name `{Name}` with value `{Value}` for variant `{Variant}`")]
+    partial void LogUnknownAttributeName(string name, string value, VariantElement variant);
 
     [LoggerMessage(LogLevel.Warning,
-    "Cannot find stroke number group `{AttributeName}` attribute in file `{File}`")]
-    partial void LogMissingAttribute(string file, string attributeName);
+    "Cannot find stroke number group `{AttributeName}` attribute for variant `{Variant}`")]
+    partial void LogMissingAttribute(VariantElement variant, string attributeName);
 
     [LoggerMessage(LogLevel.Warning,
-    "{File}: Unexpected XML text node `{Text}`")]
-    partial void LogUnexpectedTextNode(string file, string text);
+    "Unexpected XML text node `{Text}` in variant `{Variant}`")]
+    partial void LogUnexpectedTextNode(VariantElement variant, string text);
 
     [LoggerMessage(LogLevel.Warning,
-    "Unexpected element name `{Name}` in file `{FileName}`, parent ID `{ParentId}`")]
-    partial void LogUnexpectedElementName(string name, string fileName, string parentId);
+    "Unexpected element name `{Name}` under parent ID `{ParentId}`")]
+    partial void LogUnexpectedElementName(string name, string parentId);
 
     [LoggerMessage(LogLevel.Warning,
-    "File `{FileName}` contains multiple stroke number groups")]
-    partial void LogMultipleGroups(string fileName);
-
-    [LoggerMessage(LogLevel.Warning,
-    "{File}: Stroke number group ID `{Actual}` not equal to expected value `{Expected}`")]
-    partial void LogWrongId(string file, string actual, string expected);
+    "Variant `{Variant}` contains multiple stroke number groups")]
+    partial void LogMultipleGroups(VariantElement variant);
 }

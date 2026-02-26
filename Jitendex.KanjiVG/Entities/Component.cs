@@ -21,56 +21,56 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.KanjiVG.Entities;
 
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(GlobalOrder))]
-public class Component
+[Table(nameof(Component))]
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Order))]
+public sealed class Component
 {
     public required int UnicodeScalarValue { get; set; }
     public required int VariantTypeId { get; set; }
-    public required int GlobalOrder { get; set; }
-
-    public required int? ParentGlobalOrder { get; set; }
-    public required int LocalOrder { get; set; }
-
-    public required int CharacterId { get; set; }
+    public required int Order { get; set; }
+    public required int? ParentOrder { get; set; }
+    public required int? CharacterId { get; set; }
     public required bool IsVariant { get; set; }
     public required bool IsPartial { get; set; }
-    public required int OriginalId { get; set; }
+    public required int? OriginalId { get; set; }
     public required int? Part { get; set; }
     public required int? Number { get; set; }
     public required bool IsTradForm { get; set; }
     public required bool IsRadicalForm { get; set; }
-    public required int PositionId { get; set; }
-    public required int RadicalId { get; set; }
-    public required int PhonId { get; set; }
+    public required int? PositionId { get; set; }
+    public required int? RadicalId { get; set; }
+    public required int? PhonId { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
     public required ComponentGroup Group { get; set; }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}, {nameof(ParentGlobalOrder)}")]
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}, {nameof(ParentOrder)}")]
     public required Component? Parent { get; set; }
 
     [ForeignKey(nameof(CharacterId))]
-    public required ComponentCharacter Character { get; set; }
+    public required ComponentCharacter? Character { get; set; }
 
     [ForeignKey(nameof(OriginalId))]
-    public required ComponentOriginal Original { get; set; }
+    public required ComponentOriginal? Original { get; set; }
 
     [ForeignKey(nameof(PositionId))]
-    public required ComponentPosition Position { get; set; }
+    public required ComponentPosition? Position { get; set; }
 
     [ForeignKey(nameof(RadicalId))]
-    public required ComponentRadical Radical { get; set; }
+    public required ComponentRadical? Radical { get; set; }
 
     [ForeignKey(nameof(PhonId))]
-    public required ComponentPhon Phon { get; set; }
+    public required ComponentPhon? Phon { get; set; }
 
+    [InverseProperty(nameof(Parent))]
     public List<Component> Children { get; set; } = [];
 
+    [InverseProperty(nameof(Stroke.Component))]
     public List<Stroke> Strokes { get; set; } = [];
 
-    public string XmlIdAttribute() => GlobalOrder == 1
-        ? $"kvg:{Group.Entry.FileNameFormat()}"
-        : $"kvg:{Group.Entry.FileNameFormat()}-g{GlobalOrder - 1}";
+    public string XmlIdAttribute() => Order == 1
+        ? $"kvg:{Group.Variant.FileNameFormat()}"
+        : $"kvg:{Group.Variant.FileNameFormat()}-g{Order - 1}";
 
     public int ComponentCount()
         => 1 + Children.Sum(static c => c.ComponentCount());

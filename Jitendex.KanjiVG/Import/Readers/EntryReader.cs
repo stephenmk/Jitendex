@@ -17,11 +17,12 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Readers.Lookups;
+using Jitendex.Import;
+using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Readers;
 
@@ -29,86 +30,61 @@ internal partial class EntryReader
 (
     ILogger<EntryReader> logger,
     ComponentGroupReader componentGroupReader,
-    StrokeNumberGroupReader strokeNumberGroupReader,
-    VariantTypeCache variantTypeCache,
-    CommentCache commentCache
+    StrokeNumberGroupReader strokeNumberGroupReader
 )
 {
-    public async Task<Entry?> ReadAsync(string fileName, XmlReader xmlReader)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, string fileName)
     {
-        var (unicodeScalarValue, variantTypeName) = Parse(fileName);
-        if (unicodeScalarValue == default)
+        if (Parse(fileName) is not (int unicodeScalarValue, string variantTypeName))
         {
-            return null;
+            return;
         }
 
-        var variantType = variantTypeCache.Get(variantTypeName);
+        document.Entries.Add(unicodeScalarValue);
 
-        var entry = new Entry
+        if (!document.VariantTypes.TryGetValue(variantTypeName, out var variantTypeId))
+        {
+            variantTypeId = document.VariantTypes.Count;
+            document.VariantTypes.Add(variantTypeName, variantTypeId);
+        }
+
+        var variant = new VariantElement
         {
             UnicodeScalarValue = unicodeScalarValue,
-            VariantTypeId = variantType.Id,
-            CommentId = default,
-            ComponentGroup = null!,
-            StrokeNumberGroup = null!,
-            VariantType = variantType,
-            Comment = null!,
+            TypeId = variantTypeId
         };
 
-        variantType.Entries.Add(entry);
+        if (!document.Variants.TryAdd(variant.Key(), variant))
+        {
+            LogMultipleVariantEntries(fileName, new(unicodeScalarValue), variantTypeName);
+            return;
+        }
 
         while (await xmlReader.ReadAsync())
         {
             switch (xmlReader.NodeType)
             {
                 case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, entry);
+                    await ReadChildElementAsync(xmlReader, document, variant);
+                    break;
+                case XmlNodeType.Comment:
+                    await ReadCommentAsync(xmlReader, document, variant);
                     break;
                 case XmlNodeType.Text:
                     var text = await xmlReader.GetValueAsync();
                     LogUnexpectedTextNode(fileName, text);
                     break;
-                case XmlNodeType.Comment:
-                    await ReadCommentAsync(xmlReader, entry);
-                    break;
-                case XmlNodeType.DocumentType:
-                    break;
             }
         }
-
-        return IsEntryValid(entry, fileName)
-            ? entry
-            : null;
     }
 
-    private bool IsEntryValid(Entry entry, string fileName)
-    {
-        bool isValid = true;
-        if (entry.Comment is null)
-        {
-            LogMissingGroup(nameof(entry.Comment), fileName);
-            isValid = false;
-        }
-        if (entry.ComponentGroup is null)
-        {
-            LogMissingGroup(nameof(entry.ComponentGroup), fileName);
-            isValid = false;
-        }
-        if (entry.StrokeNumberGroup is null)
-        {
-            LogMissingGroup(nameof(entry.StrokeNumberGroup), fileName);
-            isValid = false;
-        }
-        return isValid;
-    }
-
-    private (int, string) Parse(string fileName)
+    private (int, string)? Parse(string fileName)
     {
         Match match = FileNameRegex().Match(fileName);
         if (!match.Success)
         {
             logger.LogError("Cannot parse filename {FileName}", fileName);
-            return (default, string.Empty);
+            return null;
         }
         else if (int.TryParse(match.Groups[1].Value, NumberStyles.AllowHexSpecifier, provider: null, out int value))
         {
@@ -117,98 +93,105 @@ internal partial class EntryReader
         else
         {
             logger.LogError("Hex code in filename {FileName} is invalid", fileName);
-            return (default, string.Empty);
+            return null;
         }
     }
 
-    private async Task ReadCommentAsync(XmlReader xmlReader, Entry entry)
+    private async Task ReadCommentAsync(XmlReader xmlReader, Document document, VariantElement variant)
     {
-        if (entry.Comment is not null)
-        {
-            logger.LogWarning("File `{File}` contains multiple header comments", entry.FileName());
-        }
         var commentText = await xmlReader.GetValueAsync();
-        entry.Comment = commentCache.Get(commentText);
-        entry.Comment.Entries.Add(entry);
-        entry.CommentId = entry.Comment.Id;
+        var commentId = document.Comments.GetLookupId(commentText);
+
+        var variantComment = new VariantCommentElement
+        {
+            UnicodeScalarValue = variant.UnicodeScalarValue,
+            VariantTypeId = variant.TypeId,
+            Order = document.VariantComments.NextOrder(variant.Key()),
+            CommentId = commentId,
+        };
+
+        document.VariantComments.Add(variantComment.Key(), variantComment);
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Entry entry)
+    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, VariantElement variant)
     {
         switch (xmlReader.Name)
         {
-            case "svg":
-                ReadSvgHeader(xmlReader, entry);
+            case XmlTagName.Group:
+                await ReadGroupAsync(xmlReader, document, variant);
                 break;
-            case "g":
-                await ReadGroupAsync(xmlReader, entry);
+            case XmlTagName.SvgHeader:
+                ReadSvgHeader(xmlReader, document, variant);
                 break;
             default:
-                LogUnexpectedElementName(xmlReader.Name, entry.FileName());
+                LogUnexpectedElementName(xmlReader.Name, variant);
                 break;
         }
     }
 
-    private async Task ReadGroupAsync(XmlReader xmlReader, Entry entry)
+    private async Task ReadGroupAsync(XmlReader xmlReader, Document document, VariantElement variant)
     {
-        var id = xmlReader.GetAttribute("id");
+        var id = xmlReader.GetAttribute(XmlAttributeName.Id);
         if (id is null)
         {
-            LogMissingGroupId(entry.FileName());
+            LogMissingGroupId(variant);
         }
-        else if (id.StartsWith("kvg:StrokePaths", StringComparison.Ordinal))
+        else if (id.StartsWith(XmlAttributeName.KvgStrokePathsPrefix, StringComparison.Ordinal))
         {
-            await componentGroupReader.ReadAsync(xmlReader, entry);
+            await componentGroupReader.ReadAsync(xmlReader, document, variant);
         }
-        else if (id.StartsWith("kvg:StrokeNumbers", StringComparison.Ordinal))
+        else if (id.StartsWith(XmlAttributeName.KvgStrokeNumbersPrefix, StringComparison.Ordinal))
         {
-            await strokeNumberGroupReader.ReadAsync(xmlReader, entry);
+            await strokeNumberGroupReader.ReadAsync(xmlReader, document, variant);
         }
         else
         {
-            LogUnexpectedGroupIdPrefix(id, entry.FileName());
+            LogUnexpectedGroupIdPrefix(id, variant);
         }
     }
 
-    private void ReadSvgHeader(XmlReader xmlReader, Entry entry)
+    private void ReadSvgHeader(XmlReader xmlReader, Document document, VariantElement variant)
     {
-        string? width = null,
-                height = null,
-                viewBox = null;
+        string? width = null;
+        string? height = null;
+        string? viewBox = null;
+
         for (int i = 0; i < xmlReader.AttributeCount; i++)
         {
             xmlReader.MoveToAttribute(i);
             switch (xmlReader.Name)
             {
-                case nameof(width):
+                case XmlAttributeName.Width:
                     width = xmlReader.Value;
                     break;
-                case nameof(height):
+                case XmlAttributeName.Height:
                     height = xmlReader.Value;
                     break;
-                case nameof(viewBox):
+                case XmlAttributeName.ViewBox:
                     viewBox = xmlReader.Value;
                     break;
-                case "xmlns":
+                case XmlAttributeName.XmlNamespace:
                     // Nothing to be done.
                     break;
                 default:
-                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, entry.FileName());
+                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, variant);
                     break;
             }
         }
+
         xmlReader.MoveToElement();
+
         if (!string.Equals(width, "109", StringComparison.Ordinal))
         {
-            LogAbnormalSvgAttribute(nameof(width), width, entry.FileName());
+            LogAbnormalSvgAttribute(nameof(width), width, variant);
         }
         if (!string.Equals(height, "109", StringComparison.Ordinal))
         {
-            LogAbnormalSvgAttribute(nameof(height), height, entry.FileName());
+            LogAbnormalSvgAttribute(nameof(height), height, variant);
         }
         if (!string.Equals(viewBox, "0 0 109 109", StringComparison.Ordinal))
         {
-            LogAbnormalSvgAttribute(nameof(viewBox), viewBox, entry.FileName());
+            LogAbnormalSvgAttribute(nameof(viewBox), viewBox, variant);
         }
     }
 
@@ -220,26 +203,26 @@ internal partial class EntryReader
     partial void LogUnexpectedTextNode(string file, string text);
 
     [LoggerMessage(LogLevel.Warning,
-    "Unexpected element name `{Name}` in file `{FileName}`")]
-    partial void LogUnexpectedElementName(string name, string fileName);
+    "Unexpected element name `{Name}` for variant {Variant}")]
+    partial void LogUnexpectedElementName(string name, VariantElement variant);
 
     [LoggerMessage(LogLevel.Warning,
-    "No `{GroupName}` group found in file `{FileName}`")]
-    partial void LogMissingGroup(string groupName, string fileName);
+    "Group element for variant `{Variant}` is missing an ID attribute")]
+    partial void LogMissingGroupId(VariantElement variant);
 
     [LoggerMessage(LogLevel.Warning,
-    "Group element in file `{FileName}` is missing an ID attribute")]
-    partial void LogMissingGroupId(string fileName);
+    "Unexpected group element ID `{Id}` for variant `{Variant}`")]
+    partial void LogUnexpectedGroupIdPrefix(string id, VariantElement variant);
 
     [LoggerMessage(LogLevel.Warning,
-    "Unexpected group element ID `{Id}` in file `{FileName}`")]
-    partial void LogUnexpectedGroupIdPrefix(string id, string fileName);
+    "Unknown SVG attribute name `{Name}` with value `{Value}` for variant `{Variant}`")]
+    partial void LogUnknownAttributeName(string name, string value, VariantElement variant);
 
     [LoggerMessage(LogLevel.Warning,
-    "Unknown SVG attribute name `{Name}` with value `{Value}` in file `{File}`")]
-    partial void LogUnknownAttributeName(string name, string value, string file);
+    "File `{File}` redefines variant `{Rune}` - `{Variant}`")]
+    partial void LogMultipleVariantEntries(string file, Rune rune, string variant);
 
     [LoggerMessage(LogLevel.Warning,
-    "Abnormal SVG `{Name}` attribute `{Value}` in file `{File}`")]
-    partial void LogAbnormalSvgAttribute(string name, string? value, string file);
+    "Abnormal SVG `{Name}` attribute `{Value}` in variant `{Variant}`")]
+    partial void LogAbnormalSvgAttribute(string name, string? value, VariantElement variant);
 }

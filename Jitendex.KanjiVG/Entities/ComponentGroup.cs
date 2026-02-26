@@ -21,23 +21,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.KanjiVG.Entities;
 
+[Table(nameof(ComponentGroup))]
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId))]
-public class ComponentGroup
+public sealed class ComponentGroup
 {
     public required int UnicodeScalarValue { get; set; }
     public required int VariantTypeId { get; set; }
     public required int StyleId { get; set; }
 
-    public List<Component> Components { get; set; } = [];
-
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
-    public required Entry Entry { get; set; }
+    public required Variant Variant { get; set; }
 
     [ForeignKey(nameof(StyleId))]
     public required ComponentGroupStyle Style { get; set; }
 
+    [InverseProperty(nameof(Component.Group))]
+    public List<Component> Components { get; set; } = [];
+
     public string XmlIdAttribute()
-        => $"kvg:StrokePaths_{Entry.FileNameFormat()}";
+        => $"kvg:StrokePaths_{Variant.FileNameFormat()}";
 
     public int ComponentCount()
         => Components.Sum(static c => c.ComponentCount());

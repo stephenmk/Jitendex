@@ -16,23 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Jitendex.KanjiVG.Import.Models;
 
-[NotMapped]
-public class ComponentAttributes
+internal sealed class ComponentAttributes
 {
     public required string Id { get; set; }
-    public string Text { get; set; } = string.Empty;
+    public string? Text { get; set; }
     public bool IsVariant { get; set; }
     public bool IsPartial { get; set; }
-    public string Original { get; set; } = string.Empty;
+    public string? Original { get; set; }
     public int? Part { get; set; }
     public int? Number { get; set; }
     public bool IsTradForm { get; set; }
     public bool IsRadicalForm { get; set; }
-    public string Position { get; set; } = string.Empty;
-    public string Radical { get; set; } = string.Empty;
-    public string Phon { get; set; } = string.Empty;
+    public string? Position { get; set; }
+    public string? Radical { get; set; }
+    public string? Phon { get; set; }
 }

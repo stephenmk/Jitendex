@@ -20,12 +20,30 @@ using System.Formats.Tar;
 using System.IO.Compression;
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using Jitendex.KanjiVG.Import.Models;
+using Jitendex.KanjiVG.Import.Readers;
 
-namespace Jitendex.KanjiVG.Import.Readers;
+namespace Jitendex.KanjiVG.Import;
 
-internal class KanjiFiles(ILogger<KanjiFiles> logger)
+internal sealed class DocumentReader
+(
+    ILogger<DocumentReader> logger,
+    EntryReader entryReader
+)
 {
-    public async IAsyncEnumerable<(string Name, XmlReader Reader)> EnumerateAsync(FileInfo kanjivgFile)
+    public async Task<Document> ReadAsync(FileInfo kanjivgFile)
+    {
+        var document = new Document();
+
+        await foreach (var (xmlReader, fileName) in EnumerateAsync(kanjivgFile))
+        {
+            await entryReader.ReadAsync(xmlReader, document, fileName);
+        }
+
+        return document;
+    }
+
+    public async IAsyncEnumerable<(XmlReader Reader, string Name)> EnumerateAsync(FileInfo kanjivgFile)
     {
         await using FileStream fs = new(kanjivgFile.FullName, FileMode.Open, FileAccess.Read);
         await using BrotliStream br = new(fs, CompressionMode.Decompress);
@@ -38,12 +56,12 @@ internal class KanjiFiles(ILogger<KanjiFiles> logger)
                 logger.LogWarning("Data stream for file {Name} is empty", entry.Name);
                 continue;
             }
-            using var xmlReader = XmlReader.Create(entry.DataStream, _xmlReaderSettings);
-            yield return (entry.Name, xmlReader);
+            using var xmlReader = XmlReader.Create(entry.DataStream, XmlReaderSettings);
+            yield return (xmlReader, entry.Name);
         }
     }
 
-    private static readonly XmlReaderSettings _xmlReaderSettings = new()
+    private static readonly XmlReaderSettings XmlReaderSettings = new()
     {
         Async = true,
         DtdProcessing = DtdProcessing.Parse,

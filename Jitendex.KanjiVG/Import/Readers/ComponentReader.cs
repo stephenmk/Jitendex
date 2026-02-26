@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Readers.Lookups;
+using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import;
 
 namespace Jitendex.KanjiVG.Import.Readers;
 
@@ -27,61 +27,40 @@ internal partial class ComponentReader
 (
     ILogger<ComponentReader> logger,
     ComponentAttributesReader attributesReader,
-    StrokeReader strokeReader,
-    ComponentCharacterCache characterCache,
-    ComponentOriginalCache originalCache,
-    ComponentPositionCache positionCache,
-    ComponentRadicalCache radicalCache,
-    ComponentPhonCache phonCache
+    StrokeReader strokeReader
 )
 {
-    public async Task ReadAsync(XmlReader xmlReader, ComponentGroup group)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, ComponentGroupElement group)
     {
         var attributes = attributesReader.Read(xmlReader, group);
-        var character = characterCache.Get(attributes.Text);
-        var original = originalCache.Get(attributes.Original);
-        var position = positionCache.Get(attributes.Position);
-        var radical = radicalCache.Get(attributes.Radical);
-        var phon = phonCache.Get(attributes.Phon);
 
-        var component = new Component
+        var characterId = document.ComponentCharacters.GetNullableLookupId(attributes.Text);
+        var originalId = document.ComponentOriginals.GetNullableLookupId(attributes.Original);
+        var positionId = document.ComponentPositions.GetNullableLookupId(attributes.Position);
+        var radicalId = document.ComponentRadicals.GetNullableLookupId(attributes.Radical);
+        var phonId = document.ComponentPhons.GetNullableLookupId(attributes.Phon);
+
+        var component = new ComponentElement
         {
-            UnicodeScalarValue = group.Entry.UnicodeScalarValue,
-            VariantTypeId = group.Entry.VariantTypeId,
-            GlobalOrder = group.ComponentCount() + 1,
-            ParentGlobalOrder = null,
-            LocalOrder = group.Components.Count + 1,
-            CharacterId = character.Id,
+            UnicodeScalarValue = group.UnicodeScalarValue,
+            VariantTypeId = group.VariantTypeId,
+            Order = document.Components.NextOrder(group.Key()),
+            ParentOrder = null,
+            IdAttribute = attributes.Id,
+            CharacterId = characterId,
             IsVariant = attributes.IsVariant,
             IsPartial = attributes.IsPartial,
-            OriginalId = original.Id,
+            OriginalId = originalId,
             Part = attributes.Part,
             Number = attributes.Number,
             IsTradForm = attributes.IsTradForm,
             IsRadicalForm = attributes.IsRadicalForm,
-            PositionId = position.Id,
-            RadicalId = radical.Id,
-            PhonId = phon.Id,
-            Group = group,
-            Parent = null,
-            Character = character,
-            Original = original,
-            Position = position,
-            Radical = radical,
-            Phon = phon,
+            PositionId = positionId,
+            RadicalId = radicalId,
+            PhonId = phonId,
         };
 
-        group.Components.Add(component);
-        character.Components.Add(component);
-        original.Components.Add(component);
-        position.Components.Add(component);
-        radical.Components.Add(component);
-        phon.Components.Add(component);
-
-        if (!string.Equals(attributes.Id, component.XmlIdAttribute(), StringComparison.Ordinal))
-        {
-            LogWrongId(component.Group.Entry.FileName(), attributes.Id, component.XmlIdAttribute());
-        }
+        document.Components.Add(component.Key(), component);
 
         bool exit = false;
         while (!exit && await xmlReader.ReadAsync())
@@ -89,66 +68,50 @@ internal partial class ComponentReader
             switch (xmlReader.NodeType)
             {
                 case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, component);
+                    await ReadChildElementAsync(xmlReader, document, group, component);
                     break;
                 case XmlNodeType.Text:
                     var text = await xmlReader.GetValueAsync();
-                    LogUnexpectedTextNode(group.Entry.FileName(), text);
+                    LogUnexpectedTextNode(group, text);
                     break;
                 case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == "g";
+                    exit = string.Equals(xmlReader.Name, XmlTagName.Group, StringComparison.Ordinal);
                     break;
             }
         }
     }
 
-    private async Task ReadAsync(XmlReader xmlReader, Component parent)
+    private async Task ReadAsync(XmlReader xmlReader, Document document, ComponentGroupElement group, ComponentElement parent)
     {
-        var attributes = attributesReader.Read(xmlReader, parent.Group);
-        var character = characterCache.Get(attributes.Text);
-        var original = originalCache.Get(attributes.Original);
-        var position = positionCache.Get(attributes.Position);
-        var radical = radicalCache.Get(attributes.Radical);
-        var phon = phonCache.Get(attributes.Phon);
+        var attributes = attributesReader.Read(xmlReader, group);
 
-        var component = new Component
+        var characterId = document.ComponentCharacters.GetNullableLookupId(attributes.Text);
+        var originalId = document.ComponentOriginals.GetNullableLookupId(attributes.Original);
+        var positionId = document.ComponentPositions.GetNullableLookupId(attributes.Position);
+        var radicalId = document.ComponentRadicals.GetNullableLookupId(attributes.Radical);
+        var phonId = document.ComponentPhons.GetNullableLookupId(attributes.Phon);
+
+        var component = new ComponentElement
         {
             UnicodeScalarValue = parent.UnicodeScalarValue,
             VariantTypeId = parent.VariantTypeId,
-            GlobalOrder = parent.Group.ComponentCount() + 1,
-            ParentGlobalOrder = parent.GlobalOrder,
-            LocalOrder = parent.Children.Count + 1,
-            CharacterId = character.Id,
+            Order = document.Components.NextOrder(group.Key()),
+            ParentOrder = parent.Order,
+            IdAttribute = attributes.Id,
+            CharacterId = characterId,
             IsVariant = attributes.IsVariant,
             IsPartial = attributes.IsPartial,
-            OriginalId = original.Id,
+            OriginalId = originalId,
             Part = attributes.Part,
             Number = attributes.Number,
             IsTradForm = attributes.IsTradForm,
             IsRadicalForm = attributes.IsRadicalForm,
-            PositionId = position.Id,
-            RadicalId = radical.Id,
-            PhonId = phon.Id,
-            Group = parent.Group,
-            Parent = parent,
-            Character = character,
-            Original = original,
-            Position = position,
-            Radical = radical,
-            Phon = phon,
+            PositionId = positionId,
+            RadicalId = radicalId,
+            PhonId = phonId,
         };
 
-        parent.Children.Add(component);
-        character.Components.Add(component);
-        original.Components.Add(component);
-        position.Components.Add(component);
-        radical.Components.Add(component);
-        phon.Components.Add(component);
-
-        if (!string.Equals(attributes.Id, component.XmlIdAttribute(), StringComparison.Ordinal))
-        {
-            LogWrongId(component.Group.Entry.FileName(), attributes.Id, component.XmlIdAttribute());
-        }
+        document.Components.Add(component.Key(), component);
 
         bool exit = false;
         while (!exit && await xmlReader.ReadAsync())
@@ -156,42 +119,42 @@ internal partial class ComponentReader
             switch (xmlReader.NodeType)
             {
                 case XmlNodeType.Element:
-                    await ReadChildElementAsync(xmlReader, component);
+                    await ReadChildElementAsync(xmlReader, document, group, component);
                     break;
                 case XmlNodeType.Text:
                     var text = await xmlReader.GetValueAsync();
-                    LogUnexpectedTextNode(parent.Group.Entry.FileName(), text);
+                    LogUnexpectedTextNode(group, text);
                     break;
                 case XmlNodeType.EndElement:
-                    exit = xmlReader.Name == "g";
+                    exit = string.Equals(xmlReader.Name, XmlTagName.Group, StringComparison.Ordinal);
                     break;
             }
         }
     }
 
-    private async Task ReadChildElementAsync(XmlReader xmlReader, Component component)
+    private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ComponentGroupElement group, ComponentElement component)
     {
         switch (xmlReader.Name)
         {
-            case "g":
-                await ReadAsync(xmlReader, component);
+            case XmlTagName.Group:
+                await ReadAsync(xmlReader, document, group, component);
                 break;
-            case "path":
-                strokeReader.Read(xmlReader, component);
+            case XmlTagName.Path:
+                strokeReader.Read(xmlReader, document, group, component);
                 break;
             default:
-                LogUnexpectedComponentName(xmlReader.Name, component.Group.Entry.FileName(), component.XmlIdAttribute());
+                LogUnexpectedComponentName(xmlReader.Name, component.IdAttribute);
                 break;
         }
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "{File}: Unexpected XML text node `{Text}`")]
-    partial void LogUnexpectedTextNode(string file, string text);
+    "Unexpected XML text node `{Text}` in group `{Group}`")]
+    partial void LogUnexpectedTextNode(ComponentGroupElement group, string text);
 
     [LoggerMessage(LogLevel.Warning,
-    "Unexpected component child name `{Name}` in file `{FileName}`, parent ID `{ParentId}`")]
-    partial void LogUnexpectedComponentName(string name, string fileName, string parentId);
+    "Unexpected component child name `{Name}` under parent ID `{ParentId}`")]
+    partial void LogUnexpectedComponentName(string name, string parentId);
 
     [LoggerMessage(LogLevel.Warning,
     "{File}: Component ID `{Actual}` not equal to expected value `{Expected}`")]

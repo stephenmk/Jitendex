@@ -16,19 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
-using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
+namespace Jitendex.KanjiVG.Import.Readers;
 
-namespace Jitendex.KanjiVG.Import.Readers.Lookups;
-
-internal partial class ComponentPhonCache(ILogger<ComponentPhonCache> logger) : LookupCache<ComponentPhon>(logger)
+internal static class XmlTagName
 {
-    protected override ComponentPhon NewLookup(int id, string text) => new()
-    {
-        Id = id,
-        Text = text,
-    };
-
-    protected override ImmutableArray<string> KnownLookups() => [];
+    public const string SvgHeader = "svg";
+    public const string Group = "g";
+    public const string Path = "path";
+    public const string Text = "text";
 }

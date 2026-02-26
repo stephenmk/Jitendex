@@ -18,14 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
 using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Readers;
 
 internal partial class ComponentAttributesReader(ILogger<ComponentAttributesReader> logger)
 {
-    public ComponentAttributes Read(XmlReader xmlReader, ComponentGroup group)
+    public ComponentAttributes Read(XmlReader xmlReader, ComponentGroupElement group)
     {
         var attributes = new ComponentAttributes
         {
@@ -37,47 +36,47 @@ internal partial class ComponentAttributesReader(ILogger<ComponentAttributesRead
             xmlReader.MoveToAttribute(i);
             switch (xmlReader.Name)
             {
-                case "id":
+                case XmlAttributeName.Id:
                     attributes.Id = xmlReader.Value;
                     break;
-                case "kvg:element":
+                case XmlAttributeName.KvgElement:
                     attributes.Text = xmlReader.Value;
                     break;
-                case "kvg:variant":
+                case XmlAttributeName.KvgVariant:
                     attributes.IsVariant = GetBoolean(xmlReader.Name, xmlReader.Value, group);
                     break;
-                case "kvg:partial":
+                case XmlAttributeName.KvgPartial:
                     attributes.IsPartial = GetBoolean(xmlReader.Name, xmlReader.Value, group);
                     break;
-                case "kvg:original":
+                case XmlAttributeName.KvgOriginal:
                     attributes.Original = xmlReader.Value;
                     break;
-                case "kvg:part":
+                case XmlAttributeName.KvgPart:
                     attributes.Part = GetInt(xmlReader.Name, xmlReader.Value, group);
                     break;
-                case "kvg:number":
+                case XmlAttributeName.KvgNumber:
                     attributes.Number = GetInt(xmlReader.Name, xmlReader.Value, group);
                     break;
-                case "kvg:tradForm":
+                case XmlAttributeName.KvgTradForm:
                     attributes.IsTradForm = GetBoolean(xmlReader.Name, xmlReader.Value, group);
                     break;
-                case "kvg:radicalForm":
+                case XmlAttributeName.KvgRadicalForm:
                     attributes.IsRadicalForm = GetBoolean(xmlReader.Name, xmlReader.Value, group);
                     break;
-                case "kvg:position":
+                case XmlAttributeName.KvgPosition:
                     attributes.Position = xmlReader.Value;
                     break;
-                case "kvg:radical":
+                case XmlAttributeName.KvgRadical:
                     attributes.Radical = xmlReader.Value;
                     break;
-                case "kvg:phon":
+                case XmlAttributeName.KvgPhon:
                     attributes.Phon = xmlReader.Value;
                     break;
-                case "xmlns:kvg":
+                case XmlAttributeName.KvgNamespace:
                     // Nothing to be done.
                     break;
                 default:
-                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, group.Entry.FileName());
+                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, group);
                     break;
             }
         }
@@ -86,14 +85,14 @@ internal partial class ComponentAttributesReader(ILogger<ComponentAttributesRead
 
         if (attributes.Id is null)
         {
-            LogMissingId(group.Entry.FileName(), group.XmlIdAttribute());
+            LogMissingId(group);
             attributes.Id = Guid.NewGuid().ToString();
         }
 
         return attributes;
     }
 
-    private bool GetBoolean(string attributeName, string attributeValue, ComponentGroup group)
+    private bool GetBoolean(string attributeName, string attributeValue, ComponentGroupElement group)
     {
         if (bool.TryParse(attributeValue, out bool value))
         {
@@ -101,12 +100,12 @@ internal partial class ComponentAttributesReader(ILogger<ComponentAttributesRead
         }
         else
         {
-            LogUnparsableText(attributeName, attributeValue, group.Entry.FileName());
+            LogUnparsableText(attributeName, attributeValue, group);
             return default;
         }
     }
 
-    private int GetInt(string attributeName, string attributeValue, ComponentGroup group)
+    private int GetInt(string attributeName, string attributeValue, ComponentGroupElement group)
     {
         if (int.TryParse(attributeValue, out int value))
         {
@@ -114,20 +113,20 @@ internal partial class ComponentAttributesReader(ILogger<ComponentAttributesRead
         }
         else
         {
-            LogUnparsableText(attributeName, attributeValue, group.Entry.FileName());
+            LogUnparsableText(attributeName, attributeValue, group);
             return default;
         }
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Unknown component attribute name `{Name}` with value `{Value}` in file `{File}`")]
-    partial void LogUnknownAttributeName(string name, string value, string file);
+    "Unknown component attribute name `{Name}` with value `{Value}` for component group {Group}")]
+    partial void LogUnknownAttributeName(string name, string value, ComponentGroupElement group);
 
     [LoggerMessage(LogLevel.Warning,
-    "Value `{Value}` for attribute name `{Name}` in file `{File}` cannot be parsed")]
-    partial void LogUnparsableText(string name, string value, string file);
+    "Value `{Value}` for attribute name `{Name}` in component group `{Group}` cannot be parsed")]
+    partial void LogUnparsableText(string name, string value, ComponentGroupElement group);
 
     [LoggerMessage(LogLevel.Warning,
-    "File `{File}` component group `{GroupId}` contains a component with no ID attribute")]
-    partial void LogMissingId(string file, string groupId);
+    "Component group `{Group}` contains a component with no ID attribute")]
+    partial void LogMissingId(ComponentGroupElement group);
 }

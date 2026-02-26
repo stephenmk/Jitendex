@@ -21,39 +21,61 @@ using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import;
 
-internal static class DocumentDatabase
+internal sealed class DocumentDatabase(KanjiVGContext context)
 {
-    public static async Task WriteAsync(KanjiVGDocument kanjivg)
+    private readonly static EntryTable EntryTable = new();
+    private readonly static VariantTable VariantTable = new();
+    private readonly static VariantCommentTable VariantCommentTable = new();
+    private readonly static ComponentGroupTable ComponentGroupTable = new();
+    private readonly static ComponentTable ComponentTable = new();
+    private readonly static StrokeNumberGroupTable StrokeNumberGroupTable = new();
+    private readonly static StrokeNumberTable StrokeNumberTable = new();
+    private readonly static StrokeTable StrokeTable = new();
+
+    #region Lookup Tables
+    private readonly static LookupTable<VariantTypeElement> VariantTypesTable = new();
+    private readonly static LookupTable<CommentElement> CommentsTable = new();
+    private readonly static LookupTable<ComponentGroupStyleElement> ComponentGroupStylesTable = new();
+    private readonly static LookupTable<StrokeNumberGroupStyleElement> StrokeNumberGroupStylesTable = new();
+    private readonly static LookupTable<ComponentCharacterElement> ComponentCharactersTable = new();
+    private readonly static LookupTable<ComponentOriginalElement> ComponentOriginalsTable = new();
+    private readonly static LookupTable<ComponentPositionElement> ComponentPositionsTable = new();
+    private readonly static LookupTable<ComponentRadicalElement> ComponentRadicalsTable = new();
+    private readonly static LookupTable<ComponentPhonElement> ComponentPhonsTable = new();
+    private readonly static LookupTable<StrokeTypeElement> StrokeTypesTable = new();
+    #endregion
+
+    public void Initialize(Document document)
     {
-        await using var context = new KanjiVGContext();
+        context.RecreateDatabase();
 
-        // Delete and recreate the database file.
-        await context.RecreateDatabaseAsync();
+        using var transaction = context.Database.BeginTransaction();
 
-        // For faster importing, write data to memory rather than to the disk.
-        await context.ExecuteFastNewDatabasePragmaAsync();
+        // context.ExecuteDeferForeignKeysPragma();
 
-        // Begin inserting data.
-        await using (var transaction = await context.Database.BeginTransactionAsync())
-        {
-            await context.InsertLookupsAsync(kanjivg.VariantTypes);
-            await context.InsertLookupsAsync(kanjivg.Comments);
-            await context.InsertLookupsAsync(kanjivg.ComponentGroupStyles);
-            await context.InsertLookupsAsync(kanjivg.StrokeNumberGroupStyles);
-            await context.InsertLookupsAsync(kanjivg.ComponentCharacters);
-            await context.InsertLookupsAsync(kanjivg.ComponentOriginals);
-            await context.InsertLookupsAsync(kanjivg.ComponentPositions);
-            await context.InsertLookupsAsync(kanjivg.ComponentRadicals);
-            await context.InsertLookupsAsync(kanjivg.ComponentPhons);
-            await context.InsertLookupsAsync(kanjivg.StrokeTypes);
-            await context.InsertEntriesAsync(kanjivg.Entries);
-            await transaction.CommitAsync();
-        }
+        VariantTypesTable.InsertItems(context, document.GetVariantTypes());
+        CommentsTable.InsertItems(context, document.GetComments());
+        ComponentGroupStylesTable.InsertItems(context, document.GetComponentGroupStyles());
+        StrokeNumberGroupStylesTable.InsertItems(context, document.GetStrokeNumberGroupStyles());
+        ComponentCharactersTable.InsertItems(context, document.GetComponentCharacters());
+        ComponentOriginalsTable.InsertItems(context, document.GetComponentOriginals());
+        ComponentPositionsTable.InsertItems(context, document.GetComponentPositions());
+        ComponentRadicalsTable.InsertItems(context, document.GetComponentRadicals());
+        ComponentPhonsTable.InsertItems(context, document.GetComponentPhons());
+        StrokeTypesTable.InsertItems(context, document.GetStrokeTypes());
 
-        // Write database to the disk.
-        await context.SaveChangesAsync();
+        EntryTable.InsertItems(context, document.GetEntries());
+        VariantTable.InsertItems(context, document.Variants.Values);
+        VariantCommentTable.InsertItems(context, document.VariantComments.Values);
 
-        // Rebuild the database compactly.
-        await context.ExecuteVacuumAsync();
+        ComponentGroupTable.InsertItems(context, document.ComponentGroups.Values);
+        ComponentTable.InsertItems(context, document.Components.Values);
+        StrokeTable.InsertItems(context, document.Strokes.Values);
+
+        StrokeNumberGroupTable.InsertItems(context, document.StrokeNumberGroups.Values);
+        StrokeNumberTable.InsertItems(context, document.StrokeNumbers.Values);
+
+        transaction.Commit();
+        context.ExecuteVacuum();
     }
 }

@@ -18,104 +18,88 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Readers.Lookups;
-using Attributes = (string Id, string TypeText, string PathData);
+using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import;
 
 namespace Jitendex.KanjiVG.Import.Readers;
 
-internal partial class StrokeReader(ILogger<StrokeReader> logger, StrokeTypeCache strokeTypeCache)
+internal partial class StrokeReader(ILogger<StrokeReader> logger)
 {
-    public void Read(XmlReader xmlReader, Component component)
+    private sealed record Attributes(string Id, string TypeText, string PathData);
+
+    public void Read(XmlReader xmlReader, Document document, ComponentGroupElement group, ComponentElement component)
     {
-        var (id, typeText, pathData) = GetAttributes(xmlReader, component);
+        var attributes = GetAttributes(xmlReader, component);
 
-        var type = strokeTypeCache.Get(typeText);
-
-        var stroke = new Stroke
+        var stroke = new StrokeElement
         {
             UnicodeScalarValue = component.UnicodeScalarValue,
             VariantTypeId = component.VariantTypeId,
-            GlobalOrder = component.Group.StrokeCount() + 1,
-            LocalOrder = component.Strokes.Count + 1,
-            ComponentGlobalOrder = component.GlobalOrder,
-            TypeId = type.Id,
-            PathData = pathData,
-            Component = component,
-            Type = type,
+            Order = document.Strokes.NextOrder(group.Key()),
+            ComponentOrder = component.Order,
+            IdAttribute = attributes.Id,
+            TypeId = document.StrokeTypes.GetLookupId(attributes.TypeText),
+            PathData = attributes.PathData,
         };
 
-        type.Strokes.Add(stroke);
-        component.Strokes.Add(stroke);
-
-        if (!xmlReader.IsEmptyElement)
-        {
-            LogNonEmptyElement(stroke.XmlIdAttribute(), component.Group.Entry.FileName());
-        }
-
-        if (!string.Equals(id, stroke.XmlIdAttribute(), StringComparison.Ordinal))
-        {
-            LogWrongId(stroke.XmlIdAttribute(), id, stroke.XmlIdAttribute());
-        }
+        document.Strokes.Add(stroke.Key(), stroke);
     }
 
-    private Attributes GetAttributes(XmlReader xmlReader, Component component)
+    private Attributes GetAttributes(XmlReader xmlReader, ComponentElement component)
     {
-        var attributes = new Attributes(null!, string.Empty, null!);
+        string? id = null;
+        string typeText = string.Empty;
+        string? pathData = null;
 
         for (int i = 0; i < xmlReader.AttributeCount; i++)
         {
             xmlReader.MoveToAttribute(i);
             switch (xmlReader.Name)
             {
-                case "id":
-                    attributes.Id = xmlReader.Value;
+                case XmlAttributeName.Id:
+                    id = xmlReader.Value;
                     break;
-                case "kvg:type":
-                    attributes.TypeText = xmlReader.Value;
+                case XmlAttributeName.KvgType:
+                    typeText = xmlReader.Value;
                     break;
-                case "d":
-                    attributes.PathData = xmlReader.Value;
+                case XmlAttributeName.PathData:
+                    pathData = xmlReader.Value;
                     break;
-                case "xmlns:kvg":
+                case XmlAttributeName.KvgNamespace:
                     // Nothing to be done.
                     break;
                 default:
-                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, component.Group.Entry.FileName());
+                    LogUnknownAttributeName(xmlReader.Name, xmlReader.Value, component);
                     break;
             }
         }
 
         xmlReader.MoveToElement();
 
-        if (attributes.Id is null)
+        if (id is null)
         {
-            LogMissingAttribute(nameof(attributes.Id), component.Group.Entry.FileName());
-            attributes.Id = Guid.NewGuid().ToString();
+            LogMissingAttribute(XmlAttributeName.Id, component);
+            id = Guid.NewGuid().ToString();
         }
 
-        if (attributes.PathData is null)
+        if (pathData is null)
         {
-            LogMissingAttribute(nameof(attributes.PathData), component.Group.Entry.FileName());
-            attributes.Id = string.Empty;
+            LogMissingAttribute(XmlAttributeName.PathData, component);
+            pathData = string.Empty;
         }
 
-        return attributes;
+        return new(id, typeText, pathData);
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Unknown component attribute name `{Name}` with value `{Value}` in file `{File}`")]
-    partial void LogUnknownAttributeName(string name, string value, string file);
+    "Unknown component attribute name `{Name}` with value `{Value}` for component `{Component}`")]
+    partial void LogUnknownAttributeName(string name, string value, ComponentElement component);
 
     [LoggerMessage(LogLevel.Warning,
-    "Stroke ID `{Id}` in file `{FileName}` is non-empty")]
-    partial void LogNonEmptyElement(string id, string fileName);
+    "Stroke ID `{Id}` for component `{Component}` is non-empty")]
+    partial void LogNonEmptyElement(string id, ComponentElement component);
 
     [LoggerMessage(LogLevel.Warning,
-    "Cannot find stroke attribute `{AttributeName}` in file `{File}`")]
-    partial void LogMissingAttribute(string attributeName, string file);
-
-    [LoggerMessage(LogLevel.Warning,
-    "{File}: Stroke ID `{Actual}` not equal to expected value `{Expected}`")]
-    partial void LogWrongId(string file, string actual, string expected);
+    "Cannot find stroke attribute `{AttributeName}` for component `{Component}`")]
+    partial void LogMissingAttribute(string attributeName, ComponentElement component);
 }

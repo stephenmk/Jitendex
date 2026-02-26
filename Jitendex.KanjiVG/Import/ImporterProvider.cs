@@ -19,40 +19,20 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.KanjiVG.Import.Readers;
-using Jitendex.KanjiVG.Import.Readers.Lookups;
 
 namespace Jitendex.KanjiVG.Import;
 
 internal static class ImporterProvider
 {
-    public static KanjiVGReader GetImporter()
+    public static Importer GetImporter()
         => new ServiceCollection()
 
-        .AddLogging(builder =>
-            builder.AddSimpleConsole(options =>
-            {
-                options.IncludeScopes = true;
-                options.SingleLine = true;
-                options.TimestampFormat = "HH:mm:ss ";
-            }))
+        .AddDbContext<KanjiVGContext>()
 
-        // XML file resource.
-        .AddTransient<KanjiFiles>()
-
-        // Global lookup types
-        .AddSingleton<VariantTypeCache>()
-        .AddSingleton<CommentCache>()
-        .AddSingleton<ComponentGroupStyleCache>()
-        .AddSingleton<StrokeNumberGroupStyleCache>()
-        .AddSingleton<ComponentCharacterCache>()
-        .AddSingleton<ComponentOriginalCache>()
-        .AddSingleton<ComponentPositionCache>()
-        .AddSingleton<ComponentRadicalCache>()
-        .AddSingleton<ComponentPhonCache>()
-        .AddSingleton<StrokeTypeCache>()
+        .AddTransient<DocumentReader>()
+        .AddTransient<DocumentDatabase>()
 
         // Top-level readers.
-        .AddTransient<EntriesReader>()
         .AddTransient<EntryReader>()
 
         // Stroke Path Components
@@ -65,8 +45,16 @@ internal static class ImporterProvider
         .AddTransient<StrokeNumberGroupReader>()
         .AddTransient<StrokeNumberReader>()
 
-        // Build and return the KanjiVG service.
-        .AddTransient<KanjiVGReader>()
+        .AddLogging(builder =>
+            builder.AddSimpleConsole(options =>
+            {
+                options.IncludeScopes = true;
+                options.SingleLine = true;
+                options.TimestampFormat = "HH:mm:ss ";
+            }))
+
+        // Build and return the importer service.
+        .AddTransient<Importer>()
         .BuildServiceProvider()
-        .GetRequiredService<KanjiVGReader>();
+        .GetRequiredService<Importer>();
 }

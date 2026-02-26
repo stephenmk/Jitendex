@@ -21,16 +21,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.KanjiVG.Entities;
 
-[Table(nameof(StrokeNumber))]
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Order))]
-public sealed class StrokeNumber
+[Table(nameof(Variant))]
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(TypeId))]
+public sealed class Variant
 {
     public required int UnicodeScalarValue { get; init; }
-    public required int VariantTypeId { get; init; }
-    public required int Order { get; init; }
-    public required string Number { get; set; }
-    public required string TransformAttribute { get; set; }
+    public required int TypeId { get; init; }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
-    public required StrokeNumberGroup Group { get; set; }
+    public ComponentGroup ComponentGroup { get; init; } = null!;
+    public StrokeNumberGroup StrokeNumberGroup { get; init; } = null!;
+
+    [ForeignKey(nameof(UnicodeScalarValue))]
+    public Entry Entry { get; init; } = null!;
+
+    [ForeignKey(nameof(TypeId))]
+    public VariantType Type { get; init; } = null!;
+
+    [InverseProperty(nameof(VariantComment.Variant))]
+    public List<VariantComment> Comments { get; set; } = [];
+
+    public string FileNameFormat()
+        => $"{UnicodeScalarValue:x5}{Type.FileNameFormat()}";
+
+    public string FileName() => $"{FileNameFormat()}.svg";
 }

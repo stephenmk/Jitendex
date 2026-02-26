@@ -16,19 +16,23 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
-using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.KanjiVG.Import.Readers.Lookups;
+namespace Jitendex.KanjiVG.Entities;
 
-internal partial class CommentCache(ILogger<CommentCache> logger) : LookupCache<Comment>(logger)
+[Table(nameof(VariantComment))]
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Order))]
+public sealed class VariantComment
 {
-    protected override Comment NewLookup(int id, string text) => new()
-    {
-        Id = id,
-        Text = text,
-    };
+    public required int UnicodeScalarValue { get; init; }
+    public required int VariantTypeId { get; init; }
+    public required int Order { get; init; }
+    public required int CommentId { get; set; }
 
-    protected override ImmutableArray<string> KnownLookups() => [];
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
+    public Variant Variant { get; init; } = null!;
+
+    [ForeignKey(nameof(CommentId))]
+    public Comment Comment { get; set; } = null!;
 }

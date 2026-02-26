@@ -25,6 +25,8 @@ namespace Jitendex.KanjiVG;
 public class KanjiVGContext() : SqliteContext(DatabaseFile.KanjiVG)
 {
     public DbSet<Entry> Entries { get; set; } = null!;
+
+    #region Keywords
     public DbSet<VariantType> VariantTypes { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
     public DbSet<ComponentGroupStyle> ComponentGroupStyles { get; set; } = null!;
@@ -35,4 +37,5 @@ public class KanjiVGContext() : SqliteContext(DatabaseFile.KanjiVG)
     public DbSet<ComponentRadical> ComponentRadicals { get; set; } = null!;
     public DbSet<ComponentPhon> ComponentPhons { get; set; } = null!;
     public DbSet<StrokeType> StrokeTypes { get; set; } = null!;
+    #endregion
 }

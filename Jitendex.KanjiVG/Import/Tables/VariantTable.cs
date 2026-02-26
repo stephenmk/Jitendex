@@ -16,23 +16,32 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
-using Microsoft.Extensions.Logging;
+using Microsoft.Data.Sqlite;
+using Jitendex.SQLite;
 using Jitendex.KanjiVG.Entities;
+using Jitendex.KanjiVG.Import.Models;
 
-namespace Jitendex.KanjiVG.Import.Readers.Lookups;
+namespace Jitendex.KanjiVG.Import.Tables;
 
-internal partial class ComponentGroupStyleCache(ILogger<ComponentGroupStyleCache> logger) : LookupCache<ComponentGroupStyle>(logger)
+internal sealed class VariantTable : Table<VariantElement>
 {
-    protected override ComponentGroupStyle NewLookup(int id, string text) => new()
-    {
-        Id = id,
-        Text = text,
-    };
+    protected override string Name => nameof(Variant);
 
-    protected override ImmutableArray<string> KnownLookups() =>
+    protected override IReadOnlyList<string> ColumnNames =>
     [
-        "fill:none;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;",
-        "fill:#000000;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;",
+        nameof(Variant.UnicodeScalarValue),
+        nameof(Variant.TypeId),
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(Variant.UnicodeScalarValue),
+        nameof(Variant.TypeId),
+    ];
+
+    protected override SqliteParameter[] Parameters(VariantElement variant) =>
+    [
+        new("@0", variant.UnicodeScalarValue),
+        new("@1", variant.TypeId),
     ];
 }

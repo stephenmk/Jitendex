@@ -17,59 +17,28 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.SQLite;
 using Jitendex.KanjiVG.Entities;
+using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Tables;
 
-internal static class EntryTable
+internal sealed class EntryTable : Table<EntryElement>
 {
-    // Column names
-    private const string C1 = nameof(Entry.UnicodeScalarValue);
-    private const string C2 = nameof(Entry.VariantTypeId);
-    private const string C3 = nameof(Entry.CommentId);
+    protected override string Name => nameof(Entry);
 
-    // Parameter names
-    private const string P1 = $"@{C1}";
-    private const string P2 = $"@{C2}";
-    private const string P3 = $"@{C3}";
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Entry.UnicodeScalarValue)
+    ];
 
-    private const string InsertSql =
-        $"""
-        INSERT INTO "{nameof(Entry)}"
-        ("{C1}", "{C2}", "{C3}") VALUES
-        ( {P1} ,  {P2} ,  {P3} );
-        """;
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(Entry.UnicodeScalarValue)
+    ];
 
-    public static async Task InsertEntriesAsync(this KanjiVGContext db, List<Entry> entries)
-    {
-        var allComponentGroups = new List<ComponentGroup>(entries.Count);
-        var allStrokeNumberGroups = new List<StrokeNumberGroup>(entries.Count);
-
-        await using (var command = db.Database.GetDbConnection().CreateCommand())
-        {
-            command.CommandText = InsertSql;
-
-            foreach (var entry in entries)
-            {
-                command.Parameters.AddRange(new SqliteParameter[]
-                {
-                    new(P1, entry.UnicodeScalarValue),
-                    new(P2, entry.VariantTypeId),
-                    new(P3, entry.CommentId),
-                });
-
-                var commandExecution = command.ExecuteNonQueryAsync();
-
-                allComponentGroups.Add(entry.ComponentGroup);
-                allStrokeNumberGroups.Add(entry.StrokeNumberGroup);
-
-                await commandExecution;
-                command.Parameters.Clear();
-            }
-        }
-
-        await db.InsertComponentGroupsAsync(allComponentGroups);
-        await db.InsertStrokeNumberGroupsAsync(allStrokeNumberGroups);
-    }
+    protected override SqliteParameter[] Parameters(EntryElement entry) =>
+    [
+        new("@0", entry.UnicodeScalarValue)
+    ];
 }

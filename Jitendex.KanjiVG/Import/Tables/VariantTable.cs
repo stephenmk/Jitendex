@@ -31,6 +31,7 @@ internal sealed class VariantTable : Table<VariantElement>
     [
         nameof(Variant.UnicodeScalarValue),
         nameof(Variant.TypeId),
+        nameof(Variant.CommentId),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
@@ -43,5 +44,6 @@ internal sealed class VariantTable : Table<VariantElement>
     [
         new("@0", variant.UnicodeScalarValue),
         new("@1", variant.TypeId),
+        new("@2", variant.CommentId),
     ];
 }

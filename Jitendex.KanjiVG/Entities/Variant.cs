@@ -27,7 +27,7 @@ public sealed class Variant
 {
     public required int UnicodeScalarValue { get; init; }
     public required int TypeId { get; init; }
-
+    public required int CommentId { get; set; }
     public ComponentGroup ComponentGroup { get; init; } = null!;
     public StrokeNumberGroup StrokeNumberGroup { get; init; } = null!;
 
@@ -37,8 +37,8 @@ public sealed class Variant
     [ForeignKey(nameof(TypeId))]
     public VariantType Type { get; init; } = null!;
 
-    [InverseProperty(nameof(VariantComment.Variant))]
-    public List<VariantComment> Comments { get; set; } = [];
+    [ForeignKey(nameof(CommentId))]
+    public Comment Comment { get; set; } = null!;
 
     public string FileNameFormat()
         => $"{UnicodeScalarValue:x5}{Type.FileNameFormat()}";

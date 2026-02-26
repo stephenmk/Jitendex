@@ -22,7 +22,6 @@ internal sealed class Document
 {
     public HashSet<int> Kanjis { get; init; }
     public Dictionary<(int, int), VariantElement> Variants { get; init; }
-    public Dictionary<(int, int, int), VariantCommentElement> VariantComments { get; init; }
 
     #region Component Group
     public Dictionary<(int, int), ComponentGroupElement> ComponentGroups { get; init; }
@@ -52,7 +51,6 @@ internal sealed class Document
     {
         Kanjis = new(expectedEntryCount);
         Variants = new(expectedEntryCount * 2);
-        VariantComments = new(expectedEntryCount * 2);
         ComponentGroups = new(expectedEntryCount * 2);
         Components = new(expectedEntryCount * 13);
         Strokes = new(expectedEntryCount * 22);

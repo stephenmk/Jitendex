@@ -27,7 +27,9 @@ internal sealed record VariantElement
 {
     public required int UnicodeScalarValue { get; init; }
     public required int TypeId { get; init; }
+    public int CommentId { get; set; } = -1;
     public (int, int) Key() => (UnicodeScalarValue, TypeId);
+    public bool CommentIsUninitialized() => CommentId == -1;
 }
 
 internal sealed record ComponentGroupElement
@@ -46,15 +48,6 @@ internal sealed record StrokeNumberGroupElement
     public required string IdAttribute { get; init; }
     public required int StyleId { get; init; }
     public (int, int) Key() => (UnicodeScalarValue, VariantTypeId);
-}
-
-internal sealed record VariantCommentElement
-{
-    public required int UnicodeScalarValue { get; init; }
-    public required int VariantTypeId { get; init; }
-    public required int Order { get; init; }
-    public required int CommentId { get; init; }
-    public (int, int, int) Key() => (UnicodeScalarValue, VariantTypeId, Order);
 }
 
 internal sealed record ComponentElement

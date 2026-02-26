@@ -25,7 +25,6 @@ internal sealed class DocumentDatabase(KanjiVGContext context)
 {
     private readonly static KanjiTable EntryTable = new();
     private readonly static VariantTable VariantTable = new();
-    private readonly static VariantCommentTable VariantCommentTable = new();
     private readonly static ComponentGroupTable ComponentGroupTable = new();
     private readonly static ComponentTable ComponentTable = new();
     private readonly static StrokeNumberGroupTable StrokeNumberGroupTable = new();
@@ -64,7 +63,6 @@ internal sealed class DocumentDatabase(KanjiVGContext context)
 
         EntryTable.InsertItems(context, document.GetKanjis());
         VariantTable.InsertItems(context, document.Variants.Values);
-        VariantCommentTable.InsertItems(context, document.VariantComments.Values);
 
         ComponentGroupTable.InsertItems(context, document.ComponentGroups.Values);
         ComponentTable.InsertItems(context, document.Components.Values);

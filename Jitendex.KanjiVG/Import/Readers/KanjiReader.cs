@@ -21,7 +21,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import;
 using Jitendex.KanjiVG.Import.Models;
 
 namespace Jitendex.KanjiVG.Import.Readers;
@@ -70,6 +69,11 @@ internal partial class KanjiReader
                     break;
             }
         }
+
+        if (variant.CommentIsUninitialized())
+        {
+            variant.CommentId = document.Comments.GetLookupId(string.Empty);
+        }
     }
 
     private (int, string)? Parse(string fileName)
@@ -93,18 +97,12 @@ internal partial class KanjiReader
 
     private async Task ReadCommentAsync(XmlReader xmlReader, Document document, VariantElement variant)
     {
-        var commentText = await xmlReader.GetValueAsync();
-        var commentId = document.Comments.GetLookupId(commentText);
-
-        var variantComment = new VariantCommentElement
+        if (!variant.CommentIsUninitialized())
         {
-            UnicodeScalarValue = variant.UnicodeScalarValue,
-            VariantTypeId = variant.TypeId,
-            Order = document.VariantComments.NextOrder(variant.Key()),
-            CommentId = commentId,
-        };
-
-        document.VariantComments.Add(variantComment.Key(), variantComment);
+            LogMultipleComments(variant);
+        }
+        var commentText = await xmlReader.GetValueAsync();
+        variant.CommentId = document.Comments.GetLookupId(commentText);
     }
 
     private async Task ReadChildElementAsync(XmlReader xmlReader, Document document, VariantElement variant)
@@ -215,6 +213,10 @@ internal partial class KanjiReader
     [LoggerMessage(LogLevel.Warning,
     "File `{File}` redefines variant `{Rune}` - `{Variant}`")]
     partial void LogMultipleVariantEntries(string file, Rune rune, string variant);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Variant `{Variant}` contains multiple file comments")]
+    partial void LogMultipleComments(VariantElement variant);
 
     [LoggerMessage(LogLevel.Warning,
     "Abnormal SVG `{Name}` attribute `{Value}` in variant `{Variant}`")]

@@ -29,14 +29,14 @@ public sealed class Stroke
     public required int VariantTypeId { get; set; }
     public required int Order { get; set; }
     public required int ComponentOrder { get; set; }
-    public required int TypeId { get; set; }
+    public required int? TypeId { get; set; }
     public required string PathData { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}, {nameof(ComponentOrder)}")]
     public required Component Component { get; set; }
 
     [ForeignKey(nameof(TypeId))]
-    public required StrokeType Type { get; set; }
+    public required StrokeType? Type { get; set; }
 
     public string XmlIdAttribute()
         => $"kvg:{Component.Group.Variant.FileNameFormat()}-s{Order}";

@@ -85,7 +85,7 @@ internal sealed record StrokeElement
     public required int Order { get; init; }
     public required int ComponentOrder { get; init; }
     public required string IdAttribute { get; init; }
-    public required int TypeId { get; init; }
+    public required int? TypeId { get; init; }
     public required string PathData { get; init; }
     public (int, int, int) Key() => (UnicodeScalarValue, VariantTypeId, Order);
 }

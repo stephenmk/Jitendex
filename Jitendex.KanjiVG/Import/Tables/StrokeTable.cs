@@ -50,7 +50,7 @@ internal sealed class StrokeTable : Table<StrokeElement>
         new("@1", stroke.VariantTypeId),
         new("@2", stroke.Order),
         new("@3", stroke.ComponentOrder),
-        new("@4", stroke.TypeId),
+        new("@4", stroke.TypeId.Nullable()),
         new("@5", stroke.PathData),
     ];
 }

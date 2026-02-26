@@ -25,7 +25,7 @@ namespace Jitendex.KanjiVG.Import.Readers;
 
 internal partial class StrokeReader(ILogger<StrokeReader> logger)
 {
-    private sealed record Attributes(string Id, string TypeText, string PathData);
+    private sealed record Attributes(string Id, string? TypeText, string PathData);
 
     public void Read(XmlReader xmlReader, Document document, ComponentGroupElement group, ComponentElement component)
     {
@@ -38,7 +38,7 @@ internal partial class StrokeReader(ILogger<StrokeReader> logger)
             Order = document.Strokes.NextOrder(group.Key()),
             ComponentOrder = component.Order,
             IdAttribute = attributes.Id,
-            TypeId = document.StrokeTypes.GetLookupId(attributes.TypeText),
+            TypeId = document.StrokeTypes.GetNullableLookupId(attributes.TypeText),
             PathData = attributes.PathData,
         };
 
@@ -48,7 +48,7 @@ internal partial class StrokeReader(ILogger<StrokeReader> logger)
     private Attributes GetAttributes(XmlReader xmlReader, ComponentElement component)
     {
         string? id = null;
-        string typeText = string.Empty;
+        string? typeText = null;
         string? pathData = null;
 
         for (int i = 0; i < xmlReader.AttributeCount; i++)

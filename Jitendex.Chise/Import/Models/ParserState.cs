@@ -16,26 +16,16 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+namespace Jitendex.Chise.Import.Models;
 
-namespace Jitendex.Chise.Entities;
-
-/// <summary>
-/// Represents an Ideographic Description Sequence (IDS)
-/// </summary>
-[Table(nameof(Sequence))]
-public class Sequence
+internal sealed class ParserState
 {
-    [Key]
-    public required string Text { get; init; }
+    public Stack<CodepointElement> Stack { get; } = [];
 
-    [InverseProperty(nameof(Component.Sequences))]
-    public List<Component> Components { get; init; } = [];
+    public List<string> SequenceTexts { get; } = [];
+    public List<UnicodeCharacterElement> UnicodeCharacters { get; } = [];
 
-    [InverseProperty(nameof(Codepoint.Sequence))]
-    public List<Codepoint> Codepoints { get; init; } = [];
-
-    [InverseProperty(nameof(Codepoint.AltSequence))]
-    public List<Codepoint> AltCodepoints { get; init; } = [];
+    public List<CodepointElement> Codepoints { get; } = [];
+    public List<ComponentElement> Components { get; } = [];
+    public List<SequenceComponentElement> ComponentSequences { get; } = [];
 }

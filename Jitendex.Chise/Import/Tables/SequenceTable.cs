@@ -17,40 +17,25 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.SQLite;
 using Jitendex.Chise.Entities;
+using Jitendex.Chise.Import.Models;
 
 namespace Jitendex.Chise.Import.Tables;
 
-internal static class SequenceTable
+internal sealed class SequenceTable : Table<SequenceElement>
 {
-    // Column names
-    private const string C1 = nameof(Sequence.Text);
+    protected override string Name => nameof(DescriptionSequence);
 
-    // Parameter names
-    private const string P1 = $"@{C1}";
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(DescriptionSequence.Text)
+    ];
 
-    private const string InsertSql =
-        $"""
-        INSERT INTO "{nameof(Sequence)}"
-        ("{C1}") VALUES
-        ( {P1} );
-        """;
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    public static async Task InsertSequencesAsync(this ChiseContext db, IEnumerable<Sequence> sequences)
-    {
-        await using var command = db.Database.GetDbConnection().CreateCommand();
-        command.CommandText = InsertSql;
-
-        foreach (var sequence in sequences)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new(P1, sequence.Text),
-            });
-
-            await command.ExecuteNonQueryAsync();
-            command.Parameters.Clear();
-        }
-    }
+    protected override SqliteParameter[] Parameters(SequenceElement sequence) =>
+    [
+        new("@0", sequence.Text)
+    ];
 }

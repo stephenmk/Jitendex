@@ -16,31 +16,22 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.SQLite;
-using Jitendex.Chise.Entities;
-using Jitendex.Chise.Import.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Chise.Import.Tables;
+namespace Jitendex.Chise.Entities;
 
-internal sealed class ComponentPositionTable : Table<ComponentPositionElement>
+[Table(nameof(SequenceComponent))]
+[PrimaryKey(nameof(CodepointId), nameof(PositionId), nameof(SequenceText))]
+public class SequenceComponent
 {
-    protected override string Name => nameof(ComponentPosition);
+    public required string SequenceText { get; init; }
+    public required int PositionId { get; init; }
+    public required string CodepointId { get; init; }
 
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(ComponentPosition.Id),
-        nameof(ComponentPosition.Name),
-    ];
+    [ForeignKey(nameof(SequenceText))]
+    public DescriptionSequence Sequence { get; init; } = null!;
 
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
-        nameof(ComponentPosition.Id)
-    ];
-
-    protected override SqliteParameter[] Parameters(ComponentPositionElement position) =>
-    [
-        new("@0", position.Id),
-        new("@1", position.Name),
-    ];
+    [ForeignKey($"{nameof(CodepointId)}, {nameof(PositionId)}")]
+    public Component Component { get; init; } = null!;
 }

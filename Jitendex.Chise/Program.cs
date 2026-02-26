@@ -51,9 +51,10 @@ public class Program
 
         var logger = new Logger();
         var reader = new DocumentReader(logger);
-        var collector = reader.Read(chiseIdsDir);
-
-        await DocumentDatabase.WriteAsync(collector);
+        var document = reader.Read(chiseIdsDir);
+        using var context = new ChiseContext();
+        var database = new DocumentDatabase(context);
+        database.Initialize(document);
 
         return 0;
     }

@@ -29,6 +29,6 @@ internal static class UnicodeConverter
         _ => null,
     };
 
-    public static ReadOnlySpan<char> GetLongCodepointId(int scalarValue) => $"&U-{scalarValue:X8};";
-    public static ReadOnlySpan<char> GetShortCodepointId(int scalarValue) => $"&U+{scalarValue:X};";
+    public static string GetLongCodepointId(int scalarValue) => $"&U-{scalarValue:X8};";
+    public static string GetShortCodepointId(int scalarValue) => $"&U+{scalarValue:X};";
 }

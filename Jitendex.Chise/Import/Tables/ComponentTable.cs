@@ -17,43 +17,27 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.SQLite;
 using Jitendex.Chise.Entities;
+using Jitendex.Chise.Import.Models;
 
 namespace Jitendex.Chise.Import.Tables;
 
-internal static class ComponentTable
+internal sealed class ComponentTable : Table<ComponentElement>
 {
-    // Column names
-    private const string C1 = nameof(Component.CodepointId);
-    private const string C2 = nameof(Component.PositionId);
+    protected override string Name => nameof(Component);
 
-    // Parameter names
-    private const string P1 = $"@{C1}";
-    private const string P2 = $"@{C2}";
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Component.CodepointId),
+        nameof(Component.PositionId),
+    ];
 
-    private const string InsertSql =
-        $"""
-        INSERT INTO "{nameof(Component)}"
-        ("{C1}", "{C2}") VALUES
-        ( {P1} ,  {P2} );
-        """;
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    public static async Task InsertComponentsAsync(this ChiseContext db, IEnumerable<Component> components)
-    {
-        await using var command = db.Database.GetDbConnection().CreateCommand();
-        command.CommandText = InsertSql;
-
-        foreach (var component in components)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new(P1, component.CodepointId),
-                new(P2, component.PositionId),
-            });
-
-            await command.ExecuteNonQueryAsync();
-            command.Parameters.Clear();
-        }
-    }
+    protected override SqliteParameter[] Parameters(ComponentElement component) =>
+    [
+        new("@0", component.CodepointId),
+        new("@1", component.PositionId),
+    ];
 }

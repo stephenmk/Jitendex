@@ -16,31 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.SQLite;
-using Jitendex.Chise.Entities;
-using Jitendex.Chise.Import.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Chise.Import.Tables;
+namespace Jitendex.Chise.Entities;
 
-internal sealed class ComponentPositionTable : Table<ComponentPositionElement>
+/// <summary>
+/// Represents an Ideographic Description Sequence (IDS)
+/// </summary>
+[Table(nameof(DescriptionSequence))]
+[PrimaryKey(nameof(Text))]
+public class DescriptionSequence
 {
-    protected override string Name => nameof(ComponentPosition);
+    public required string Text { get; init; }
 
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(ComponentPosition.Id),
-        nameof(ComponentPosition.Name),
-    ];
+    [InverseProperty(nameof(SequenceComponent.Sequence))]
+    public List<SequenceComponent> Components { get; init; } = [];
 
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
-        nameof(ComponentPosition.Id)
-    ];
+    [InverseProperty(nameof(Codepoint.Sequence))]
+    public List<Codepoint> Codepoints { get; init; } = [];
 
-    protected override SqliteParameter[] Parameters(ComponentPositionElement position) =>
-    [
-        new("@0", position.Id),
-        new("@1", position.Name),
-    ];
+    [InverseProperty(nameof(Codepoint.AltSequence))]
+    public List<Codepoint> AltCodepoints { get; init; } = [];
 }

@@ -21,39 +21,31 @@ using Jitendex.Chise.Import.Tables;
 
 namespace Jitendex.Chise.Import;
 
-internal static class DocumentDatabase
+internal sealed class DocumentDatabase(ChiseContext context)
 {
-    public static async Task WriteAsync(Document collector)
+    private readonly SequenceTable SequenceTable = new();
+    private readonly ComponentPositionTable ComponentPositionTable = new();
+    private readonly UnicodeCharacterTable UnicodeCharacterTable = new();
+
+    private readonly CodepointTable CodepointTable = new();
+    private readonly ComponentTable ComponentTable = new();
+    private readonly SequenceComponentTable ComponentSequenceTable = new();
+
+    public void Initialize(Document document)
     {
-        await using var context = new ChiseContext();
+        context.RecreateDatabase();
 
-        // Delete and recreate the database file.
-        await context.RecreateDatabaseAsync();
+        using var transaction = context.Database.BeginTransaction();
 
-        // For faster importing, write data to memory rather than to the disk.
-        await context.ExecuteFastNewDatabasePragmaAsync();
+        SequenceTable.InsertItems(context, document.GetSequences());
+        ComponentPositionTable.InsertItems(context, document.GetComponentPositions());
+        UnicodeCharacterTable.InsertItems(context, document.UnicodeCharacters);
 
-        // Using a transaction decreases the runtime by 10 seconds.
-        // Using multiple smaller transactions doesn't seem to improve upon that.
-        await using var transaction = await context.Database.BeginTransactionAsync();
+        CodepointTable.InsertItems(context, document.GetCodepoints());
+        ComponentTable.InsertItems(context, document.Components);
+        ComponentSequenceTable.InsertItems(context, document.ComponentSequences);
 
-        // Wait until all data is imported before checking foreign key constraints.
-        await context.ExecuteDeferForeignKeysPragmaAsync();
-
-        // Begin inserting data.
-        await context.InsertCodepointsAsync(collector.Codepoints.Values);
-        await context.InsertUnicodeCharactersAsync(collector.UnicodeCharacters.Values);
-        await context.InsertSequencesAsync(collector.Sequences.Values);
-        await context.InsertComponentsAsync(collector.Components.Values);
-        await context.InsertComponentSequencesAsync(collector.Components.Values);
-        await context.InsertComponentPositionsAsync(collector.ComponentPositions.Values);
-
-        await transaction.CommitAsync();
-
-        // Write database to the disk.
-        await context.SaveChangesAsync();
-
-        // Rebuild the database compactly.
-        await context.ExecuteVacuumAsync();
+        transaction.Commit();
+        context.ExecuteVacuum();
     }
 }

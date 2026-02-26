@@ -26,7 +26,7 @@ namespace Jitendex.Chise.Entities;
 public class Component
 {
     public required string CodepointId { get; init; }
-    public required ComponentPositionId PositionId { get; init; }
+    public required int PositionId { get; init; }
 
     [ForeignKey(nameof(CodepointId))]
     public required Codepoint Codepoint { get; init; }
@@ -34,6 +34,6 @@ public class Component
     [ForeignKey(nameof(PositionId))]
     public required ComponentPosition Position { get; init; }
 
-    [InverseProperty(nameof(Sequence.Components))]
-    public List<Sequence> Sequences { get; } = [];
+    [InverseProperty(nameof(SequenceComponent.Component))]
+    public List<SequenceComponent> Sequences { get; } = [];
 }

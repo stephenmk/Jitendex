@@ -23,28 +23,23 @@ using Jitendex.Chise.Import.Models;
 
 namespace Jitendex.Chise.Import.Tables;
 
-internal sealed class CodepointTable : Table<CodepointElement>
+internal sealed class SequenceComponentTable : Table<SequenceComponentElement>
 {
-    protected override string Name => nameof(Codepoint);
+    protected override string Name => nameof(SequenceComponent);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Codepoint.Id),
-        nameof(Codepoint.UnicodeScalarValue),
-        nameof(Codepoint.SequenceText),
-        nameof(Codepoint.AltSequenceText),
+        nameof(SequenceComponent.CodepointId),
+        nameof(SequenceComponent.PositionId),
+        nameof(SequenceComponent.SequenceText),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
-        nameof(Codepoint.Id)
-    ];
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(CodepointElement codepoint) =>
+    protected override SqliteParameter[] Parameters(SequenceComponentElement sequenceComponent) =>
     [
-        new("@0", codepoint.Id),
-        new("@1", codepoint.UnicodeScalarValue.Nullable()),
-        new("@2", codepoint.SequenceText.Nullable()),
-        new("@3", codepoint.AltSequenceText.Nullable()),
+        new("@0", sequenceComponent.CodepointId),
+        new("@1", sequenceComponent.PositionId),
+        new("@2", sequenceComponent.SequenceText),
     ];
 }

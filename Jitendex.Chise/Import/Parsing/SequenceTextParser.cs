@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Text;
-using Jitendex.Chise.Entities;
-using static Jitendex.Chise.Entities.ComponentPositionId;
+using Jitendex.Chise.Import.Models;
+using static Jitendex.Chise.Import.Models.ComponentPositionId;
 using static Jitendex.Chise.Import.Parsing.UnicodeConverter;
 
 namespace Jitendex.Chise.Import.Parsing;
@@ -53,18 +53,18 @@ namespace Jitendex.Chise.Import.Parsing;
 /// </exception>
 internal static class SequenceTextParser
 {
-    public static Stack<Codepoint> Parse(ReadOnlySpan<char> sequenceText)
+    public static ParserState Parse(ReadOnlySpan<char> sequenceText)
     {
-        Stack<Codepoint> stack = [];
+        var state = new ParserState();
         int end = sequenceText.Length;
         while (end > 0)
         {
             int start = TokenStartIndex(sequenceText[..end]);
             var token = sequenceText[start..end];
-            Evaluate(token, stack);
+            Evaluate(token, state);
             end = start;
         }
-        return stack;
+        return state;
     }
 
     private static int TokenStartIndex(ReadOnlySpan<char> text)
@@ -105,62 +105,60 @@ internal static class SequenceTextParser
     /// <summary>
     /// Add the token to the argument stack, or evaluate the sequence if the token is an IDC.
     /// </summary>
-    private static void Evaluate(ReadOnlySpan<char> token, Stack<Codepoint> arguments)
+    private static void Evaluate(ReadOnlySpan<char> token, ParserState state)
     {
-        if (ApplyIdcToArguments(token, arguments) is Sequence sequence)
+        if (ApplyIdcToArguments(token, state) is string sequenceText)
         {
             // Token was an Ideographic Description Character (IDC),
             // and its arguments were removed from the stack.
-            arguments.Push(new Codepoint
+            var codepoint = new CodepointElement
             {
-                Id = sequence.Text,
+                Id = sequenceText,
                 UnicodeScalarValue = null,
-                SequenceText = sequence.Text,
+                SequenceText = sequenceText,
                 AltSequenceText = null,
-                UnicodeCharacter = null,
-                Sequence = sequence,
-                AltSequence = null,
-            });
+            };
+            state.Stack.Push(codepoint);
+            state.Codepoints.Add(codepoint);
         }
         else if (ScalarValue(token) is int scalarValue)
         {
             // Token is a Unicode character.
             var id = GetLongCodepointId(scalarValue);
-            var character = new UnicodeCharacter
+            var character = new UnicodeCharacterElement
             {
                 ScalarValue = scalarValue,
-                CodepointId = new string(id),
+                CodepointId = id,
             };
-            arguments.Push(new Codepoint
+            var codepoint = new CodepointElement
             {
-                Id = new string(id),
+                Id = id,
                 UnicodeScalarValue = scalarValue,
                 SequenceText = null,
                 AltSequenceText = null,
-                UnicodeCharacter = character,
-                Sequence = null,
-                AltSequence = null,
-            });
+            };
+            state.Stack.Push(codepoint);
+            state.Codepoints.Add(codepoint);
+            state.UnicodeCharacters.Add(character);
         }
         else
         {
             // Token is a non-Unicode character (e.g. "&CDP-8BC4;").
-            arguments.Push(new Codepoint
+            var codepoint = new CodepointElement
             {
                 Id = new string(token),
                 UnicodeScalarValue = null,
                 SequenceText = null,
                 AltSequenceText = null,
-                UnicodeCharacter = null,
-                Sequence = null,
-                AltSequence = null,
-            });
+            };
+            state.Stack.Push(codepoint);
+            state.Codepoints.Add(codepoint);
         }
     }
 
-    private static Sequence? ApplyIdcToArguments(ReadOnlySpan<char> idc, Stack<Codepoint> arguments)
+    private static string? ApplyIdcToArguments(ReadOnlySpan<char> idc, ParserState state)
         => IdcToPositionIds(idc) is var positionIds and not []
-            ? NewSequence(idc, arguments, positionIds)
+            ? NewSequence(idc, state, positionIds)
             : null;
 
     private static ReadOnlySpan<ComponentPositionId> IdcToPositionIds(ReadOnlySpan<char> idc) => idc switch
@@ -185,35 +183,39 @@ internal static class SequenceTextParser
         _ => [],
     };
 
-    private static Sequence NewSequence(ReadOnlySpan<char> idc, Stack<Codepoint> arguments, ReadOnlySpan<ComponentPositionId> positionIds)
+    private static string NewSequence(ReadOnlySpan<char> idc, ParserState state, ReadOnlySpan<ComponentPositionId> positionIds)
     {
-        var textBuilder = new StringBuilder(new string(idc));
-        var components = new List<Component>(positionIds.Length);
+        var textBuilder = new StringBuilder();
+        textBuilder.Append(idc);
 
-        foreach (var positionId in positionIds)
+        var components = new ComponentElement[positionIds.Length];
+
+        for (int i = 0; i < positionIds.Length; i++)
         {
-            var codepoint = arguments.Pop();
-            components.Add(new Component
+            var codepoint = state.Stack.Pop();
+            components[i] = new ComponentElement
             {
                 CodepointId = codepoint.Id,
-                PositionId = positionId,
-                Codepoint = codepoint,
-                Position = new ComponentPosition { Id = positionId },
-            });
+                PositionId = (int)positionIds[i],
+            };
             textBuilder.Append(codepoint.ToCharacter());
         }
 
-        var sequence = new Sequence
-        {
-            Text = textBuilder.ToString(),
-            Components = components,
-        };
+        var sequenceText = textBuilder.ToString();
+        state.SequenceTexts.Add(sequenceText);
 
         foreach (var component in components)
         {
-            component.Sequences.Add(sequence);
+            var componentSequence = new SequenceComponentElement
+            {
+                CodepointId = component.CodepointId,
+                PositionId = component.PositionId,
+                SequenceText = sequenceText,
+            };
+            state.Components.Add(component);
+            state.ComponentSequences.Add(componentSequence);
         }
 
-        return sequence;
+        return sequenceText;
     }
 }

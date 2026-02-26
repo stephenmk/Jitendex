@@ -17,43 +17,30 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.SQLite;
 using Jitendex.Chise.Entities;
+using Jitendex.Chise.Import.Models;
 
 namespace Jitendex.Chise.Import.Tables;
 
-internal static class UnicodeCharacterTable
+internal sealed class UnicodeCharacterTable : Table<UnicodeCharacterElement>
 {
-    // Column names
-    private const string C1 = nameof(UnicodeCharacter.ScalarValue);
-    private const string C2 = nameof(UnicodeCharacter.CodepointId);
+    protected override string Name => nameof(UnicodeCharacter);
 
-    // Parameter names
-    private const string P1 = $"@{C1}";
-    private const string P2 = $"@{C2}";
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(UnicodeCharacter.ScalarValue),
+        nameof(UnicodeCharacter.CodepointId),
+    ];
 
-    private const string InsertSql =
-        $"""
-        INSERT INTO "{nameof(UnicodeCharacter)}"
-        ("{C1}", "{C2}") VALUES
-        ( {P1} ,  {P2} );
-        """;
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(UnicodeCharacter.ScalarValue)
+    ];
 
-    public static async Task InsertUnicodeCharactersAsync(this ChiseContext db, IEnumerable<UnicodeCharacter> characters)
-    {
-        await using var command = db.Database.GetDbConnection().CreateCommand();
-        command.CommandText = InsertSql;
-
-        foreach (var character in characters)
-        {
-            command.Parameters.AddRange(new SqliteParameter[]
-            {
-                new(P1, character.ScalarValue),
-                new(P2, character.CodepointId),
-            });
-
-            await command.ExecuteNonQueryAsync();
-            command.Parameters.Clear();
-        }
-    }
+    protected override SqliteParameter[] Parameters(UnicodeCharacterElement character) =>
+    [
+        new("@0", character.ScalarValue),
+        new("@1", character.CodepointId),
+    ];
 }

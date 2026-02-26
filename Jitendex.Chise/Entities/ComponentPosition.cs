@@ -16,60 +16,18 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Jitendex.Chise.Entities.ComponentPositionId;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Chise.Entities;
 
 [Table(nameof(ComponentPosition))]
+[PrimaryKey(nameof(Id))]
 public class ComponentPosition
 {
-    [Key]
-    public required ComponentPositionId Id { get; init; }
-    public string Name { get => IdToName(Id); }
+    public required int Id { get; init; }
+    public required string Name { get; set; }
 
     [InverseProperty(nameof(Component.Position))]
-    public List<Component> Components { get; } = [];
-
-    private static string IdToName(ComponentPositionId id) => id switch
-    {
-        LeftHalf => "Left Half",
-        RightHalf => "Right Half",
-        TopHalf => "Top Half",
-        BottomHalf => "Bottom Half",
-        Left => "Left",
-        VerticalCenter => "Vertical Center",
-        Right => "Right",
-        Top => "Top",
-        HorizontalCenter => "Horizontal Center",
-        Bottom => "Bottom",
-        FullSurrounding => "Full Surrounding",
-        FullSurrounded => "Full Surrounded",
-        AboveSurrounding => "Above Surrounding",
-        BelowSurrounded => "Below Surrounded",
-        BelowSurrounding => "Below Surrounding",
-        AboveSurrounded => "Above Surrounded",
-        LeftSurrounding => "Left Surrounding",
-        RightSurrounded => "Right Surrounded",
-        RightSurrounding => "Right Surrounding",
-        LeftSurrounded => "Left Surrounded",
-        UpperLeftSurrounding => "Upper-Left Surrounding",
-        LowerRightSurrounded => "Lower-Right Surrounded",
-        UpperRightSurrounding => "Upper-Right Surrounding",
-        LowerLeftSurrounded => "Lower-Left Surrounded",
-        LowerLeftSurrounding => "Lower-Left Surrounding",
-        UpperRightSurrounded => "Upper-Right Surrounded",
-        LowerRightSurrounding => "Lower-Right Surrounding",
-        UpperLeftSurrounded => "Upper-Left Surrounded",
-        Overlaying => "Overlaying",
-        Overlaid => "Overlaid",
-        UpperLeftAndRightSurrounding => "Upper-Left And Upper-Right Surrounding",
-        LowerLeftAndRightSurrounded => "Lower-Left and Lower-Right Surrounded",
-        LowerLeftAndRightSurrounding => "Lower-Left and Lower-Right Surrounding",
-        UpperLeftAndRightSurrounded => "Upper-Left and Upper-Right Surrounded",
-        UpperAndLowerSurrounding => "Upper and Lower Surrounding",
-        LeftAndRightSurrounded => "Left and Right Surrounded",
-        _ => throw new ArgumentOutOfRangeException(nameof(id)),
-    };
+    public List<Component> Components { get; init; } = [];
 }

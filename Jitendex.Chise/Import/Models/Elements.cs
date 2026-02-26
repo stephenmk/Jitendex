@@ -16,31 +16,49 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace Jitendex.Chise.Entities;
+namespace Jitendex.Chise.Import.Models;
 
-[Table(nameof(Codepoint))]
-public class Codepoint
+internal sealed record CodepointElement
 {
-    [Key]
     public required string Id { get; init; }
     public required int? UnicodeScalarValue { get; init; }
     public required string? SequenceText { get; init; }
     public required string? AltSequenceText { get; init; }
 
-    [ForeignKey(nameof(UnicodeScalarValue))]
-    public required UnicodeCharacter? UnicodeCharacter { get; init; }
+    public string ToCharacter() => UnicodeScalarValue.HasValue
+        ? new Rune(UnicodeScalarValue.Value).ToString()
+        : Id;
+}
 
-    [ForeignKey(nameof(SequenceText))]
-    public required DescriptionSequence? Sequence { get; init; }
+internal sealed record ComponentElement
+{
+    public required string CodepointId { get; init; }
+    public required int PositionId { get; init; }
+}
 
-    [ForeignKey(nameof(AltSequenceText))]
-    public required DescriptionSequence? AltSequence { get; init; }
+internal sealed record ComponentPositionElement
+(
+    int Id,
+    string Name
+);
 
-    [InverseProperty(nameof(Component.Codepoint))]
-    public List<Component> Components { get; } = [];
+internal sealed record SequenceElement
+(
+    string Text
+);
 
-    public string ToCharacter() => UnicodeCharacter?.Character().ToString() ?? Id;
+internal sealed record SequenceComponentElement
+{
+    public required string SequenceText { get; init; }
+    public required string CodepointId { get; init; }
+    public required int PositionId { get; init; }
+}
+
+internal sealed record UnicodeCharacterElement
+{
+    public required int ScalarValue { get; init; }
+    public required string CodepointId { get; init; }
+    public Rune Character() => new(ScalarValue);
 }

@@ -16,86 +16,58 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Chise.Entities;
-
 namespace Jitendex.Chise.Import.Models;
 
 internal sealed class Document
 {
-    public Dictionary<string, Codepoint> Codepoints { get; } = [];
-    public Dictionary<(string CodepointId, ComponentPositionId PositionId), Component> Components = [];
-    public Dictionary<ComponentPositionId, ComponentPosition> ComponentPositions = [];
-    public Dictionary<string, Sequence> Sequences { get; } = [];
-    public Dictionary<int, UnicodeCharacter> UnicodeCharacters { get; } = [];
+    public HashSet<string> SequenceTexts { get; init; } = [];
+    public HashSet<UnicodeCharacterElement> UnicodeCharacters { get; init; } = [];
 
-    public void AddCodepoint(Codepoint codepoint, bool topLevel = true)
+    public Dictionary<string, CodepointElement> Codepoints { get; init; } = [];
+    public List<CodepointElement> DiscoveredCodepoints { get; init; } = [];
+    public HashSet<ComponentElement> Components { get; init; } = [];
+    public HashSet<SequenceComponentElement> ComponentSequences { get; init; } = [];
+
+    public void AddParsedSequence(ParserState? parsedSequence)
     {
-        if (topLevel || !Codepoints.ContainsKey(codepoint.Id))
-        {
-            Codepoints[codepoint.Id] = codepoint;
-        }
-
-        AddUnicodeCharacter(codepoint.UnicodeCharacter);
-        AddSequence(codepoint.Sequence);
-        AddSequence(codepoint.AltSequence);
-    }
-
-    private void AddUnicodeCharacter(UnicodeCharacter? character)
-    {
-        if (character is null)
+        if (parsedSequence is null)
         {
             return;
         }
-        if (!UnicodeCharacters.TryGetValue(character.ScalarValue, out var oldCharacter))
+        SequenceTexts.UnionWith(parsedSequence.SequenceTexts);
+        UnicodeCharacters.UnionWith(parsedSequence.UnicodeCharacters);
+        DiscoveredCodepoints.AddRange(parsedSequence.Codepoints);
+        Components.UnionWith(parsedSequence.Components);
+        ComponentSequences.UnionWith(parsedSequence.ComponentSequences);
+    }
+
+    public IEnumerable<SequenceElement> GetSequences()
+        => SequenceTexts.Select(text => new SequenceElement(text));
+
+    public IEnumerable<ComponentPositionElement> GetComponentPositions()
+    {
+        foreach (ComponentPositionId id in Enum.GetValues(typeof(ComponentPositionId)))
         {
-            UnicodeCharacters[character.ScalarValue] = character;
-        }
-        else if (character.CodepointId != oldCharacter.CodepointId)
-        {
-            throw new Exception();
+            yield return new ComponentPositionElement((int)id, id.ToName());
         }
     }
 
-    private void AddSequence(Sequence? sequence)
+    public IEnumerable<CodepointElement> GetCodepoints()
     {
-        if (sequence is null)
+        foreach (var discoveredCodepoint in DiscoveredCodepoints)
         {
-            return;
-        }
-        if (!Sequences.ContainsKey(sequence.Text))
-        {
-            Sequences[sequence.Text] = sequence;
-        }
-        foreach (var component in sequence.Components)
-        {
-            AddComponent(component);
-        }
-    }
-
-    private void AddComponent(Component component)
-    {
-        var key = (component.CodepointId, component.PositionId);
-
-        if (Components.TryGetValue(key, out var oldComponent))
-        {
-            foreach (var sequence in component.Sequences)
+            if (Codepoints.TryGetValue(discoveredCodepoint.Id, out var codepoint))
             {
-                if (!oldComponent.Sequences.Any(s => s.Text == sequence.Text))
+                if (discoveredCodepoint.SequenceText is not null && !codepoint.Equals(discoveredCodepoint))
                 {
-                    oldComponent.Sequences.Add(sequence);
+                    Console.Error.WriteLine($"Unequal codepoints\n(1)\t{codepoint}\n(2)\t{discoveredCodepoint}");
                 }
             }
+            else
+            {
+                Codepoints.Add(discoveredCodepoint.Id, discoveredCodepoint);
+            }
         }
-        else
-        {
-            Components[key] = component;
-        }
-
-        if (!ComponentPositions.ContainsKey(component.PositionId))
-        {
-            ComponentPositions[component.PositionId] = component.Position;
-        }
-
-        AddCodepoint(component.Codepoint, topLevel: false);
+        return Codepoints.Values;
     }
 }

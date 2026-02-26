@@ -28,5 +28,5 @@ public class ChiseContext() : SqliteContext(DatabaseFile.ChiseIds)
     public DbSet<Component> Components { get; } = null!;
     public DbSet<ComponentPosition> ComponentPositions { get; } = null!;
     public DbSet<UnicodeCharacter> UnicodeCharacters { get; } = null!;
-    public DbSet<Sequence> Sequences { get; } = null!;
+    public DbSet<DescriptionSequence> Sequences { get; } = null!;
 }

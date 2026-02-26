@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Chise.Entities;
 using Jitendex.Chise.Import.Models;
 using Jitendex.Chise.Import.Parsing;
 using static Jitendex.Chise.Import.Parsing.UnicodeConverter;
@@ -27,24 +26,24 @@ internal class DocumentReader(Logger logger)
 {
     public Document Read(DirectoryInfo chiseIdsDir)
     {
-        var IdsCollector = new Document();
+        var document = new Document();
+
         foreach (var file in chiseIdsDir.EnumerateFiles("*.txt"))
         {
-            foreach (var codepoint in ReadFile(file))
-            {
-                IdsCollector.AddCodepoint(codepoint);
-            }
+            ReadFile(file, document);
         }
+
         logger.WriteLogs();
-        return IdsCollector;
+
+        return document;
     }
 
-    private IEnumerable<Codepoint> ReadFile(FileInfo file)
+    private void ReadFile(FileInfo file, Document document)
     {
         int lineNumber = 0;
-        using StreamReader sr = file.OpenText();
+        using var reader = file.OpenText();
 
-        while (sr.ReadLine() is string line)
+        while (reader.ReadLine() is string line)
         {
             lineNumber++;
 
@@ -62,43 +61,47 @@ internal class DocumentReader(Logger logger)
                 continue;
             }
 
-            if (MakeCodepoint(lineElements) is Codepoint codepoint)
-            {
-                yield return codepoint;
-            }
+            MakeCodepoint(lineElements, document);
         }
     }
 
-    private Codepoint? MakeCodepoint(in LineElements lineElements)
+    private void MakeCodepoint(in LineElements lineElements, Document document)
     {
         var unicodeCharacter = MakeUnicodeCharacter(lineElements);
+
+        if (unicodeCharacter is not null)
+        {
+            document.UnicodeCharacters.Add(unicodeCharacter);
+        }
 
         var id = unicodeCharacter is null
             ? new string(lineElements.Codepoint)
             : unicodeCharacter.CodepointId;
 
-        var sequence = MakeSequence(lineElements);
-        var altSequence = MakeAltSequence(lineElements);
+        var parsedSequence = MakeSequence(lineElements);
+        var parsedAltSequence = MakeAltSequence(lineElements);
 
-        if (sequence is null)
+        if (parsedSequence is null)
         {
             // There was an error making the sequence.
-            return null;
+            return;
         }
 
-        return new Codepoint
+        document.AddParsedSequence(parsedSequence);
+        document.AddParsedSequence(parsedAltSequence);
+
+        var codepoint = new CodepointElement
         {
             Id = id,
             UnicodeScalarValue = unicodeCharacter?.ScalarValue,
-            SequenceText = sequence.Text,
-            AltSequenceText = altSequence?.Text,
-            UnicodeCharacter = unicodeCharacter,
-            Sequence = sequence,
-            AltSequence = altSequence,
+            SequenceText = parsedSequence.Stack.Pop().SequenceText,
+            AltSequenceText = parsedAltSequence?.Stack.Pop().SequenceText,
         };
+
+        document.Codepoints.Add(codepoint.Id, codepoint);
     }
 
-    private UnicodeCharacter? MakeUnicodeCharacter(in LineElements lineElements)
+    private UnicodeCharacterElement? MakeUnicodeCharacter(in LineElements lineElements)
     {
         if (!lineElements.Codepoint.StartsWith("&U", StringComparison.Ordinal))
         {
@@ -122,20 +125,20 @@ internal class DocumentReader(Logger logger)
             }
         }
 
-        return new UnicodeCharacter
+        return new UnicodeCharacterElement
         {
             ScalarValue = scalarValue,
             CodepointId = new string(longId),
         };
     }
 
-    private Sequence? MakeSequence(in LineElements lineElements)
+    private ParserState? MakeSequence(in LineElements lineElements)
     {
-        Stack<Codepoint> sequenceArguments;
+        ParserState state;
 
         try
         {
-            sequenceArguments = SequenceTextParser.Parse(lineElements.Sequence);
+            state = SequenceTextParser.Parse(lineElements.Sequence);
         }
         catch (InvalidOperationException)
         {
@@ -143,27 +146,27 @@ internal class DocumentReader(Logger logger)
             return null;
         }
 
-        if (sequenceArguments.Count != 1)
+        if (state.Stack.Count != 1)
         {
             logger.LogInsufficientIdsOps(lineElements);
             return null;
         }
 
-        return sequenceArguments.Pop().Sequence;
+        return state;
     }
 
-    private Sequence? MakeAltSequence(in LineElements lineElements)
+    private ParserState? MakeAltSequence(in LineElements lineElements)
     {
         if (lineElements.AltSequence.IsEmpty)
         {
             return null;
         }
 
-        Stack<Codepoint> altSequenceArguments;
+        ParserState state;
 
         try
         {
-            altSequenceArguments = SequenceTextParser.Parse(lineElements.AltSequence);
+             state = SequenceTextParser.Parse(lineElements.AltSequence);
         }
         catch (InvalidOperationException)
         {
@@ -171,12 +174,12 @@ internal class DocumentReader(Logger logger)
             return null;
         }
 
-        if (altSequenceArguments.Count != 1)
+        if (state.Stack.Count != 1)
         {
             logger.LogInsufficientAltIdsOps(lineElements);
             return null;
         }
 
-        return altSequenceArguments.Pop().Sequence;
+        return state;
     }
 }

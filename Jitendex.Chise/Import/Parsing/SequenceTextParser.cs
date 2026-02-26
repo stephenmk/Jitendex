@@ -119,7 +119,6 @@ internal static class SequenceTextParser
                 AltSequenceText = null,
             };
             state.Stack.Push(codepoint);
-            state.Codepoints.Add(codepoint);
         }
         else if (ScalarValue(token) is int scalarValue)
         {
@@ -138,7 +137,6 @@ internal static class SequenceTextParser
                 AltSequenceText = null,
             };
             state.Stack.Push(codepoint);
-            state.Codepoints.Add(codepoint);
             state.UnicodeCharacters.Add(character);
         }
         else
@@ -152,7 +150,6 @@ internal static class SequenceTextParser
                 AltSequenceText = null,
             };
             state.Stack.Push(codepoint);
-            state.Codepoints.Add(codepoint);
         }
     }
 
@@ -193,11 +190,16 @@ internal static class SequenceTextParser
         for (int i = 0; i < positionIds.Length; i++)
         {
             var codepoint = state.Stack.Pop();
-            components[i] = new ComponentElement
+            state.Codepoints.Add(codepoint);
+
+            var component = new ComponentElement
             {
                 CodepointId = codepoint.Id,
                 PositionId = (int)positionIds[i],
             };
+            state.Components.Add(component);
+
+            components[i] = component;
             textBuilder.Append(codepoint.ToCharacter());
         }
 
@@ -212,7 +214,6 @@ internal static class SequenceTextParser
                 PositionId = component.PositionId,
                 SequenceText = sequenceText,
             };
-            state.Components.Add(component);
             state.ComponentSequences.Add(componentSequence);
         }
 

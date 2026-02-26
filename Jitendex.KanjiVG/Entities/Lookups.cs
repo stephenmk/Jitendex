@@ -41,7 +41,7 @@ public sealed class Comment : ILookup
 {
     public required int Id { get; set; }
     public required string Text { get; set; }
-    public List<Variant> Variants { get; } = [];
+    public List<VariantComment> VariantCommments { get; } = [];
 }
 
 [Table(nameof(ComponentGroupStyle))]

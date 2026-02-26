@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Chise.Readers;
-using Jitendex.Chise.Database;
+using Jitendex.Chise.Import.Parsing;
+using Jitendex.Chise.Import.Tables;
 
-namespace Jitendex.Chise;
+namespace Jitendex.Chise.Import;
 
 internal static class DatabaseInitializer
 {

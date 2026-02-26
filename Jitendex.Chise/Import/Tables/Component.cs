@@ -20,33 +20,36 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Chise.Entities;
 
-namespace Jitendex.Chise.Database;
+namespace Jitendex.Chise.Import.Tables;
 
-internal static class ComponentPositionData
+internal static class ComponentData
 {
     // Column names
-    private const string C1 = nameof(ComponentPosition.Id);
+    private const string C1 = nameof(Component.CodepointId);
+    private const string C2 = nameof(Component.PositionId);
 
     // Parameter names
     private const string P1 = $"@{C1}";
+    private const string P2 = $"@{C2}";
 
     private const string InsertSql =
         $"""
-        INSERT INTO "{nameof(ComponentPosition)}"
-        ("{C1}") VALUES
-        ( {P1} );
+        INSERT INTO "{nameof(Component)}"
+        ("{C1}", "{C2}") VALUES
+        ( {P1} ,  {P2} );
         """;
 
-    public static async Task InsertComponentPositionsAsync(this Context db, IEnumerable<ComponentPosition> positions)
+    public static async Task InsertComponentsAsync(this Context db, IEnumerable<Component> components)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;
 
-        foreach (var position in positions)
+        foreach (var component in components)
         {
             command.Parameters.AddRange(new SqliteParameter[]
             {
-                new(P1, position.Id),
+                new(P1, component.CodepointId),
+                new(P2, component.PositionId),
             });
 
             await command.ExecuteNonQueryAsync();

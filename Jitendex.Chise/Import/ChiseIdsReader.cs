@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Chise.Entities;
-using Jitendex.Chise.Readers;
-using static Jitendex.Chise.Readers.UnicodeConverter;
+using Jitendex.Chise.Import.Parsing;
+using static Jitendex.Chise.Import.Parsing.UnicodeConverter;
 
-namespace Jitendex.Chise;
+namespace Jitendex.Chise.Import;
 
 internal class ChiseIdsReader
 {

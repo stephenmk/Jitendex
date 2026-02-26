@@ -16,19 +16,17 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Chise.Readers;
+namespace Jitendex.Chise.Import.Parsing;
 
-internal static class UnicodeConverter
+internal enum ChiseError
 {
-    public static int? ScalarValue(in ReadOnlySpan<char> character) => character switch
-    {
-        { Length: 1 } => character[0],
-        { Length: 2 } when char.IsHighSurrogate(character[0])
-                        && char.IsLowSurrogate(character[1])
-                        => char.ConvertToUtf32(character[0], character[1]),
-        _ => null,
-    };
-
-    public static ReadOnlySpan<char> GetLongCodepointId(int scalarValue) => $"&U-{scalarValue:X8};";
-    public static ReadOnlySpan<char> GetShortCodepointId(int scalarValue) => $"&U+{scalarValue:X};";
+    InvalidUnicodeCodepoint,
+    UnicodeCharacterInequality,
+    InsufficientLineElements,
+    ExcessiveLineElements,
+    AltSequenceFormatError,
+    InsufficientIdsArgs,
+    InsufficientIdsOps,
+    InsufficientAltIdsArgs,
+    InsufficientAltIdsOps,
 }

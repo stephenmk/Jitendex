@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Chise.Entities;
 
-namespace Jitendex.Chise.Readers;
+namespace Jitendex.Chise.Import.Parsing;
 
 internal class IdsCollector
 {

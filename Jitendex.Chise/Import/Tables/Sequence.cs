@@ -20,46 +20,37 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Chise.Entities;
 
-namespace Jitendex.Chise.Database;
+namespace Jitendex.Chise.Import.Tables;
 
-internal static class ComponentSequenceData
+internal static class SequenceData
 {
     // Column names
-    private const string C1 = $"{nameof(Component.Sequences)}{nameof(Sequence.Text)}";
-    private const string C2 = $"{nameof(Sequence.Components)}{nameof(Component.CodepointId)}";
-    private const string C3 = $"{nameof(Sequence.Components)}{nameof(Component.PositionId)}";
+    private const string C1 = nameof(Sequence.Text);
 
     // Parameter names
     private const string P1 = $"@{C1}";
-    private const string P2 = $"@{C2}";
-    private const string P3 = $"@{C3}";
 
     private const string InsertSql =
         $"""
-        INSERT INTO "{nameof(Component)}{nameof(Sequence)}"
-        ("{C1}", "{C2}", "{C3}") VALUES
-        ( {P1} ,  {P2} ,  {P3} );
+        INSERT INTO "{nameof(Sequence)}"
+        ("{C1}") VALUES
+        ( {P1} );
         """;
 
-    public static async Task InsertComponentSequencesAsync(this Context db, IEnumerable<Component> components)
+    public static async Task InsertSequencesAsync(this Context db, IEnumerable<Sequence> sequences)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;
 
-        foreach (var component in components)
+        foreach (var sequence in sequences)
         {
-            foreach (var sequence in component.Sequences)
+            command.Parameters.AddRange(new SqliteParameter[]
             {
-                command.Parameters.AddRange(new SqliteParameter[]
-                {
-                    new(P1, sequence.Text),
-                    new(P2, component.CodepointId),
-                    new(P3, component.PositionId),
-                });
+                new(P1, sequence.Text),
+            });
 
-                await command.ExecuteNonQueryAsync();
-                command.Parameters.Clear();
-            }
+            await command.ExecuteNonQueryAsync();
+            command.Parameters.Clear();
         }
     }
 }

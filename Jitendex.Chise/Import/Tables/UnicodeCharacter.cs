@@ -20,13 +20,13 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Chise.Entities;
 
-namespace Jitendex.Chise.Database;
+namespace Jitendex.Chise.Import.Tables;
 
-internal static class ComponentData
+internal static class UnicodeCharacterData
 {
     // Column names
-    private const string C1 = nameof(Component.CodepointId);
-    private const string C2 = nameof(Component.PositionId);
+    private const string C1 = nameof(UnicodeCharacter.ScalarValue);
+    private const string C2 = nameof(UnicodeCharacter.CodepointId);
 
     // Parameter names
     private const string P1 = $"@{C1}";
@@ -34,22 +34,22 @@ internal static class ComponentData
 
     private const string InsertSql =
         $"""
-        INSERT INTO "{nameof(Component)}"
+        INSERT INTO "{nameof(UnicodeCharacter)}"
         ("{C1}", "{C2}") VALUES
         ( {P1} ,  {P2} );
         """;
 
-    public static async Task InsertComponentsAsync(this Context db, IEnumerable<Component> components)
+    public static async Task InsertUnicodeCharactersAsync(this Context db, IEnumerable<UnicodeCharacter> characters)
     {
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = InsertSql;
 
-        foreach (var component in components)
+        foreach (var character in characters)
         {
             command.Parameters.AddRange(new SqliteParameter[]
             {
-                new(P1, component.CodepointId),
-                new(P2, component.PositionId),
+                new(P1, character.ScalarValue),
+                new(P2, character.CodepointId),
             });
 
             await command.ExecuteNonQueryAsync();

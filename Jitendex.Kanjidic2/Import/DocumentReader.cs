@@ -29,14 +29,15 @@ internal partial class DocumentReader
 (
     ILogger<DocumentReader> logger,
     EntryReader entryReader
-) : XmlParentElementReader<Document, byte>(logger),
+) :
+    XmlParentElementReader<Document, byte>(logger),
     IDocumentReader<DateOnly, Document>
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
     {
-        await using FileStream f = new(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-        await using BrotliStream b = new(f, CompressionMode.Decompress);
-        using var xmlReader = XmlReader.Create(b, XmlReaderSettings);
+        await using var fileStream = file.OpenRead();
+        await using var brotliStream = new BrotliStream(fileStream, CompressionMode.Decompress);
+        using var xmlReader = XmlReader.Create(brotliStream, XmlReaderSettings);
 
         var document = new Document
         {

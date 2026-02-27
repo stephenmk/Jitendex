@@ -36,9 +36,9 @@ internal partial class DocumentReader
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
     {
-        await using FileStream f = new(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-        await using BrotliStream b = new(f, CompressionMode.Decompress);
-        using var xmlReader = XmlReader.Create(b, XmlReaderSettings);
+        await using var fileStream = file.OpenRead();
+        await using var brotliStream = new BrotliStream(fileStream, CompressionMode.Decompress);
+        using var xmlReader = XmlReader.Create(brotliStream, XmlReaderSettings);
 
         var document = new Document
         {

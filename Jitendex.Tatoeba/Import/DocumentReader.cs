@@ -29,9 +29,9 @@ internal sealed class DocumentReader(ILogger<DocumentReader> logger)
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly date)
     {
-        await using FileStream fs = new(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-        await using BrotliStream bs = new(fs, CompressionMode.Decompress);
-        using StreamReader reader = new(bs);
+        await using var fileStream = file.OpenRead();
+        await using var brotliStream = new BrotliStream(fileStream, CompressionMode.Decompress);
+        using var reader = new StreamReader(brotliStream);
 
         var document = new Document { ArchiveKey = date };
 

@@ -21,7 +21,7 @@ namespace Jitendex.Chise.Import.Models;
 internal sealed class Document
 {
     public HashSet<string> SequenceTexts { get; init; } = [];
-    public HashSet<UnicodeCharacterElement> UnicodeCharacters { get; init; } = [];
+    public HashSet<int> UnicodeCharacters { get; init; } = [];
 
     public Dictionary<string, CodepointElement> Codepoints { get; init; } = [];
     public List<CodepointElement> DiscoveredCodepoints { get; init; } = [];
@@ -43,6 +43,9 @@ internal sealed class Document
 
     public IEnumerable<SequenceElement> GetSequences()
         => SequenceTexts.Select(text => new SequenceElement(text));
+
+    public IEnumerable<UnicodeCharacterElement> GetUnicodeCharacters()
+        => UnicodeCharacters.Select(i => new UnicodeCharacterElement(i));
 
     public IEnumerable<ComponentPositionElement> GetComponentPositions()
     {

@@ -124,11 +124,6 @@ internal static class SequenceTextParser
         {
             // Token is a Unicode character.
             var id = GetLongCodepointId(scalarValue);
-            var character = new UnicodeCharacterElement
-            {
-                ScalarValue = scalarValue,
-                CodepointId = id,
-            };
             var codepoint = new CodepointElement
             {
                 Id = id,
@@ -137,7 +132,7 @@ internal static class SequenceTextParser
                 AltSequenceText = null,
             };
             state.Stack.Push(codepoint);
-            state.UnicodeCharacters.Add(character);
+            state.UnicodeCharacters.Add(scalarValue);
         }
         else
         {

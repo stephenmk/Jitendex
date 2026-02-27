@@ -27,9 +27,8 @@ public class UnicodeCharacter
 {
     [Key]
     public required int ScalarValue { get; init; }
-    public required string CodepointId { get; init; }
     public Rune Character() => new(ScalarValue);
 
-    [ForeignKey(nameof(CodepointId))]
-    public Codepoint Codepoint { get; init; } = null!;
+    [InverseProperty(nameof(Codepoint.UnicodeCharacter))]
+    public List<Codepoint> Codepoints { get; init; } = [];
 }

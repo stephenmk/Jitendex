@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using static Jitendex.Chise.Import.Parsing.ChiseError;
+using Jitendex.AppDirectory;
 
 namespace Jitendex.Chise.Import.Parsing;
 
@@ -31,15 +32,15 @@ internal readonly ref struct LogFilePaths
 
     public ReadOnlySpan<char> GetLogFilePath(ChiseError error) => error switch
     {
-        InvalidUnicodeCodepoint => MakePath("invalid_unicode_codepoint.tsv"),
+        InvalidUnicodeCodepoint    => MakePath("invalid_unicode_codepoint.tsv"),
         UnicodeCharacterInequality => MakePath("unicode_character_inequality.tsv"),
-        InsufficientLineElements => MakePath("insufficient_ids_args.tsv"),
-        ExcessiveLineElements => MakePath("insufficient_ids_ops.tsv"),
-        AltSequenceFormatError => MakePath("insufficient_alt_ids_args.tsv"),
-        InsufficientIdsArgs => MakePath("insufficient_alt_idc_ops.tsv"),
-        InsufficientIdsOps => MakePath("insufficient_line_elements.tsv"),
-        InsufficientAltIdsArgs => MakePath("excessive_line_elements.tsv"),
-        InsufficientAltIdsOps => MakePath("alt_sequence_format_error.tsv"),
+        InsufficientLineElements   => MakePath("insufficient_ids_args.tsv"),
+        ExcessiveLineElements      => MakePath("insufficient_ids_ops.tsv"),
+        AltSequenceFormatError     => MakePath("insufficient_alt_ids_args.tsv"),
+        InsufficientIdsArgs        => MakePath("insufficient_alt_idc_ops.tsv"),
+        InsufficientIdsOps         => MakePath("insufficient_line_elements.tsv"),
+        InsufficientAltIdsArgs     => MakePath("excessive_line_elements.tsv"),
+        InsufficientAltIdsOps      => MakePath("alt_sequence_format_error.tsv"),
         _ => throw new ArgumentOutOfRangeException(nameof(error))
     };
 
@@ -48,25 +49,13 @@ internal readonly ref struct LogFilePaths
 
     private static ReadOnlySpan<char> InitDirectory()
     {
-        var logDirectory = new DirectoryInfo(Path.Join
-        (
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "Jitendex",
-            "chise-ids-errors"
-        ));
+        var logDirectory = Cache.Get(CacheSubdirectory.ChiseIdsErrors);
 
-        if (logDirectory.Exists)
+        foreach (var file in logDirectory.EnumerateFiles())
         {
-            foreach (var file in logDirectory.EnumerateFiles())
-            {
-                file.Delete();
-            }
-        }
-        else
-        {
-            logDirectory.Create();
+            file.Delete();
         }
 
-        return logDirectory.FullName.AsSpan();
+        return logDirectory.FullName;
     }
 }

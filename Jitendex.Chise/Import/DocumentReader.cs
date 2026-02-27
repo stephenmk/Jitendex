@@ -69,14 +69,14 @@ internal class DocumentReader(Logger logger)
     {
         var unicodeCharacter = MakeUnicodeCharacter(lineElements);
 
-        if (unicodeCharacter is not null)
+        if (unicodeCharacter.HasValue)
         {
-            document.UnicodeCharacters.Add(unicodeCharacter);
+            document.UnicodeCharacters.Add(unicodeCharacter.Value);
         }
 
-        var id = unicodeCharacter is null
-            ? new string(lineElements.Codepoint)
-            : unicodeCharacter.CodepointId;
+        var id = unicodeCharacter.HasValue
+            ? GetLongCodepointId(unicodeCharacter.Value)
+            : new string(lineElements.Codepoint);
 
         var parsedSequence = MakeSequence(lineElements);
         var parsedAltSequence = MakeAltSequence(lineElements);
@@ -93,7 +93,7 @@ internal class DocumentReader(Logger logger)
         var codepoint = new CodepointElement
         {
             Id = id,
-            UnicodeScalarValue = unicodeCharacter?.ScalarValue,
+            UnicodeScalarValue = unicodeCharacter,
             SequenceText = parsedSequence.Stack.Pop().SequenceText,
             AltSequenceText = parsedAltSequence?.Stack.Pop().SequenceText,
         };
@@ -101,7 +101,7 @@ internal class DocumentReader(Logger logger)
         document.Codepoints.Add(codepoint.Id, codepoint);
     }
 
-    private UnicodeCharacterElement? MakeUnicodeCharacter(in LineElements lineElements)
+    private int? MakeUnicodeCharacter(in LineElements lineElements)
     {
         if (!lineElements.Codepoint.StartsWith("&U", StringComparison.Ordinal))
         {
@@ -125,11 +125,7 @@ internal class DocumentReader(Logger logger)
             }
         }
 
-        return new UnicodeCharacterElement
-        {
-            ScalarValue = scalarValue,
-            CodepointId = new string(longId),
-        };
+        return scalarValue;
     }
 
     private ParserState? MakeSequence(in LineElements lineElements)

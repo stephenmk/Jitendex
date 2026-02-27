@@ -56,9 +56,7 @@ internal sealed record SequenceComponentElement
     public required int PositionId { get; init; }
 }
 
-internal sealed record UnicodeCharacterElement
+internal sealed record UnicodeCharacterElement(int ScalarValue)
 {
-    public required int ScalarValue { get; init; }
-    public required string CodepointId { get; init; }
     public Rune Character() => new(ScalarValue);
 }

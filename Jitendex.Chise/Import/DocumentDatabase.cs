@@ -39,7 +39,7 @@ internal sealed class DocumentDatabase(ChiseContext context)
 
         SequenceTable.InsertItems(context, document.GetSequences());
         ComponentPositionTable.InsertItems(context, document.GetComponentPositions());
-        UnicodeCharacterTable.InsertItems(context, document.UnicodeCharacters);
+        UnicodeCharacterTable.InsertItems(context, document.GetUnicodeCharacters());
 
         CodepointTable.InsertItems(context, document.GetCodepoints());
         ComponentTable.InsertItems(context, document.Components);

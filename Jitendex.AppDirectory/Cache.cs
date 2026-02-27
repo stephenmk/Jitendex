@@ -33,7 +33,8 @@ public static class Cache
         => subdir switch
         {
             EdrdgArchiveDirectory => "edrdg-dictionary-archive",
-            SqliteDirectory => "sqlite",
+            SqliteDirectory       => "sqlite",
+            ChiseIdsErrors        => "chise-ids-errors",
             _ => throw new ArgumentOutOfRangeException(nameof(subdir))
         };
 }
@@ -42,4 +43,5 @@ public enum CacheSubdirectory : byte
 {
     EdrdgArchiveDirectory,
     SqliteDirectory,
+    ChiseIdsErrors,
 }

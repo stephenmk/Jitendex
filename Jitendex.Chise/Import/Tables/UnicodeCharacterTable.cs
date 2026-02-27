@@ -29,18 +29,13 @@ internal sealed class UnicodeCharacterTable : Table<UnicodeCharacterElement>
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(UnicodeCharacter.ScalarValue),
-        nameof(UnicodeCharacter.CodepointId),
-    ];
-
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
         nameof(UnicodeCharacter.ScalarValue)
     ];
 
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+
     protected override SqliteParameter[] Parameters(UnicodeCharacterElement character) =>
     [
-        new("@0", character.ScalarValue),
-        new("@1", character.CodepointId),
+        new("@0", character.ScalarValue)
     ];
 }

@@ -23,7 +23,7 @@ internal sealed class ParserState
     public Stack<CodepointElement> Stack { get; } = [];
 
     public List<string> SequenceTexts { get; } = [];
-    public List<UnicodeCharacterElement> UnicodeCharacters { get; } = [];
+    public List<int> UnicodeCharacters { get; } = [];
 
     public List<CodepointElement> Codepoints { get; } = [];
     public List<ComponentElement> Components { get; } = [];

@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.SQLite;
-using Jitendex.JMdictAnalysis.Entities;
-using Jitendex.JMdictAnalysis.Entities.EntryItems;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.KanjiFormItems;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.ReadingItems;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Entities;
+using Jitendex.JMdict.Entities.EntryItems;
+using Jitendex.JMdict.Entities.EntryItems.KanjiFormItems;
+using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdictAnalysis.Analysis;
 
@@ -34,6 +34,8 @@ internal sealed class Database(JmdictAnalysisContext context)
         context.Database.ExecuteSqlRaw(TransferCommandText);
     }
 
+    private const string Schema = nameof(DatabaseFile.JMdict);
+
     /// <remarks>
     /// This assumes that the table names and column names
     /// in the JMdict SQLite database are exactly the same.
@@ -41,100 +43,100 @@ internal sealed class Database(JmdictAnalysisContext context)
     private const string TransferCommandText =
         $"""
         INSERT INTO "{nameof(FileHeader)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(FileHeader)}";
+        SELECT * FROM "{Schema}"."{nameof(FileHeader)}";
 
         INSERT INTO "{nameof(Sequence)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Sequence)}";
+        SELECT * FROM "{Schema}"."{nameof(Sequence)}";
 
         INSERT INTO "{nameof(ReadingInfoTag)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(ReadingInfoTag)}";
+        SELECT * FROM "{Schema}"."{nameof(ReadingInfoTag)}";
 
         INSERT INTO "{nameof(KanjiFormInfoTag)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(KanjiFormInfoTag)}";
+        SELECT * FROM "{Schema}"."{nameof(KanjiFormInfoTag)}";
 
         INSERT INTO "{nameof(PartOfSpeechTag)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(PartOfSpeechTag)}";
+        SELECT * FROM "{Schema}"."{nameof(PartOfSpeechTag)}";
 
         INSERT INTO "{nameof(FieldTag)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(FieldTag)}";
+        SELECT * FROM "{Schema}"."{nameof(FieldTag)}";
 
         INSERT INTO "{nameof(MiscTag)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(MiscTag)}";
+        SELECT * FROM "{Schema}"."{nameof(MiscTag)}";
 
         INSERT INTO "{nameof(DialectTag)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(DialectTag)}";
+        SELECT * FROM "{Schema}"."{nameof(DialectTag)}";
 
         INSERT INTO "{nameof(GlossType)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(GlossType)}";
+        SELECT * FROM "{Schema}"."{nameof(GlossType)}";
 
         INSERT INTO "{nameof(CrossReferenceType)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(CrossReferenceType)}";
+        SELECT * FROM "{Schema}"."{nameof(CrossReferenceType)}";
 
         INSERT INTO "{nameof(LanguageSourceType)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(LanguageSourceType)}";
+        SELECT * FROM "{Schema}"."{nameof(LanguageSourceType)}";
 
         INSERT INTO "{nameof(PriorityTag)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(PriorityTag)}";
+        SELECT * FROM "{Schema}"."{nameof(PriorityTag)}";
 
         INSERT INTO "{nameof(Language)}"
              ( "{nameof(IKeyword.Name)}"
              , "{nameof(IKeyword.OriginFileId)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Language)}";
+        SELECT * FROM "{Schema}"."{nameof(Language)}";
 
         INSERT INTO "{nameof(Revision)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Revision)}";
+        SELECT * FROM "{Schema}"."{nameof(Revision)}";
 
         INSERT INTO "{nameof(Entry)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Entry)}";
+        SELECT * FROM "{Schema}"."{nameof(Entry)}";
 
         INSERT INTO "{nameof(KanjiForm)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(KanjiForm)}";
+        SELECT * FROM "{Schema}"."{nameof(KanjiForm)}";
 
         INSERT INTO "{nameof(KanjiFormInfo)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(KanjiFormInfo)}";
+        SELECT * FROM "{Schema}"."{nameof(KanjiFormInfo)}";
 
         INSERT INTO "{nameof(KanjiFormPriority)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(KanjiFormPriority)}";
+        SELECT * FROM "{Schema}"."{nameof(KanjiFormPriority)}";
 
         INSERT INTO "{nameof(Reading)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Reading)}";
+        SELECT * FROM "{Schema}"."{nameof(Reading)}";
 
         INSERT INTO "{nameof(ReadingInfo)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(ReadingInfo)}";
+        SELECT * FROM "{Schema}"."{nameof(ReadingInfo)}";
 
         INSERT INTO "{nameof(ReadingPriority)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(ReadingPriority)}";
+        SELECT * FROM "{Schema}"."{nameof(ReadingPriority)}";
 
         INSERT INTO "{nameof(Restriction)}"
              ( "{nameof(Restriction.EntryId)}"
@@ -142,10 +144,10 @@ internal sealed class Database(JmdictAnalysisContext context)
              , "{nameof(Restriction.Order)}"
              , "{nameof(Restriction.KanjiFormText)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Restriction)}";
+        SELECT * FROM "{Schema}"."{nameof(Restriction)}";
 
         INSERT INTO "{nameof(Sense)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Sense)}";
+        SELECT * FROM "{Schema}"."{nameof(Sense)}";
 
         INSERT INTO "{nameof(CrossReference)}"
              ( "{nameof(CrossReference.EntryId)}"
@@ -154,16 +156,16 @@ internal sealed class Database(JmdictAnalysisContext context)
              , "{nameof(CrossReference.TypeName)}"
              , "{nameof(CrossReference.Text)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(CrossReference)}";
+        SELECT * FROM "{Schema}"."{nameof(CrossReference)}";
 
         INSERT INTO "{nameof(Dialect)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Dialect)}";
+        SELECT * FROM "{Schema}"."{nameof(Dialect)}";
 
         INSERT INTO "{nameof(Field)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Field)}";
+        SELECT * FROM "{Schema}"."{nameof(Field)}";
 
         INSERT INTO "{nameof(Gloss)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Gloss)}";
+        SELECT * FROM "{Schema}"."{nameof(Gloss)}";
 
         INSERT INTO "{nameof(KanjiFormRestriction)}"
              ( "{nameof(KanjiFormRestriction.EntryId)}"
@@ -171,19 +173,19 @@ internal sealed class Database(JmdictAnalysisContext context)
              , "{nameof(KanjiFormRestriction.Order)}"
              , "{nameof(KanjiFormRestriction.KanjiFormText)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(KanjiFormRestriction)}";
+        SELECT * FROM "{Schema}"."{nameof(KanjiFormRestriction)}";
 
         INSERT INTO "{nameof(LanguageSource)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(LanguageSource)}";
+        SELECT * FROM "{Schema}"."{nameof(LanguageSource)}";
 
         INSERT INTO "{nameof(Misc)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Misc)}";
+        SELECT * FROM "{Schema}"."{nameof(Misc)}";
 
         INSERT INTO "{nameof(Note)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(Note)}";
+        SELECT * FROM "{Schema}"."{nameof(Note)}";
 
         INSERT INTO "{nameof(PartOfSpeech)}"
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(PartOfSpeech)}";
+        SELECT * FROM "{Schema}"."{nameof(PartOfSpeech)}";
 
         INSERT INTO "{nameof(ReadingRestriction)}"
              ( "{nameof(ReadingRestriction.EntryId)}"
@@ -191,6 +193,6 @@ internal sealed class Database(JmdictAnalysisContext context)
              , "{nameof(ReadingRestriction.Order)}"
              , "{nameof(ReadingRestriction.ReadingText)}"
              )
-        SELECT * FROM "{nameof(DatabaseFile.JMdict)}"."{nameof(ReadingRestriction)}";
+        SELECT * FROM "{Schema}"."{nameof(ReadingRestriction)}";
         """;
 }

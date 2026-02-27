@@ -24,9 +24,11 @@ namespace Jitendex.Chise;
 
 public class ChiseContext() : SqliteContext(DatabaseFile.ChiseIds)
 {
-    public DbSet<Codepoint> Codepoints { get; init; } = null!;
-    public DbSet<Component> Components { get; init; } = null!;
+    public DbSet<DescriptionSequence> DescriptionSequences { get; init; } = null!;
     public DbSet<ComponentPosition> ComponentPositions { get; init; } = null!;
     public DbSet<UnicodeCharacter> UnicodeCharacters { get; init; } = null!;
-    public DbSet<DescriptionSequence> Sequences { get; init; } = null!;
+
+    public DbSet<Codepoint> Codepoints { get; init; } = null!;
+    public DbSet<Component> Components { get; init; } = null!;
+    public DbSet<SequenceComponent> SequenceComponents { get; init; } = null!;
 }

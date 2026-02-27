@@ -42,157 +42,313 @@ internal sealed class Database(JmdictAnalysisContext context)
     /// </remarks>
     private const string TransferCommandText =
         $"""
-        INSERT INTO "{nameof(FileHeader)}"
-        SELECT * FROM "{Schema}"."{nameof(FileHeader)}";
+        INSERT INTO '{nameof(FileHeader)}'
+             ( '{nameof(FileHeader.Id)}'
+             , '{nameof(FileHeader.Date)}')
+        SELECT "{nameof(FileHeader.Id)}"
+             , "{nameof(FileHeader.Date)}"
+          FROM '{Schema}'.'{nameof(FileHeader)}';
 
-        INSERT INTO "{nameof(Sequence)}"
-        SELECT * FROM "{Schema}"."{nameof(Sequence)}";
+        INSERT INTO '{nameof(CrossReferenceType)}'
+             ( '{nameof(CrossReferenceType.Name)}'
+             , '{nameof(CrossReferenceType.OriginFileId)}')
+        SELECT "{nameof(CrossReferenceType.Name)}"
+             , "{nameof(CrossReferenceType.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(CrossReferenceType)}';
 
-        INSERT INTO "{nameof(ReadingInfoTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(ReadingInfoTag)}";
+        INSERT INTO '{nameof(DialectTag)}'
+             ( '{nameof(DialectTag.Name)}'
+             , '{nameof(DialectTag.OriginFileId)}')
+        SELECT "{nameof(DialectTag.Name)}"
+             , "{nameof(DialectTag.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(DialectTag)}';
 
-        INSERT INTO "{nameof(KanjiFormInfoTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(KanjiFormInfoTag)}";
+        INSERT INTO '{nameof(FieldTag)}'
+             ( '{nameof(FieldTag.Name)}'
+             , '{nameof(FieldTag.OriginFileId)}')
+        SELECT "{nameof(FieldTag.Name)}"
+             , "{nameof(FieldTag.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(FieldTag)}';
 
-        INSERT INTO "{nameof(PartOfSpeechTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(PartOfSpeechTag)}";
+        INSERT INTO '{nameof(GlossType)}'
+             ( '{nameof(GlossType.Name)}'
+             , '{nameof(GlossType.OriginFileId)}')
+        SELECT "{nameof(GlossType.Name)}"
+             , "{nameof(GlossType.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(GlossType)}';
 
-        INSERT INTO "{nameof(FieldTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(FieldTag)}";
+        INSERT INTO '{nameof(KanjiFormInfoTag)}'
+             ( '{nameof(KanjiFormInfoTag.Name)}'
+             , '{nameof(KanjiFormInfoTag.OriginFileId)}')
+        SELECT "{nameof(KanjiFormInfoTag.Name)}"
+             , "{nameof(KanjiFormInfoTag.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(KanjiFormInfoTag)}';
 
-        INSERT INTO "{nameof(MiscTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(MiscTag)}";
+        INSERT INTO '{nameof(Language)}'
+             ( '{nameof(Language.Name)}'
+             , '{nameof(Language.OriginFileId)}')
+        SELECT "{nameof(Language.Name)}"
+             , "{nameof(Language.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(Language)}';
 
-        INSERT INTO "{nameof(DialectTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(DialectTag)}";
+        INSERT INTO '{nameof(LanguageSourceType)}'
+             ( '{nameof(LanguageSourceType.Name)}'
+             , '{nameof(LanguageSourceType.OriginFileId)}')
+        SELECT "{nameof(LanguageSourceType.Name)}"
+             , "{nameof(LanguageSourceType.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(LanguageSourceType)}';
 
-        INSERT INTO "{nameof(GlossType)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(GlossType)}";
+        INSERT INTO '{nameof(MiscTag)}'
+             ( '{nameof(MiscTag.Name)}'
+             , '{nameof(MiscTag.OriginFileId)}')
+        SELECT "{nameof(MiscTag.Name)}"
+             , "{nameof(MiscTag.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(MiscTag)}';
 
-        INSERT INTO "{nameof(CrossReferenceType)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(CrossReferenceType)}";
+        INSERT INTO '{nameof(PartOfSpeechTag)}'
+             ( '{nameof(PartOfSpeechTag.Name)}'
+             , '{nameof(PartOfSpeechTag.OriginFileId)}')
+        SELECT "{nameof(PartOfSpeechTag.Name)}"
+             , "{nameof(PartOfSpeechTag.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(PartOfSpeechTag)}';
 
-        INSERT INTO "{nameof(LanguageSourceType)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(LanguageSourceType)}";
+        INSERT INTO '{nameof(PriorityTag)}'
+             ( '{nameof(PriorityTag.Name)}'
+             , '{nameof(PriorityTag.OriginFileId)}')
+        SELECT "{nameof(PriorityTag.Name)}"
+             , "{nameof(PriorityTag.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(PriorityTag)}';
 
-        INSERT INTO "{nameof(PriorityTag)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(PriorityTag)}";
+        INSERT INTO '{nameof(ReadingInfoTag)}'
+             ( '{nameof(ReadingInfoTag.Name)}'
+             , '{nameof(ReadingInfoTag.OriginFileId)}')
+        SELECT "{nameof(ReadingInfoTag.Name)}"
+             , "{nameof(ReadingInfoTag.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(ReadingInfoTag)}';
 
-        INSERT INTO "{nameof(Language)}"
-             ( "{nameof(IKeyword.Name)}"
-             , "{nameof(IKeyword.OriginFileId)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(Language)}";
+        INSERT INTO '{nameof(Sequence)}'
+             ( '{nameof(Sequence.Id)}'
+             , '{nameof(Sequence.OriginFileId)}')
+        SELECT "{nameof(Sequence.Id)}"
+             , "{nameof(Sequence.OriginFileId)}"
+          FROM '{Schema}'.'{nameof(Sequence)}';
 
-        INSERT INTO "{nameof(Revision)}"
-        SELECT * FROM "{Schema}"."{nameof(Revision)}";
+        INSERT INTO '{nameof(Entry)}'
+             ( '{nameof(Entry.Id)}')
+        SELECT "{nameof(Entry.Id)}"
+          FROM '{Schema}'.'{nameof(Entry)}';
 
-        INSERT INTO "{nameof(Entry)}"
-        SELECT * FROM "{Schema}"."{nameof(Entry)}";
+        INSERT INTO '{nameof(Revision)}'
+             ( '{nameof(Revision.SequenceId)}'
+             , '{nameof(Revision.Number)}'
+             , '{nameof(Revision.FileHeaderId)}'
+             , '{nameof(Revision.DiffJson)}')
+        SELECT "{nameof(Revision.SequenceId)}"
+             , "{nameof(Revision.Number)}"
+             , "{nameof(Revision.FileHeaderId)}"
+             , "{nameof(Revision.DiffJson)}"
+          FROM '{Schema}'.'{nameof(Revision)}';
 
-        INSERT INTO "{nameof(KanjiForm)}"
-        SELECT * FROM "{Schema}"."{nameof(KanjiForm)}";
+        INSERT INTO '{nameof(KanjiForm)}'
+             ( '{nameof(KanjiForm.EntryId)}'
+             , '{nameof(KanjiForm.Order)}'
+             , '{nameof(KanjiForm.Text)}')
+        SELECT "{nameof(KanjiForm.EntryId)}"
+             , "{nameof(KanjiForm.Order)}"
+             , "{nameof(KanjiForm.Text)}"
+          FROM '{Schema}'.'{nameof(KanjiForm)}';
 
-        INSERT INTO "{nameof(KanjiFormInfo)}"
-        SELECT * FROM "{Schema}"."{nameof(KanjiFormInfo)}";
+        INSERT INTO '{nameof(Reading)}'
+             ( '{nameof(Reading.EntryId)}'
+             , '{nameof(Reading.Order)}'
+             , '{nameof(Reading.Text)}'
+             , '{nameof(Reading.NoKanji)}')
+        SELECT "{nameof(Reading.EntryId)}"
+             , "{nameof(Reading.Order)}"
+             , "{nameof(Reading.Text)}"
+             , "{nameof(Reading.NoKanji)}"
+          FROM '{Schema}'.'{nameof(Reading)}';
 
-        INSERT INTO "{nameof(KanjiFormPriority)}"
-        SELECT * FROM "{Schema}"."{nameof(KanjiFormPriority)}";
+        INSERT INTO '{nameof(Sense)}'
+             ( '{nameof(Sense.EntryId)}'
+             , '{nameof(Sense.Order)}')
+        SELECT "{nameof(Sense.EntryId)}"
+             , "{nameof(Sense.Order)}"
+          FROM '{Schema}'.'{nameof(Sense)}';
 
-        INSERT INTO "{nameof(Reading)}"
-        SELECT * FROM "{Schema}"."{nameof(Reading)}";
+        INSERT INTO '{nameof(KanjiFormInfo)}'
+             ( '{nameof(KanjiFormInfo.EntryId)}'
+             , '{nameof(KanjiFormInfo.KanjiFormOrder)}'
+             , '{nameof(KanjiFormInfo.Order)}'
+             , '{nameof(KanjiFormInfo.TagName)}')
+        SELECT "{nameof(KanjiFormInfo.EntryId)}"
+             , "{nameof(KanjiFormInfo.KanjiFormOrder)}"
+             , "{nameof(KanjiFormInfo.Order)}"
+             , "{nameof(KanjiFormInfo.TagName)}"
+          FROM '{Schema}'.'{nameof(KanjiFormInfo)}';
 
-        INSERT INTO "{nameof(ReadingInfo)}"
-        SELECT * FROM "{Schema}"."{nameof(ReadingInfo)}";
+        INSERT INTO '{nameof(KanjiFormPriority)}'
+             ( '{nameof(KanjiFormPriority.EntryId)}'
+             , '{nameof(KanjiFormPriority.KanjiFormOrder)}'
+             , '{nameof(KanjiFormPriority.Order)}'
+             , '{nameof(KanjiFormPriority.TagName)}')
+        SELECT "{nameof(KanjiFormPriority.EntryId)}"
+             , "{nameof(KanjiFormPriority.KanjiFormOrder)}"
+             , "{nameof(KanjiFormPriority.Order)}"
+             , "{nameof(KanjiFormPriority.TagName)}"
+          FROM '{Schema}'.'{nameof(KanjiFormPriority)}';
 
-        INSERT INTO "{nameof(ReadingPriority)}"
-        SELECT * FROM "{Schema}"."{nameof(ReadingPriority)}";
+        INSERT INTO '{nameof(ReadingInfo)}'
+             ( '{nameof(ReadingInfo.EntryId)}'
+             , '{nameof(ReadingInfo.ReadingOrder)}'
+             , '{nameof(ReadingInfo.Order)}'
+             , '{nameof(ReadingInfo.TagName)}')
+        SELECT "{nameof(ReadingInfo.EntryId)}"
+             , "{nameof(ReadingInfo.ReadingOrder)}"
+             , "{nameof(ReadingInfo.Order)}"
+             , "{nameof(ReadingInfo.TagName)}"
+          FROM '{Schema}'.'{nameof(ReadingInfo)}';
 
-        INSERT INTO "{nameof(Restriction)}"
-             ( "{nameof(Restriction.EntryId)}"
+        INSERT INTO '{nameof(ReadingPriority)}'
+             ( '{nameof(ReadingPriority.EntryId)}'
+             , '{nameof(ReadingPriority.ReadingOrder)}'
+             , '{nameof(ReadingPriority.Order)}'
+             , '{nameof(ReadingPriority.TagName)}')
+        SELECT "{nameof(ReadingPriority.EntryId)}"
+             , "{nameof(ReadingPriority.ReadingOrder)}"
+             , "{nameof(ReadingPriority.Order)}"
+             , "{nameof(ReadingPriority.TagName)}"
+          FROM '{Schema}'.'{nameof(ReadingPriority)}';
+
+        INSERT INTO '{nameof(Restriction)}'
+             ( '{nameof(Restriction.EntryId)}'
+             , '{nameof(Restriction.ReadingOrder)}'
+             , '{nameof(Restriction.Order)}'
+             , '{nameof(Restriction.KanjiFormText)}')
+        SELECT "{nameof(Restriction.EntryId)}"
              , "{nameof(Restriction.ReadingOrder)}"
              , "{nameof(Restriction.Order)}"
              , "{nameof(Restriction.KanjiFormText)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(Restriction)}";
+          FROM '{Schema}'.'{nameof(Restriction)}';
 
-        INSERT INTO "{nameof(Sense)}"
-        SELECT * FROM "{Schema}"."{nameof(Sense)}";
-
-        INSERT INTO "{nameof(CrossReference)}"
-             ( "{nameof(CrossReference.EntryId)}"
+        INSERT INTO '{nameof(CrossReference)}'
+             ( '{nameof(CrossReference.EntryId)}'
+             , '{nameof(CrossReference.SenseOrder)}'
+             , '{nameof(CrossReference.Order)}'
+             , '{nameof(CrossReference.TypeName)}'
+             , '{nameof(CrossReference.Text)}')
+        SELECT "{nameof(CrossReference.EntryId)}"
              , "{nameof(CrossReference.SenseOrder)}"
              , "{nameof(CrossReference.Order)}"
              , "{nameof(CrossReference.TypeName)}"
              , "{nameof(CrossReference.Text)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(CrossReference)}";
+          FROM '{Schema}'.'{nameof(CrossReference)}';
 
-        INSERT INTO "{nameof(Dialect)}"
-        SELECT * FROM "{Schema}"."{nameof(Dialect)}";
+        INSERT INTO '{nameof(Dialect)}'
+             ( '{nameof(Dialect.EntryId)}'
+             , '{nameof(Dialect.SenseOrder)}'
+             , '{nameof(Dialect.Order)}'
+             , '{nameof(Dialect.TagName)}')
+        SELECT "{nameof(Dialect.EntryId)}"
+             , "{nameof(Dialect.SenseOrder)}"
+             , "{nameof(Dialect.Order)}"
+             , "{nameof(Dialect.TagName)}"
+          FROM '{Schema}'.'{nameof(Dialect)}';
 
-        INSERT INTO "{nameof(Field)}"
-        SELECT * FROM "{Schema}"."{nameof(Field)}";
+        INSERT INTO '{nameof(Field)}'
+             ( '{nameof(Field.EntryId)}'
+             , '{nameof(Field.SenseOrder)}'
+             , '{nameof(Field.Order)}'
+             , '{nameof(Field.TagName)}')
+        SELECT "{nameof(Field.EntryId)}"
+             , "{nameof(Field.SenseOrder)}"
+             , "{nameof(Field.Order)}"
+             , "{nameof(Field.TagName)}"
+          FROM '{Schema}'.'{nameof(Field)}';
 
-        INSERT INTO "{nameof(Gloss)}"
-        SELECT * FROM "{Schema}"."{nameof(Gloss)}";
+        INSERT INTO '{nameof(Gloss)}'
+             ( '{nameof(Gloss.EntryId)}'
+             , '{nameof(Gloss.SenseOrder)}'
+             , '{nameof(Gloss.Order)}'
+             , '{nameof(Gloss.TypeName)}'
+             , '{nameof(Gloss.Text)}')
+        SELECT "{nameof(Gloss.EntryId)}"
+             , "{nameof(Gloss.SenseOrder)}"
+             , "{nameof(Gloss.Order)}"
+             , "{nameof(Gloss.TypeName)}"
+             , "{nameof(Gloss.Text)}"
+          FROM '{Schema}'.'{nameof(Gloss)}';
 
-        INSERT INTO "{nameof(KanjiFormRestriction)}"
-             ( "{nameof(KanjiFormRestriction.EntryId)}"
+        INSERT INTO '{nameof(KanjiFormRestriction)}'
+             ( '{nameof(KanjiFormRestriction.EntryId)}'
+             , '{nameof(KanjiFormRestriction.SenseOrder)}'
+             , '{nameof(KanjiFormRestriction.Order)}'
+             , '{nameof(KanjiFormRestriction.KanjiFormText)}')
+        SELECT "{nameof(KanjiFormRestriction.EntryId)}"
              , "{nameof(KanjiFormRestriction.SenseOrder)}"
              , "{nameof(KanjiFormRestriction.Order)}"
              , "{nameof(KanjiFormRestriction.KanjiFormText)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(KanjiFormRestriction)}";
+          FROM '{Schema}'.'{nameof(KanjiFormRestriction)}';
 
-        INSERT INTO "{nameof(LanguageSource)}"
-        SELECT * FROM "{Schema}"."{nameof(LanguageSource)}";
+        INSERT INTO '{nameof(LanguageSource)}'
+             ( '{nameof(LanguageSource.EntryId)}'
+             , '{nameof(LanguageSource.SenseOrder)}'
+             , '{nameof(LanguageSource.Order)}'
+             , '{nameof(LanguageSource.Text)}'
+             , '{nameof(LanguageSource.LanguageCode)}'
+             , '{nameof(LanguageSource.TypeName)}'
+             , '{nameof(LanguageSource.IsWasei)}')
+        SELECT "{nameof(LanguageSource.EntryId)}"
+             , "{nameof(LanguageSource.SenseOrder)}"
+             , "{nameof(LanguageSource.Order)}"
+             , "{nameof(LanguageSource.Text)}"
+             , "{nameof(LanguageSource.LanguageCode)}"
+             , "{nameof(LanguageSource.TypeName)}"
+             , "{nameof(LanguageSource.IsWasei)}"
+          FROM '{Schema}'.'{nameof(LanguageSource)}';
 
-        INSERT INTO "{nameof(Misc)}"
-        SELECT * FROM "{Schema}"."{nameof(Misc)}";
+        INSERT INTO '{nameof(Misc)}'
+             ( '{nameof(Misc.EntryId)}'
+             , '{nameof(Misc.SenseOrder)}'
+             , '{nameof(Misc.Order)}'
+             , '{nameof(Misc.TagName)}')
+        SELECT "{nameof(Misc.EntryId)}"
+             , "{nameof(Misc.SenseOrder)}"
+             , "{nameof(Misc.Order)}"
+             , "{nameof(Misc.TagName)}"
+          FROM '{Schema}'.'{nameof(Misc)}';
 
-        INSERT INTO "{nameof(Note)}"
-        SELECT * FROM "{Schema}"."{nameof(Note)}";
+        INSERT INTO '{nameof(Note)}'
+             ( '{nameof(Note.EntryId)}'
+             , '{nameof(Note.SenseOrder)}'
+             , '{nameof(Note.Order)}'
+             , '{nameof(Note.Text)}')
+        SELECT "{nameof(Note.EntryId)}"
+             , "{nameof(Note.SenseOrder)}"
+             , "{nameof(Note.Order)}"
+             , "{nameof(Note.Text)}"
+          FROM '{Schema}'.'{nameof(Note)}';
 
-        INSERT INTO "{nameof(PartOfSpeech)}"
-        SELECT * FROM "{Schema}"."{nameof(PartOfSpeech)}";
+        INSERT INTO '{nameof(PartOfSpeech)}'
+             ( '{nameof(PartOfSpeech.EntryId)}'
+             , '{nameof(PartOfSpeech.SenseOrder)}'
+             , '{nameof(PartOfSpeech.Order)}'
+             , '{nameof(PartOfSpeech.TagName)}')
+        SELECT "{nameof(PartOfSpeech.EntryId)}"
+             , "{nameof(PartOfSpeech.SenseOrder)}"
+             , "{nameof(PartOfSpeech.Order)}"
+             , "{nameof(PartOfSpeech.TagName)}"
+          FROM '{Schema}'.'{nameof(PartOfSpeech)}';
 
-        INSERT INTO "{nameof(ReadingRestriction)}"
-             ( "{nameof(ReadingRestriction.EntryId)}"
+        INSERT INTO '{nameof(ReadingRestriction)}'
+             ( '{nameof(ReadingRestriction.EntryId)}'
+             , '{nameof(ReadingRestriction.SenseOrder)}'
+             , '{nameof(ReadingRestriction.Order)}'
+             , '{nameof(ReadingRestriction.ReadingText)}')
+        SELECT "{nameof(ReadingRestriction.EntryId)}"
              , "{nameof(ReadingRestriction.SenseOrder)}"
              , "{nameof(ReadingRestriction.Order)}"
              , "{nameof(ReadingRestriction.ReadingText)}"
-             )
-        SELECT * FROM "{Schema}"."{nameof(ReadingRestriction)}";
+          FROM '{Schema}'.'{nameof(ReadingRestriction)}';
         """;
 }

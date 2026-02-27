@@ -23,7 +23,7 @@ using Jitendex.Chise.Import.Models;
 
 namespace Jitendex.Chise.Import.Tables;
 
-internal sealed class SequenceTable : Table<SequenceElement>
+internal sealed class DescriptionSequenceTable : Table<DescriptionSequenceElement>
 {
     protected override string Name => nameof(DescriptionSequence);
 
@@ -34,7 +34,7 @@ internal sealed class SequenceTable : Table<SequenceElement>
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(SequenceElement sequence) =>
+    protected override SqliteParameter[] Parameters(DescriptionSequenceElement sequence) =>
     [
         new("@0", sequence.Text)
     ];

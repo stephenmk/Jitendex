@@ -23,7 +23,7 @@ namespace Jitendex.Chise.Import;
 
 internal sealed class DocumentDatabase(ChiseContext context)
 {
-    private readonly SequenceTable SequenceTable = new();
+    private readonly DescriptionSequenceTable DescriptionSequenceTable = new();
     private readonly ComponentPositionTable ComponentPositionTable = new();
     private readonly UnicodeCharacterTable UnicodeCharacterTable = new();
 
@@ -37,7 +37,7 @@ internal sealed class DocumentDatabase(ChiseContext context)
 
         using var transaction = context.Database.BeginTransaction();
 
-        SequenceTable.InsertItems(context, document.GetSequences());
+        DescriptionSequenceTable.InsertItems(context, document.GetDescriptionSequences());
         ComponentPositionTable.InsertItems(context, document.GetComponentPositions());
         UnicodeCharacterTable.InsertItems(context, document.GetUnicodeCharacters());
 

@@ -41,8 +41,8 @@ internal sealed class Document
         ComponentSequences.UnionWith(parsedSequence.ComponentSequences);
     }
 
-    public IEnumerable<SequenceElement> GetSequences()
-        => SequenceTexts.Select(text => new SequenceElement(text));
+    public IEnumerable<DescriptionSequenceElement> GetDescriptionSequences()
+        => SequenceTexts.Select(text => new DescriptionSequenceElement(text));
 
     public IEnumerable<UnicodeCharacterElement> GetUnicodeCharacters()
         => UnicodeCharacters.Select(i => new UnicodeCharacterElement(i));

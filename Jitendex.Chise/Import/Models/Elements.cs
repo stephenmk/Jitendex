@@ -44,7 +44,7 @@ internal sealed record ComponentPositionElement
     string Name
 );
 
-internal sealed record SequenceElement
+internal sealed record DescriptionSequenceElement
 (
     string Text
 );

@@ -31,5 +31,5 @@ public class UnicodeCharacter
     public Rune Character() => new(ScalarValue);
 
     [ForeignKey(nameof(CodepointId))]
-    public Codepoint Codepoint { get; } = null!;
+    public Codepoint Codepoint { get; init; } = null!;
 }

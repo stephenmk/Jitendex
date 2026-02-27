@@ -35,5 +35,5 @@ public class Component
     public required ComponentPosition Position { get; init; }
 
     [InverseProperty(nameof(SequenceComponent.Component))]
-    public List<SequenceComponent> Sequences { get; } = [];
+    public List<SequenceComponent> Sequences { get; init; } = [];
 }

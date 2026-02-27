@@ -69,7 +69,7 @@ internal static class SequenceTextParser
 
     private static int TokenStartIndex(ReadOnlySpan<char> text)
     {
-        if (text.Length == 0)
+        if (text.IsEmpty)
         {
             throw new ArgumentException("Text is empty", nameof(text));
         }

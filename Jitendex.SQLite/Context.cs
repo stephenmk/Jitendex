@@ -93,31 +93,4 @@ public abstract class SqliteContext : DbContext
             AppDirectory.Cache.Get(SqliteDirectory).FullName,
             databaseFile.ToFilename()
         );
-
-    [Obsolete]
-    public async Task RecreateDatabaseAsync()
-    {
-        await Database.EnsureDeletedAsync();
-        await Database.EnsureCreatedAsync();
-    }
-
-    [Obsolete]
-    public async Task ExecuteFastNewDatabasePragmaAsync()
-        => await Database.ExecuteSqlRawAsync
-        (
-            """
-            PRAGMA synchronous  = OFF;
-            PRAGMA journal_mode = OFF;
-            PRAGMA temp_store   = MEMORY;
-            PRAGMA cache_size   = -200000;
-            PRAGMA locking_mode = EXCLUSIVE;
-            """
-        );
-
-    [Obsolete]
-    public async Task ExecuteDeferForeignKeysPragmaAsync()
-        => await Database.ExecuteSqlRawAsync("PRAGMA defer_foreign_keys = ON;");
-
-    [Obsolete]
-    public async Task ExecuteVacuumAsync() => await Database.ExecuteSqlRawAsync("VACUUM;");
 }

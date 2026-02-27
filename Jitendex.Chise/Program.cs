@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.CommandLine;
+using Jitendex.AppDirectory;
 using Jitendex.Chise.Import;
 
 namespace Jitendex.Chise;
@@ -25,14 +26,14 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var chiseIdsDirectoryArgument = new Argument<DirectoryInfo>("chise-ids-dir")
+        var chiseIdsDirectoryOption = new Option<DirectoryInfo>("chise-ids-dir")
         {
             Description = "Path to 'chise-ids' directory",
         };
 
         var rootCommand = new RootCommand("Jitendex.Chise: Import CHISE Ideographic Description Sequences (IDS)")
         {
-            chiseIdsDirectoryArgument
+            chiseIdsDirectoryOption
         };
 
         var parseResult = rootCommand.Parse(args);
@@ -47,7 +48,8 @@ public class Program
             return 1;
         }
 
-        var chiseIdsDir = parseResult.GetRequiredValue(chiseIdsDirectoryArgument);
+        var chiseIdsDir = parseResult.GetValue(chiseIdsDirectoryOption)
+            ?? DataHome.Get(DataSubdirectory.ChiseIdsDirectory);
 
         var logger = new Logger();
         var reader = new DocumentReader(logger);

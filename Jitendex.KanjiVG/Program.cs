@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.CommandLine;
+using Jitendex.AppDirectory;
 using Jitendex.KanjiVG.Import;
 
 namespace Jitendex.KanjiVG;
@@ -25,14 +26,14 @@ public class Program
 {
     public static async Task<int> Main(string[] args)
     {
-        var kanjiDirectoryArgument = new Argument<DirectoryInfo>("kanjivg-kanji-directory")
+        var kanjivgDirectoryOption = new Option<DirectoryInfo>("kanjivg-directory")
         {
-            Description = "Path to KanjiVG kanji directory",
+            Description = "Path to KanjiVG directory",
         };
 
         var rootCommand = new RootCommand("Jitendex.KanjiVG: Import KanjiVG data")
         {
-            kanjiDirectoryArgument
+            kanjivgDirectoryOption
         };
 
         var parseResult = rootCommand.Parse(args);
@@ -47,10 +48,11 @@ public class Program
             return 1;
         }
 
-        var kanjiDirectory = parseResult.GetRequiredValue(kanjiDirectoryArgument);
+        var kanjivgDir = parseResult.GetValue(kanjivgDirectoryOption)
+            ?? DataHome.Get(DataSubdirectory.KanjiVGDirectory);
 
         var importer = ImporterProvider.GetImporter();
-        await importer.ImportAsync(kanjiDirectory);
+        await importer.ImportAsync(kanjivgDir);
 
         return 0;
     }

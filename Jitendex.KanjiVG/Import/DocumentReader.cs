@@ -24,11 +24,11 @@ namespace Jitendex.KanjiVG.Import;
 
 internal sealed class DocumentReader(KanjiReader kanjiReader)
 {
-    public async Task<Document> ReadAsync(DirectoryInfo kanjiDirectory)
+    public async Task<Document> ReadAsync(DirectoryInfo kanjivgDirectory)
     {
         var document = new Document();
 
-        foreach (var file in kanjiDirectory.EnumerateFiles())
+        foreach (var file in kanjivgDirectory.CreateSubdirectory("kanji").EnumerateFiles())
         {
             await using var stream = file.OpenRead();
             using var xmlReader = XmlReader.Create(stream, XmlReaderSettings);

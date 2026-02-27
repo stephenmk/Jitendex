@@ -56,14 +56,7 @@ internal sealed class Document
     {
         foreach (var discoveredCodepoint in DiscoveredCodepoints)
         {
-            if (Codepoints.TryGetValue(discoveredCodepoint.Id, out var codepoint))
-            {
-                if (discoveredCodepoint.SequenceText is not null && !codepoint.Equals(discoveredCodepoint))
-                {
-                    Console.Error.WriteLine($"Unequal codepoints\n(1)\t{codepoint}\n(2)\t{discoveredCodepoint}");
-                }
-            }
-            else
+            if (!Codepoints.ContainsKey(discoveredCodepoint.Id))
             {
                 Codepoints.Add(discoveredCodepoint.Id, discoveredCodepoint);
             }

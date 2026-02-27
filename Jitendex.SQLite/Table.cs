@@ -55,18 +55,6 @@ public abstract class Table<T>
         WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = @{idx:X}"))};
         """;
 
-    public async Task InsertItemsAsync(SqliteContext db, IEnumerable<T> items)
-    {
-        await using var command = db.Database.GetDbConnection().CreateCommand();
-        command.CommandText = InsertCommandText;
-        foreach (var item in items)
-        {
-            command.Parameters.AddRange(Parameters(item));
-            await command.ExecuteNonQueryAsync();
-            command.Parameters.Clear();
-        }
-    }
-
     public void InsertItem(SqliteContext db, T item)
         => ExecuteNonQuery(db, [item], InsertCommandText);
 

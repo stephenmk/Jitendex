@@ -36,10 +36,10 @@ public static class DataHome
     private static string Name(this DataSubdirectory subdir)
         => subdir switch
         {
-            ChiseIdsDirectory => "chise-ids",
+            ChiseIdsDirectory     => "chise-ids",
             EdrdgArchiveDirectory => "edrdg-dictionary-archive",
             JitendexDataDirectory => "jitendex-data",
-            KanjiVGDirectory => "kanjivg",
+            KanjiVGDirectory      => "kanjivg",
             _ => throw new ArgumentOutOfRangeException(nameof(subdir))
         };
 }

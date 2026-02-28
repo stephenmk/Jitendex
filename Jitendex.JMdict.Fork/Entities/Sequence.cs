@@ -17,10 +17,12 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.JMdict.Fork.Entities;
 
 [Table(nameof(Sequence))]
+[PrimaryKey(nameof(Id))]
 public sealed class Sequence
 {
     public required int Id { get; init; }

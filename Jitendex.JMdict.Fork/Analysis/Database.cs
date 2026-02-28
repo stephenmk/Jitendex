@@ -24,9 +24,9 @@ using Jitendex.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdictAnalysis.Analysis;
+namespace Jitendex.JMdict.Fork.Analysis;
 
-internal sealed class Database(JmdictAnalysisContext context)
+internal sealed class Database(JMdictForkContext context)
 {
     public void TransferDataFromJmdict()
     {

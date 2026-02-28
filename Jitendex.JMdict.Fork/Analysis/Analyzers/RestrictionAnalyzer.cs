@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdictAnalysis.Analysis.Services.Tables;
+using Jitendex.JMdict.Fork.Analysis.Services.Tables;
 
-namespace Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
+namespace Jitendex.JMdict.Fork.Analysis.Services.Analyzers;
 
-internal partial class RestrictionAnalyzer(ILogger<RestrictionAnalyzer> logger, JmdictAnalysisContext context)
+internal partial class RestrictionAnalyzer(ILogger<RestrictionAnalyzer> logger, JMdictForkContext context)
 {
     private readonly static RestrictionTable RestrictionTable = new();
 

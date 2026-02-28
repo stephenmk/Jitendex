@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdictAnalysis.Entities.EntryItems.SenseItems;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
 [Table(nameof(CrossReference))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]

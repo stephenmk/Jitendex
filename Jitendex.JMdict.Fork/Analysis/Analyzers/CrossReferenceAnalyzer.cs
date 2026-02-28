@@ -20,15 +20,15 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.SenseItems;
-using Jitendex.JMdictAnalysis.Analysis.Services.Tables;
+using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Analysis.Services.Tables;
 
-namespace Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
+namespace Jitendex.JMdict.Fork.Analysis.Services.Analyzers;
 
 internal partial class CrossReferenceAnalyzer
 (
     ILogger<CrossReferenceAnalyzer> logger,
-    JmdictAnalysisContext context,
+    JMdictForkContext context,
     CrossReferenceTextParser parser
 )
 {

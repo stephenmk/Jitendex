@@ -20,9 +20,9 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.AppDirectory;
 
-namespace Jitendex.JMdictAnalysis.Analysis.Services;
+namespace Jitendex.JMdict.Fork.Analysis.Services;
 
-internal sealed class CrossReferenceCacheService(JmdictAnalysisContext context)
+internal sealed class CrossReferenceCacheService(JMdictForkContext context)
 {
     public async Task<IReadOnlyDictionary<string, int?>> LoadAsync(DirectoryInfo? dataDir)
     {

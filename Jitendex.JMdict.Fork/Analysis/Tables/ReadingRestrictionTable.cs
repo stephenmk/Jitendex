@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdictAnalysis.Analysis.Services.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Services.Tables;
 
 internal sealed class ReadingRestrictionTable : Table<ReadingRestrictionRow>
 {

@@ -24,7 +24,7 @@ using Jitendex.AppDirectory;
 using Jitendex.Furigana;
 using Jitendex.Kanjidic2;
 
-namespace Jitendex.JMdictAnalysis.Analysis.Services;
+namespace Jitendex.JMdict.Fork.Analysis.Services;
 
 internal sealed class FuriganaSolverService(ILogger<FuriganaSolverService> logger, Kanjidic2Context kanjiContext)
 {

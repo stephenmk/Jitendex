@@ -17,9 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Jitendex.JMdictAnalysis.Entities.EntryItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems;
 
-namespace Jitendex.JMdictAnalysis.Entities;
+namespace Jitendex.JMdict.Fork.Entities;
 
 [Table(nameof(Entry))]
 public sealed class Entry

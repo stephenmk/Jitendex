@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdictAnalysis.Entities.EntryItems;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems;
 
 [Table(nameof(Sense))]
 [PrimaryKey(nameof(EntryId), nameof(Order))]

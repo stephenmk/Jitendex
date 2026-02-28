@@ -19,10 +19,10 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Kanjidic2;
-using Jitendex.JMdictAnalysis.Analysis.Services;
-using Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
+using Jitendex.JMdict.Fork.Analysis.Services;
+using Jitendex.JMdict.Fork.Analysis.Services.Analyzers;
 
-namespace Jitendex.JMdictAnalysis.Analysis;
+namespace Jitendex.JMdict.Fork.Analysis;
 
 internal static class AnalyzerProvider
 {
@@ -30,7 +30,7 @@ internal static class AnalyzerProvider
         .AddTransient<Analyzer>()
 
         // Databases
-        .AddDbContext<JmdictAnalysisContext>()
+        .AddDbContext<JMdictForkContext>()
         .AddDbContext<Kanjidic2Context>()
         .AddTransient<Database>()
 

@@ -17,15 +17,15 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdictAnalysis.Analysis.Services;
-using Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
+using Jitendex.JMdict.Fork.Analysis.Services;
+using Jitendex.JMdict.Fork.Analysis.Services.Analyzers;
 
-namespace Jitendex.JMdictAnalysis.Analysis;
+namespace Jitendex.JMdict.Fork.Analysis;
 
 internal sealed class Analyzer
 (
     ILogger<Analyzer> logger,
-    JmdictAnalysisContext context,
+    JMdictForkContext context,
     Database database,
 
     RestrictionAnalyzer restrictionAnalyzer,

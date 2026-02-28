@@ -17,9 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.CommandLine;
-using Jitendex.JMdictAnalysis.Analysis;
+using Jitendex.JMdict.Fork.Analysis;
 
-namespace Jitendex.JMdictAnalysis;
+namespace Jitendex.JMdict.Fork;
 
 public static class Program
 {
@@ -30,7 +30,7 @@ public static class Program
             Description = "Path to the jitendex-data directory",
         };
 
-        var rootCommand = new RootCommand("Jitendex.JMdictAnalysis: A fork of the JMdict database")
+        var rootCommand = new RootCommand("Jitendex.JMdict.Fork: A fork of the JMdict database")
         {
             dataDirOption
         };

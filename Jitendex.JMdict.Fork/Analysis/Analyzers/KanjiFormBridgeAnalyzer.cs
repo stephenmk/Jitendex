@@ -20,11 +20,11 @@ using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Jitendex.JapaneseTextUtils;
-using Jitendex.JMdictAnalysis.Analysis.Services.Tables;
+using Jitendex.JMdict.Fork.Analysis.Services.Tables;
 
-namespace Jitendex.JMdictAnalysis.Analysis.Services.Analyzers;
+namespace Jitendex.JMdict.Fork.Analysis.Services.Analyzers;
 
-internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> logger, JmdictAnalysisContext context)
+internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> logger, JMdictForkContext context)
 {
     private static readonly KanjiFormBridgeTable KanjiFormBridgeTable = new();
 

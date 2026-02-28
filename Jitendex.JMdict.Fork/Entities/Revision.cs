@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdictAnalysis.Entities;
+namespace Jitendex.JMdict.Fork.Entities;
 
 [Table(nameof(Revision))]
 [PrimaryKey(nameof(SequenceId), nameof(Number))]

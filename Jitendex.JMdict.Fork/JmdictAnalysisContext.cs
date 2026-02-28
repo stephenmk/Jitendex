@@ -18,16 +18,16 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.SQLite;
-using Jitendex.JMdictAnalysis.Entities;
-using Jitendex.JMdictAnalysis.Entities.EntryItems;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.Furigana;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.KanjiFormItems;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.ReadingItems;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Entities;
+using Jitendex.JMdict.Fork.Entities.EntryItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
+using Jitendex.JMdict.Fork.Entities.EntryItems.KanjiFormItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdictAnalysis;
+namespace Jitendex.JMdict.Fork;
 
-public class JmdictAnalysisContext() : SqliteContext(DatabaseFile.JMdictAnalysis)
+public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
 {
     public DbSet<Sequence> Sequences { get; set; } = null!;
     public DbSet<Entry> Entries { get; set; } = null!;

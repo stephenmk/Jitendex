@@ -23,7 +23,7 @@ namespace Jitendex.SQLite;
 public enum DatabaseFile
 {
     JMdict,
-    JMdictAnalysis,
+    JMdictFork,
     JMnedict,
     Kanjidic2,
     Tatoeba,
@@ -37,7 +37,7 @@ internal static class DatabaseFileExtensions
         => databaseFile switch
         {
             JMdict => "jmdict.db",
-            JMdictAnalysis => "jmdict_analysis.db",
+            JMdictFork => "jmdict_fork.db",
             JMnedict => "jmnedict.db",
             Kanjidic2 => "kanjidic2.db",
             Tatoeba => "tatoeba.db",

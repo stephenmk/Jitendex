@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdictAnalysis.Entities.EntryItems.ReadingItems;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
 
 [Table(nameof(ReadingPriority))]
 [PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]

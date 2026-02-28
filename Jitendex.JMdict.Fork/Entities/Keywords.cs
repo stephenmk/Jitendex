@@ -18,12 +18,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.KanjiFormItems;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.ReadingItems;
-using Jitendex.JMdictAnalysis.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.KanjiFormItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Jitendex.JMdictAnalysis.Entities;
+namespace Jitendex.JMdict.Fork.Entities;
 
 public interface IKeyword
 {

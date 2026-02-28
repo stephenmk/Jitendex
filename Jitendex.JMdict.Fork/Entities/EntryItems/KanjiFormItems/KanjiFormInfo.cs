@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdictAnalysis.Entities.EntryItems.KanjiFormItems;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.KanjiFormItems;
 
 [Table(nameof(KanjiFormInfo))]
 [PrimaryKey(nameof(EntryId), nameof(KanjiFormOrder), nameof(Order))]

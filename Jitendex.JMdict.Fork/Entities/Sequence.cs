@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jitendex.JMdictAnalysis.Entities;
+namespace Jitendex.JMdict.Fork.Entities;
 
 [Table(nameof(Sequence))]
 public sealed class Sequence

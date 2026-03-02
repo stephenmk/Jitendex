@@ -56,16 +56,16 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
         {
             return [];
         }
-        Span<string> validTexts = new string[texts.Count];
-        int validTextCount = 0;
+        var validTexts = new string[texts.Count];
+        int i = 0;
         foreach (var text in texts)
         {
             if (readingState.RemainingTextNormalized.StartsWith(text, StringComparison.Ordinal))
             {
-                validTexts[validTextCount++] = text;
+                validTexts[i++] = text;
             }
         }
-        return validTexts[..validTextCount];
+        return validTexts.AsSpan(0, i);
     }
 
     private HashSet<string> GetCachedTexts(EntryType entryType, in TextSlice textSlice)

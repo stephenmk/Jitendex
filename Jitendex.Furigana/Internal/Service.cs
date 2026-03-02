@@ -68,7 +68,7 @@ internal sealed class Service(ImmutableArray<IterationSolver> solvers, Knowledge
         foreach (var solver in solvers)
         {
             var solutions = solver.Solve(entry);
-            if (solutions.Count == 1)
+            if (solutions.Length == 1)
             {
                 return solutions[0];
             }

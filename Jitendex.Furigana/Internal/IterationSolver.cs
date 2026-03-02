@@ -24,20 +24,21 @@ namespace Jitendex.Furigana.Internal;
 
 internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
 {
-    public List<Solution> Solve(in Entry entry)
+    public ReadOnlySpan<Solution> Solve(in Entry entry)
     {
         var possibleSolutions = FindPossibleSolutions(entry);
-        var validSolutions = new List<Solution>(possibleSolutions.Count);
+        var validSolutions = new Solution[possibleSolutions.Count];
+        int i = 0;
 
         foreach (var possibleSolution in possibleSolutions)
         {
             if (possibleSolution.ToSolution(entry) is Solution solution)
             {
-                validSolutions.Add(solution);
+                validSolutions[i++] = solution;
             }
         }
 
-        return validSolutions;
+        return validSolutions.AsSpan(0, i);
     }
 
     private List<SolutionBuilder> FindPossibleSolutions(in Entry entry)

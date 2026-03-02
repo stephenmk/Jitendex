@@ -45,22 +45,20 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
     {
         var emptySolution = new SolutionBuilder([]); // Need an initial, empty solution to iterate upon.
         var solutions = new List<SolutionBuilder>() { emptySolution };
+        int sliceStart = 0;
 
-        for (int sliceStart = 0; sliceStart < entry.TextRunes.Length; sliceStart++)
+    BeginAlgorithmLoop:
+        foreach (var algorithm in algorithms)
         {
-        BeginAlgorithmLoop:
-            foreach (var algorithm in algorithms)
+            for (int sliceEnd = entry.TextRunes.Length; sliceStart < sliceEnd; sliceEnd--)
             {
-                for (int sliceEnd = entry.TextRunes.Length; sliceStart < sliceEnd; sliceEnd--)
+                var textSlice = new TextSlice(entry, sliceStart, sliceEnd);
+                var newSolutions = IterateSolutions(entry, textSlice, algorithm, solutions);
+                if (newSolutions.Count > 0)
                 {
-                    var textSlice = new TextSlice(entry, sliceStart, sliceEnd);
-                    var newSolutions = IterateSolutions(entry, textSlice, algorithm, solutions);
-                    if (newSolutions.Count > 0)
-                    {
-                        sliceStart += sliceEnd - sliceStart;
-                        solutions = newSolutions;
-                        goto BeginAlgorithmLoop;
-                    }
+                    sliceStart += sliceEnd - sliceStart;
+                    solutions = newSolutions;
+                    goto BeginAlgorithmLoop;
                 }
             }
         }

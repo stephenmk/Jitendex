@@ -20,7 +20,7 @@ using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
 
-namespace Jitendex.JMdict.Fork.Analysis.Services.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables;
 
 internal sealed class RestrictionTable : Table<RestrictionRow>
 {

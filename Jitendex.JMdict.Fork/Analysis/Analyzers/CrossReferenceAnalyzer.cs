@@ -20,10 +20,11 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Jitendex.JMdict.Fork.Analysis.Services;
+using Jitendex.JMdict.Fork.Analysis.Tables;
 using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
-using Jitendex.JMdict.Fork.Analysis.Services.Tables;
 
-namespace Jitendex.JMdict.Fork.Analysis.Services.Analyzers;
+namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
 internal partial class CrossReferenceAnalyzer
 (

@@ -19,8 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Kanjidic2;
+using Jitendex.JMdict.Fork.Analysis.Analyzers;
 using Jitendex.JMdict.Fork.Analysis.Services;
-using Jitendex.JMdict.Fork.Analysis.Services.Analyzers;
 
 namespace Jitendex.JMdict.Fork.Analysis;
 

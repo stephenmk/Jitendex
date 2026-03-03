@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdict.Fork.Analysis.Services.Tables;
+using Jitendex.JMdict.Fork.Analysis.Tables;
 
-namespace Jitendex.JMdict.Fork.Analysis.Services.Analyzers;
+namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
 internal partial class KanjiFormRestrictionAnalyzer(ILogger<KanjiFormRestrictionAnalyzer> logger, JMdictForkContext context)
 {

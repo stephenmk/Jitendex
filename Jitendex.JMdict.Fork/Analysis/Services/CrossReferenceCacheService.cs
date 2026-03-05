@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Frozen;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.MiscData;
 
 namespace Jitendex.JMdict.Fork.Analysis.Services;
@@ -30,12 +29,12 @@ internal sealed class CrossReferenceCacheService
 {
     public FrozenDictionary<string, int?> Load()
         => miscContext.CrossReferenceSequences
-            .AsNoTracking()
-            .ToFrozenDictionary
-            (
-                keySelector: static x => $"{x.EntryId}・{x.SenseNumber}・{x.Text}",
-                elementSelector: static x => x.RefEntryId
-            );
+            .Select(static x => new
+            {
+                Key = $"{x.EntryId}・{x.SenseNumber}・{x.Text}",
+                Value = x.RefEntryId,
+            })
+            .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 
     private sealed record Key(int EntryId, int SenseNumber, string Text);
 

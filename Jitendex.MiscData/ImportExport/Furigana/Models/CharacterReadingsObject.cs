@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using System.Text.Json.Serialization;
 
 namespace Jitendex.MiscData.ImportExport.Furigana.Models;
 
@@ -30,6 +29,7 @@ internal sealed record CharacterReadingsObject
     public ImmutableArray<string> Kana { get; init; } = [];
     public ImmutableArray<string> Alphanumeric { get; init; } = [];
     public ImmutableArray<string> Symbol { get; init; } = [];
+    public ImmutableArray<string> Unknown { get; init; } = [];
 
     public List<CharacterReadingRow> ToReadingRows(int characterValue)
     {
@@ -49,6 +49,8 @@ internal sealed record CharacterReadingsObject
             ToReadingRow(characterValue, x, ReadingType.Alphanumeric)));
         readingRows.AddRange(Symbol.Select(x =>
             ToReadingRow(characterValue, x, ReadingType.Symbol)));
+        readingRows.AddRange(Unknown.Select(x =>
+            ToReadingRow(characterValue, x, ReadingType.Unknown)));
 
         return readingRows;
     }

@@ -27,4 +27,5 @@ internal enum ReadingType : byte
     Kana,
     Alphanumeric,
     Symbol,
+    Unknown,
 }

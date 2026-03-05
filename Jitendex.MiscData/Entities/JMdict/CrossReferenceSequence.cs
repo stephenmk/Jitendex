@@ -22,19 +22,17 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.MiscData.Entities.JMdict;
 
 [Table(nameof(CrossReferenceSequence))]
-[PrimaryKey(nameof(Id))]
-[Index(nameof(EntryId), nameof(SenseNumber), nameof(RefText), IsUnique = true)]
+[PrimaryKey(nameof(EntryId), nameof(SenseNumber), nameof(Text))]
 public sealed class CrossReferenceSequence
 {
-    public required int Id { get; init; }
     public required int EntryId { get; init; }
     public required int SenseNumber { get; init; }
-    public required string RefText { get; init; }
+    public required string Text { get; init; }
     public int? RefEntryId { get; set; }
 
     /// <summary>
     /// Dictionary key in the JSON file.
     /// </summary>
     public string ToExportKey()
-        => $"{EntryId}・{SenseNumber}・{RefText}";
+        => $"{EntryId}・{SenseNumber}・{Text}";
 }

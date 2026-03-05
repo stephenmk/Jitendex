@@ -31,18 +31,22 @@ internal sealed class CrossReferenceSequenceTable : Table<CrossReferenceSequence
     [
         nameof(CrossReferenceSequence.EntryId),
         nameof(CrossReferenceSequence.SenseNumber),
-        nameof(CrossReferenceSequence.RefText),
+        nameof(CrossReferenceSequence.Text),
         nameof(CrossReferenceSequence.RefEntryId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {nameof(CrossReferenceSequence)} is auto-incremented.");
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(CrossReferenceSequence.EntryId),
+        nameof(CrossReferenceSequence.SenseNumber),
+        nameof(CrossReferenceSequence.Text),
+    ];
 
     protected override SqliteParameter[] Parameters(CrossReferenceSequenceRow row) =>
     [
         new("@0", row.EntryId),
         new("@1", row.SenseNumber),
-        new("@2", row.RefText),
+        new("@2", row.Text),
         new("@3", row.RefEntryId.Nullable()),
     ];
 }

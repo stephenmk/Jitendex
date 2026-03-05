@@ -46,7 +46,7 @@ internal sealed class CrossReferenceDataService
             (
                 EntryId: int.Parse(split[0]),
                 SenseNumber: int.Parse(split[1]),
-                RefText: string.Join('・', split[2..]),
+                Text: string.Join('・', split[2..]),
                 RefEntryId: value
             ));
         }
@@ -58,7 +58,7 @@ internal sealed class CrossReferenceDataService
     {
         var dictionary = context.CrossReferenceSequences
             .AsNoTracking()
-            .OrderBy(static x => x.RefText)
+            .OrderBy(static x => x.Text)
             .OrderBy(static x => x.SenseNumber)
             .OrderBy(static x => x.EntryId)
             .ToDictionary

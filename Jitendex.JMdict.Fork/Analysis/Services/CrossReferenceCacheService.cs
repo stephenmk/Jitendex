@@ -33,7 +33,7 @@ internal sealed class CrossReferenceCacheService
             .AsNoTracking()
             .ToFrozenDictionary
             (
-                keySelector: static x => $"{x.EntryId}・{x.SenseNumber}・{x.RefText}",
+                keySelector: static x => $"{x.EntryId}・{x.SenseNumber}・{x.Text}",
                 elementSelector: static x => x.RefEntryId
             );
 
@@ -54,7 +54,7 @@ internal sealed class CrossReferenceCacheService
 
         foreach (var xref in miscContext.CrossReferenceSequences)
         {
-            var key = new Key(xref.EntryId, xref.SenseNumber, xref.RefText);
+            var key = new Key(xref.EntryId, xref.SenseNumber, xref.Text);
             if (dictionary.TryGetValue(key, out var value))
             {
                 hashset.Add(key);
@@ -77,10 +77,9 @@ internal sealed class CrossReferenceCacheService
             }
             miscContext.CrossReferenceSequences.Add(new()
             {
-                Id = default,
                 EntryId = key.EntryId,
                 SenseNumber = key.SenseNumber,
-                RefText = key.Text,
+                Text = key.Text,
                 RefEntryId = value,
             });
         }

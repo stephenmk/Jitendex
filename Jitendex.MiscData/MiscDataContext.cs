@@ -28,6 +28,7 @@ public class MiscDataContext() : SqliteContext(DatabaseFile.MiscData)
     #region Furigana
     public DbSet<Character> Characters { get; set; } = null!;
     public DbSet<CharacterReading> CharacterReadings { get; set; } = null!;
+    public DbSet<CharacterReadingType> CharacterReadingTypes { get; set; } = null!;
     public DbSet<Compound> Compounds { get; set; } = null!;
     public DbSet<CompoundReading> CompoundReadings { get; set; } = null!;
     #endregion

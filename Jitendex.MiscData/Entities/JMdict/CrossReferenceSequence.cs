@@ -28,7 +28,7 @@ public sealed class CrossReferenceSequence
     public required int EntryId { get; init; }
     public required int SenseNumber { get; init; }
     public required string Text { get; init; }
-    public int? RefEntryId { get; set; }
+    public required int? RefEntryId { get; set; }
 
     /// <summary>
     /// Dictionary key in the JSON file.

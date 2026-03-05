@@ -16,10 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.MiscData.ImportExport.Furigana.Models;
 using Jitendex.MiscData.ImportExport.Furigana.Tables;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.MiscData.ImportExport.Furigana;
 
@@ -56,7 +58,10 @@ internal sealed class CompoundService
     public async Task ExportAsync()
     {
         var dictionary = context.Compounds
-            .OrderBy(static x => x.Text)
+            .AsNoTracking()
+            .Include(static x => x.Readings)
+            .AsEnumerable()
+            .OrderBy(static x => x.Text, StringComparer)
             .ToDictionary
             (
                 keySelector: static x => x.Text,
@@ -89,4 +94,7 @@ internal sealed class CompoundService
         IndentSize = 4,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
+
+    private readonly static StringComparer StringComparer =
+        StringComparer.Create(new CultureInfo("ja-JP"), CompareOptions.NumericOrdering);
 }

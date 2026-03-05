@@ -20,8 +20,8 @@ namespace Jitendex.MiscData.ImportExport.Furigana.Models;
 
 internal enum ReadingType : byte
 {
-    Kunyomi,
     Onyomi,
+    Kunyomi,
     Chinese,
     Korean,
     Kana,

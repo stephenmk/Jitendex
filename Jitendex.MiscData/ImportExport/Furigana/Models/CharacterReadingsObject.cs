@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Jitendex.MiscData.ImportExport.Furigana.Models;
 

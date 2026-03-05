@@ -50,6 +50,8 @@ internal sealed class CrossReferenceDataService
     public async Task ExportAsync()
     {
         var dictionary = context.CrossReferenceSequences
+            .OrderBy(static x => x.SenseNumber)
+            .OrderBy(static x => x.EntryId)
             .ToDictionary
             (
                 keySelector: static x => x.ToExportKey(),

@@ -16,10 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.MiscData.ImportExport.Furigana.Models;
 using Jitendex.MiscData.ImportExport.Furigana.Tables;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.MiscData.ImportExport.Furigana;
 
@@ -56,14 +58,24 @@ internal sealed class CharacterService
     public async Task ExportAsync()
     {
         var dictionary = context.Characters
+            .AsNoTracking()
+            .Include(static x => x.Readings)
+            .ThenInclude(static x => x.Type)
             .OrderBy(static x => x.Value)
             .ToDictionary
             (
-                keySelector: static x => x.Value,
+                keySelector: static x => new Rune(x.Value).ToString(),
                 elementSelector: static x => x.Readings
-                    .Select(static r => r.ToString())
-                    .Order()
-                    .ToArray()
+                    .OrderBy(static x => x.TypeId)
+                    .GroupBy(static x => x.Type.Name.ToLower())
+                    .ToDictionary
+                    (
+                        keySelector: static x => x.Key,
+                        elementSelector: static x => x
+                            .Select(static x => x.ToString())
+                            .Order()
+                            .ToArray()
+                    )
             );
 
         var filePath = GetJsonFilePath();

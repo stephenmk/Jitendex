@@ -25,14 +25,20 @@ public static class Program
 {
     public static async Task<int> Main(string[] args)
     {
+        Argument<ProgramArgument> argument = new("argument")
+        {
+            Description = "Import from or export to flat-file data"
+        };
+
         Option<DirectoryInfo> dataDirOption = new("--data-path")
         {
             Description = "Path to the jitendex-data directory",
         };
 
-        var rootCommand = new RootCommand("Jitendex.MiscData: Import flat-file data from jitendex-data")
+        var rootCommand = new RootCommand("Jitendex.MiscData: Process flat-files from jitendex-data")
         {
-            dataDirOption
+            argument,
+            dataDirOption,
         };
 
         var parseResult = rootCommand.Parse(args);
@@ -47,12 +53,27 @@ public static class Program
             return 1;
         }
 
+        var argumentResult = parseResult.GetRequiredValue(argument);
         var dataDirectory = parseResult.GetValue(dataDirOption);
 
         var service = ServiceProvider.GetService(dataDirectory);
 
-        await service.ImportAsync();
+        switch (argumentResult)
+        {
+            case ProgramArgument.Import:
+                await service.ImportAsync();
+                break;
+            case ProgramArgument.Export:
+                await service.ExportAsync();
+                break;
+        }
 
         return 0;
+    }
+
+    private enum ProgramArgument
+    {
+        Import,
+        Export,
     }
 }

@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Jitendex.JapaneseTextUtils;
 using Jitendex.MiscData.ImportExport.JMdict.Models;
 using Jitendex.MiscData.ImportExport.JMdict.Tables;
 
@@ -50,6 +49,7 @@ internal sealed class CrossReferenceDataService
     public async Task ExportAsync()
     {
         var dictionary = context.CrossReferenceSequences
+            .OrderBy(static x => x.RefText)
             .OrderBy(static x => x.SenseNumber)
             .OrderBy(static x => x.EntryId)
             .ToDictionary
@@ -85,62 +85,12 @@ internal sealed class CrossReferenceDataService
     private CrossReferenceSequenceRow ParseData(string key, int? value)
     {
         var split = key.Split('・');
-        if (split is { Length: < 3 or > 5 })
-        {
-            throw new Exception($"Malformatted key: `{key}`");
-        }
-
-        var entryId = int.Parse(split[0]);
-        var senseNumber = int.Parse(split[1]);
-        string? refKanjiFormText = null;
-        string? refReadingText = null;
-        int? refSenseNumber = null;
-
-        if (split.Length == 3)
-        {
-            if (split[2].IsAllKana())
-            {
-                refReadingText = split[2];
-            }
-            else
-            {
-                refKanjiFormText = split[2];
-            }
-        }
-        else if (split.Length == 4)
-        {
-            if (int.TryParse(split[3], out var number))
-            {
-                if (split[2].IsAllKana())
-                {
-                    refReadingText = split[2];
-                }
-                else
-                {
-                    refKanjiFormText = split[2];
-                }
-                refSenseNumber = number;
-            }
-            else
-            {
-                refKanjiFormText = split[2];
-                refReadingText = split[3];
-            }
-        }
-        else if (split.Length == 5)
-        {
-            refKanjiFormText = split[2];
-            refReadingText = split[3];
-            refSenseNumber = int.Parse(split[4]);
-        }
 
         return new CrossReferenceSequenceRow
         (
-            EntryId: entryId,
-            SenseNumber: senseNumber,
-            RefKanjiFormText: refKanjiFormText,
-            RefReadingText: refReadingText,
-            RefSenseNumber: refSenseNumber,
+            EntryId: int.Parse(split[0]),
+            SenseNumber: int.Parse(split[1]),
+            RefText: string.Join('・', split[2..]),
             RefEntryId: value
         );
     }

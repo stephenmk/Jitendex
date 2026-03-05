@@ -17,48 +17,24 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.MiscData.Entities.JMdict;
 
 [Table(nameof(CrossReferenceSequence))]
 [PrimaryKey(nameof(Id))]
-[Index(nameof(EntryId), nameof(SenseNumber), nameof(RefReadingText), nameof(RefKanjiFormText), nameof(RefSenseNumber), IsUnique = true)]
+[Index(nameof(EntryId), nameof(SenseNumber), nameof(RefText), IsUnique = true)]
 public sealed class CrossReferenceSequence
 {
     public required int Id { get; init; }
     public required int EntryId { get; init; }
     public required int SenseNumber { get; init; }
-    public string? RefKanjiFormText { get; init; }
-    public string? RefReadingText { get; init; }
-    public int? RefSenseNumber { get; init; }
+    public required string RefText { get; init; }
     public int? RefEntryId { get; set; }
 
     /// <summary>
     /// Dictionary key in the JSON file.
     /// </summary>
     public string ToExportKey()
-    {
-        var sb = new StringBuilder();
-
-        sb.Append($"{EntryId}・{SenseNumber}");
-
-        if (RefKanjiFormText is not null)
-        {
-            sb.Append($"・{RefKanjiFormText}");
-        }
-
-        if (RefReadingText is not null)
-        {
-            sb.Append($"・{RefReadingText}");
-        }
-
-        if (RefSenseNumber.HasValue)
-        {
-            sb.Append($"・{RefSenseNumber.Value}");
-        }
-
-        return sb.ToString();
-    }
+        => $"{EntryId}・{SenseNumber}・{RefText}";
 }

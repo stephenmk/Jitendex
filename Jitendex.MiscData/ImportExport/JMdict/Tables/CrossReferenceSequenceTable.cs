@@ -31,9 +31,7 @@ internal sealed class CrossReferenceSequenceTable : Table<CrossReferenceSequence
     [
         nameof(CrossReferenceSequence.EntryId),
         nameof(CrossReferenceSequence.SenseNumber),
-        nameof(CrossReferenceSequence.RefKanjiFormText),
-        nameof(CrossReferenceSequence.RefReadingText),
-        nameof(CrossReferenceSequence.RefSenseNumber),
+        nameof(CrossReferenceSequence.RefText),
         nameof(CrossReferenceSequence.RefEntryId),
     ];
 
@@ -44,9 +42,7 @@ internal sealed class CrossReferenceSequenceTable : Table<CrossReferenceSequence
     [
         new("@0", row.EntryId),
         new("@1", row.SenseNumber),
-        new("@2", row.RefKanjiFormText.Nullable()),
-        new("@3", row.RefReadingText.Nullable()),
-        new("@4", row.RefSenseNumber.Nullable()),
-        new("@5", row.RefEntryId.Nullable()),
+        new("@2", row.RefText),
+        new("@3", row.RefEntryId.Nullable()),
     ];
 }

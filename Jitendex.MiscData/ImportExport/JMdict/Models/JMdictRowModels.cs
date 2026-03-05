@@ -22,8 +22,6 @@ internal sealed record CrossReferenceSequenceRow
 (
     int EntryId,
     int SenseNumber,
-    string? RefKanjiFormText,
-    string? RefReadingText,
-    int? RefSenseNumber,
+    string RefText,
     int? RefEntryId
 );

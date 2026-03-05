@@ -17,6 +17,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Jitendex.AppDirectory\Jitendex.AppDirectory.csproj" />
     <ProjectReference Include="..\Jitendex.SQLite\Jitendex.SQLite.csproj" />
-    <ProjectReference Include="..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
   </ItemGroup>
 </Project>

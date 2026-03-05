@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Jitendex.MiscData.ImportExport.JMdict.Models;
 using Jitendex.MiscData.ImportExport.JMdict.Tables;
 
@@ -40,7 +41,14 @@ internal sealed class CrossReferenceDataService
 
         foreach (var (key, value) in data)
         {
-            rows.Add(ParseData(key, value));
+            var split = key.Split('・');
+            rows.Add(new
+            (
+                EntryId: int.Parse(split[0]),
+                SenseNumber: int.Parse(split[1]),
+                RefText: string.Join('・', split[2..]),
+                RefEntryId: value
+            ));
         }
 
         crossReferenceSequenceTable.InsertItems(context, rows);
@@ -49,6 +57,7 @@ internal sealed class CrossReferenceDataService
     public async Task ExportAsync()
     {
         var dictionary = context.CrossReferenceSequences
+            .AsNoTracking()
             .OrderBy(static x => x.RefText)
             .OrderBy(static x => x.SenseNumber)
             .OrderBy(static x => x.EntryId)
@@ -81,17 +90,4 @@ internal sealed class CrossReferenceDataService
         IndentSize = 4,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
-
-    private CrossReferenceSequenceRow ParseData(string key, int? value)
-    {
-        var split = key.Split('・');
-
-        return new CrossReferenceSequenceRow
-        (
-            EntryId: int.Parse(split[0]),
-            SenseNumber: int.Parse(split[1]),
-            RefText: string.Join('・', split[2..]),
-            RefEntryId: value
-        );
-    }
 }

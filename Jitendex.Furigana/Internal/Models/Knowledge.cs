@@ -54,12 +54,3 @@ internal sealed class Knowledge : IReadOnlyKnowledge
     private static IReadOnlyList<Reading> GetReadings(int key, Dictionary<int, List<Reading>> dictionary)
         => dictionary.TryGetValue(key, out var readings) ? readings : [];
 }
-
-internal interface IReadOnlyKnowledge
-{
-    public IReadOnlyList<Reading> GetCompoundReadings(ReadOnlySpan<Rune> runes);
-    public IReadOnlyList<Reading> GetCharacterReadings(Rune rune);
-    public IReadOnlyList<Reading> GetNameKanjiReadings(Rune rune);
-    public IReadOnlyList<Reading> GetHanziReadings(Rune rune);
-    public IReadOnlyList<Reading> GetHanjaReadings(Rune rune);
-}

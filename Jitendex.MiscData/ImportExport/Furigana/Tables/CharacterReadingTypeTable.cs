@@ -19,23 +19,28 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.MiscData.Entities.Furigana;
-using Jitendex.MiscData.ImportExport.Models;
+using Jitendex.MiscData.ImportExport.Furigana.Models;
 
-namespace Jitendex.MiscData.ImportExport.Tables.Furigana;
+namespace Jitendex.MiscData.ImportExport.Furigana.Tables;
 
-internal sealed class CharacterTable : Table<CharacterRow>
+internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
 {
-    protected override string Name => nameof(Character);
+    protected override string Name => nameof(CharacterReadingType);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Character.Value),
+        nameof(CharacterReadingType.Id),
+        nameof(CharacterReadingType.Name),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
-
-    protected override SqliteParameter[] Parameters(CharacterRow row) =>
+    protected override IReadOnlyList<string> KeyColNames =>
     [
-        new("@0", row.Value),
+        nameof(CharacterReadingType.Id)
+    ];
+
+    protected override SqliteParameter[] Parameters(CharacterReadingTypeRow row) =>
+    [
+        new("@0", row.Id),
+        new("@1", row.Name),
     ];
 }

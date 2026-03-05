@@ -16,30 +16,30 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.MiscData.ImportExport.Furigana;
-using Jitendex.MiscData.ImportExport.JMdict;
+namespace Jitendex.MiscData.ImportExport.Furigana.Models;
 
-namespace Jitendex.MiscData.ImportExport;
+internal sealed record CharacterRow(int Value);
 
-internal sealed class Importer
+internal sealed record CharacterReadingRow
 (
-    MiscDataContext context,
-    CharacterService characterService,
-    CompoundService compoundService,
-    CrossReferenceDataService crossReferenceDataService
-)
-{
-    public async Task ImportAsync()
-    {
-        context.RecreateDatabase();
+    int CharacterValue,
+    string Text,
+    bool IsPrefix,
+    bool IsSuffix,
+    string? Okurigana,
+    int ReadingTypeId
+);
 
-        using var transaction = context.Database.BeginTransaction();
+internal sealed record CharacterReadingTypeRow
+(
+    int Id,
+    string Name
+);
 
-        await characterService.ImportAsync();
-        await compoundService.ImportAsync();
-        await crossReferenceDataService.ImportAsync();
+internal sealed record CompoundRow(string Text);
 
-        transaction.Commit();
-        context.ExecuteVacuum();
-    }
-}
+internal sealed record CompoundReadingRow
+(
+    string CompoundText,
+    string Text
+);

@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Jitendex.MiscData.ImportExport.Models;
-using Jitendex.MiscData.ImportExport.Tables.Furigana;
+using Jitendex.MiscData.ImportExport.Furigana.Models;
+using Jitendex.MiscData.ImportExport.Furigana.Tables;
 
 namespace Jitendex.MiscData.ImportExport.Furigana;
 
@@ -73,7 +73,7 @@ internal sealed class CompoundService
         }
 
         await using var stream = File.OpenWrite(filePath);
-        await JsonSerializer.SerializeAsync(stream, dictionary, JsonSerializerOptions);
+        await JsonSerializer.SerializeAsync(stream, dictionary, WriteOptions);
     }
 
     private string GetJsonFilePath()
@@ -83,7 +83,7 @@ internal sealed class CompoundService
             "compounds.json"
         );
 
-    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
+    private readonly static JsonSerializerOptions WriteOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,

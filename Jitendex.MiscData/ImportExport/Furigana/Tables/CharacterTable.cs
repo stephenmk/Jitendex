@@ -19,35 +19,23 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.MiscData.Entities.Furigana;
-using Jitendex.MiscData.ImportExport.Models;
+using Jitendex.MiscData.ImportExport.Furigana.Models;
 
-namespace Jitendex.MiscData.ImportExport.Tables.Furigana;
+namespace Jitendex.MiscData.ImportExport.Furigana.Tables;
 
-internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
+internal sealed class CharacterTable : Table<CharacterRow>
 {
-    protected override string Name => nameof(CharacterReading);
+    protected override string Name => nameof(Character);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CharacterReading.CharacterValue),
-        nameof(CharacterReading.Text),
-        nameof(CharacterReading.IsPrefix),
-        nameof(CharacterReading.IsSuffix),
-        nameof(CharacterReading.Okurigana),
+        nameof(Character.Value),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
-        nameof(CharacterReading.CharacterValue),
-        nameof(CharacterReading.Text),
-    ];
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(CharacterReadingRow row) =>
+    protected override SqliteParameter[] Parameters(CharacterRow row) =>
     [
-        new("@0", row.CharacterValue),
-        new("@1", row.Text),
-        new("@2", row.IsPrefix),
-        new("@3", row.IsSuffix),
-        new("@4", row.Okurigana.Nullable()),
+        new("@0", row.Value),
     ];
 }

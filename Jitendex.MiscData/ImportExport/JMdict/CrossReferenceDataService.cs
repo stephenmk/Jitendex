@@ -19,8 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.JapaneseTextUtils;
-using Jitendex.MiscData.ImportExport.Models;
-using Jitendex.MiscData.ImportExport.Tables.JMdict;
+using Jitendex.MiscData.ImportExport.JMdict.Models;
+using Jitendex.MiscData.ImportExport.JMdict.Tables;
 
 namespace Jitendex.MiscData.ImportExport.JMdict;
 

@@ -19,10 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.MiscData.ImportExport.Furigana;
+using Jitendex.MiscData.ImportExport.Furigana.Tables;
 using Jitendex.MiscData.ImportExport.JMdict;
-using Jitendex.MiscData.ImportExport.Models;
-using Jitendex.MiscData.ImportExport.Tables.Furigana;
-using Jitendex.MiscData.ImportExport.Tables.JMdict;
+using Jitendex.MiscData.ImportExport.JMdict.Tables;
 
 namespace Jitendex.MiscData.ImportExport;
 
@@ -40,6 +39,7 @@ internal static class ImporterProvider
         // Database tables.
         .AddTransient<CharacterTable>()
         .AddTransient<CharacterReadingTable>()
+        .AddTransient<CharacterReadingTypeTable>()
         .AddTransient<CompoundTable>()
         .AddTransient<CompoundReadingTable>()
         .AddTransient<CrossReferenceSequenceTable>()

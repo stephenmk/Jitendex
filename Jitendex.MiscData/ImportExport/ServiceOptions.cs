@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.AppDirectory;
 
-namespace Jitendex.MiscData.ImportExport.Models;
+namespace Jitendex.MiscData.ImportExport;
 
 internal sealed record ServiceOptions
 {

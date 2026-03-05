@@ -23,15 +23,17 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.MiscData.Entities.Furigana;
 
 [Table(nameof(CharacterReading))]
-[PrimaryKey(nameof(CharacterValue), nameof(Text))]
+[PrimaryKey(nameof(Id))]
+[Index(nameof(CharacterValue), nameof(Text), nameof(Okurigana), nameof(TypeId), IsUnique = true)]
 public sealed class CharacterReading
 {
+    public required int Id { get; init; }
     public required int CharacterValue { get; init; }
+    public required int TypeId { get; init; }
     public required string Text { get; init; }
+    public required string? Okurigana { get; init; }
     public required bool IsPrefix { get; init; }
     public required bool IsSuffix { get; init; }
-    public required string? Okurigana { get; init; }
-    public required int TypeId { get; init; }
 
     [ForeignKey(nameof(CharacterValue))]
     public Character Character { get; init; } = null!;

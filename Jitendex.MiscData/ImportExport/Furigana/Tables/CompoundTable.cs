@@ -16,23 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.MiscData.ImportExport.Models;
+using Microsoft.Data.Sqlite;
+using Jitendex.SQLite;
+using Jitendex.MiscData.Entities.Furigana;
+using Jitendex.MiscData.ImportExport.Furigana.Models;
 
-internal sealed record CharacterRow(int Value);
+namespace Jitendex.MiscData.ImportExport.Furigana.Tables;
 
-internal sealed record CharacterReadingRow
-(
-    int CharacterValue,
-    string Text,
-    bool IsPrefix,
-    bool IsSuffix,
-    string? Okurigana
-);
+internal sealed class CompoundTable : Table<CompoundRow>
+{
+    protected override string Name => nameof(Compound);
 
-internal sealed record CompoundRow(string Text);
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Compound.Text),
+    ];
 
-internal sealed record CompoundReadingRow
-(
-    string CompoundText,
-    string Text
-);
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+
+    protected override SqliteParameter[] Parameters(CompoundRow row) =>
+    [
+        new("@0", row.Text),
+    ];
+}

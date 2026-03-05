@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Jitendex.MiscData.ImportExport.Models;
-using Jitendex.MiscData.ImportExport.Tables.Furigana;
+using Jitendex.MiscData.ImportExport.Furigana.Models;
+using Jitendex.MiscData.ImportExport.Furigana.Tables;
 
 namespace Jitendex.MiscData.ImportExport.Furigana;
 
@@ -28,24 +28,29 @@ internal sealed class CharacterService
     MiscDataContext context,
     ServiceOptions options,
     CharacterTable characterTable,
-    CharacterReadingTable characterReadingTable
+    CharacterReadingTable readingTable,
+    CharacterReadingTypeTable typeTable
 )
 {
     public async Task ImportAsync()
     {
         var filePath = GetJsonFilePath();
         await using var stream = File.OpenRead(filePath);
-        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, string[]>>(stream) ?? [];
+        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, CharacterReadingsObject>>(stream, ReadOptions) ?? [];
 
         var characterRows = new List<CharacterRow>();
         var readingRows = new List<CharacterReadingRow>();
 
         foreach (var (key, value) in data)
         {
+            var characterValue = key.EnumerateRunes().First().Value;
+            characterRows.Add(new(characterValue));
+            readingRows.AddRange(value.ToReadingRows(characterValue));
         }
 
+        typeTable.InsertItems(context, GetTypeRows());
         characterTable.InsertItems(context, characterRows);
-        characterReadingTable.InsertItems(context, readingRows);
+        readingTable.InsertItems(context, readingRows);
     }
 
     public async Task ExportAsync()
@@ -68,7 +73,7 @@ internal sealed class CharacterService
         }
 
         await using var stream = File.OpenWrite(filePath);
-        await JsonSerializer.SerializeAsync(stream, dictionary, JsonSerializerOptions);
+        await JsonSerializer.SerializeAsync(stream, dictionary, WriteOptions);
     }
 
     private string GetJsonFilePath()
@@ -78,10 +83,23 @@ internal sealed class CharacterService
             "characters.json"
         );
 
-    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
+    private readonly static JsonSerializerOptions ReadOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
+    private readonly static JsonSerializerOptions WriteOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
+
+    private static IEnumerable<CharacterReadingTypeRow> GetTypeRows()
+    {
+        foreach (var type in Enum.GetValues<ReadingType>())
+        {
+            yield return new CharacterReadingTypeRow((int)type, type.ToString());
+        }
+    }
 }

@@ -16,51 +16,75 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using Jitendex.AppDirectory;
+using System.Collections.Frozen;
+using Microsoft.EntityFrameworkCore;
+using Jitendex.MiscData;
 
 namespace Jitendex.JMdict.Fork.Analysis.Services;
 
-internal sealed class CrossReferenceCacheService(JMdictForkContext context)
+internal sealed class CrossReferenceCacheService
+(
+    MiscDataContext miscContext,
+    JMdictForkContext forkContext
+)
 {
-    public async Task<IReadOnlyDictionary<string, int?>> LoadAsync(DirectoryInfo? dataDir)
-    {
-        var filePath = GetJsonFilePath(dataDir);
-        await using var stream = File.OpenRead(filePath);
-        return await JsonSerializer.DeserializeAsync<Dictionary<string, int?>>(stream) ?? [];
-    }
-
-    public async Task ExportAsync(DirectoryInfo? dataDir)
-    {
-        var dictionary = context.CrossReferences
-            .Where(static x => x.IsAmbiguous == true)
-            .ToDictionary
+    public FrozenDictionary<string, int?> Load()
+        => miscContext.CrossReferenceSequences
+            .AsNoTracking()
+            .ToFrozenDictionary
             (
-                keySelector: static x => x.ToExportKey(),
+                keySelector: static x => $"{x.EntryId}・{x.SenseNumber}・{x.RefText}",
                 elementSelector: static x => x.RefEntryId
             );
 
-        var filePath = GetJsonFilePath(dataDir);
-        if (File.Exists(filePath))
+    private sealed record Key(int EntryId, int SenseNumber, string Text);
+
+    public void Export()
+    {
+        var dictionary = forkContext.CrossReferences
+            .Where(static x => x.IsAmbiguous == true)
+            .Select(static x => new
+            {
+                Key = new Key(x.EntryId, x.SenseOrder + 1, x.Text),
+                Value = x.RefEntryId
+            })
+            .ToDictionary(static x => x.Key, static x => x.Value);
+
+        var hashset = new HashSet<Key>(dictionary.Count);
+
+        foreach (var xref in miscContext.CrossReferenceSequences)
         {
-            File.Delete(filePath);
+            var key = new Key(xref.EntryId, xref.SenseNumber, xref.RefText);
+            if (dictionary.TryGetValue(key, out var value))
+            {
+                hashset.Add(key);
+                if (xref.RefEntryId != value)
+                {
+                    xref.RefEntryId = value;
+                }
+            }
+            else
+            {
+                miscContext.Remove(xref);
+            }
         }
 
-        await using var stream = File.OpenWrite(filePath);
-        await JsonSerializer.SerializeAsync(stream, dictionary, GetJsonSerializerOptions());
-    }
+        foreach (var (key, value) in dictionary)
+        {
+            if (hashset.Contains(key))
+            {
+                continue;
+            }
+            miscContext.CrossReferenceSequences.Add(new()
+            {
+                Id = default,
+                EntryId = key.EntryId,
+                SenseNumber = key.SenseNumber,
+                RefText = key.Text,
+                RefEntryId = value,
+            });
+        }
 
-    private string GetJsonFilePath(DirectoryInfo? dataDir)
-    {
-        dataDir ??= DataHome.Get(DataSubdirectory.JitendexDataDirectory);
-        return Path.Join(dataDir.FullName, "jmdict", "cross_reference_sequences.json");
+        miscContext.SaveChanges();
     }
-
-    private static JsonSerializerOptions GetJsonSerializerOptions() => new()
-    {
-        WriteIndented = true,
-        IndentSize = 4,
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-    };
 }

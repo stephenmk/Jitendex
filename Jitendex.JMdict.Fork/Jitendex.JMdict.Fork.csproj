@@ -16,10 +16,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jitendex.SQLite\Jitendex.SQLite.csproj" />
-    <ProjectReference Include="..\Jitendex.Dto\Jitendex.Dto.csproj" />
     <ProjectReference Include="..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
     <ProjectReference Include="..\Jitendex.Kanjidic2\Jitendex.Kanjidic2.csproj" />
     <ProjectReference Include="..\Jitendex.Furigana\Jitendex.Furigana.csproj" />
     <ProjectReference Include="..\Jitendex.JMdict\Jitendex.JMdict.csproj" />
+    <ProjectReference Include="..\Jitendex.MiscData\Jitendex.MiscData.csproj" />
   </ItemGroup>
 </Project>

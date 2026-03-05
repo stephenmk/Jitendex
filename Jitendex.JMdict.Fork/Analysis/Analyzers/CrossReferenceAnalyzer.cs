@@ -30,8 +30,9 @@ internal partial class CrossReferenceAnalyzer
 (
     ILogger<CrossReferenceAnalyzer> logger,
     JMdictForkContext context,
-    CrossReferenceTextParser parser,
-    CrossReferenceTable table
+    CrossReferenceCacheService cacheService,
+    CrossReferenceTable table,
+    CrossReferenceTextParser parser
 )
 {
     private sealed record ReferenceText(string Text1, string? Text2);
@@ -44,7 +45,14 @@ internal partial class CrossReferenceAnalyzer
         FrozenSet<int> HiddenReadingIndices
     );
 
-    public void Analyze(IReadOnlyDictionary<string, int?> entryIdCache)
+    public void Analyze()
+    {
+        var entryIdCache = cacheService.Load();
+        SolveSequences(entryIdCache);
+        cacheService.Export();
+    }
+
+    private void SolveSequences(FrozenDictionary<string, int?> entryIdCache)
     {
         var referenceTextToEntries = GetReferenceTextToEntries();
 
@@ -120,7 +128,7 @@ internal partial class CrossReferenceAnalyzer
         table.UpdateItems(context, sequencedRefs);
     }
 
-    private int? FindIdInCache(string key, int[] potentialEntryIds, IReadOnlyDictionary<string, int?> entryIdCache)
+    private int? FindIdInCache(string key, int[] potentialEntryIds, FrozenDictionary<string, int?> entryIdCache)
     {
         int? entryId;
         if (!entryIdCache.TryGetValue(key, out var cachedId))

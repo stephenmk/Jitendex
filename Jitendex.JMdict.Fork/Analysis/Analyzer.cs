@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
+using Jitendex.MiscData;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
 using Jitendex.JMdict.Fork.Analysis.Services;
 
@@ -25,7 +26,8 @@ namespace Jitendex.JMdict.Fork.Analysis;
 internal sealed class Analyzer
 (
     ILogger<Analyzer> logger,
-    JMdictForkContext context,
+    JMdictForkContext forkContext,
+    MiscDataContext miscContext,
     Database database,
 
     RestrictionAnalyzer restrictionAnalyzer,
@@ -35,35 +37,33 @@ internal sealed class Analyzer
     FuriganaSegmentAnalyzer furiganaSegmentAnalyzer,
     CrossReferenceAnalyzer crossReferenceAnalyzer,
 
-    CrossReferenceCacheService crossReferenceCacheService,
     FuriganaSolverService furiganaSolverService
 )
 {
     public async Task AnalyzeAsync(DirectoryInfo? dataDirectory)
     {
-        context.RecreateDatabase();
+        forkContext.RecreateDatabase();
 
-        using var transaction = context.Database.BeginTransaction();
+        using var miscTransaction = miscContext.Database.BeginTransaction();
+        using var forkTransaction = forkContext.Database.BeginTransaction();
 
         logger.LogInformation("Copying data from the JMdict database file");
         database.TransferDataFromJmdict();
 
         logger.LogInformation("Starting data analysis");
-
         restrictionAnalyzer.Analyze();
         readingRestrictionAnalyzer.Analyze();
         kanjiFormRestrictionAnalyzer.Analyze();
         kanjiFormBridgeAnalyzer.Analyze();
+        crossReferenceAnalyzer.Analyze();
 
-        var referenceCache = await crossReferenceCacheService.LoadAsync(dataDirectory);
-        crossReferenceAnalyzer.Analyze(referenceCache);
-        await crossReferenceCacheService.ExportAsync(dataDirectory);
+        // var furiganaSolver = await furiganaSolverService.LoadAsync(dataDirectory);
 
-        var furiganaSolver = await furiganaSolverService.LoadAsync(dataDirectory);
+        // await furiganaSegmentAnalyzer.Analyze(furiganaSolver);
 
-        await furiganaSegmentAnalyzer.Analyze(furiganaSolver);
+        forkTransaction.Commit();
+        miscTransaction.Commit();
 
-        transaction.Commit();
-        context.ExecuteVacuum();
+        forkContext.ExecuteVacuum();
     }
 }

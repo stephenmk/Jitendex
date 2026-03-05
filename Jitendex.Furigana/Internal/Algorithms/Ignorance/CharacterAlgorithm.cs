@@ -67,7 +67,7 @@ internal abstract class CharacterAlgorithm
         {
             if (rune.IsKana())
             {
-                pattern.Append((char)rune.Value);
+                pattern.Append((char)rune.Value); // Kana are always safe to cast as char.
                 newGroup = true;
             }
             else if (newGroup)

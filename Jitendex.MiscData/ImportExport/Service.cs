@@ -21,7 +21,7 @@ using Jitendex.MiscData.ImportExport.JMdict;
 
 namespace Jitendex.MiscData.ImportExport;
 
-internal sealed class Importer
+internal sealed class Service
 (
     MiscDataContext context,
     CharacterService characterService,
@@ -41,5 +41,12 @@ internal sealed class Importer
 
         transaction.Commit();
         context.ExecuteVacuum();
+    }
+
+    public async Task ExportAsync()
+    {
+        await characterService.ExportAsync();
+        await compoundService.ExportAsync();
+        await crossReferenceDataService.ExportAsync();
     }
 }

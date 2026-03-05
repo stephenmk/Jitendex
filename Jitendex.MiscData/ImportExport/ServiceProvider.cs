@@ -25,9 +25,9 @@ using Jitendex.MiscData.ImportExport.JMdict.Tables;
 
 namespace Jitendex.MiscData.ImportExport;
 
-internal static class ImporterProvider
+internal static class ServiceProvider
 {
-    public static Importer GetImporter(DirectoryInfo? dataDirectory)
+    public static Service GetService(DirectoryInfo? dataDirectory)
         => new ServiceCollection()
 
         // Service options.
@@ -59,7 +59,7 @@ internal static class ImporterProvider
             }))
 
         // Build and return the importer service.
-        .AddTransient<Importer>()
+        .AddTransient<Service>()
         .BuildServiceProvider()
-        .GetRequiredService<Importer>();
+        .GetRequiredService<Service>();
 }

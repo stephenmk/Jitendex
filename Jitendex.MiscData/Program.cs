@@ -49,9 +49,9 @@ public static class Program
 
         var dataDirectory = parseResult.GetValue(dataDirOption);
 
-        var importer = ImporterProvider.GetImporter(dataDirectory);
+        var service = ServiceProvider.GetService(dataDirectory);
 
-        await importer.ImportAsync();
+        await service.ImportAsync();
 
         return 0;
     }

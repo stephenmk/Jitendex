@@ -21,7 +21,6 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.MiscData.ImportExport.Furigana.Models;
 using Jitendex.MiscData.ImportExport.Furigana.Tables;
-using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.MiscData.ImportExport.Furigana;
 
@@ -58,18 +57,17 @@ internal sealed class CompoundService
     public async Task ExportAsync()
     {
         var dictionary = context.Compounds
-            .AsNoTracking()
-            .Include(static x => x.Readings)
-            .AsEnumerable()
-            .OrderBy(static x => x.Text, StringComparer)
-            .ToDictionary
-            (
-                keySelector: static x => x.Text,
-                elementSelector: static x => x.Readings
+            .Select(static x => new
+            {
+                Key = x.Text,
+                Value = x.Readings
                     .Select(static r => r.Text)
                     .Order()
                     .ToArray()
-            );
+            })
+            .AsEnumerable()
+            .OrderBy(static x => x.Key, StringComparer)
+            .ToDictionary(static x => x.Key, static x => x.Value);
 
         var filePath = GetJsonFilePath();
         if (File.Exists(filePath))

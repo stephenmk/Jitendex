@@ -30,8 +30,10 @@ internal abstract class CharacterAlgorithm
 
     protected static string? RegexReading(in TextSlice textSlice, in ReadingState readingState)
     {
-        var remainingText = textSlice.RemainingRunes.KatakanaToHiragana();
+        // Capture groups do not currently work with span-based input.
+        // See: https://github.com/dotnet/runtime/discussions/107510
         var remainingReading = new string(readingState.RemainingTextNormalized);
+        var remainingText = textSlice.RemainingRunes.KatakanaToHiragana();
 
         var greedyRegex = MakeRegex("(.+)", remainingText);
         var lazyRegex = MakeRegex("(.+?)", remainingText);

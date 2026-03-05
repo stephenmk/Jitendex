@@ -30,11 +30,10 @@ internal partial class CrossReferenceAnalyzer
 (
     ILogger<CrossReferenceAnalyzer> logger,
     JMdictForkContext context,
-    CrossReferenceTextParser parser
+    CrossReferenceTextParser parser,
+    CrossReferenceTable table
 )
 {
-    private static readonly CrossReferenceTable CrossReferenceTable = new();
-
     private sealed record ReferenceText(string Text1, string? Text2);
     private sealed record EntryData
     (
@@ -118,7 +117,7 @@ internal partial class CrossReferenceAnalyzer
             ));
         }
 
-        CrossReferenceTable.UpdateItems(context, sequencedRefs);
+        table.UpdateItems(context, sequencedRefs);
     }
 
     private int? FindIdInCache(string key, int[] potentialEntryIds, IReadOnlyDictionary<string, int?> entryIdCache)

@@ -24,10 +24,13 @@ using Jitendex.JMdict.Fork.Analysis.Tables;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
-internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> logger, JMdictForkContext context)
+internal partial class KanjiFormBridgeAnalyzer
+(
+    ILogger<KanjiFormBridgeAnalyzer> logger,
+    JMdictForkContext context,
+    KanjiFormBridgeTable table
+)
 {
-    private static readonly KanjiFormBridgeTable KanjiFormBridgeTable = new();
-
     private readonly record struct ReadingData
     (
         int Order,
@@ -102,7 +105,7 @@ internal partial class KanjiFormBridgeAnalyzer(ILogger<KanjiFormBridgeAnalyzer> 
             }
         }
 
-        KanjiFormBridgeTable.InsertItems(context, bridges);
+        table.InsertItems(context, bridges);
     }
 
     private void CheckForRestrictionRedundancies(int entryId, int visibleKanjiFormCount, in ReadingData reading)

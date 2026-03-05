@@ -29,11 +29,10 @@ internal partial class FuriganaSegmentAnalyzer
 (
     ILogger<FuriganaSegmentAnalyzer> logger,
     JMdictForkContext context,
-    Kanjidic2Context kanjiContext
+    Kanjidic2Context kanjiContext,
+    FuriganaSegmentTable table
 )
 {
-    private readonly static FuriganaSegmentTable FuriganaSegmentTable = new();
-
     public async Task Analyze(IFuriganaService furiganaService)
     {
         var entries = context.KanjiFormBridges
@@ -81,7 +80,7 @@ internal partial class FuriganaSegmentAnalyzer
             }
         }
 
-        FuriganaSegmentTable.InsertItems(context, segments);
+        table.InsertItems(context, segments);
     }
 
     private string? GetTypeName(Dictionary<(Rune, string Text), string> typeNames, string baseText, string? furigana)

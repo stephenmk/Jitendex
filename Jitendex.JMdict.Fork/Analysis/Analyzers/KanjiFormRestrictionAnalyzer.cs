@@ -22,10 +22,13 @@ using Jitendex.JMdict.Fork.Analysis.Tables;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
-internal partial class KanjiFormRestrictionAnalyzer(ILogger<KanjiFormRestrictionAnalyzer> logger, JMdictForkContext context)
+internal partial class KanjiFormRestrictionAnalyzer
+(
+    ILogger<KanjiFormRestrictionAnalyzer> logger,
+    JMdictForkContext context,
+    KanjiFormRestrictionTable table
+)
 {
-    private static readonly KanjiFormRestrictionTable KanjiFormRestrictionTable = new();
-
     public void Analyze()
     {
         var restrictions = context.KanjiFormRestrictions
@@ -73,7 +76,7 @@ internal partial class KanjiFormRestrictionAnalyzer(ILogger<KanjiFormRestriction
             }
         }
 
-        KanjiFormRestrictionTable.UpdateItems(context, updates);
+        table.UpdateItems(context, updates);
     }
 
     [LoggerMessage(LogLevel.Warning,

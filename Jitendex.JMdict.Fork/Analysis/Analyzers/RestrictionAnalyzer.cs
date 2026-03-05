@@ -22,10 +22,13 @@ using Jitendex.JMdict.Fork.Analysis.Tables;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
-internal partial class RestrictionAnalyzer(ILogger<RestrictionAnalyzer> logger, JMdictForkContext context)
+internal partial class RestrictionAnalyzer
+(
+    ILogger<RestrictionAnalyzer> logger,
+    JMdictForkContext context,
+    RestrictionTable table
+)
 {
-    private readonly static RestrictionTable RestrictionTable = new();
-
     public void Analyze()
     {
         var restrictions = context.Restrictions
@@ -73,7 +76,7 @@ internal partial class RestrictionAnalyzer(ILogger<RestrictionAnalyzer> logger, 
             }
         }
 
-        RestrictionTable.UpdateItems(context, updates);
+        table.UpdateItems(context, updates);
     }
 
     [LoggerMessage(LogLevel.Warning,

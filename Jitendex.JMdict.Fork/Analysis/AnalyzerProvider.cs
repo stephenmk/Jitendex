@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Kanjidic2;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
 using Jitendex.JMdict.Fork.Analysis.Services;
+using Jitendex.JMdict.Fork.Analysis.Tables;
 
 namespace Jitendex.JMdict.Fork.Analysis;
 
@@ -46,6 +47,14 @@ internal static class AnalyzerProvider
         .AddTransient<CrossReferenceTextParser>()
         .AddTransient<CrossReferenceCacheService>()
         .AddTransient<FuriganaSolverService>()
+
+        // Tables
+        .AddTransient<CrossReferenceTable>()
+        .AddTransient<FuriganaSegmentTable>()
+        .AddTransient<KanjiFormBridgeTable>()
+        .AddTransient<KanjiFormRestrictionTable>()
+        .AddTransient<ReadingRestrictionTable>()
+        .AddTransient<RestrictionTable>()
 
         // Logging
         .AddLogging(static builder =>

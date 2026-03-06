@@ -39,4 +39,7 @@ public sealed class CharacterReading
 
     [ForeignKey(nameof(TypeId))]
     public CharacterReadingType Type { get; init; } = null!;
+
+    [InverseProperty(nameof(DerivedCharacterReading.Source))]
+    public ICollection<DerivedCharacterReading> DerivedReadings { get; init; } = [];
 }

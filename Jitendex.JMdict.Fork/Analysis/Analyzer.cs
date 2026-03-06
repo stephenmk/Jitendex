@@ -38,7 +38,8 @@ internal sealed class Analyzer
     CharacterAnalyzer characterAnalyzer,
     CharacterReadingAnalyzer characterReadingAnalyzer,
     DerivedReadingAnalyzer derivedReadingAnalyzer,
-    DerivedReadingTypeAnalyzer derivedReadingTypeAnalyzer
+    DerivedReadingTypeAnalyzer derivedReadingTypeAnalyzer,
+    FuriganaSegmentAnalyzer furiganaSegmentAnalyzer
 )
 {
     public void Analyze()
@@ -66,6 +67,8 @@ internal sealed class Analyzer
 
         derivedReadingTypeAnalyzer.Analyze();
         derivedReadingAnalyzer.Analyze();
+
+        furiganaSegmentAnalyzer.Analyze();
 
         forkTransaction.Commit();
         miscTransaction.Commit();

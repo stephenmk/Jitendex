@@ -16,11 +16,8 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Text;
 using Microsoft.Extensions.Logging;
-using Jitendex.Furigana;
-using Jitendex.JapaneseTextUtils;
-using Jitendex.Kanjidic2;
+using Jitendex.JMdict.Fork.Analysis.Services;
 using Jitendex.JMdict.Fork.Analysis.Tables;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
@@ -29,12 +26,14 @@ internal partial class FuriganaSegmentAnalyzer
 (
     ILogger<FuriganaSegmentAnalyzer> logger,
     JMdictForkContext context,
-    Kanjidic2Context kanjiContext,
+    FuriganaSolverService furiganaServiceProvider,
     FuriganaSegmentTable table
 )
 {
-    public async Task Analyze(IFuriganaService furiganaService)
+    public void Analyze()
     {
+        var furiganaService = furiganaServiceProvider.LoadFuriganaService();
+
         var entries = context.KanjiFormBridges
             .Select(static b => new
             {
@@ -45,13 +44,6 @@ internal partial class FuriganaSegmentAnalyzer
                 KanjiFormText = b.KanjiForm.Text,
             })
             .ToList();
-
-        var typeNames = kanjiContext.DerivedReadings
-            .ToDictionary
-            (
-                keySelector: static r => (new Rune(r.UnicodeScalarValue), r.Text),
-                elementSelector: static r => r.TypeName
-            );
 
         var segments = new List<FuriganaSegmentRow>(entries.Count);
 
@@ -66,7 +58,6 @@ internal partial class FuriganaSegmentAnalyzer
             for (int i = 0; i < solution.Parts.Length; i++)
             {
                 var part = solution.Parts[i];
-                var typeName = GetTypeName(typeNames, part.BaseText, part.RubyText);
                 segments.Add(new
                 (
                     entry.Id,
@@ -75,31 +66,12 @@ internal partial class FuriganaSegmentAnalyzer
                     i,
                     part.BaseText,
                     part.RubyText,
-                    typeName
+                    null
                 ));
             }
         }
 
         table.InsertItems(context, segments);
-    }
-
-    private string? GetTypeName(Dictionary<(Rune, string Text), string> typeNames, string baseText, string? furigana)
-    {
-        if (furigana is null) return null;
-        Span<Rune> runes = baseText.EnumerateRunes().ToArray();
-        if (runes.Length > 1)
-        {
-            return "compound";
-        }
-        var normalizedFurigana = furigana.KatakanaToHiragana();
-        if (typeNames.TryGetValue((runes[0], normalizedFurigana), out var typeName))
-        {
-            return typeName;
-        }
-        else
-        {
-            return "unknown";
-        }
     }
 
     [LoggerMessage(LogLevel.Warning,

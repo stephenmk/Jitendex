@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using Jitendex.Kanjidic2;
 using Jitendex.MiscData;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
 using Jitendex.JMdict.Fork.Analysis.Services;
@@ -33,7 +32,6 @@ internal static class AnalyzerProvider
 
         // Databases
         .AddDbContext<JMdictForkContext>()
-        .AddDbContext<Kanjidic2Context>()
         .AddDbContext<MiscDataContext>()
         .AddTransient<Database>()
 

@@ -29,7 +29,7 @@ public sealed class CharacterReading
 {
     public required int Id { get; init; }
     public required int CharacterValue { get; init; }
-    public required int TypeId { get; init; }
+    public required CharacterReadingTypeId TypeId { get; init; }
     public required string Text { get; init; }
     public required string? Okurigana { get; init; }
     public required bool IsPrefix { get; init; }

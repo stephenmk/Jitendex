@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Jitendex.MiscData.Entities.Furigana;
 using Jitendex.MiscData.ImportExport.Furigana.Models;
 using Jitendex.MiscData.ImportExport.Furigana.Tables;
 using Microsoft.EntityFrameworkCore;
@@ -109,7 +110,7 @@ internal sealed class CharacterService
 
     private static IEnumerable<CharacterReadingTypeRow> GetTypeRows()
     {
-        foreach (var type in Enum.GetValues<ReadingType>())
+        foreach (var type in Enum.GetValues<CharacterReadingTypeId>())
         {
             yield return new CharacterReadingTypeRow((int)type, type.ToString());
         }

@@ -25,7 +25,7 @@ namespace Jitendex.MiscData.Entities.Furigana;
 [PrimaryKey(nameof(Id))]
 public sealed class CharacterReadingType
 {
-    public required int Id { get; init; }
+    public required CharacterReadingTypeId Id { get; init; }
     public required string Name { get; set; }
 
     [InverseProperty(nameof(CharacterReading.Type))]

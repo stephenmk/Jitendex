@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
+using Jitendex.MiscData.Entities.Furigana;
 
 namespace Jitendex.MiscData.ImportExport.Furigana.Models;
 
@@ -36,26 +37,26 @@ internal sealed record CharacterReadingsObject
         var readingRows = new List<CharacterReadingRow>();
 
         readingRows.AddRange(Kunyomi.Select(x =>
-            ToReadingRow(characterValue, x, ReadingType.Kunyomi)));
+            ToReadingRow(characterValue, x, CharacterReadingTypeId.Kunyomi)));
         readingRows.AddRange(Onyomi.Select(x =>
-            ToReadingRow(characterValue, x, ReadingType.Onyomi)));
+            ToReadingRow(characterValue, x, CharacterReadingTypeId.Onyomi)));
         readingRows.AddRange(Chinese.Select(x =>
-            ToReadingRow(characterValue, x, ReadingType.Chinese)));
+            ToReadingRow(characterValue, x, CharacterReadingTypeId.Chinese)));
         readingRows.AddRange(Korean.Select(x =>
-            ToReadingRow(characterValue, x, ReadingType.Korean)));
+            ToReadingRow(characterValue, x, CharacterReadingTypeId.Korean)));
         readingRows.AddRange(Kana.Select(x =>
-            ToReadingRow(characterValue, x, ReadingType.Kana)));
+            ToReadingRow(characterValue, x, CharacterReadingTypeId.Kana)));
         readingRows.AddRange(Alphanumeric.Select(x =>
-            ToReadingRow(characterValue, x, ReadingType.Alphanumeric)));
+            ToReadingRow(characterValue, x, CharacterReadingTypeId.Alphanumeric)));
         readingRows.AddRange(Symbol.Select(x =>
-            ToReadingRow(characterValue, x, ReadingType.Symbol)));
+            ToReadingRow(characterValue, x, CharacterReadingTypeId.Symbol)));
         readingRows.AddRange(Unknown.Select(x =>
-            ToReadingRow(characterValue, x, ReadingType.Unknown)));
+            ToReadingRow(characterValue, x, CharacterReadingTypeId.Unknown)));
 
         return readingRows;
     }
 
-    private static CharacterReadingRow ToReadingRow(int characterValue, string text, ReadingType readingType)
+    private static CharacterReadingRow ToReadingRow(int characterValue, string text, CharacterReadingTypeId readingType)
     {
         var split = text.Replace("-", "").Split('.');
         return new

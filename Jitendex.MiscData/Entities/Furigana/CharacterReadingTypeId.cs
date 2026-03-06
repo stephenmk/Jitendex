@@ -16,9 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.MiscData.ImportExport.Furigana.Models;
+namespace Jitendex.MiscData.Entities.Furigana;
 
-internal enum ReadingType : byte
+public enum CharacterReadingTypeId
 {
     Onyomi,
     Kunyomi,

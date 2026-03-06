@@ -28,7 +28,7 @@ namespace Jitendex.Kanjidic2.Import;
 
 internal static class ImporterProvider
 {
-    public static Importer GetImporter(DirectoryInfo? archiveDirectory)
+    public static Importer<DateOnly, Document, DocumentDiff> GetImporter(DirectoryInfo? archiveDirectory)
         => new ServiceCollection()
 
         // Database context
@@ -64,7 +64,7 @@ internal static class ImporterProvider
             }))
 
         // Build and return the importer service.
-        .AddTransient<Importer>()
+        .AddTransient<Importer<DateOnly, Document, DocumentDiff>>()
         .BuildServiceProvider()
-        .GetRequiredService<Importer>();
+        .GetRequiredService<Importer<DateOnly, Document, DocumentDiff>>();
 }

@@ -36,7 +36,7 @@ internal sealed class RevisionTable : Table<DocumentRevision>
     ];
 
     protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {nameof(Revision)} is auto-incremented.");
+        => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
 
     protected override SqliteParameter[] Parameters(DocumentRevision revision) =>
     [

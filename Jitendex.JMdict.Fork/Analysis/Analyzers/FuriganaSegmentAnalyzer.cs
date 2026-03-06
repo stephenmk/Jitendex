@@ -16,8 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Text;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdict.Fork.Analysis.Services;
+using Jitendex.Furigana;
 using Jitendex.JMdict.Fork.Analysis.Tables;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
@@ -26,13 +27,12 @@ internal partial class FuriganaSegmentAnalyzer
 (
     ILogger<FuriganaSegmentAnalyzer> logger,
     JMdictForkContext context,
-    FuriganaSolverService furiganaServiceProvider,
     FuriganaSegmentTable table
 )
 {
     public void Analyze()
     {
-        var furiganaService = furiganaServiceProvider.LoadFuriganaService();
+        var furiganaService = LoadFuriganaService();
 
         var entries = context.KanjiFormBridges
             .Select(static b => new
@@ -72,6 +72,41 @@ internal partial class FuriganaSegmentAnalyzer
         }
 
         table.InsertItems(context, segments);
+    }
+
+    private IFuriganaService LoadFuriganaService()
+    {
+        var service = FuriganaServiceProvider.GetFuriganaService();
+
+        var characters = context.CharacterReadings
+            .Select(static g => new
+            {
+                Rune = new Rune(g.CharacterValue),
+                DerivedReadings = g.DerivedReadings
+                    .Select(static x => new { x.Text, x.IsPrefix, x.IsSuffix })
+            });
+
+        foreach (var character in characters)
+        {
+            foreach (var reading in character.DerivedReadings)
+            {
+                service.AddCharacterReading(character.Rune, reading.Text, reading.IsPrefix, reading.IsSuffix);
+            }
+        }
+
+        var compoundReadings = context.CompoundReadings
+            .Select(static c => new
+            {
+                c.CompoundText,
+                c.Text,
+            });
+
+        foreach (var reading in compoundReadings)
+        {
+            service.AddCompoundReading(reading.CompoundText, reading.Text);
+        }
+
+        return service;
     }
 
     [LoggerMessage(LogLevel.Warning,

@@ -52,7 +52,6 @@ internal static class AnalyzerProvider
         // Helpers
         .AddTransient<CrossReferenceTextParser>()
         .AddTransient<CrossReferenceCacheService>()
-        .AddTransient<FuriganaSolverService>()
 
         // Tables
         .AddTransient<CrossReferenceTable>()

@@ -38,7 +38,4 @@ public sealed class Reading
 
     [ForeignKey(nameof(TypeName))]
     public ReadingType Type { get; set; } = null!;
-
-    [InverseProperty(nameof(DerivedReading.Reading))]
-    public List<DerivedReading> DerivedReadings { get; init; } = [];
 }

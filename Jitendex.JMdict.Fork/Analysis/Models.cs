@@ -79,6 +79,14 @@ internal sealed record CrossReferenceRow
     bool? IsAmbiguous
 );
 
+internal sealed record CompoundRow(string Text);
+
+internal sealed record CompoundReadingRow
+(
+    string CompoundText,
+    string Text
+);
+
 internal sealed record CharacterRow(int Value);
 
 internal sealed record CharacterReadingRow

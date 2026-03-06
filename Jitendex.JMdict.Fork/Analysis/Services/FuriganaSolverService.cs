@@ -43,6 +43,18 @@ internal sealed class FuriganaSolverService(JMdictForkContext context)
             }
         }
 
+        var compoundReadings = context.CompoundReadings
+            .Select(static c => new
+            {
+                c.CompoundText,
+                c.Text,
+            });
+
+        foreach (var reading in compoundReadings)
+        {
+            service.AddCompoundReading(reading.CompoundText, reading.Text);
+        }
+
         return service;
     }
 }

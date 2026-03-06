@@ -35,6 +35,7 @@ internal sealed class Analyzer
     KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
     CrossReferenceAnalyzer crossReferenceAnalyzer,
 
+    CompoundAnalyzer compoundAnalyzer,
     CharacterAnalyzer characterAnalyzer,
     CharacterReadingAnalyzer characterReadingAnalyzer,
     DerivedReadingAnalyzer derivedReadingAnalyzer,
@@ -62,6 +63,7 @@ internal sealed class Analyzer
 
         crossReferenceAnalyzer.Analyze();
 
+        compoundAnalyzer.Analyze();
         characterAnalyzer.Analyze();
         characterReadingAnalyzer.Analyze();
 

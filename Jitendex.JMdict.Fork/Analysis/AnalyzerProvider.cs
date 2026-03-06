@@ -45,6 +45,11 @@ internal static class AnalyzerProvider
         .AddTransient<FuriganaSegmentAnalyzer>()
         .AddTransient<CrossReferenceAnalyzer>()
 
+        .AddTransient<CharacterAnalyzer>()
+        .AddTransient<CharacterReadingAnalyzer>()
+        .AddTransient<DerivedReadingAnalyzer>()
+        .AddTransient<DerivedReadingTypeAnalyzer>()
+
         // Helpers
         .AddTransient<CrossReferenceTextParser>()
         .AddTransient<CrossReferenceCacheService>()
@@ -57,6 +62,11 @@ internal static class AnalyzerProvider
         .AddTransient<KanjiFormRestrictionTable>()
         .AddTransient<ReadingRestrictionTable>()
         .AddTransient<RestrictionTable>()
+        .AddTransient<CharacterTable>()
+        .AddTransient<CharacterReadingTable>()
+        .AddTransient<CharacterReadingTypeTable>()
+        .AddTransient<DerivedCharacterReadingTable>()
+        .AddTransient<DerivedCharacterReadingTypeTable>()
 
         // Logging
         .AddLogging(static builder =>

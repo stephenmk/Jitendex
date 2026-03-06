@@ -78,3 +78,37 @@ internal sealed record CrossReferenceRow
     int? RefSenseOrder,
     bool? IsAmbiguous
 );
+
+internal sealed record CharacterRow(int Value);
+
+internal sealed record CharacterReadingRow
+(
+    int CharacterValue,
+    int TypeId,
+    string Text,
+    string? Okurigana,
+    bool IsPrefix,
+    bool IsSuffix
+);
+
+internal sealed record CharacterReadingTypeRow
+(
+    int Id,
+    string Name
+);
+
+internal sealed record DerivedCharacterReadingRow
+(
+    int ReadingId,
+    string Text,
+    bool IsPrefix,
+    bool IsSuffix,
+    int TypeId
+);
+
+internal sealed record DerivedCharacterReadingTypeRow
+(
+    int Id,
+    string Name
+);
+

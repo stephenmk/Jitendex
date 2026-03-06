@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -16,16 +16,24 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.JMdict.Fork.Analysis;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork;
-
-public static class Program
+public enum DerivedCharacterReadingTypeId
 {
-    public static int Main()
-    {
-        var analyzer = AnalyzerProvider.GetAnalyzer();
-        analyzer.Analyze();
-        return 0;
-    }
+    Onyomi,
+    OnyomiSokuon,
+    OnyomiRendaku,
+    OnyomiSokuonRendaku,
+    Kunyomi,
+    KunyomiRendaku,
+    KunyomiOkurigana,
+    KunyomiRendakuOkurigana,
+    KunyomiMasu,
+    KunyomiRendakuMasu,
+    Chinese,
+    Korean,
+    Alphanumeric,
+    Kana,
+    Symbol,
+    Unknown,
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -16,16 +16,25 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.JMdict.Fork.Analysis;
+using Microsoft.Data.Sqlite;
+using Jitendex.SQLite;
+using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork;
+namespace Jitendex.JMdict.Fork.Analysis.Tables;
 
-public static class Program
+internal sealed class CharacterTable : Table<CharacterRow>
 {
-    public static int Main()
-    {
-        var analyzer = AnalyzerProvider.GetAnalyzer();
-        analyzer.Analyze();
-        return 0;
-    }
+    protected override string Name => nameof(Character);
+
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Character.Value)
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+
+    protected override SqliteParameter[] Parameters(CharacterRow character) =>
+    [
+        new("@0", character.Value)
+    ];
 }

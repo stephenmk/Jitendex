@@ -1,5 +1,5 @@
-﻿/*
-Copyright (c) 2025-2026 Stephen Kraus
+/*
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,16 +16,16 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.JMdict.Fork.Analysis;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork;
-
-public static class Program
+public enum CharacterReadingTypeId
 {
-    public static int Main()
-    {
-        var analyzer = AnalyzerProvider.GetAnalyzer();
-        analyzer.Analyze();
-        return 0;
-    }
+    Onyomi,
+    Kunyomi,
+    Chinese,
+    Korean,
+    Kana,
+    Alphanumeric,
+    Symbol,
+    Unknown,
 }

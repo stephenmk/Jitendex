@@ -19,7 +19,6 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.MiscData;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
-using Jitendex.JMdict.Fork.Analysis.Services;
 
 namespace Jitendex.JMdict.Fork.Analysis;
 
@@ -34,13 +33,15 @@ internal sealed class Analyzer
     ReadingRestrictionAnalyzer readingRestrictionAnalyzer,
     KanjiFormRestrictionAnalyzer kanjiFormRestrictionAnalyzer,
     KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
-    FuriganaSegmentAnalyzer furiganaSegmentAnalyzer,
     CrossReferenceAnalyzer crossReferenceAnalyzer,
 
-    FuriganaSolverService furiganaSolverService
+    CharacterAnalyzer characterAnalyzer,
+    CharacterReadingAnalyzer characterReadingAnalyzer,
+    DerivedReadingAnalyzer derivedReadingAnalyzer,
+    DerivedReadingTypeAnalyzer derivedReadingTypeAnalyzer
 )
 {
-    public async Task AnalyzeAsync(DirectoryInfo? dataDirectory)
+    public void Analyze()
     {
         forkContext.RecreateDatabase();
 
@@ -48,18 +49,23 @@ internal sealed class Analyzer
         using var forkTransaction = forkContext.Database.BeginTransaction();
 
         logger.LogInformation("Copying data from the JMdict database file");
+
         database.TransferDataFromJmdict();
 
         logger.LogInformation("Starting data analysis");
+
         restrictionAnalyzer.Analyze();
         readingRestrictionAnalyzer.Analyze();
         kanjiFormRestrictionAnalyzer.Analyze();
         kanjiFormBridgeAnalyzer.Analyze();
+
         crossReferenceAnalyzer.Analyze();
 
-        // var furiganaSolver = await furiganaSolverService.LoadAsync(dataDirectory);
+        characterAnalyzer.Analyze();
+        characterReadingAnalyzer.Analyze();
 
-        // await furiganaSegmentAnalyzer.Analyze(furiganaSolver);
+        derivedReadingTypeAnalyzer.Analyze();
+        derivedReadingAnalyzer.Analyze();
 
         forkTransaction.Commit();
         miscTransaction.Commit();

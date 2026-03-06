@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -16,16 +16,27 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.JMdict.Fork.Analysis;
+using Jitendex.JMdict.Fork.Analysis.Tables;
+using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork;
+namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
-public static class Program
+internal sealed class DerivedReadingTypeAnalyzer
+(
+    JMdictForkContext forkContext,
+    DerivedCharacterReadingTypeTable table
+)
 {
-    public static int Main()
+    public void Analyze()
     {
-        var analyzer = AnalyzerProvider.GetAnalyzer();
-        analyzer.Analyze();
-        return 0;
+        table.InsertItems(forkContext, GetTypeRows());
+    }
+
+    private static IEnumerable<DerivedCharacterReadingTypeRow> GetTypeRows()
+    {
+        foreach (var type in Enum.GetValues<DerivedCharacterReadingTypeId>())
+        {
+            yield return new DerivedCharacterReadingTypeRow((int)type, type.ToString());
+        }
     }
 }

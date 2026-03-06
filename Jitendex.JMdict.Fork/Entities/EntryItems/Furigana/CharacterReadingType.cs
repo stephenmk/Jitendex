@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -16,16 +16,18 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.JMdict.Fork.Analysis;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Fork;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-public static class Program
+[Table(nameof(CharacterReadingType))]
+[PrimaryKey(nameof(Id))]
+public sealed class CharacterReadingType
 {
-    public static int Main()
-    {
-        var analyzer = AnalyzerProvider.GetAnalyzer();
-        analyzer.Analyze();
-        return 0;
-    }
+    public required CharacterReadingTypeId Id { get; init; }
+    public required string Name { get; set; }
+
+    [InverseProperty(nameof(CharacterReading.Type))]
+    public ICollection<CharacterReading> CharacterReadings { get; init; } = [];
 }

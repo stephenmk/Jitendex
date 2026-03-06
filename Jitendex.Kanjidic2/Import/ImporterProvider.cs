@@ -20,7 +20,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Import;
-using Jitendex.Kanjidic2.Import.Analysis;
 using Jitendex.Kanjidic2.Import.Models;
 using Jitendex.Kanjidic2.Import.Parsing;
 using Jitendex.Kanjidic2.Import.Parsing.GroupReaders;
@@ -54,10 +53,6 @@ internal static class ImporterProvider
 
         // Subgroup readers.
         .AddTransient<ReadingMeaningReader>()
-
-        // Analyzers
-        .AddTransient<Analyzer>()
-        .AddTransient<DerivedReadingAnalyzer>()
 
         // Logging
         .AddLogging(static builder =>

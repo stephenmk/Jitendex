@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Import;
-using Jitendex.Kanjidic2.Import.Analysis;
 using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import;
@@ -28,8 +27,7 @@ internal sealed class Importer
     IDocumentReader<DateOnly, Document> reader,
     IDocumentDiffer<DateOnly, Document, DocumentDiff> differ,
     IDocumentDatabase<DateOnly, Document, DocumentDiff> database,
-    Kanjidic2Context context,
-    Analyzer analyzer
+    Kanjidic2Context context
 )
 {
     public async Task ImportAsync()
@@ -47,9 +45,7 @@ internal sealed class Importer
 
         using var transaction = context.Database.BeginTransaction();
 
-        analyzer.Clean();
         await UpdateDatabaseAsync(previousDocument);
-        await analyzer.AnalyzeAsync();
 
         transaction.Commit();
     }

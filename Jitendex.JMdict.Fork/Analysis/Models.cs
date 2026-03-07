@@ -119,4 +119,3 @@ internal sealed record DerivedCharacterReadingTypeRow
     int Id,
     string Name
 );
-

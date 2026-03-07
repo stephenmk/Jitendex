@@ -187,7 +187,9 @@ internal sealed class DerivedReadingAnalyzer
                 );
             }
 
-            if (string.Concat(stem.Text, rdg.Okurigana).VerbToMasuStem() is string masuStem)
+            var fullText = string.Concat(stem.Text, rdg.Okurigana);
+
+            if (fullText.VerbToMasuStem() is string masuStem)
             {
                 yield return new
                 (
@@ -198,6 +200,26 @@ internal sealed class DerivedReadingAnalyzer
                     TypeId: stem.TypeId == (int)DerivedCharacterReadingTypeId.Kunyomi
                         ? (int)DerivedCharacterReadingTypeId.KunyomiMasu
                         : (int)DerivedCharacterReadingTypeId.KunyomiRendakuMasu
+                );
+            }
+
+            if (rdg.Okurigana.EndsWith('す') || rdg.Okurigana.EndsWith('ず'))
+            {
+                // Masu stems and Te stems are identical.
+                continue;
+            }
+
+            if (fullText.VerbToTeStem() is string teStem)
+            {
+                yield return new
+                (
+                    rdg.Id,
+                    Text: teStem,
+                    IsPrefix: false,
+                    IsSuffix: stem.IsSuffix,
+                    TypeId: stem.TypeId == (int)DerivedCharacterReadingTypeId.Kunyomi
+                        ? (int)DerivedCharacterReadingTypeId.KunyomiTe
+                        : (int)DerivedCharacterReadingTypeId.KunyomiRendakuTe
                 );
             }
         }

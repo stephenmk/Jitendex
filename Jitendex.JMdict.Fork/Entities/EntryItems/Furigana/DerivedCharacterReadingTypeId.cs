@@ -30,6 +30,8 @@ public enum DerivedCharacterReadingTypeId
     KunyomiRendakuOkurigana,
     KunyomiMasu,
     KunyomiRendakuMasu,
+    KunyomiTe,
+    KunyomiRendakuTe,
     Chinese,
     Korean,
     Alphanumeric,

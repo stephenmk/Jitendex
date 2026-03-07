@@ -82,6 +82,12 @@ internal abstract class CharacterAlgorithm
 
     protected static bool IsImpossibleKanjiReadingFirst(char c) => c switch
     {
+        'ー' or
+        'ぁ' or
+        'ぃ' or
+        'ぅ' or
+        'ぇ' or
+        'ぉ' or
         'っ' or
         'ょ' or
         'ゃ' or

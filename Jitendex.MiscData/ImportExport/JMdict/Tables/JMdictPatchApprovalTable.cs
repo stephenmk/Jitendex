@@ -22,7 +22,7 @@ using Jitendex.MiscData.Entities.JMdict;
 
 namespace Jitendex.MiscData.ImportExport.JMdict.Tables;
 
-internal sealed class JMdictPatchApprovalApprovalTable : Table<JMdictPatchApprovalRow>
+internal sealed class JMdictPatchApprovalTable : Table<JMdictPatchApprovalRow>
 {
     protected override string Name => nameof(JMdictPatchApproval);
 
@@ -34,7 +34,6 @@ internal sealed class JMdictPatchApprovalApprovalTable : Table<JMdictPatchApprov
     ];
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
-
 
     protected override SqliteParameter[] Parameters(JMdictPatchApprovalRow row) =>
     [

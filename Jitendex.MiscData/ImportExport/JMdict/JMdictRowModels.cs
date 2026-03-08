@@ -40,7 +40,7 @@ internal sealed record JMdictPatchRow
 
 internal sealed record JMdictPatchApprovalRow
 (
-    DateTime CreatedAt,
+    int PatchId,
     int ApproverId,
-    int PatchId
+    DateTime CreatedAt
 );

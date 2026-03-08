@@ -28,7 +28,8 @@ internal sealed class Service
     CompoundService compoundService,
     CrossReferenceDataService crossReferenceDataService,
     UserService userService,
-    JMdictPatchService jMdictPatchService
+    JMdictPatchService jmdictPatchService,
+    JMdictPatchApprovalService jmdictPatchApprovalService
 )
 {
     public async Task ImportAsync()
@@ -42,7 +43,8 @@ internal sealed class Service
         await crossReferenceDataService.ImportAsync();
 
         await userService.ImportAsync();
-        await jMdictPatchService.ImportAsync();
+        await jmdictPatchService.ImportAsync();
+        await jmdictPatchApprovalService.ImportAsync();
 
         transaction.Commit();
         context.ExecuteVacuum();
@@ -55,6 +57,7 @@ internal sealed class Service
         await crossReferenceDataService.ExportAsync();
 
         await userService.ExportAsync();
-        await jMdictPatchService.ExportAsync();
+        await jmdictPatchService.ExportAsync();
+        await jmdictPatchApprovalService.ExportAsync();
     }
 }

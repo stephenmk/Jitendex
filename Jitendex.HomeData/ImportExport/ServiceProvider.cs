@@ -18,12 +18,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using Jitendex.MiscData.ImportExport.Furigana;
-using Jitendex.MiscData.ImportExport.Furigana.Tables;
-using Jitendex.MiscData.ImportExport.JMdict;
-using Jitendex.MiscData.ImportExport.JMdict.Tables;
+using Jitendex.HomeData.ImportExport.Furigana;
+using Jitendex.HomeData.ImportExport.Furigana.Tables;
+using Jitendex.HomeData.ImportExport.JMdict;
+using Jitendex.HomeData.ImportExport.JMdict.Tables;
 
-namespace Jitendex.MiscData.ImportExport;
+namespace Jitendex.HomeData.ImportExport;
 
 internal static class ServiceProvider
 {
@@ -34,7 +34,7 @@ internal static class ServiceProvider
         .AddTransient<ServiceOptions>(_ => new(dataDirectory))
 
         // Database context.
-        .AddDbContext<MiscDataContext>()
+        .AddDbContext<HomeDataContext>()
 
         // Database tables.
         .AddTransient<CharacterTable>()

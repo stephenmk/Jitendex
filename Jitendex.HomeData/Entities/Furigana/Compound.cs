@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.MiscData.Entities.Furigana;
+namespace Jitendex.HomeData.Entities.Furigana;
 
 [Table(nameof(Compound))]
 [PrimaryKey(nameof(Text))]

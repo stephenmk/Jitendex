@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Jitendex.MiscData;
+using Jitendex.HomeData;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
 
 namespace Jitendex.JMdict.Fork.Analysis;
@@ -26,7 +26,7 @@ internal sealed class Analyzer
 (
     ILogger<Analyzer> logger,
     JMdictForkContext forkContext,
-    MiscDataContext miscContext,
+    HomeDataContext homeContext,
     Database database,
 
     RestrictionAnalyzer restrictionAnalyzer,
@@ -47,7 +47,7 @@ internal sealed class Analyzer
     {
         forkContext.RecreateDatabase();
 
-        using var miscTransaction = miscContext.Database.BeginTransaction();
+        using var homeTransaction = homeContext.Database.BeginTransaction();
         using var forkTransaction = forkContext.Database.BeginTransaction();
 
         logger.LogInformation("Copying data from the JMdict database file");
@@ -73,7 +73,7 @@ internal sealed class Analyzer
         furiganaSegmentAnalyzer.Analyze();
 
         forkTransaction.Commit();
-        miscTransaction.Commit();
+        homeTransaction.Commit();
 
         forkContext.ExecuteVacuum();
     }

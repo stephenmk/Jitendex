@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.MiscData.Entities.JMdict;
+using Jitendex.HomeData.Entities.JMdict;
 
-namespace Jitendex.MiscData.ImportExport.JMdict.Tables;
+namespace Jitendex.HomeData.ImportExport.JMdict.Tables;
 
 internal sealed class JMdictPatchTable : Table<JMdictPatchRow>
 {

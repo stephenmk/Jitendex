@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.MiscData;
+using Jitendex.HomeData;
 using Jitendex.JMdict.Fork.Analysis.Tables;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
@@ -24,17 +24,17 @@ namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 internal sealed class CompoundAnalyzer
 (
     JMdictForkContext forkContext,
-    MiscDataContext miscContext,
+    HomeDataContext homeContext,
     CompoundTable compoundTable,
     CompoundReadingTable readingTable
 )
 {
     public void Analyze()
     {
-        var compoundRows = miscContext.Compounds
+        var compoundRows = homeContext.Compounds
             .Select(static x => new CompoundRow(x.Text));
 
-        var readingRows = miscContext.CompoundReadings
+        var readingRows = homeContext.CompoundReadings
             .Select(static x => new CompoundReadingRow(x.CompoundText, x.Text));
 
         compoundTable.InsertItems(forkContext, compoundRows);

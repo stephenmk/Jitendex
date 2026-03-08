@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.MiscData.Entities.JMdict;
+using Jitendex.HomeData.Entities.JMdict;
 
-namespace Jitendex.MiscData.Entities;
+namespace Jitendex.HomeData.Entities;
 
 [Table(nameof(User))]
 [PrimaryKey(nameof(Id))]

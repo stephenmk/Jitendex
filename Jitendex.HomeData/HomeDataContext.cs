@@ -18,13 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.SQLite;
-using Jitendex.MiscData.Entities;
-using Jitendex.MiscData.Entities.Furigana;
-using Jitendex.MiscData.Entities.JMdict;
+using Jitendex.HomeData.Entities;
+using Jitendex.HomeData.Entities.Furigana;
+using Jitendex.HomeData.Entities.JMdict;
 
-namespace Jitendex.MiscData;
+namespace Jitendex.HomeData;
 
-public class MiscDataContext() : SqliteContext(DatabaseFile.MiscData)
+public class HomeDataContext() : SqliteContext(DatabaseFile.HomeData)
 {
     public DbSet<User> Users { get; set; } = null!;
 

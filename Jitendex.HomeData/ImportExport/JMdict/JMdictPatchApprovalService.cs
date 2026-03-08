@@ -19,13 +19,13 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.MiscData.ImportExport.JMdict.Tables;
+using Jitendex.HomeData.ImportExport.JMdict.Tables;
 
-namespace Jitendex.MiscData.ImportExport.JMdict;
+namespace Jitendex.HomeData.ImportExport.JMdict;
 
 internal sealed class JMdictPatchApprovalService
 (
-    MiscDataContext context,
+    HomeDataContext context,
     ServiceOptions options,
     JMdictPatchApprovalTable table
 )

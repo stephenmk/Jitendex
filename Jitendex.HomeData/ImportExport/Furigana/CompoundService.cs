@@ -19,14 +19,14 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Jitendex.MiscData.ImportExport.Furigana.Models;
-using Jitendex.MiscData.ImportExport.Furigana.Tables;
+using Jitendex.HomeData.ImportExport.Furigana.Models;
+using Jitendex.HomeData.ImportExport.Furigana.Tables;
 
-namespace Jitendex.MiscData.ImportExport.Furigana;
+namespace Jitendex.HomeData.ImportExport.Furigana;
 
 internal sealed class CompoundService
 (
-    MiscDataContext context,
+    HomeDataContext context,
     ServiceOptions options,
     CompoundTable compoundTable,
     CompoundReadingTable compoundReadingTable

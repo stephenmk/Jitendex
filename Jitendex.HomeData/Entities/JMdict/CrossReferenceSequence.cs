@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.MiscData.Entities.JMdict;
+namespace Jitendex.HomeData.Entities.JMdict;
 
 [Table(nameof(CrossReferenceSequence))]
 [PrimaryKey(nameof(EntryId), nameof(SenseNumber), nameof(Text))]

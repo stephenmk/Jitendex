@@ -16,14 +16,14 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.MiscData.ImportExport.Furigana;
-using Jitendex.MiscData.ImportExport.JMdict;
+using Jitendex.HomeData.ImportExport.Furigana;
+using Jitendex.HomeData.ImportExport.JMdict;
 
-namespace Jitendex.MiscData.ImportExport;
+namespace Jitendex.HomeData.ImportExport;
 
 internal sealed class Service
 (
-    MiscDataContext context,
+    HomeDataContext context,
     CharacterService characterService,
     CompoundService compoundService,
     CrossReferenceDataService crossReferenceDataService,

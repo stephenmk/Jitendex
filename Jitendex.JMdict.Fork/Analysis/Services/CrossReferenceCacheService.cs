@@ -17,18 +17,18 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Frozen;
-using Jitendex.MiscData;
+using Jitendex.HomeData;
 
 namespace Jitendex.JMdict.Fork.Analysis.Services;
 
 internal sealed class CrossReferenceCacheService
 (
-    MiscDataContext miscContext,
+    HomeDataContext homeContext,
     JMdictForkContext forkContext
 )
 {
     public FrozenDictionary<string, int?> Load()
-        => miscContext.CrossReferenceSequences
+        => homeContext.CrossReferenceSequences
             .Select(static x => new
             {
                 Key = $"{x.EntryId}・{x.SenseNumber}・{x.Text}",
@@ -51,7 +51,7 @@ internal sealed class CrossReferenceCacheService
 
         var hashset = new HashSet<Key>(dictionary.Count);
 
-        foreach (var xref in miscContext.CrossReferenceSequences)
+        foreach (var xref in homeContext.CrossReferenceSequences)
         {
             var key = new Key(xref.EntryId, xref.SenseNumber, xref.Text);
             if (dictionary.TryGetValue(key, out var value))
@@ -64,7 +64,7 @@ internal sealed class CrossReferenceCacheService
             }
             else
             {
-                miscContext.Remove(xref);
+                homeContext.Remove(xref);
             }
         }
 
@@ -74,7 +74,7 @@ internal sealed class CrossReferenceCacheService
             {
                 continue;
             }
-            miscContext.CrossReferenceSequences.Add(new()
+            homeContext.CrossReferenceSequences.Add(new()
             {
                 EntryId = key.EntryId,
                 SenseNumber = key.SenseNumber,
@@ -83,6 +83,6 @@ internal sealed class CrossReferenceCacheService
             });
         }
 
-        miscContext.SaveChanges();
+        homeContext.SaveChanges();
     }
 }

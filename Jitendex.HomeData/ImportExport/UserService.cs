@@ -20,9 +20,9 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.MiscData.ImportExport;
+namespace Jitendex.HomeData.ImportExport;
 
-internal sealed class UserService(MiscDataContext context, ServiceOptions options)
+internal sealed class UserService(HomeDataContext context, ServiceOptions options)
 {
     public async Task ImportAsync()
     {

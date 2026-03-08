@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.MiscData.ImportExport.Furigana.Models;
+namespace Jitendex.HomeData.ImportExport.Furigana.Models;
 
 internal sealed record CharacterRow(int Value);
 

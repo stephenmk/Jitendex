@@ -18,6 +18,6 @@
     <ProjectReference Include="..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
     <ProjectReference Include="..\Jitendex.Furigana\Jitendex.Furigana.csproj" />
     <ProjectReference Include="..\Jitendex.JMdict\Jitendex.JMdict.csproj" />
-    <ProjectReference Include="..\Jitendex.MiscData\Jitendex.MiscData.csproj" />
+    <ProjectReference Include="..\Jitendex.HomeData\Jitendex.HomeData.csproj" />
   </ItemGroup>
 </Project>

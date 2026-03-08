@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.MiscData.ImportExport.JMdict;
+namespace Jitendex.HomeData.ImportExport.JMdict;
 
 internal sealed record CrossReferenceSequenceRow
 (

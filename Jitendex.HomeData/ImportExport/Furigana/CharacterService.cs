@@ -19,16 +19,16 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Jitendex.MiscData.Entities.Furigana;
-using Jitendex.MiscData.ImportExport.Furigana.Models;
-using Jitendex.MiscData.ImportExport.Furigana.Tables;
+using Jitendex.HomeData.Entities.Furigana;
+using Jitendex.HomeData.ImportExport.Furigana.Models;
+using Jitendex.HomeData.ImportExport.Furigana.Tables;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.MiscData.ImportExport.Furigana;
+namespace Jitendex.HomeData.ImportExport.Furigana;
 
 internal sealed class CharacterService
 (
-    MiscDataContext context,
+    HomeDataContext context,
     ServiceOptions options,
     CharacterTable characterTable,
     CharacterReadingTable readingTable,

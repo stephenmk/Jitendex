@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.MiscData.Entities.Furigana;
-using Jitendex.MiscData.ImportExport.Furigana.Models;
+using Jitendex.HomeData.Entities.Furigana;
+using Jitendex.HomeData.ImportExport.Furigana.Models;
 
-namespace Jitendex.MiscData.ImportExport.Furigana.Tables;
+namespace Jitendex.HomeData.ImportExport.Furigana.Tables;
 
 internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
 {

@@ -26,7 +26,9 @@ internal sealed class Service
     MiscDataContext context,
     CharacterService characterService,
     CompoundService compoundService,
-    CrossReferenceDataService crossReferenceDataService
+    CrossReferenceDataService crossReferenceDataService,
+    UserService userService,
+    JMdictPatchService jMdictPatchService
 )
 {
     public async Task ImportAsync()
@@ -39,6 +41,9 @@ internal sealed class Service
         await compoundService.ImportAsync();
         await crossReferenceDataService.ImportAsync();
 
+        await userService.ImportAsync();
+        await jMdictPatchService.ImportAsync();
+
         transaction.Commit();
         context.ExecuteVacuum();
     }
@@ -48,5 +53,8 @@ internal sealed class Service
         await characterService.ExportAsync();
         await compoundService.ExportAsync();
         await crossReferenceDataService.ExportAsync();
+
+        await userService.ExportAsync();
+        await jMdictPatchService.ExportAsync();
     }
 }

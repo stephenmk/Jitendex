@@ -16,31 +16,22 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.MiscData.ImportExport.JMdict.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-internal sealed record CrossReferenceSequenceRow
-(
-    int EntryId,
-    int SenseNumber,
-    string Text,
-    int? RefEntryId
-);
+namespace Jitendex.MiscData.Entities.JMdict;
 
-internal sealed record JMdictPatchRow
-(
-    int Id,
-    int SequenceId,
-    DateOnly SequenceDate,
-    DateTime CreatedAt,
-    int AuthorId,
-    string AuthorComment,
-    int? PreviousPatchId,
-    string Json
-);
+[Table(nameof(JMdictPatchApproval))]
+[PrimaryKey(nameof(PatchId), nameof(ApproverId), nameof(CreatedAt))]
+public sealed class JMdictPatchApproval
+{
+    public required int PatchId { get; init; }
+    public required int ApproverId { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
-internal sealed record JMdictPatchApprovalRow
-(
-    DateTime CreatedAt,
-    int ApproverId,
-    int PatchId
-);
+    [ForeignKey(nameof(PatchId))]
+    public JMdictPatch Patch { get; init; } = null!;
+
+    [ForeignKey(nameof(ApproverId))]
+    public User Approver { get; init; } = null!;
+}

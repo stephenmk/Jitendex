@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.SQLite;
+using Jitendex.MiscData.Entities;
 using Jitendex.MiscData.Entities.Furigana;
 using Jitendex.MiscData.Entities.JMdict;
 
@@ -25,6 +26,8 @@ namespace Jitendex.MiscData;
 
 public class MiscDataContext() : SqliteContext(DatabaseFile.MiscData)
 {
+    public DbSet<User> Users { get; set; } = null!;
+
     #region Furigana
     public DbSet<Character> Characters { get; set; } = null!;
     public DbSet<CharacterReading> CharacterReadings { get; set; } = null!;
@@ -35,5 +38,7 @@ public class MiscDataContext() : SqliteContext(DatabaseFile.MiscData)
 
     #region JMdict
     public DbSet<CrossReferenceSequence> CrossReferenceSequences { get; set; } = null!;
+    public DbSet<JMdictPatch> JMdictPatches { get; set; } = null!;
+    public DbSet<JMdictPatchApproval> JMdictPatchApprovals { get; set; } = null!;
     #endregion
 }

@@ -19,53 +19,35 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.MiscData.ImportExport.JMdict.Models;
-using Jitendex.MiscData.ImportExport.JMdict.Tables;
 
-namespace Jitendex.MiscData.ImportExport.JMdict;
+namespace Jitendex.MiscData.ImportExport;
 
-internal sealed class CrossReferenceDataService
-(
-    MiscDataContext context,
-    ServiceOptions options,
-    CrossReferenceSequenceTable table
-)
+internal sealed class UserService(MiscDataContext context, ServiceOptions options)
 {
     public async Task ImportAsync()
     {
         var filePath = GetJsonFilePath();
         await using var stream = File.OpenRead(filePath);
-        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, int?>>(stream) ?? [];
-
-        var rows = new List<CrossReferenceSequenceRow>();
+        var data = await JsonSerializer.DeserializeAsync<Dictionary<int, string>>(stream) ?? [];
 
         foreach (var (key, value) in data)
         {
-            var split = key.Split('・');
-            rows.Add(new
-            (
-                EntryId: int.Parse(split[0]),
-                SenseNumber: int.Parse(split[1]),
-                Text: string.Join('・', split[2..]),
-                RefEntryId: value
-            ));
+            context.Users.Add(new()
+            {
+                Id = key,
+                Name = value,
+            });
         }
 
-        table.InsertItems(context, rows);
+        context.SaveChanges();
     }
 
     public async Task ExportAsync()
     {
-        var dictionary = context.CrossReferenceSequences
+        var dictionary = context.Users
             .AsNoTracking()
-            .OrderBy(static x => x.Text)
-            .OrderBy(static x => x.SenseNumber)
-            .OrderBy(static x => x.EntryId)
-            .ToDictionary
-            (
-                keySelector: static x => x.ToExportKey(),
-                elementSelector: static x => x.RefEntryId
-            );
+            .OrderBy(static x => x.Id)
+            .ToDictionary(static x => x.Id, static x => x.Name);
 
         var filePath = GetJsonFilePath();
         if (File.Exists(filePath))
@@ -78,16 +60,12 @@ internal sealed class CrossReferenceDataService
     }
 
     private string GetJsonFilePath()
-        => Path.Join
-        (
-            options.GetJMdictDirectory().FullName,
-            "cross_reference_sequences.json"
-        );
+        => Path.Join(options.DataDirectory.FullName, "users.json");
 
     private readonly static JsonSerializerOptions JsonSerializerOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        Encoder = JavaScriptEncoder.Default,
     };
 }

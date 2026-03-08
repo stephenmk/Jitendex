@@ -22,11 +22,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.JMdict.Fork.Entities;
 
 [Table(nameof(Revision))]
-[PrimaryKey(nameof(SequenceId), nameof(Number))]
+[PrimaryKey(nameof(SequenceId), nameof(FileHeaderId))]
 public sealed class Revision
 {
     public required int SequenceId { get; init; }
-    public required int Number { get; init; }
     public required int FileHeaderId { get; init; }
     public required string DiffJson { get; init; }
 

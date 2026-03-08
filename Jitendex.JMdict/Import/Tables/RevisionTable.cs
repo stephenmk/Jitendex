@@ -30,19 +30,20 @@ internal sealed class RevisionTable : Table<DocumentRevision>
     protected override IReadOnlyList<string> ColumnNames =>
     [
         nameof(Revision.SequenceId),
-        nameof(Revision.Number),
         nameof(Revision.FileHeaderId),
         nameof(Revision.DiffJson),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(Revision.SequenceId),
+        nameof(Revision.FileHeaderId),
+    ];
 
     protected override SqliteParameter[] Parameters(DocumentRevision revision) =>
     [
         new("@0", revision.SequenceId),
-        new("@1", revision.Number),
-        new("@2", revision.FileHeaderId),
-        new("@3", revision.DiffJson),
+        new("@1", revision.FileHeaderId),
+        new("@2", revision.DiffJson),
     ];
 }

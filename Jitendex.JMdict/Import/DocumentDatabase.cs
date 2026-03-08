@@ -244,7 +244,6 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JmdictC
                 var baDiff = JsonDiffer.Diff(a: bSeq, b: aSeq);
                 revisions.Add(new(
                     SequenceId: seq.Id,
-                    Number: seq.RevisionCount,
                     FileHeaderId: fileHeaderId,
                     DiffJson: baDiff
                 ));

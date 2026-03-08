@@ -140,11 +140,9 @@ internal sealed class Database(JMdictForkContext context)
 
         INSERT INTO "{nameof(Revision)}"
              ( "{nameof(Revision.SequenceId)}"
-             , "{nameof(Revision.Number)}"
              , "{nameof(Revision.FileHeaderId)}"
              , "{nameof(Revision.DiffJson)}")
         SELECT "{nameof(Revision.SequenceId)}"
-             , "{nameof(Revision.Number)}"
              , "{nameof(Revision.FileHeaderId)}"
              , "{nameof(Revision.DiffJson)}"
           FROM "{Schema}"."{nameof(Revision)}";

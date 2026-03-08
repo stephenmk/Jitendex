@@ -65,7 +65,6 @@ public sealed record SenseDto
 
 public sealed record RevisionDto
 (
-    int Number,
     DateOnly Date,
     string DiffJson
 );

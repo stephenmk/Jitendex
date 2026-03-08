@@ -19,7 +19,6 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.MiscData.ImportExport.JMdict.Models;
 using Jitendex.MiscData.ImportExport.JMdict.Tables;
 
 namespace Jitendex.MiscData.ImportExport.JMdict;

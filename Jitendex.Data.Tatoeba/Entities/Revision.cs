@@ -16,19 +16,24 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.SQLite;
-using Jitendex.Tatoeba.Entities;
 
-namespace Jitendex.Tatoeba;
+namespace Jitendex.Data.Tatoeba.Entities;
 
-public sealed class TatoebaContext() : SqliteContext(DatabaseFile.Tatoeba)
+[Table(nameof(Revision))]
+[PrimaryKey(nameof(SequenceId), nameof(Number))]
+public sealed class Revision
 {
-    public DbSet<FileHeader> FileHeaders { get; set; } = null!;
-    public DbSet<Sequence> Sequences { get; set; } = null!;
-    public DbSet<Example> Examples { get; set; } = null!;
-    public DbSet<Translation> EnglishSentences { get; set; } = null!;
-    public DbSet<Segmentation> Segmentations { get; set; } = null!;
-    public DbSet<Token> Tokens { get; set; } = null!;
-    public DbSet<Revision> Revisions { get; set; } = null!;
+    public required int SequenceId { get; init; }
+    public required int Number { get; init; }
+    public required int FileHeaderId { get; init; }
+    public required bool IsPriority { get; init; }
+    public required string DiffJson { get; init; }
+
+    [ForeignKey(nameof(SequenceId))]
+    public Sequence Sequence { get; init; } = null!;
+
+    [ForeignKey(nameof(FileHeaderId))]
+    public FileHeader FileHeader { get; init; } = null!;
 }

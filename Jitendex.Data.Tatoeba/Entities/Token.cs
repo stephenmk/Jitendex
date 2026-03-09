@@ -19,22 +19,23 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Tatoeba.Entities;
+namespace Jitendex.Data.Tatoeba.Entities;
 
-[Table(nameof(Segmentation))]
-[PrimaryKey(nameof(ExampleId), nameof(Order))]
-public sealed class Segmentation
+[Table(nameof(Token))]
+[PrimaryKey(nameof(ExampleId), nameof(SegmentationOrder), nameof(Order))]
+public sealed class Token
 {
     public required int ExampleId { get; init; }
+    public required int SegmentationOrder { get; init; }
     public required int Order { get; init; }
-    public required int TranslationId { get; set; }
 
-    [ForeignKey(nameof(ExampleId))]
-    public required Example Example { get; init; }
+    public required string Headword { get; set; }
+    public required string? Reading { get; set; }
+    public required int? EntryId { get; set; }
+    public required int? SenseNumber { get; set; }
+    public required string? SentenceForm { get; set; }
+    public required bool IsPriority { get; set; }
 
-    [ForeignKey(nameof(TranslationId))]
-    public required Translation Translation { get; set; }
-
-    [InverseProperty(nameof(Token.Segmentation))]
-    public List<Token> Tokens { get; init; } = [];
+    [ForeignKey($"{nameof(ExampleId)}, {nameof(SegmentationOrder)}")]
+    public required Segmentation Segmentation { get; init; }
 }

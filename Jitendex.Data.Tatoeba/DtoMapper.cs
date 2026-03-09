@@ -20,9 +20,9 @@ using System.Collections.Immutable;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Dto.Tatoeba;
-using Jitendex.Tatoeba.Entities;
+using Jitendex.Data.Tatoeba.Entities;
 
-namespace Jitendex.Tatoeba;
+namespace Jitendex.Data.Tatoeba;
 
 public static class DtoMapper
 {

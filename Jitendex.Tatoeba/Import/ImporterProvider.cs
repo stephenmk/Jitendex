@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
+using Jitendex.Data.Tatoeba;
 using Jitendex.Import;
 using Jitendex.Tatoeba.Import.Models;
 

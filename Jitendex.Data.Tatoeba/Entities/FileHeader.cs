@@ -18,16 +18,21 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Tatoeba.Entities;
+namespace Jitendex.Data.Tatoeba.Entities;
 
-[Table(nameof(Translation))]
-public sealed class Translation
+[Table(nameof(FileHeader))]
+[Index(nameof(Date), IsUnique = true)]
+public sealed class FileHeader
 {
     [Key]
     public required int Id { get; init; }
-    public required string Text { get; set; }
+    public required DateOnly Date { get; init; }
 
-    [InverseProperty(nameof(Segmentation.Translation))]
-    public List<Segmentation> Segmentations { get; init; } = [];
+    [InverseProperty(nameof(Sequence.OriginFile))]
+    public List<Sequence> NewSequences { get; init; } = [];
+
+    [InverseProperty(nameof(Revision.FileHeader))]
+    public List<Revision> SequenceRevisions { get; init; } = [];
 }

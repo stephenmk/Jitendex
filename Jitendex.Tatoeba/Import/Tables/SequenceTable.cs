@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.Tatoeba.Entities;
+using Jitendex.Data.Tatoeba.Entities;
 using Jitendex.Tatoeba.Import.Models;
 
 namespace Jitendex.Tatoeba.Import.Tables;

@@ -19,21 +19,15 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jitendex.Tatoeba.Entities;
+namespace Jitendex.Data.Tatoeba.Entities;
 
-[Table(nameof(Sequence))]
-public sealed class Sequence
+[Table(nameof(Translation))]
+public sealed class Translation
 {
     [Key]
     public required int Id { get; init; }
-    public required int OriginFileId { get; init; }
+    public required string Text { get; set; }
 
-    [ForeignKey(nameof(OriginFileId))]
-    public FileHeader OriginFile { get; init; } = null!;
-
-    [InverseProperty(nameof(Entities.Example.Sequence))]
-    public Example? Example { get; set; }
-
-    [InverseProperty(nameof(Revision.Sequence))]
-    public List<Revision> Revisions { get; init; } = [];
+    [InverseProperty(nameof(Segmentation.Translation))]
+    public List<Segmentation> Segmentations { get; init; } = [];
 }

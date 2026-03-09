@@ -16,26 +16,24 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Tatoeba.Entities;
+namespace Jitendex.Data.Tatoeba.Entities;
 
-[Table(nameof(Token))]
-[PrimaryKey(nameof(ExampleId), nameof(SegmentationOrder), nameof(Order))]
-public sealed class Token
+[Table(nameof(Sequence))]
+public sealed class Sequence
 {
-    public required int ExampleId { get; init; }
-    public required int SegmentationOrder { get; init; }
-    public required int Order { get; init; }
+    [Key]
+    public required int Id { get; init; }
+    public required int OriginFileId { get; init; }
 
-    public required string Headword { get; set; }
-    public required string? Reading { get; set; }
-    public required int? EntryId { get; set; }
-    public required int? SenseNumber { get; set; }
-    public required string? SentenceForm { get; set; }
-    public required bool IsPriority { get; set; }
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
 
-    [ForeignKey($"{nameof(ExampleId)}, {nameof(SegmentationOrder)}")]
-    public required Segmentation Segmentation { get; init; }
+    [InverseProperty(nameof(Entities.Example.Sequence))]
+    public Example? Example { get; set; }
+
+    [InverseProperty(nameof(Revision.Sequence))]
+    public List<Revision> Revisions { get; init; } = [];
 }

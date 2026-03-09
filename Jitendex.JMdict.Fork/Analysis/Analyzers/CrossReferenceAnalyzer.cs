@@ -56,22 +56,26 @@ internal partial class CrossReferenceAnalyzer
     {
         var referenceTextToEntries = GetReferenceTextToEntries();
 
-        var rawCrossReferences = context.CrossReferences
-            .AsNoTracking()
-            .ToList();
-
         var kanjiFormToReadings = context.KanjiFormBridges
             .GroupBy(static x => new { x.EntryId, x.KanjiFormOrder })
-            .ToFrozenDictionary(
-                static g => (g.Key.EntryId, g.Key.KanjiFormOrder),
-                static g => g
+            .Select(static group => new
+            {
+                group.Key,
+                Value = group
                     .OrderBy(static bridge => bridge.ReadingOrder)
                     .Select(static bridge => bridge.ReadingOrder)
-                    .ToImmutableArray());
+                    .ToImmutableArray()
+            })
+            .AsEnumerable()
+            .ToFrozenDictionary
+            (
+                keySelector: static g => (g.Key.EntryId, g.Key.KanjiFormOrder),
+                elementSelector: static g => g.Value
+            );
 
-        var sequencedRefs = new List<CrossReferenceRow>(rawCrossReferences.Count);
+        var sequencedRefs = new List<CrossReferenceRow>(50_000);
 
-        foreach (var xref in rawCrossReferences)
+        foreach (var xref in context.CrossReferences.AsNoTracking())
         {
             var parsedRef = parser.Parse(xref.Text);
 

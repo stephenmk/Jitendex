@@ -20,7 +20,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.HomeData.Entities.Furigana;
+namespace Jitendex.Data.Home.Entities.Furigana;
 
 [Table(nameof(CharacterReading))]
 [PrimaryKey(nameof(Id))]

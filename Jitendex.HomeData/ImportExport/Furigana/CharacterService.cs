@@ -19,7 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Jitendex.HomeData.Entities.Furigana;
+using Jitendex.Data.Home;
+using Jitendex.Data.Home.Entities.Furigana;
 using Jitendex.HomeData.ImportExport.Furigana.Models;
 using Jitendex.HomeData.ImportExport.Furigana.Tables;
 using Microsoft.EntityFrameworkCore;

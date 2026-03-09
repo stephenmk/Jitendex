@@ -17,12 +17,11 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data;
-using Jitendex.HomeData.Entities;
-using Jitendex.HomeData.Entities.Furigana;
-using Jitendex.HomeData.Entities.JMdict;
+using Jitendex.Data.Home.Entities;
+using Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Data.Home.Entities.JMdict;
 
-namespace Jitendex.HomeData;
+namespace Jitendex.Data.Home;
 
 public class HomeDataContext() : SqliteContext(DatabaseFile.HomeData)
 {

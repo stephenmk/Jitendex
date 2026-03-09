@@ -18,15 +18,20 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.Home.Entities.JMdict;
 
-namespace Jitendex.HomeData.Entities.Furigana;
+namespace Jitendex.Data.Home.Entities;
 
-[Table(nameof(Compound))]
-[PrimaryKey(nameof(Text))]
-public sealed class Compound
+[Table(nameof(User))]
+[PrimaryKey(nameof(Id))]
+public sealed class User
 {
-    public required string Text { get; init; }
+    public required int Id { get; init; }
+    public required string Name { get; init; }
 
-    [InverseProperty(nameof(CompoundReading.Compound))]
-    public ICollection<CompoundReading> Readings { get; init; } = [];
+    [InverseProperty(nameof(JMdictPatch.Author))]
+    public ICollection<JMdictPatch> AuthoredJMdictPatches { get; init; } = [];
+
+    [InverseProperty(nameof(JMdictPatchApproval.Approver))]
+    public ICollection<JMdictPatchApproval> ApprovedJMdictPatches { get; init; } = [];
 }

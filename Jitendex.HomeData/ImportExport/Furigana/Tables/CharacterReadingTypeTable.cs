@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.HomeData.Entities.Furigana;
+using Jitendex.Data.Home.Entities.Furigana;
 using Jitendex.HomeData.ImportExport.Furigana.Models;
 
 namespace Jitendex.HomeData.ImportExport.Furigana.Tables;

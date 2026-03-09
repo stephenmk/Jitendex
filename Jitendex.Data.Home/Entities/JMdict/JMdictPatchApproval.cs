@@ -19,27 +19,19 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.HomeData.Entities.JMdict;
+namespace Jitendex.Data.Home.Entities.JMdict;
 
-[Table(nameof(JMdictPatch))]
-[PrimaryKey(nameof(Id))]
-public sealed class JMdictPatch
+[Table(nameof(JMdictPatchApproval))]
+[PrimaryKey(nameof(PatchId), nameof(ApproverId), nameof(CreatedAt))]
+public sealed class JMdictPatchApproval
 {
-    public required int Id { get; init; }
-    public required int SequenceId { get; init; }
-    public required DateOnly SequenceDate { get; init; }
+    public required int PatchId { get; init; }
+    public required int ApproverId { get; init; }
     public required DateTime CreatedAt { get; init; }
-    public required int AuthorId { get; init; }
-    public required string AuthorComment { get; init; }
-    public required int? PreviousPatchId { get; init; }
-    public required string Json { get; init; }
 
-    [ForeignKey(nameof(AuthorId))]
-    public User Author { get; init; } = null!;
+    [ForeignKey(nameof(PatchId))]
+    public JMdictPatch Patch { get; init; } = null!;
 
-    [ForeignKey(nameof(PreviousPatchId))]
-    public JMdictPatch? PreviousPatch { get; init; }
-
-    [InverseProperty(nameof(JMdictPatchApproval.Patch))]
-    public ICollection<JMdictPatchApproval> Approvals { get; init; } = [];
+    [ForeignKey(nameof(ApproverId))]
+    public User Approver { get; init; } = null!;
 }

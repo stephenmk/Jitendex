@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Jitendex.Data.Home;
 using Jitendex.HomeData.ImportExport.Furigana;
 using Jitendex.HomeData.ImportExport.Furigana.Tables;
 using Jitendex.HomeData.ImportExport.JMdict;

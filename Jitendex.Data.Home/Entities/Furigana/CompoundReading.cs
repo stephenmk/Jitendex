@@ -19,20 +19,15 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.HomeData.Entities.JMdict;
+namespace Jitendex.Data.Home.Entities.Furigana;
 
-[Table(nameof(CrossReferenceSequence))]
-[PrimaryKey(nameof(EntryId), nameof(SenseNumber), nameof(Text))]
-public sealed class CrossReferenceSequence
+[Table(nameof(CompoundReading))]
+[PrimaryKey(nameof(CompoundText), nameof(Text))]
+public sealed class CompoundReading
 {
-    public required int EntryId { get; init; }
-    public required int SenseNumber { get; init; }
+    public required string CompoundText { get; init; }
     public required string Text { get; init; }
-    public required int? RefEntryId { get; set; }
 
-    /// <summary>
-    /// Dictionary key in the JSON file.
-    /// </summary>
-    public string ToExportKey()
-        => $"{EntryId}・{SenseNumber}・{Text}";
+    [ForeignKey(nameof(CompoundText))]
+    public Compound Compound { get; init; } = null!;
 }

@@ -17,6 +17,7 @@
   <Project Path="Jitendex.AppDirectory/Jitendex.AppDirectory.csproj" />
   <Project Path="Jitendex.Data/Jitendex.Data.csproj" />
   <Project Path="Jitendex.Data.ChiseIds/Jitendex.Data.ChiseIds.csproj" />
+  <Project Path="Jitendex.Data.Home/Jitendex.Data.Home.csproj" />
   <Project Path="Jitendex.Data.JMdict/Jitendex.Data.JMdict.csproj" />
   <Project Path="Jitendex.Data.JMnedict/Jitendex.Data.JMnedict.csproj" />
   <Project Path="Jitendex.Data.Kanjidic2/Jitendex.Data.Kanjidic2.csproj" />

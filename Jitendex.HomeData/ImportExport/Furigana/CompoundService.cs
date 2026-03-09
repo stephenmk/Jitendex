@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Jitendex.Data.Home;
 using Jitendex.HomeData.ImportExport.Furigana.Models;
 using Jitendex.HomeData.ImportExport.Furigana.Tables;
 

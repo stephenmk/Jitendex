@@ -24,7 +24,7 @@ namespace Jitendex.Import.Home.Services;
 
 internal sealed class Service
 (
-    HomeDataContext context,
+    HomeContext context,
     CharacterService characterService,
     CompoundService compoundService,
     CrossReferenceDataService crossReferenceDataService,

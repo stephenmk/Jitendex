@@ -29,7 +29,7 @@ public enum DatabaseFile
     Tatoeba,
     KanjiVG,
     ChiseIds,
-    HomeData,
+    Home,
 }
 
 internal static class DatabaseFileExtensions
@@ -44,7 +44,7 @@ internal static class DatabaseFileExtensions
             Tatoeba    => "tatoeba.db",
             KanjiVG    => "kanjivg.db",
             ChiseIds   => "chise_ids.db",
-            HomeData   => "home_data.db",
+            Home       => "home.db",
             _          => throw new ArgumentOutOfRangeException(nameof(databaseFile))
         };
 }

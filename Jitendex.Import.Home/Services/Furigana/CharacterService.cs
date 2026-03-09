@@ -29,7 +29,7 @@ namespace Jitendex.Import.Home.Services.Furigana;
 
 internal sealed class CharacterService
 (
-    HomeDataContext context,
+    HomeContext context,
     ServiceOptions options,
     CharacterTable characterTable,
     CharacterReadingTable readingTable,

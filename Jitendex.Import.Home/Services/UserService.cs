@@ -23,7 +23,7 @@ using Jitendex.Data.Home;
 
 namespace Jitendex.Import.Home.Services;
 
-internal sealed class UserService(HomeDataContext context, ServiceOptions options)
+internal sealed class UserService(HomeContext context, ServiceOptions options)
 {
     public async Task ImportAsync()
     {

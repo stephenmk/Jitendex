@@ -36,7 +36,7 @@ internal static class ServiceProvider
         .AddTransient<ServiceOptions>(_ => new(dataDirectory))
 
         // Database context.
-        .AddDbContext<HomeDataContext>()
+        .AddDbContext<HomeContext>()
 
         // Database tables.
         .AddTransient<CharacterTable>()

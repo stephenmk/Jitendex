@@ -23,7 +23,7 @@ using Jitendex.Data.Home.Entities.JMdict;
 
 namespace Jitendex.Data.Home;
 
-public class HomeDataContext() : SqliteContext(DatabaseFile.HomeData)
+public class HomeContext() : SqliteContext(DatabaseFile.Home)
 {
     public DbSet<User> Users { get; set; } = null!;
 

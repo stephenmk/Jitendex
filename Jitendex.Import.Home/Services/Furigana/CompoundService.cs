@@ -27,7 +27,7 @@ namespace Jitendex.Import.Home.Services.Furigana;
 
 internal sealed class CompoundService
 (
-    HomeDataContext context,
+    HomeContext context,
     ServiceOptions options,
     CompoundTable compoundTable,
     CompoundReadingTable compoundReadingTable

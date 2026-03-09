@@ -27,7 +27,7 @@ namespace Jitendex.Import.Home.Services.JMdict;
 
 internal sealed class JMdictPatchApprovalService
 (
-    HomeDataContext context,
+    HomeContext context,
     ServiceOptions options,
     JMdictPatchApprovalTable table
 )

@@ -20,10 +20,10 @@ using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
-using Jitendex.HomeData.ImportExport.Furigana.Models;
-using Jitendex.HomeData.ImportExport.Furigana.Tables;
+using Jitendex.Import.Home.Furigana.Models;
+using Jitendex.Import.Home.Furigana.Tables;
 
-namespace Jitendex.HomeData.ImportExport.Furigana;
+namespace Jitendex.Import.Home.Furigana;
 
 internal sealed class CompoundService
 (

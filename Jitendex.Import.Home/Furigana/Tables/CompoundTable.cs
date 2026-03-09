@@ -19,9 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.Furigana;
-using Jitendex.HomeData.ImportExport.Furigana.Models;
+using Jitendex.Import.Home.Furigana.Models;
 
-namespace Jitendex.HomeData.ImportExport.Furigana.Tables;
+namespace Jitendex.Import.Home.Furigana.Tables;
 
 internal sealed class CompoundTable : Table<CompoundRow>
 {

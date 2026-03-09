@@ -16,30 +16,28 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.HomeData.ImportExport.Furigana.Models;
+using Jitendex.AppDirectory;
 
-internal sealed record CharacterRow(int Value);
+namespace Jitendex.Import.Home;
 
-internal sealed record CharacterReadingRow
-(
-    int CharacterValue,
-    string Text,
-    bool IsPrefix,
-    bool IsSuffix,
-    string? Okurigana,
-    int ReadingTypeId
-);
+internal sealed record ServiceOptions
+{
+    public DirectoryInfo DataDirectory { get; }
 
-internal sealed record CharacterReadingTypeRow
-(
-    int Id,
-    string Name
-);
+    public ServiceOptions(DirectoryInfo? dataDirectory)
+    {
+        DataDirectory = dataDirectory
+            ?? DataHome.Get(DataSubdirectory.JitendexDataDirectory);
 
-internal sealed record CompoundRow(string Text);
+        if (!DataDirectory.Exists)
+        {
+            DataDirectory.Create();
+        }
+    }
 
-internal sealed record CompoundReadingRow
-(
-    string CompoundText,
-    string Text
-);
+    public DirectoryInfo GetFuriganaDirectory()
+        => DataDirectory.CreateSubdirectory("furigana");
+
+    public DirectoryInfo GetJMdictDirectory()
+        => DataDirectory.CreateSubdirectory("jmdict");
+}

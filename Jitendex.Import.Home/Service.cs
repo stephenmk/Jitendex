@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.Home;
-using Jitendex.HomeData.ImportExport.Furigana;
-using Jitendex.HomeData.ImportExport.JMdict;
+using Jitendex.Import.Home.Furigana;
+using Jitendex.Import.Home.JMdict;
 
-namespace Jitendex.HomeData.ImportExport;
+namespace Jitendex.Import.Home;
 
 internal sealed class Service
 (

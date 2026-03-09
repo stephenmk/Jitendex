@@ -19,25 +19,34 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.Furigana;
-using Jitendex.HomeData.ImportExport.Furigana.Models;
+using Jitendex.Import.Home.Furigana.Models;
 
-namespace Jitendex.HomeData.ImportExport.Furigana.Tables;
+namespace Jitendex.Import.Home.Furigana.Tables;
 
-internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
+internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
 {
-    protected override string Name => nameof(CompoundReading);
+    protected override string Name => nameof(CharacterReading);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CompoundReading.CompoundText),
-        nameof(CompoundReading.Text),
+        nameof(CharacterReading.CharacterValue),
+        nameof(CharacterReading.Text),
+        nameof(CharacterReading.IsPrefix),
+        nameof(CharacterReading.IsSuffix),
+        nameof(CharacterReading.Okurigana),
+        nameof(CharacterReading.TypeId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override IReadOnlyList<string> KeyColNames
+        => throw new NotImplementedException($"The primary key for table {nameof(CharacterReading)} is auto-incremented.");
 
-    protected override SqliteParameter[] Parameters(CompoundReadingRow row) =>
+    protected override SqliteParameter[] Parameters(CharacterReadingRow row) =>
     [
-        new("@0", row.CompoundText),
+        new("@0", row.CharacterValue),
         new("@1", row.Text),
+        new("@2", row.IsPrefix),
+        new("@3", row.IsSuffix),
+        new("@4", row.Okurigana.Nullable()),
+        new("@5", row.ReadingTypeId),
     ];
 }

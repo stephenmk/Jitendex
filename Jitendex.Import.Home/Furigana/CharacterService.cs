@@ -21,11 +21,11 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Furigana;
-using Jitendex.HomeData.ImportExport.Furigana.Models;
-using Jitendex.HomeData.ImportExport.Furigana.Tables;
+using Jitendex.Import.Home.Furigana.Models;
+using Jitendex.Import.Home.Furigana.Tables;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.HomeData.ImportExport.Furigana;
+namespace Jitendex.Import.Home.Furigana;
 
 internal sealed class CharacterService
 (

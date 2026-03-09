@@ -19,12 +19,12 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.Home;
-using Jitendex.HomeData.ImportExport.Furigana;
-using Jitendex.HomeData.ImportExport.Furigana.Tables;
-using Jitendex.HomeData.ImportExport.JMdict;
-using Jitendex.HomeData.ImportExport.JMdict.Tables;
+using Jitendex.Import.Home.Furigana;
+using Jitendex.Import.Home.Furigana.Tables;
+using Jitendex.Import.Home.JMdict;
+using Jitendex.Import.Home.JMdict.Tables;
 
-namespace Jitendex.HomeData.ImportExport;
+namespace Jitendex.Import.Home;
 
 internal static class ServiceProvider
 {

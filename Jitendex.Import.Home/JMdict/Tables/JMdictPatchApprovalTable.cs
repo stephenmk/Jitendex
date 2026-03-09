@@ -20,7 +20,7 @@ using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.JMdict;
 
-namespace Jitendex.HomeData.ImportExport.JMdict.Tables;
+namespace Jitendex.Import.Home.JMdict.Tables;
 
 internal sealed class JMdictPatchApprovalTable : Table<JMdictPatchApprovalRow>
 {

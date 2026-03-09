@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Immutable;
 using Jitendex.Data.Home.Entities.Furigana;
 
-namespace Jitendex.HomeData.ImportExport.Furigana.Models;
+namespace Jitendex.Import.Home.Furigana.Models;
 
 internal sealed record CharacterReadingsObject
 {

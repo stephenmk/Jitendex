@@ -20,32 +20,38 @@ using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.JMdict;
 
-namespace Jitendex.HomeData.ImportExport.JMdict.Tables;
+namespace Jitendex.Import.Home.JMdict.Tables;
 
-internal sealed class CrossReferenceSequenceTable : Table<CrossReferenceSequenceRow>
+internal sealed class JMdictPatchTable : Table<JMdictPatchRow>
 {
-    protected override string Name => nameof(CrossReferenceSequence);
+    protected override string Name => nameof(JMdictPatch);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CrossReferenceSequence.EntryId),
-        nameof(CrossReferenceSequence.SenseNumber),
-        nameof(CrossReferenceSequence.Text),
-        nameof(CrossReferenceSequence.RefEntryId),
+        nameof(JMdictPatch.Id),
+        nameof(JMdictPatch.SequenceId),
+        nameof(JMdictPatch.SequenceDate),
+        nameof(JMdictPatch.CreatedAt),
+        nameof(JMdictPatch.AuthorId),
+        nameof(JMdictPatch.AuthorComment),
+        nameof(JMdictPatch.PreviousPatchId),
+        nameof(JMdictPatch.Json),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(CrossReferenceSequence.EntryId),
-        nameof(CrossReferenceSequence.SenseNumber),
-        nameof(CrossReferenceSequence.Text),
+        nameof(JMdictPatch.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(CrossReferenceSequenceRow row) =>
+    protected override SqliteParameter[] Parameters(JMdictPatchRow row) =>
     [
-        new("@0", row.EntryId),
-        new("@1", row.SenseNumber),
-        new("@2", row.Text),
-        new("@3", row.RefEntryId.Nullable()),
+        new("@0", row.Id),
+        new("@1", row.SequenceId),
+        new("@2", row.SequenceDate),
+        new("@3", row.CreatedAt),
+        new("@4", row.AuthorId),
+        new("@5", row.AuthorComment),
+        new("@6", row.PreviousPatchId.Nullable()),
+        new("@7", row.Json),
     ];
 }

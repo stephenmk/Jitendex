@@ -16,26 +16,30 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Furigana;
-using Jitendex.HomeData.ImportExport.Furigana.Models;
+namespace Jitendex.Import.Home.Furigana.Models;
 
-namespace Jitendex.HomeData.ImportExport.Furigana.Tables;
+internal sealed record CharacterRow(int Value);
 
-internal sealed class CharacterTable : Table<CharacterRow>
-{
-    protected override string Name => nameof(Character);
+internal sealed record CharacterReadingRow
+(
+    int CharacterValue,
+    string Text,
+    bool IsPrefix,
+    bool IsSuffix,
+    string? Okurigana,
+    int ReadingTypeId
+);
 
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(Character.Value),
-    ];
+internal sealed record CharacterReadingTypeRow
+(
+    int Id,
+    string Name
+);
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+internal sealed record CompoundRow(string Text);
 
-    protected override SqliteParameter[] Parameters(CharacterRow row) =>
-    [
-        new("@0", row.Value),
-    ];
-}
+internal sealed record CompoundReadingRow
+(
+    string CompoundText,
+    string Text
+);

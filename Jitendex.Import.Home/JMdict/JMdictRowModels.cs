@@ -16,28 +16,31 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.AppDirectory;
+namespace Jitendex.Import.Home.JMdict;
 
-namespace Jitendex.HomeData.ImportExport;
+internal sealed record CrossReferenceSequenceRow
+(
+    int EntryId,
+    int SenseNumber,
+    string Text,
+    int? RefEntryId
+);
 
-internal sealed record ServiceOptions
-{
-    public DirectoryInfo DataDirectory { get; }
+internal sealed record JMdictPatchRow
+(
+    int Id,
+    int SequenceId,
+    DateOnly SequenceDate,
+    DateTime CreatedAt,
+    int AuthorId,
+    string AuthorComment,
+    int? PreviousPatchId,
+    string Json
+);
 
-    public ServiceOptions(DirectoryInfo? dataDirectory)
-    {
-        DataDirectory = dataDirectory
-            ?? DataHome.Get(DataSubdirectory.JitendexDataDirectory);
-
-        if (!DataDirectory.Exists)
-        {
-            DataDirectory.Create();
-        }
-    }
-
-    public DirectoryInfo GetFuriganaDirectory()
-        => DataDirectory.CreateSubdirectory("furigana");
-
-    public DirectoryInfo GetJMdictDirectory()
-        => DataDirectory.CreateSubdirectory("jmdict");
-}
+internal sealed record JMdictPatchApprovalRow
+(
+    int PatchId,
+    int ApproverId,
+    DateTime CreatedAt
+);

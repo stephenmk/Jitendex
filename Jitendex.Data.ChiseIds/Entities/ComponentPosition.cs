@@ -16,19 +16,18 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Chise.Entities;
+namespace Jitendex.Data.ChiseIds.Entities;
 
-[Table(nameof(UnicodeCharacter))]
-public class UnicodeCharacter
+[Table(nameof(ComponentPosition))]
+[PrimaryKey(nameof(Id))]
+public class ComponentPosition
 {
-    [Key]
-    public required int ScalarValue { get; init; }
-    public Rune Character() => new(ScalarValue);
+    public required int Id { get; init; }
+    public required string Name { get; set; }
 
-    [InverseProperty(nameof(Codepoint.UnicodeCharacter))]
-    public List<Codepoint> Codepoints { get; init; } = [];
+    [InverseProperty(nameof(Component.Position))]
+    public List<Component> Components { get; init; } = [];
 }

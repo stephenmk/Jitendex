@@ -19,19 +19,21 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Chise.Entities;
+namespace Jitendex.Data.ChiseIds.Entities;
 
-[Table(nameof(SequenceComponent))]
-[PrimaryKey(nameof(CodepointId), nameof(PositionId), nameof(SequenceText))]
-public class SequenceComponent
+[Table(nameof(Component))]
+[PrimaryKey(nameof(CodepointId), nameof(PositionId))]
+public class Component
 {
-    public required string SequenceText { get; init; }
-    public required int PositionId { get; init; }
     public required string CodepointId { get; init; }
+    public required int PositionId { get; init; }
 
-    [ForeignKey(nameof(SequenceText))]
-    public DescriptionSequence Sequence { get; init; } = null!;
+    [ForeignKey(nameof(CodepointId))]
+    public required Codepoint Codepoint { get; init; }
 
-    [ForeignKey($"{nameof(CodepointId)}, {nameof(PositionId)}")]
-    public Component Component { get; init; } = null!;
+    [ForeignKey(nameof(PositionId))]
+    public required ComponentPosition Position { get; init; }
+
+    [InverseProperty(nameof(SequenceComponent.Component))]
+    public List<SequenceComponent> Sequences { get; init; } = [];
 }

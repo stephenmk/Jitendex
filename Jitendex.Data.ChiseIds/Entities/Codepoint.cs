@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jitendex.Chise.Entities;
+namespace Jitendex.Data.ChiseIds.Entities;
 
 [Table(nameof(Codepoint))]
 public class Codepoint

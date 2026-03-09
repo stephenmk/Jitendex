@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Chise.Entities;
+namespace Jitendex.Data.ChiseIds.Entities;
 
 /// <summary>
 /// Represents an Ideographic Description Sequence (IDS)

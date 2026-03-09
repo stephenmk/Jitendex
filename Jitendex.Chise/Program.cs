@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.CommandLine;
 using Jitendex.AppDirectory;
+using Jitendex.Data.ChiseIds;
 using Jitendex.Chise.Import;
 
 namespace Jitendex.Chise;

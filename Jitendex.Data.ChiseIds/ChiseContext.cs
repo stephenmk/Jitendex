@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Chise.Entities;
+using Jitendex.Data.ChiseIds.Entities;
 using Jitendex.SQLite;
 
-namespace Jitendex.Chise;
+namespace Jitendex.Data.ChiseIds;
 
 public class ChiseContext() : SqliteContext(DatabaseFile.ChiseIds)
 {

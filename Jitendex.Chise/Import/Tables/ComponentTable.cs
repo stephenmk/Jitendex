@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.Chise.Entities;
+using Jitendex.Data.ChiseIds.Entities;
 using Jitendex.Chise.Import.Models;
 
 namespace Jitendex.Chise.Import.Tables;

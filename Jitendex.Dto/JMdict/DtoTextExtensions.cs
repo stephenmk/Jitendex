@@ -23,7 +23,7 @@ public static class DtoTextExtensions
     public static string ToText(this SequenceDto x)
     {
         var sb = new StringBuilder();
-        sb.AppendLine($"Entry #{x.Id}");
+        sb.AppendLine($"JMdict Entry #{x.Id}");
         if (x.Entry is not null)
         {
             sb.AppendLine(x.Entry.ToText());
@@ -70,11 +70,11 @@ public static class DtoTextExtensions
         var sb = new StringBuilder(x.Text);
         if (x.Infos.Length > 0)
         {
-            sb.Append($" [{string.Join(", ", x.Infos)}]");
+            sb.Append($"[{string.Join(", ", x.Infos)}]");
         }
         if (x.Priorities.Length > 0)
         {
-            sb.Append($" [{string.Join(", ", x.Priorities)}]");
+            sb.Append($"[{string.Join(", ", x.Priorities)}]");
         }
         return sb.ToString();
     }
@@ -126,17 +126,18 @@ public static class DtoTextExtensions
         }
         if (x.Dialects.Length > 0)
         {
-            sb.AppendLine();
-            sb.Append($"\t\tDialect: {string.Join(", ", x.Dialects)}");
+            foreach (var dialect in x.Dialects)
+            {
+                sb.AppendLine();
+                sb.Append($"\t[dialect = {dialect}]");
+            }
         }
         if (x.LanguageSources.Length > 0)
         {
-            sb.AppendLine();
-            sb.Append("\t\tSource language:");
             foreach (var langSource in x.LanguageSources)
             {
                 sb.AppendLine();
-                sb.Append($"\t\t{langSource.ToText()}");
+                sb.Append($"\t[langsrc = {langSource.ToText()}]");
             }
         }
         if (x.Notes.Length > 0)
@@ -144,7 +145,7 @@ public static class DtoTextExtensions
             foreach (var note in x.Notes)
             {
                 sb.AppendLine();
-                sb.Append($"\t\t《{note}》");
+                sb.Append($"\t《{note}》");
             }
         }
         if (x.Glosses.Length > 0)
@@ -152,17 +153,15 @@ public static class DtoTextExtensions
             foreach (var gloss in x.Glosses)
             {
                 sb.AppendLine();
-                sb.Append($"\t\t▶ {gloss.ToText()}");
+                sb.Append($"\t▶ {gloss.ToText()}");
             }
         }
         if (x.CrossReferences.Length > 0)
         {
-            sb.AppendLine();
-            sb.Append("\t\tCross references:");
             foreach (var xref in x.CrossReferences)
             {
                 sb.AppendLine();
-                sb.Append($"\t\t{xref.ToText()}");
+                sb.Append($"\t{xref.ToText()}");
             }
         }
         return sb.ToString();

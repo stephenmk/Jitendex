@@ -31,11 +31,13 @@ internal static class AnalyzerProvider
         .AddTransient<Analyzer>()
 
         // Databases
+        .AddDbContext<JmdictContext>()
         .AddDbContext<JMdictForkContext>()
         .AddDbContext<HomeDataContext>()
         .AddTransient<Database>()
 
         // Analyzers
+        .AddTransient<PatchAnalyzer>()
         .AddTransient<RestrictionAnalyzer>()
         .AddTransient<ReadingRestrictionAnalyzer>()
         .AddTransient<KanjiFormRestrictionAnalyzer>()

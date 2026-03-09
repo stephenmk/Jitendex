@@ -29,6 +29,8 @@ internal sealed class Analyzer
     HomeDataContext homeContext,
     Database database,
 
+    PatchAnalyzer patchAnalyzer,
+
     RestrictionAnalyzer restrictionAnalyzer,
     ReadingRestrictionAnalyzer readingRestrictionAnalyzer,
     KanjiFormRestrictionAnalyzer kanjiFormRestrictionAnalyzer,
@@ -55,6 +57,8 @@ internal sealed class Analyzer
         database.TransferDataFromJmdict();
 
         logger.LogInformation("Starting data analysis");
+
+        patchAnalyzer.Analyze();
 
         restrictionAnalyzer.Analyze();
         readingRestrictionAnalyzer.Analyze();

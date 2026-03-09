@@ -29,7 +29,9 @@ namespace Jitendex.JMdict.Fork;
 
 public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
 {
+    public DbSet<FileHeader> FileHeaders { get; set; } = null!;
     public DbSet<Sequence> Sequences { get; set; } = null!;
+    public DbSet<Revision> Revisions { get; set; } = null!;
     public DbSet<Entry> Entries { get; set; } = null!;
 
     #region Entry Items

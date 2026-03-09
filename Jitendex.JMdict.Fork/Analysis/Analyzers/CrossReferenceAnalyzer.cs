@@ -164,7 +164,7 @@ internal partial class CrossReferenceAnalyzer
     (
         CrossReference xref,
         ParsedReferenceText parsed,
-        IReadOnlyDictionary<ReferenceText, List<EntryData>> referenceTextToEntries
+        FrozenDictionary<ReferenceText, List<EntryData>> referenceTextToEntries
     )
     {
         var key = new ReferenceText(parsed.Text1, parsed.Text2);

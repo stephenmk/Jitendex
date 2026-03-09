@@ -16,31 +16,17 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.SQLite;
-using Jitendex.Data.ChiseIds.Entities;
-using Jitendex.Chise.Import.Models;
+namespace Jitendex.Import.ChiseIds.Parsing;
 
-namespace Jitendex.Chise.Import.Tables;
-
-internal sealed class ComponentPositionTable : Table<ComponentPositionElement>
+internal enum ChiseError
 {
-    protected override string Name => nameof(ComponentPosition);
-
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(ComponentPosition.Id),
-        nameof(ComponentPosition.Name),
-    ];
-
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
-        nameof(ComponentPosition.Id)
-    ];
-
-    protected override SqliteParameter[] Parameters(ComponentPositionElement position) =>
-    [
-        new("@0", position.Id),
-        new("@1", position.Name),
-    ];
+    InvalidUnicodeCodepoint,
+    UnicodeCharacterInequality,
+    InsufficientLineElements,
+    ExcessiveLineElements,
+    AltSequenceFormatError,
+    InsufficientIdsArgs,
+    InsufficientIdsOps,
+    InsufficientAltIdsArgs,
+    InsufficientAltIdsOps,
 }

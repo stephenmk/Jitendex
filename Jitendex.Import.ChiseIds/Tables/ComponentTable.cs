@@ -16,16 +16,28 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Chise.Import.Models;
+using Microsoft.Data.Sqlite;
+using Jitendex.SQLite;
+using Jitendex.Data.ChiseIds.Entities;
+using Jitendex.Import.ChiseIds.Models;
 
-internal sealed class ParserState
+namespace Jitendex.Import.ChiseIds.Tables;
+
+internal sealed class ComponentTable : Table<ComponentElement>
 {
-    public Stack<CodepointElement> Stack { get; } = [];
+    protected override string Name => nameof(Component);
 
-    public List<string> SequenceTexts { get; } = [];
-    public List<int> UnicodeCharacters { get; } = [];
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Component.CodepointId),
+        nameof(Component.PositionId),
+    ];
 
-    public List<CodepointElement> Codepoints { get; } = [];
-    public List<ComponentElement> Components { get; } = [];
-    public List<SequenceComponentElement> ComponentSequences { get; } = [];
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+
+    protected override SqliteParameter[] Parameters(ComponentElement component) =>
+    [
+        new("@0", component.CodepointId),
+        new("@1", component.PositionId),
+    ];
 }

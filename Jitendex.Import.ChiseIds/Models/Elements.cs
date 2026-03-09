@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text;
 
-namespace Jitendex.Chise.Import.Models;
+namespace Jitendex.Import.ChiseIds.Models;
 
 internal sealed record CodepointElement
 {

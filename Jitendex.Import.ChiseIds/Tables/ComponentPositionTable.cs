@@ -19,23 +19,28 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.ChiseIds.Entities;
-using Jitendex.Chise.Import.Models;
+using Jitendex.Import.ChiseIds.Models;
 
-namespace Jitendex.Chise.Import.Tables;
+namespace Jitendex.Import.ChiseIds.Tables;
 
-internal sealed class UnicodeCharacterTable : Table<UnicodeCharacterElement>
+internal sealed class ComponentPositionTable : Table<ComponentPositionElement>
 {
-    protected override string Name => nameof(UnicodeCharacter);
+    protected override string Name => nameof(ComponentPosition);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(UnicodeCharacter.ScalarValue)
+        nameof(ComponentPosition.Id),
+        nameof(ComponentPosition.Name),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
-
-    protected override SqliteParameter[] Parameters(UnicodeCharacterElement character) =>
+    protected override IReadOnlyList<string> KeyColNames =>
     [
-        new("@0", character.ScalarValue)
+        nameof(ComponentPosition.Id)
+    ];
+
+    protected override SqliteParameter[] Parameters(ComponentPositionElement position) =>
+    [
+        new("@0", position.Id),
+        new("@1", position.Name),
     ];
 }

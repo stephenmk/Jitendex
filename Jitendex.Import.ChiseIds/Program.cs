@@ -19,9 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.CommandLine;
 using Jitendex.AppDirectory;
 using Jitendex.Data.ChiseIds;
-using Jitendex.Chise.Import;
 
-namespace Jitendex.Chise;
+namespace Jitendex.Import.ChiseIds;
 
 public class Program
 {
@@ -32,7 +31,7 @@ public class Program
             Description = "Path to 'chise-ids' directory",
         };
 
-        var rootCommand = new RootCommand("Jitendex.Chise: Import CHISE Ideographic Description Sequences (IDS)")
+        var rootCommand = new RootCommand("Import CHISE Ideographic Description Sequences (IDS)")
         {
             chiseIdsDirectoryOption
         };

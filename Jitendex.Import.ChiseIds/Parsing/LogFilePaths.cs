@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.Chise.Import.Parsing.ChiseError;
+using static Jitendex.Import.ChiseIds.Parsing.ChiseError;
 using Jitendex.AppDirectory;
 
-namespace Jitendex.Chise.Import.Parsing;
+namespace Jitendex.Import.ChiseIds.Parsing;
 
 internal readonly ref struct LogFilePaths
 {

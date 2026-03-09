@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Chise.Import.Models;
+namespace Jitendex.Import.ChiseIds.Models;
 
 internal sealed class Document
 {

@@ -16,9 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.Chise.Import.Models.ComponentPositionId;
+using static Jitendex.Import.ChiseIds.Models.ComponentPositionId;
 
-namespace Jitendex.Chise.Import.Models;
+namespace Jitendex.Import.ChiseIds.Models;
 
 internal enum ComponentPositionId : byte
 {

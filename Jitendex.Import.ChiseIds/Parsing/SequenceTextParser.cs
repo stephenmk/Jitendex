@@ -17,11 +17,11 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Text;
-using Jitendex.Chise.Import.Models;
-using static Jitendex.Chise.Import.Models.ComponentPositionId;
-using static Jitendex.Chise.Import.Parsing.UnicodeConverter;
+using Jitendex.Import.ChiseIds.Models;
+using static Jitendex.Import.ChiseIds.Models.ComponentPositionId;
+using static Jitendex.Import.ChiseIds.Parsing.UnicodeConverter;
 
-namespace Jitendex.Chise.Import.Parsing;
+namespace Jitendex.Import.ChiseIds.Parsing;
 
 /// <summary>
 /// Parse and evaluate an Ideographic Description Sequence (IDS)

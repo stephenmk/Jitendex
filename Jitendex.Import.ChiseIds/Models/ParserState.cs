@@ -16,17 +16,16 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Chise.Import.Parsing;
+namespace Jitendex.Import.ChiseIds.Models;
 
-internal enum ChiseError
+internal sealed class ParserState
 {
-    InvalidUnicodeCodepoint,
-    UnicodeCharacterInequality,
-    InsufficientLineElements,
-    ExcessiveLineElements,
-    AltSequenceFormatError,
-    InsufficientIdsArgs,
-    InsufficientIdsOps,
-    InsufficientAltIdsArgs,
-    InsufficientAltIdsOps,
+    public Stack<CodepointElement> Stack { get; } = [];
+
+    public List<string> SequenceTexts { get; } = [];
+    public List<int> UnicodeCharacters { get; } = [];
+
+    public List<CodepointElement> Codepoints { get; } = [];
+    public List<ComponentElement> Components { get; } = [];
+    public List<SequenceComponentElement> ComponentSequences { get; } = [];
 }

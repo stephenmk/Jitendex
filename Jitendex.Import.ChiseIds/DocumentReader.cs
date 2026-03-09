@@ -16,11 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Chise.Import.Models;
-using Jitendex.Chise.Import.Parsing;
-using static Jitendex.Chise.Import.Parsing.UnicodeConverter;
+using Jitendex.Import.ChiseIds.Models;
+using Jitendex.Import.ChiseIds.Parsing;
+using static Jitendex.Import.ChiseIds.Parsing.UnicodeConverter;
 
-namespace Jitendex.Chise.Import;
+namespace Jitendex.Import.ChiseIds;
 
 internal class DocumentReader(Logger logger)
 {

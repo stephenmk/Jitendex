@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.Chise.Import.Parsing.ChiseError;
-using Jitendex.Chise.Import.Parsing;
+using static Jitendex.Import.ChiseIds.Parsing.ChiseError;
+using Jitendex.Import.ChiseIds.Parsing;
 
-namespace Jitendex.Chise.Import;
+namespace Jitendex.Import.ChiseIds;
 
 internal class Logger
 {

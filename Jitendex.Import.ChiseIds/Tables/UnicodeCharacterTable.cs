@@ -16,19 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Chise.Import.Parsing;
+using Microsoft.Data.Sqlite;
+using Jitendex.SQLite;
+using Jitendex.Data.ChiseIds.Entities;
+using Jitendex.Import.ChiseIds.Models;
 
-internal static class UnicodeConverter
+namespace Jitendex.Import.ChiseIds.Tables;
+
+internal sealed class UnicodeCharacterTable : Table<UnicodeCharacterElement>
 {
-    public static int? ScalarValue(in ReadOnlySpan<char> character) => character switch
-    {
-        { Length: 1 } => character[0],
-        { Length: 2 } when char.IsHighSurrogate(character[0])
-                        && char.IsLowSurrogate(character[1])
-                        => char.ConvertToUtf32(character[0], character[1]),
-        _ => null,
-    };
+    protected override string Name => nameof(UnicodeCharacter);
 
-    public static string GetLongCodepointId(int scalarValue) => $"&U-{scalarValue:X8};";
-    public static string GetShortCodepointId(int scalarValue) => $"&U+{scalarValue:X};";
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(UnicodeCharacter.ScalarValue)
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+
+    protected override SqliteParameter[] Parameters(UnicodeCharacterElement character) =>
+    [
+        new("@0", character.ScalarValue)
+    ];
 }

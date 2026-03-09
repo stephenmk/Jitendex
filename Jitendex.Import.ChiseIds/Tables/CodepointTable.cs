@@ -19,9 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.ChiseIds.Entities;
-using Jitendex.Chise.Import.Models;
+using Jitendex.Import.ChiseIds.Models;
 
-namespace Jitendex.Chise.Import.Tables;
+namespace Jitendex.Import.ChiseIds.Tables;
 
 internal sealed class CodepointTable : Table<CodepointElement>
 {

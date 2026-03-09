@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.ChiseIds;
-using Jitendex.Chise.Import.Models;
-using Jitendex.Chise.Import.Tables;
+using Jitendex.Import.ChiseIds.Models;
+using Jitendex.Import.ChiseIds.Tables;
 
-namespace Jitendex.Chise.Import;
+namespace Jitendex.Import.ChiseIds;
 
 internal sealed class DocumentDatabase(ChiseContext context)
 {

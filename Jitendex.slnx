@@ -15,7 +15,6 @@
     <Project Path="Libraries/MinimalPatch/Jitendex.MinimalPatch/Jitendex.MinimalPatch.csproj" />
   </Folder>
   <Project Path="Jitendex.AppDirectory/Jitendex.AppDirectory.csproj" />
-  <Project Path="Jitendex.Chise/Jitendex.Chise.csproj" />
   <Project Path="Jitendex.Data.ChiseIds/Jitendex.Data.ChiseIds.csproj" />
   <Project Path="Jitendex.Data.JMnedict/Jitendex.Data.JMnedict.csproj" />
   <Project Path="Jitendex.Data.Kanjidic2/Jitendex.Data.Kanjidic2.csproj" />
@@ -26,6 +25,7 @@
   <Project Path="Jitendex.Furigana.Test/Jitendex.Furigana.Test.csproj" />
   <Project Path="Jitendex.Furigana/Jitendex.Furigana.csproj" />
   <Project Path="Jitendex.Import/Jitendex.Import.csproj" />
+  <Project Path="Jitendex.Import.ChiseIds/Jitendex.Import.ChiseIds.csproj" />
   <Project Path="Jitendex.Import.JMnedict/Jitendex.Import.JMnedict.csproj" />
   <Project Path="Jitendex.Import.Kanjidic2/Jitendex.Import.Kanjidic2.csproj" />
   <Project Path="Jitendex.Import.KanjiVG/Jitendex.Import.KanjiVG.csproj" />

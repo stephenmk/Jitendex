@@ -19,25 +19,27 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.ChiseIds.Entities;
-using Jitendex.Chise.Import.Models;
+using Jitendex.Import.ChiseIds.Models;
 
-namespace Jitendex.Chise.Import.Tables;
+namespace Jitendex.Import.ChiseIds.Tables;
 
-internal sealed class ComponentTable : Table<ComponentElement>
+internal sealed class SequenceComponentTable : Table<SequenceComponentElement>
 {
-    protected override string Name => nameof(Component);
+    protected override string Name => nameof(SequenceComponent);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Component.CodepointId),
-        nameof(Component.PositionId),
+        nameof(SequenceComponent.CodepointId),
+        nameof(SequenceComponent.PositionId),
+        nameof(SequenceComponent.SequenceText),
     ];
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(ComponentElement component) =>
+    protected override SqliteParameter[] Parameters(SequenceComponentElement sequenceComponent) =>
     [
-        new("@0", component.CodepointId),
-        new("@1", component.PositionId),
+        new("@0", sequenceComponent.CodepointId),
+        new("@1", sequenceComponent.PositionId),
+        new("@2", sequenceComponent.SequenceText),
     ];
 }

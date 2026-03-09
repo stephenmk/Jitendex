@@ -29,7 +29,7 @@ public static class Program
             Description = "Path to the edrdg-dictionary-archive directory"
         };
 
-        var rootCommand = new RootCommand("Jitendex.Tatoeba: Import Japanese-to-English example sentences")
+        var rootCommand = new RootCommand("Import Japanese-to-English example sentences")
         {
             archiveDirOption
         };

@@ -30,7 +30,7 @@ public static class Program
             Description = "Path to the edrdg-dictionary-archive directory",
         };
 
-        var rootCommand = new RootCommand("Jitendex.JMnedict: Import JMnedict XML documents")
+        var rootCommand = new RootCommand("Import JMnedict XML documents")
         {
             archiveDirOption
         };

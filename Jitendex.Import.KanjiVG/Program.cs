@@ -30,7 +30,7 @@ public class Program
             Description = "Path to KanjiVG directory",
         };
 
-        var rootCommand = new RootCommand("Jitendex.KanjiVG: Import KanjiVG data")
+        var rootCommand = new RootCommand("Import KanjiVG data")
         {
             kanjivgDirectoryOption
         };

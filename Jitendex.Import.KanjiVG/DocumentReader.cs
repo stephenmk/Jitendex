@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Xml;
-using Jitendex.KanjiVG.Import.Models;
-using Jitendex.KanjiVG.Import.Readers;
+using Jitendex.Import.KanjiVG.Models;
+using Jitendex.Import.KanjiVG.Readers;
 
-namespace Jitendex.KanjiVG.Import;
+namespace Jitendex.Import.KanjiVG;
 
 internal sealed class DocumentReader(KanjiReader kanjiReader)
 {

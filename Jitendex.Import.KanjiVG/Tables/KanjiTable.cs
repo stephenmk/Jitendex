@@ -16,20 +16,29 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.KanjiVG.Import.Models;
+using Microsoft.Data.Sqlite;
+using Jitendex.SQLite;
+using Jitendex.Data.KanjiVG.Entities;
+using Jitendex.Import.KanjiVG.Models;
 
-internal static class DictionaryExtensions
+namespace Jitendex.Import.KanjiVG.Tables;
+
+internal sealed class KanjiTable : Table<KanjiElement>
 {
-    public static int GetLookupId(this Dictionary<string, int> dictionary, string key)
-    {
-        if (!dictionary.TryGetValue(key, out var id))
-        {
-            id = dictionary.Count;
-            dictionary.Add(key, id);
-        }
-        return id;
-    }
+    protected override string Name => nameof(Kanji);
 
-    public static int? GetNullableLookupId(this Dictionary<string, int> dictionary, string? key)
-        => key is null ? null : dictionary.GetLookupId(key);
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Kanji.UnicodeScalarValue)
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(Kanji.UnicodeScalarValue)
+    ];
+
+    protected override SqliteParameter[] Parameters(KanjiElement kanji) =>
+    [
+        new("@0", kanji.UnicodeScalarValue)
+    ];
 }

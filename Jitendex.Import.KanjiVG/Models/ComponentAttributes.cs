@@ -16,12 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.KanjiVG.Import.Readers;
+namespace Jitendex.Import.KanjiVG.Models;
 
-internal static class XmlTagName
+internal sealed class ComponentAttributes
 {
-    public const string SvgHeader = "svg";
-    public const string Group = "g";
-    public const string Path = "path";
-    public const string Text = "text";
+    public required string Id { get; set; }
+    public string? Text { get; set; }
+    public bool IsVariant { get; set; }
+    public bool IsPartial { get; set; }
+    public string? Original { get; set; }
+    public int? Part { get; set; }
+    public int? Number { get; set; }
+    public bool IsTradForm { get; set; }
+    public bool IsRadicalForm { get; set; }
+    public string? Position { get; set; }
+    public string? Radical { get; set; }
+    public string? Phon { get; set; }
 }

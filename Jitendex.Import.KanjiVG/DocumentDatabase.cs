@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.KanjiVG;
-using Jitendex.KanjiVG.Import.Tables;
-using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import.KanjiVG.Tables;
+using Jitendex.Import.KanjiVG.Models;
 
-namespace Jitendex.KanjiVG.Import;
+namespace Jitendex.Import.KanjiVG;
 
 internal sealed class DocumentDatabase(KanjiVGContext context)
 {

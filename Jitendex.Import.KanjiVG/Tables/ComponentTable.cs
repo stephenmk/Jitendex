@@ -19,9 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import.KanjiVG.Models;
 
-namespace Jitendex.KanjiVG.Import.Tables;
+namespace Jitendex.Import.KanjiVG.Tables;
 
 internal sealed class ComponentTable : Table<ComponentElement>
 {

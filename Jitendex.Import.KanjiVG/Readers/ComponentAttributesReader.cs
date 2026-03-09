@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import.KanjiVG.Models;
 
-namespace Jitendex.KanjiVG.Import.Readers;
+namespace Jitendex.Import.KanjiVG.Readers;
 
 internal partial class ComponentAttributesReader(ILogger<ComponentAttributesReader> logger)
 {

@@ -19,36 +19,33 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import.KanjiVG.Models;
 
-namespace Jitendex.KanjiVG.Import.Tables;
+namespace Jitendex.Import.KanjiVG.Tables;
 
-internal sealed class StrokeNumberTable : Table<StrokeNumberElement>
+internal sealed class StrokeNumberGroupTable : Table<StrokeNumberGroupElement>
 {
-    protected override string Name => nameof(StrokeNumber);
+    protected override string Name => nameof(StrokeNumberGroup);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(StrokeNumber.UnicodeScalarValue),
-        nameof(StrokeNumber.VariantTypeId),
-        nameof(StrokeNumber.Order),
-        nameof(StrokeNumber.Number),
-        nameof(StrokeNumber.TransformAttribute),
+        nameof(StrokeNumberGroup.UnicodeScalarValue),
+        nameof(StrokeNumberGroup.VariantTypeId),
+        nameof(StrokeNumberGroup.StyleId),
+        nameof(StrokeNumberGroup.IdAttribute),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(StrokeNumber.UnicodeScalarValue),
-        nameof(StrokeNumber.VariantTypeId),
-        nameof(StrokeNumber.Order),
+        nameof(StrokeNumberGroup.UnicodeScalarValue),
+        nameof(StrokeNumberGroup.VariantTypeId),
     ];
 
-    protected override SqliteParameter[] Parameters(StrokeNumberElement strokeNumber) =>
+    protected override SqliteParameter[] Parameters(StrokeNumberGroupElement group) =>
     [
-        new("@0", strokeNumber.UnicodeScalarValue),
-        new("@1", strokeNumber.VariantTypeId),
-        new("@2", strokeNumber.Order),
-        new("@3", strokeNumber.Number),
-        new("@4", strokeNumber.TransformAttribute),
+        new("@0", group.UnicodeScalarValue),
+        new("@1", group.VariantTypeId),
+        new("@2", group.StyleId),
+        new("@3", group.IdAttribute),
     ];
 }

@@ -19,40 +19,36 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import.KanjiVG.Models;
 
-namespace Jitendex.KanjiVG.Import.Tables;
+namespace Jitendex.Import.KanjiVG.Tables;
 
-internal sealed class StrokeTable : Table<StrokeElement>
+internal sealed class StrokeNumberTable : Table<StrokeNumberElement>
 {
-    protected override string Name => nameof(Stroke);
+    protected override string Name => nameof(StrokeNumber);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Stroke.UnicodeScalarValue),
-        nameof(Stroke.VariantTypeId),
-        nameof(Stroke.Order),
-        nameof(Stroke.IdAttribute),
-        nameof(Stroke.ComponentOrder),
-        nameof(Stroke.TypeId),
-        nameof(Stroke.PathData),
+        nameof(StrokeNumber.UnicodeScalarValue),
+        nameof(StrokeNumber.VariantTypeId),
+        nameof(StrokeNumber.Order),
+        nameof(StrokeNumber.Number),
+        nameof(StrokeNumber.TransformAttribute),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(Stroke.UnicodeScalarValue),
-        nameof(Stroke.VariantTypeId),
-        nameof(Stroke.Order),
+        nameof(StrokeNumber.UnicodeScalarValue),
+        nameof(StrokeNumber.VariantTypeId),
+        nameof(StrokeNumber.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(StrokeElement stroke) =>
+    protected override SqliteParameter[] Parameters(StrokeNumberElement strokeNumber) =>
     [
-        new("@0", stroke.UnicodeScalarValue),
-        new("@1", stroke.VariantTypeId),
-        new("@2", stroke.Order),
-        new("@3", stroke.IdAttribute),
-        new("@4", stroke.ComponentOrder),
-        new("@5", stroke.TypeId.Nullable()),
-        new("@6", stroke.PathData),
+        new("@0", strokeNumber.UnicodeScalarValue),
+        new("@1", strokeNumber.VariantTypeId),
+        new("@2", strokeNumber.Order),
+        new("@3", strokeNumber.Number),
+        new("@4", strokeNumber.TransformAttribute),
     ];
 }

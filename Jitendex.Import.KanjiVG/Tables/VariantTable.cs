@@ -19,33 +19,31 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import.KanjiVG.Models;
 
-namespace Jitendex.KanjiVG.Import.Tables;
+namespace Jitendex.Import.KanjiVG.Tables;
 
-internal sealed class StrokeNumberGroupTable : Table<StrokeNumberGroupElement>
+internal sealed class VariantTable : Table<VariantElement>
 {
-    protected override string Name => nameof(StrokeNumberGroup);
+    protected override string Name => nameof(Variant);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(StrokeNumberGroup.UnicodeScalarValue),
-        nameof(StrokeNumberGroup.VariantTypeId),
-        nameof(StrokeNumberGroup.StyleId),
-        nameof(StrokeNumberGroup.IdAttribute),
+        nameof(Variant.UnicodeScalarValue),
+        nameof(Variant.TypeId),
+        nameof(Variant.CommentId),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(StrokeNumberGroup.UnicodeScalarValue),
-        nameof(StrokeNumberGroup.VariantTypeId),
+        nameof(Variant.UnicodeScalarValue),
+        nameof(Variant.TypeId),
     ];
 
-    protected override SqliteParameter[] Parameters(StrokeNumberGroupElement group) =>
+    protected override SqliteParameter[] Parameters(VariantElement variant) =>
     [
-        new("@0", group.UnicodeScalarValue),
-        new("@1", group.VariantTypeId),
-        new("@2", group.StyleId),
-        new("@3", group.IdAttribute),
+        new("@0", variant.UnicodeScalarValue),
+        new("@1", variant.TypeId),
+        new("@2", variant.CommentId),
     ];
 }

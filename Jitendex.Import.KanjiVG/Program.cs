@@ -18,9 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.CommandLine;
 using Jitendex.AppDirectory;
-using Jitendex.KanjiVG.Import;
 
-namespace Jitendex.KanjiVG;
+namespace Jitendex.Import.KanjiVG;
 
 public class Program
 {

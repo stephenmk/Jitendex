@@ -19,9 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.KanjiVG;
-using Jitendex.KanjiVG.Import.Readers;
+using Jitendex.Import.KanjiVG.Readers;
 
-namespace Jitendex.KanjiVG.Import;
+namespace Jitendex.Import.KanjiVG;
 
 internal static class ImporterProvider
 {

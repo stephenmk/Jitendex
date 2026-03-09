@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.KanjiVG.Import.Models;
+namespace Jitendex.Import.KanjiVG.Models;
 
 internal sealed record KanjiElement
 (

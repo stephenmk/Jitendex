@@ -16,20 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.KanjiVG.Import.Models;
+namespace Jitendex.Import.KanjiVG.Models;
 
-internal sealed class ComponentAttributes
+internal static class DictionaryExtensions
 {
-    public required string Id { get; set; }
-    public string? Text { get; set; }
-    public bool IsVariant { get; set; }
-    public bool IsPartial { get; set; }
-    public string? Original { get; set; }
-    public int? Part { get; set; }
-    public int? Number { get; set; }
-    public bool IsTradForm { get; set; }
-    public bool IsRadicalForm { get; set; }
-    public string? Position { get; set; }
-    public string? Radical { get; set; }
-    public string? Phon { get; set; }
+    public static int GetLookupId(this Dictionary<string, int> dictionary, string key)
+    {
+        if (!dictionary.TryGetValue(key, out var id))
+        {
+            id = dictionary.Count;
+            dictionary.Add(key, id);
+        }
+        return id;
+    }
+
+    public static int? GetNullableLookupId(this Dictionary<string, int> dictionary, string? key)
+        => key is null ? null : dictionary.GetLookupId(key);
 }

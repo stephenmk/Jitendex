@@ -19,26 +19,40 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.KanjiVG.Entities;
-using Jitendex.KanjiVG.Import.Models;
+using Jitendex.Import.KanjiVG.Models;
 
-namespace Jitendex.KanjiVG.Import.Tables;
+namespace Jitendex.Import.KanjiVG.Tables;
 
-internal sealed class KanjiTable : Table<KanjiElement>
+internal sealed class StrokeTable : Table<StrokeElement>
 {
-    protected override string Name => nameof(Kanji);
+    protected override string Name => nameof(Stroke);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Kanji.UnicodeScalarValue)
+        nameof(Stroke.UnicodeScalarValue),
+        nameof(Stroke.VariantTypeId),
+        nameof(Stroke.Order),
+        nameof(Stroke.IdAttribute),
+        nameof(Stroke.ComponentOrder),
+        nameof(Stroke.TypeId),
+        nameof(Stroke.PathData),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(Kanji.UnicodeScalarValue)
+        nameof(Stroke.UnicodeScalarValue),
+        nameof(Stroke.VariantTypeId),
+        nameof(Stroke.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiElement kanji) =>
+    protected override SqliteParameter[] Parameters(StrokeElement stroke) =>
     [
-        new("@0", kanji.UnicodeScalarValue)
+        new("@0", stroke.UnicodeScalarValue),
+        new("@1", stroke.VariantTypeId),
+        new("@2", stroke.Order),
+        new("@3", stroke.IdAttribute),
+        new("@4", stroke.ComponentOrder),
+        new("@5", stroke.TypeId.Nullable()),
+        new("@6", stroke.PathData),
     ];
 }

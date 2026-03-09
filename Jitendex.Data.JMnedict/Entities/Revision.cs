@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -19,17 +19,20 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMnedict.Entities.EntryItems.TranslationItems;
+namespace Jitendex.Data.JMnedict.Entities;
 
-[Table(nameof(CrossReference))]
-[PrimaryKey(nameof(EntryId), nameof(TranslationOrder), nameof(Order))]
-public sealed class CrossReference
+[Table(nameof(Revision))]
+[PrimaryKey(nameof(SequenceId), nameof(Number))]
+public sealed class Revision
 {
-    public required int EntryId { get; init; }
-    public required int TranslationOrder { get; init; }
-    public required int Order { get; init; }
-    public required string Text { get; set; }
+    public required int SequenceId { get; init; }
+    public required int Number { get; init; }
+    public required int FileHeaderId { get; init; }
+    public required string DiffJson { get; init; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(TranslationOrder)}")]
-    public Translation Translation { get; init; } = null!;
+    [ForeignKey(nameof(SequenceId))]
+    public Sequence Sequence { get; init; } = null!;
+
+    [ForeignKey(nameof(FileHeaderId))]
+    public FileHeader FileHeader { get; init; } = null!;
 }

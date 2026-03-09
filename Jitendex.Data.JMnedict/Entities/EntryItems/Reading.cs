@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -18,21 +18,22 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
 
-namespace Jitendex.JMnedict.Entities;
+namespace Jitendex.Data.JMnedict.Entities.EntryItems;
 
-[Table(nameof(Revision))]
-[PrimaryKey(nameof(SequenceId), nameof(Number))]
-public sealed class Revision
+[Table(nameof(Reading))]
+[PrimaryKey(nameof(EntryId), nameof(Order))]
+public sealed class Reading
 {
-    public required int SequenceId { get; init; }
-    public required int Number { get; init; }
-    public required int FileHeaderId { get; init; }
-    public required string DiffJson { get; init; }
+    public required int EntryId { get; init; }
+    public required int Order { get; init; }
+    public required string Text { get; set; }
 
-    [ForeignKey(nameof(SequenceId))]
-    public Sequence Sequence { get; init; } = null!;
+    public List<ReadingInfo> Infos { get; init; } = [];
+    public List<ReadingPriority> Priorities { get; init; } = [];
+    public List<Restriction> Restrictions { get; init; } = [];
 
-    [ForeignKey(nameof(FileHeaderId))]
-    public FileHeader FileHeader { get; init; } = null!;
+    [ForeignKey(nameof(EntryId))]
+    public Entry Entry { get; init; } = null!;
 }

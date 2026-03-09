@@ -16,23 +16,23 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMnedict.Entities.EntryItems.KanjiFormItems;
+namespace Jitendex.Data.JMnedict.Entities;
 
-[Table(nameof(KanjiFormInfo))]
-[PrimaryKey(nameof(EntryId), nameof(KanjiFormOrder), nameof(Order))]
-public sealed class KanjiFormInfo
+[Table(nameof(FileHeader))]
+[Index(nameof(Date), IsUnique = true)]
+public sealed class FileHeader
 {
-    public required int EntryId { get; init; }
-    public required int KanjiFormOrder { get; init; }
-    public required int Order { get; init; }
-    public required string TagName { get; set; }
+    [Key]
+    public required int Id { get; init; }
+    public required DateOnly Date { get; init; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
-    public KanjiForm KanjiForm { get; init; } = null!;
+    [InverseProperty(nameof(Sequence.OriginFile))]
+    public List<Sequence> NewSequences { get; init; } = [];
 
-    [ForeignKey(nameof(TagName))]
-    public KanjiFormInfoTag Tag { get; set; } = null!;
+    [InverseProperty(nameof(Revision.FileHeader))]
+    public List<Revision> SequenceRevisions { get; init; } = [];
 }

@@ -18,13 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.SQLite;
-using Jitendex.JMnedict.Entities;
-using Jitendex.JMnedict.Entities.EntryItems;
-using Jitendex.JMnedict.Entities.EntryItems.KanjiFormItems;
-using Jitendex.JMnedict.Entities.EntryItems.ReadingItems;
-using Jitendex.JMnedict.Entities.EntryItems.TranslationItems;
+using Jitendex.Data.JMnedict.Entities;
+using Jitendex.Data.JMnedict.Entities.EntryItems;
+using Jitendex.Data.JMnedict.Entities.EntryItems.KanjiFormItems;
+using Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
+using Jitendex.Data.JMnedict.Entities.EntryItems.TranslationItems;
 
-namespace Jitendex.JMnedict;
+namespace Jitendex.Data.JMnedict;
 
 public class JMnedictContext() : SqliteContext(DatabaseFile.JMnedict)
 {

@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Jitendex.Data.JMnedict;
 using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Import;
 using Jitendex.JMnedict.Import.Models;

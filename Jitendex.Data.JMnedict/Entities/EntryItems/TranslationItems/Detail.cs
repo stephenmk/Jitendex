@@ -18,22 +18,22 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.JMnedict.Entities.EntryItems.ReadingItems;
 
-namespace Jitendex.JMnedict.Entities.EntryItems;
+namespace Jitendex.Data.JMnedict.Entities.EntryItems.TranslationItems;
 
-[Table(nameof(Reading))]
-[PrimaryKey(nameof(EntryId), nameof(Order))]
-public sealed class Reading
+[Table(nameof(Detail))]
+[PrimaryKey(nameof(EntryId), nameof(TranslationOrder), nameof(Order))]
+public sealed class Detail
 {
     public required int EntryId { get; init; }
+    public required int TranslationOrder { get; init; }
     public required int Order { get; init; }
     public required string Text { get; set; }
+    public required string? LanguageName { get; set; }
 
-    public List<ReadingInfo> Infos { get; init; } = [];
-    public List<ReadingPriority> Priorities { get; init; } = [];
-    public List<Restriction> Restrictions { get; init; } = [];
+    [ForeignKey($"{nameof(EntryId)}, {nameof(TranslationOrder)}")]
+    public Translation Translation { get; init; } = null!;
 
-    [ForeignKey(nameof(EntryId))]
-    public Entry Entry { get; init; } = null!;
+    [ForeignKey(nameof(LanguageName))]
+    public DetailLanguage? Language { get; init; } = null!;
 }

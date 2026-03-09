@@ -19,11 +19,11 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMnedict.Entities.EntryItems.ReadingItems;
+namespace Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
 
-[Table(nameof(ReadingPriority))]
+[Table(nameof(ReadingInfo))]
 [PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]
-public sealed class ReadingPriority
+public sealed class ReadingInfo
 {
     public required int EntryId { get; init; }
     public required int ReadingOrder { get; init; }
@@ -34,5 +34,5 @@ public sealed class ReadingPriority
     public Reading Reading { get; init; } = null!;
 
     [ForeignKey(nameof(TagName))]
-    public PriorityTag Tag { get; set; } = null!;
+    public ReadingInfoTag Tag { get; set; } = null!;
 }

@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.JMnedict.Entities;
+using Jitendex.Data.JMnedict.Entities;
 using Jitendex.JMnedict.Import.Models;
 
 namespace Jitendex.JMnedict.Import.Tables;

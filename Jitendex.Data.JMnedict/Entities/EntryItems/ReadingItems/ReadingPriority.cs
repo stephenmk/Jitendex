@@ -19,19 +19,19 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMnedict.Entities.EntryItems.KanjiFormItems;
+namespace Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
 
-[Table(nameof(KanjiFormPriority))]
-[PrimaryKey(nameof(EntryId), nameof(KanjiFormOrder), nameof(Order))]
-public sealed class KanjiFormPriority
+[Table(nameof(ReadingPriority))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]
+public sealed class ReadingPriority
 {
     public required int EntryId { get; init; }
-    public required int KanjiFormOrder { get; init; }
+    public required int ReadingOrder { get; init; }
     public required int Order { get; init; }
     public required string TagName { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
-    public KanjiForm KanjiForm { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
+    public Reading Reading { get; init; } = null!;
 
     [ForeignKey(nameof(TagName))]
     public PriorityTag Tag { get; set; } = null!;

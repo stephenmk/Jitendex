@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Import;
+using Jitendex.Data.JMnedict;
 using Jitendex.JMnedict.Import.Models;
 using Jitendex.JMnedict.Import.Tables;
 using Jitendex.JMnedict.Import.Tables.EntryElements;

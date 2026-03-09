@@ -20,10 +20,10 @@ using System.Collections.Immutable;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Dto.JMnedict;
-using Jitendex.JMnedict.Entities;
-using Jitendex.JMnedict.Entities.EntryItems;
+using Jitendex.Data.JMnedict.Entities;
+using Jitendex.Data.JMnedict.Entities.EntryItems;
 
-namespace Jitendex.JMnedict;
+namespace Jitendex.Data.JMnedict;
 
 public static class DtoMapper
 {

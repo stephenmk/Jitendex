@@ -16,23 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMnedict.Entities;
+namespace Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
 
-[Table(nameof(FileHeader))]
-[Index(nameof(Date), IsUnique = true)]
-public sealed class FileHeader
+[Table(nameof(Restriction))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]
+public sealed class Restriction
 {
-    [Key]
-    public required int Id { get; init; }
-    public required DateOnly Date { get; init; }
+    public required int EntryId { get; init; }
+    public required int ReadingOrder { get; init; }
+    public required int Order { get; init; }
+    public required string KanjiFormText { get; set; }
 
-    [InverseProperty(nameof(Sequence.OriginFile))]
-    public List<Sequence> NewSequences { get; init; } = [];
-
-    [InverseProperty(nameof(Revision.FileHeader))]
-    public List<Revision> SequenceRevisions { get; init; } = [];
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
+    public Reading Reading { get; init; } = null!;
 }

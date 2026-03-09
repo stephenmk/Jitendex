@@ -19,20 +19,17 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMnedict.Entities.EntryItems.TranslationItems;
+namespace Jitendex.Data.JMnedict.Entities.EntryItems.TranslationItems;
 
-[Table(nameof(NameType))]
+[Table(nameof(CrossReference))]
 [PrimaryKey(nameof(EntryId), nameof(TranslationOrder), nameof(Order))]
-public sealed class NameType
+public sealed class CrossReference
 {
     public required int EntryId { get; init; }
     public required int TranslationOrder { get; init; }
     public required int Order { get; init; }
-    public required string TagName { get; set; }
+    public required string Text { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(TranslationOrder)}")]
     public Translation Translation { get; init; } = null!;
-
-    [ForeignKey(nameof(TagName))]
-    public NameTypeTag Tag { get; set; } = null!;
 }

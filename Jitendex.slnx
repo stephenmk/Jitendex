@@ -27,11 +27,11 @@
   <Project Path="Jitendex.Furigana/Jitendex.Furigana.csproj" />
   <Project Path="Jitendex.Import/Jitendex.Import.csproj" />
   <Project Path="Jitendex.Import.ChiseIds/Jitendex.Import.ChiseIds.csproj" />
+  <Project Path="Jitendex.Import.JMdict/Jitendex.Import.JMdict.csproj" />
   <Project Path="Jitendex.Import.JMnedict/Jitendex.Import.JMnedict.csproj" />
   <Project Path="Jitendex.Import.Kanjidic2/Jitendex.Import.Kanjidic2.csproj" />
   <Project Path="Jitendex.Import.KanjiVG/Jitendex.Import.KanjiVG.csproj" />
   <Project Path="Jitendex.Import.Tatoeba/Jitendex.Import.Tatoeba.csproj" />
-  <Project Path="Jitendex.JMdict/Jitendex.JMdict.csproj" />
   <Project Path="Jitendex.JMdict.Fork/Jitendex.JMdict.Fork.csproj" />
   <Project Path="Jitendex.HomeData/Jitendex.HomeData.csproj" />
   <Project Path="Jitendex.SQLite/Jitendex.SQLite.csproj" />

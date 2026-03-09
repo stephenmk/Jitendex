@@ -6,19 +6,20 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch.SystemTextJson" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.3" />
+    <PackageReference Include="System.CommandLine" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
-    <ProjectReference Include="..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
-    <ProjectReference Include="..\Jitendex.Furigana\Jitendex.Furigana.csproj" />
-    <ProjectReference Include="..\Jitendex.JMdict\Jitendex.JMdict.csproj" />
-    <ProjectReference Include="..\Jitendex.HomeData\Jitendex.HomeData.csproj" />
+    <ProjectReference Include="..\Jitendex.EdrdgDictionaryArchive\Jitendex.EdrdgDictionaryArchive.csproj" />
+    <ProjectReference Include="..\..\Libraries\MinimalJsonDiff\Jitendex.MinimalJsonDiff\Jitendex.MinimalJsonDiff.csproj" />
+    <ProjectReference Include="..\Jitendex.Dto\Jitendex.Dto.csproj" />
+    <ProjectReference Include="..\Jitendex.Import\Jitendex.Import.csproj" />
+    <ProjectReference Include="..\Jitendex.Data.JMdict\Jitendex.Data.JMdict.csproj" />
   </ItemGroup>
 </Project>

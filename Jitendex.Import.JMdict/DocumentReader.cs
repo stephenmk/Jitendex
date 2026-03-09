@@ -19,7 +19,6 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.IO.Compression;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import;
 using Jitendex.Import.JMdict.Models;
 using Jitendex.Import.JMdict.Parsing;
 

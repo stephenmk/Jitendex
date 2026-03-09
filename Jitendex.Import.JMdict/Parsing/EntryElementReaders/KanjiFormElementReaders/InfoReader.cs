@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import;
 using Jitendex.Import.JMdict.Models;
 
 namespace Jitendex.Import.JMdict.Parsing.EntryElementReaders.KanjiFormElementReaders;

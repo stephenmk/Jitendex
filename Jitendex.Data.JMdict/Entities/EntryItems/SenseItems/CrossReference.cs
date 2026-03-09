@@ -18,23 +18,22 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.JMdict.Entities.EntryItems.ReadingItems;
 
-namespace Jitendex.JMdict.Entities.EntryItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-[Table(nameof(Reading))]
-[PrimaryKey(nameof(EntryId), nameof(Order))]
-public sealed class Reading
+[Table(nameof(CrossReference))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
+public sealed class CrossReference
 {
     public required int EntryId { get; init; }
+    public required int SenseOrder { get; init; }
     public required int Order { get; init; }
+    public required string TypeName { get; set; }
     public required string Text { get; set; }
-    public required bool NoKanji { get; set; }
 
-    public List<ReadingInfo> Infos { get; init; } = [];
-    public List<ReadingPriority> Priorities { get; init; } = [];
-    public List<Restriction> Restrictions { get; init; } = [];
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
+    public Sense Sense { get; init; } = null!;
 
-    [ForeignKey(nameof(EntryId))]
-    public Entry Entry { get; init; } = null!;
+    [ForeignKey(nameof(TypeName))]
+    public CrossReferenceType Type { get; set; } = null!;
 }

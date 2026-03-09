@@ -18,30 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.JMdict.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdict.Entities.EntryItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-[Table(nameof(Sense))]
-[PrimaryKey(nameof(EntryId), nameof(Order))]
-public sealed class Sense
+[Table(nameof(ReadingRestriction))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
+public sealed class ReadingRestriction
 {
     public required int EntryId { get; init; }
+    public required int SenseOrder { get; init; }
     public required int Order { get; init; }
+    public required string ReadingText { get; set; }
 
-    public List<KanjiFormRestriction> KanjiFormRestrictions { get; init; } = [];
-    public List<ReadingRestriction> ReadingRestrictions { get; init; } = [];
-
-    public List<PartOfSpeech> PartsOfSpeech { get; init; } = [];
-    public List<Field> Fields { get; init; } = [];
-    public List<Misc> Miscs { get; init; } = [];
-    public List<Dialect> Dialects { get; init; } = [];
-
-    public List<Note> Notes { get; init; } = [];
-    public List<Gloss> Glosses { get; init; } = [];
-    public List<LanguageSource> LanguageSources { get; init; } = [];
-    public List<CrossReference> CrossReferences { get; init; } = [];
-
-    [ForeignKey(nameof(EntryId))]
-    public Entry Entry { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
+    public Sense Sense { get; init; } = null!;
 }

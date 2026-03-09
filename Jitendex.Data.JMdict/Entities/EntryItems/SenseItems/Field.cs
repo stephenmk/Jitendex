@@ -19,11 +19,11 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-[Table(nameof(Misc))]
+[Table(nameof(Field))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class Misc
+public sealed class Field
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
@@ -34,5 +34,5 @@ public sealed class Misc
     public Sense Sense { get; init; } = null!;
 
     [ForeignKey(nameof(TagName))]
-    public MiscTag Tag { get; set; } = null!;
+    public FieldTag Tag { get; set; } = null!;
 }

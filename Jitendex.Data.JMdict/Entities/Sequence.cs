@@ -17,18 +17,23 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Jitendex.JMdict.Entities.EntryItems;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Entities;
+namespace Jitendex.Data.JMdict.Entities;
 
-[Table(nameof(Entry))]
-public sealed class Entry
+[Table(nameof(Sequence))]
+[PrimaryKey(nameof(Id))]
+public sealed class Sequence
 {
     public required int Id { get; init; }
-    public List<Reading> Readings { get; init; } = [];
-    public List<KanjiForm> KanjiForms { get; init; } = [];
-    public List<Sense> Senses { get; init; } = [];
+    public required int OriginFileId { get; init; }
 
-    [ForeignKey(nameof(Id))]
-    public Sequence Sequence { get; init; } = null!;
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(Revision.Sequence))]
+    public List<Revision> Revisions { get; init; } = [];
+
+    [InverseProperty(nameof(Entry.Sequence))]
+    public Entry? Entry { get; set; }
 }

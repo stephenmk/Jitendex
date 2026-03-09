@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Tables.EntryElements.SenseElements;

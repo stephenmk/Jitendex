@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
 [Table(nameof(PartOfSpeech))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]

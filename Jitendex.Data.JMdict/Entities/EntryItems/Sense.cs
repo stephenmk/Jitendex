@@ -18,21 +18,30 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems;
 
-[Table(nameof(Field))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class Field
+[Table(nameof(Sense))]
+[PrimaryKey(nameof(EntryId), nameof(Order))]
+public sealed class Sense
 {
     public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
     public required int Order { get; init; }
-    public required string TagName { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; init; } = null!;
+    public List<KanjiFormRestriction> KanjiFormRestrictions { get; init; } = [];
+    public List<ReadingRestriction> ReadingRestrictions { get; init; } = [];
 
-    [ForeignKey(nameof(TagName))]
-    public FieldTag Tag { get; set; } = null!;
+    public List<PartOfSpeech> PartsOfSpeech { get; init; } = [];
+    public List<Field> Fields { get; init; } = [];
+    public List<Misc> Miscs { get; init; } = [];
+    public List<Dialect> Dialects { get; init; } = [];
+
+    public List<Note> Notes { get; init; } = [];
+    public List<Gloss> Glosses { get; init; } = [];
+    public List<LanguageSource> LanguageSources { get; init; } = [];
+    public List<CrossReference> CrossReferences { get; init; } = [];
+
+    [ForeignKey(nameof(EntryId))]
+    public Entry Entry { get; init; } = null!;
 }

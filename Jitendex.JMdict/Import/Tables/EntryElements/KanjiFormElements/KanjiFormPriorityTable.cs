@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.JMdict.Entities.EntryItems.KanjiFormItems;
+using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.JMdict.Import.Models;
 
 namespace Jitendex.JMdict.Import.Tables.EntryElements.KanjiFormElements;

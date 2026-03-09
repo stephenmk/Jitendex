@@ -20,7 +20,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Entities;
+namespace Jitendex.Data.JMdict.Entities;
 
 [Table(nameof(FileHeader))]
 [Index(nameof(Date), IsUnique = true)]

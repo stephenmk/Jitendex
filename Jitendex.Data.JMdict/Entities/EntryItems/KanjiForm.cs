@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -18,20 +18,21 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
 
-namespace Jitendex.JMdict.Entities;
+namespace Jitendex.Data.JMdict.Entities.EntryItems;
 
-[Table(nameof(Revision))]
-[PrimaryKey(nameof(SequenceId), nameof(FileHeaderId))]
-public sealed class Revision
+[Table(nameof(KanjiForm))]
+[PrimaryKey(nameof(EntryId), nameof(Order))]
+public sealed class KanjiForm
 {
-    public required int SequenceId { get; init; }
-    public required int FileHeaderId { get; init; }
-    public required string DiffJson { get; init; }
+    public required int EntryId { get; init; }
+    public required int Order { get; init; }
+    public required string Text { get; set; }
 
-    [ForeignKey(nameof(SequenceId))]
-    public Sequence Sequence { get; init; } = null!;
+    public List<KanjiFormInfo> Infos { get; init; } = [];
+    public List<KanjiFormPriority> Priorities { get; init; } = [];
 
-    [ForeignKey(nameof(FileHeaderId))]
-    public FileHeader FileHeader { get; init; } = null!;
+    [ForeignKey(nameof(EntryId))]
+    public Entry Entry { get; init; } = null!;
 }

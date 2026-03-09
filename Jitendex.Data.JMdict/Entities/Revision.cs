@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2025 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -19,17 +19,19 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities;
 
-[Table(nameof(Note))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class Note
+[Table(nameof(Revision))]
+[PrimaryKey(nameof(SequenceId), nameof(FileHeaderId))]
+public sealed class Revision
 {
-    public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
-    public required int Order { get; init; }
-    public required string Text { get; set; }
+    public required int SequenceId { get; init; }
+    public required int FileHeaderId { get; init; }
+    public required string DiffJson { get; init; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; init; } = null!;
+    [ForeignKey(nameof(SequenceId))]
+    public Sequence Sequence { get; init; } = null!;
+
+    [ForeignKey(nameof(FileHeaderId))]
+    public FileHeader FileHeader { get; init; } = null!;
 }

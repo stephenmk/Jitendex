@@ -19,26 +19,20 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-[Table(nameof(LanguageSource))]
+[Table(nameof(Dialect))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class LanguageSource
+public sealed class Dialect
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int Order { get; init; }
-    public required string? Text { get; set; }
-    public required string LanguageCode { get; set; }
-    public required string TypeName { get; set; }
-    public required bool IsWasei { get; set; }
+    public required string TagName { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;
 
-    [ForeignKey(nameof(LanguageCode))]
-    public Language Language { get; set; } = null!;
-
-    [ForeignKey(nameof(TypeName))]
-    public LanguageSourceType Type { get; set; } = null!;
+    [ForeignKey(nameof(TagName))]
+    public DialectTag Tag { get; set; } = null!;
 }

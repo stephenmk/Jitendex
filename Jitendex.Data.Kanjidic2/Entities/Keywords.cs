@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Jitendex.Kanjidic2.Entities.GroupItems;
-using Jitendex.Kanjidic2.Entities.SubgroupItems;
+using Jitendex.Data.Kanjidic2.Entities.GroupItems;
+using Jitendex.Data.Kanjidic2.Entities.SubgroupItems;
 
-namespace Jitendex.Kanjidic2.Entities;
+namespace Jitendex.Data.Kanjidic2.Entities;
 
 public interface IKeyword
 {

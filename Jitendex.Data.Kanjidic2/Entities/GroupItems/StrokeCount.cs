@@ -18,19 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.GroupItems;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
 
-namespace Jitendex.Kanjidic2.Entities.Groups;
+namespace Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(Order))]
-public sealed class DictionaryGroup
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
+public sealed class StrokeCount
 {
     public required int UnicodeScalarValue { get; init; }
+    public required int GroupOrder { get; init; }
     public required int Order { get; init; }
+    public required int Value { get; set; }
 
-    [ForeignKey(nameof(UnicodeScalarValue))]
-    public Entry Entry { get; init; } = null!;
-
-    [InverseProperty(nameof(Dictionary.Group))]
-    public List<Dictionary> Dictionaries { get; init; } = [];
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
+    public MiscGroup Group { get; init; } = null!;
 }

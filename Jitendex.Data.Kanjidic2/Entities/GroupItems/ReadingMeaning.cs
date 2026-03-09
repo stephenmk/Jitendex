@@ -18,22 +18,26 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.Groups;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
+using Jitendex.Data.Kanjidic2.Entities.SubgroupItems;
 
-namespace Jitendex.Kanjidic2.Entities.GroupItems;
+namespace Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
-public sealed class Codepoint
+public sealed class ReadingMeaning
 {
     public required int UnicodeScalarValue { get; init; }
     public required int GroupOrder { get; init; }
     public required int Order { get; init; }
-    public required string Text { get; set; }
-    public required string TypeName { get; set; }
+    public required bool IsKokuji { get; set; }
+    public required bool IsGhost { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
-    public CodepointGroup Group { get; init; } = null!;
+    public ReadingMeaningGroup Group { get; init; } = null!;
 
-    [ForeignKey(nameof(TypeName))]
-    public CodepointType Type { get; set; } = null!;
+    [InverseProperty(nameof(Meaning.Group))]
+    public List<Meaning> Meanings { get; init; } = [];
+
+    [InverseProperty(nameof(Reading.Group))]
+    public List<Reading> Readings { get; init; } = [];
 }

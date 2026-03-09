@@ -18,28 +18,24 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.GroupItems;
+using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-namespace Jitendex.Kanjidic2.Entities.Groups;
+namespace Jitendex.Data.Kanjidic2.Entities.SubgroupItems;
 
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(Order))]
-public sealed class MiscGroup
+[Table(nameof(Reading))]
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(ReadingMeaningOrder), nameof(Order))]
+public sealed class Reading
 {
     public required int UnicodeScalarValue { get; init; }
+    public required int GroupOrder { get; init; }
+    public required int ReadingMeaningOrder { get; init; }
     public required int Order { get; init; }
-    public int? Grade { get; set; }
-    public int? Frequency { get; set; }
-    public int? JlptLevel { get; set; }
+    public required string Text { get; set; }
+    public required string TypeName { get; set; }
 
-    [ForeignKey(nameof(UnicodeScalarValue))]
-    public Entry Entry { get; init; } = null!;
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}, {nameof(ReadingMeaningOrder)}")]
+    public ReadingMeaning Group { get; init; } = null!;
 
-    [InverseProperty(nameof(RadicalName.Group))]
-    public List<RadicalName> RadicalNames { get; init; } = [];
-
-    [InverseProperty(nameof(StrokeCount.Group))]
-    public List<StrokeCount> StrokeCounts { get; init; } = [];
-
-    [InverseProperty(nameof(Variant.Group))]
-    public List<Variant> Variants { get; init; } = [];
+    [ForeignKey(nameof(TypeName))]
+    public ReadingType Type { get; set; } = null!;
 }

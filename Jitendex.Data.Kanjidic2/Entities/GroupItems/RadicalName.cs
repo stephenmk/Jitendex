@@ -18,22 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.Groups;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
 
-namespace Jitendex.Kanjidic2.Entities.GroupItems;
+namespace Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
-public sealed class Radical
+public sealed class RadicalName
 {
     public required int UnicodeScalarValue { get; init; }
     public required int GroupOrder { get; init; }
     public required int Order { get; init; }
-    public required int Number { get; set; }
-    public required string TypeName { get; set; }
+    public required string Text { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
-    public RadicalGroup Group { get; init; } = null!;
-
-    [ForeignKey(nameof(TypeName))]
-    public RadicalType Type { get; set; } = null!;
+    public MiscGroup Group { get; init; } = null!;
 }

@@ -18,24 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.GroupItems;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
 
-namespace Jitendex.Kanjidic2.Entities.SubgroupItems;
+namespace Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-[Table(nameof(Reading))]
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(ReadingMeaningOrder), nameof(Order))]
-public sealed class Reading
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
+public sealed class Nanori
 {
     public required int UnicodeScalarValue { get; init; }
     public required int GroupOrder { get; init; }
-    public required int ReadingMeaningOrder { get; init; }
     public required int Order { get; init; }
     public required string Text { get; set; }
-    public required string TypeName { get; set; }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}, {nameof(ReadingMeaningOrder)}")]
-    public ReadingMeaning Group { get; init; } = null!;
-
-    [ForeignKey(nameof(TypeName))]
-    public ReadingType Type { get; set; } = null!;
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
+    public ReadingMeaningGroup Group { get; init; } = null!;
 }

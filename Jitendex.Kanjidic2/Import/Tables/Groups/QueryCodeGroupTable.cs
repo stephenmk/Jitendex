@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
-using Jitendex.Kanjidic2.Entities.Groups;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
 using Jitendex.Kanjidic2.Import.Models;
 
 namespace Jitendex.Kanjidic2.Import.Tables.Groups;

@@ -20,7 +20,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Kanjidic2.Entities;
+namespace Jitendex.Data.Kanjidic2.Entities;
 
 [Table(nameof(FileHeader))]
 [Index(nameof(Date), IsUnique = true)]

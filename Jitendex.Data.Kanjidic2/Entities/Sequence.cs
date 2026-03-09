@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,20 +16,24 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.Groups;
 
-namespace Jitendex.Kanjidic2.Entities.GroupItems;
+namespace Jitendex.Data.Kanjidic2.Entities;
 
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
-public sealed class StrokeCount
+[Table(nameof(Sequence))]
+public sealed class Sequence
 {
-    public required int UnicodeScalarValue { get; init; }
-    public required int GroupOrder { get; init; }
-    public required int Order { get; init; }
-    public required int Value { get; set; }
+    [Key]
+    public required int Id { get; init; }
+    public required int OriginFileId { get; init; }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
-    public MiscGroup Group { get; init; } = null!;
+    [ForeignKey(nameof(OriginFileId))]
+    public FileHeader OriginFile { get; init; } = null!;
+
+    [InverseProperty(nameof(Revision.Sequence))]
+    public List<Revision> Revisions { get; init; } = [];
+
+    [InverseProperty(nameof(Entry.Sequence))]
+    public Entry? Entry { get; set; }
 }

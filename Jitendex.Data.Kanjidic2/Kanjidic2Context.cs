@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.SQLite;
-using Jitendex.Kanjidic2.Entities;
-using Jitendex.Kanjidic2.Entities.SubgroupItems;
+using Jitendex.Data.Kanjidic2.Entities;
+using Jitendex.Data.Kanjidic2.Entities.SubgroupItems;
 
-namespace Jitendex.Kanjidic2;
+namespace Jitendex.Data.Kanjidic2;
 
 public class Kanjidic2Context() : SqliteContext(DatabaseFile.Kanjidic2)
 {

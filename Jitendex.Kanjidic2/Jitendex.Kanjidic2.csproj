@@ -17,5 +17,6 @@
     <ProjectReference Include="..\Jitendex.Dto\Jitendex.Dto.csproj" />
     <ProjectReference Include="..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
     <ProjectReference Include="..\Jitendex.Import\Jitendex.Import.csproj" />
+    <ProjectReference Include="..\Jitendex.Data.Kanjidic2\Jitendex.Data.Kanjidic2.csproj" />
   </ItemGroup>
 </Project>

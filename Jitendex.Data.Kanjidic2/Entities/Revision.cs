@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2025 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -18,18 +18,21 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.Groups;
 
-namespace Jitendex.Kanjidic2.Entities.GroupItems;
+namespace Jitendex.Data.Kanjidic2.Entities;
 
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
-public sealed class Nanori
+[Table(nameof(Revision))]
+[PrimaryKey(nameof(SequenceId), nameof(Number))]
+public sealed class Revision
 {
-    public required int UnicodeScalarValue { get; init; }
-    public required int GroupOrder { get; init; }
-    public required int Order { get; init; }
-    public required string Text { get; set; }
+    public required int SequenceId { get; init; }
+    public required int Number { get; init; }
+    public required int FileHeaderId { get; init; }
+    public required string DiffJson { get; init; }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
-    public ReadingMeaningGroup Group { get; init; } = null!;
+    [ForeignKey(nameof(SequenceId))]
+    public required Sequence Sequence { get; init; }
+
+    [ForeignKey(nameof(FileHeaderId))]
+    public FileHeader FileHeader { get; init; } = null!;
 }

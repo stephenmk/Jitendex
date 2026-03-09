@@ -18,22 +18,26 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.GroupItems;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
 
-namespace Jitendex.Kanjidic2.Entities.Groups;
+namespace Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(Order))]
-public sealed class ReadingMeaningGroup
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
+public sealed class QueryCode
 {
     public required int UnicodeScalarValue { get; init; }
+    public required int GroupOrder { get; init; }
     public required int Order { get; init; }
+    public required string Text { get; set; }
+    public required string TypeName { get; set; }
+    public string? Misclassification { get; set; }
 
-    [ForeignKey(nameof(UnicodeScalarValue))]
-    public Entry Entry { get; init; } = null!;
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
+    public QueryCodeGroup Group { get; init; } = null!;
 
-    [InverseProperty(nameof(ReadingMeaning.Group))]
-    public List<ReadingMeaning> ReadingMeanings { get; init; } = [];
+    [ForeignKey(nameof(TypeName))]
+    public QueryCodeType Type { get; set; } = null!;
 
-    [InverseProperty(nameof(Nanori.Group))]
-    public List<Nanori> Nanoris { get; init; } = [];
+    [ForeignKey(nameof(Misclassification))]
+    public MisclassificationType? MisclassificationType { get; set; }
 }

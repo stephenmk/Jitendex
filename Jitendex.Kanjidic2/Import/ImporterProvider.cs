@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Import;
+using Jitendex.Data.Kanjidic2;
 using Jitendex.Kanjidic2.Import.Models;
 using Jitendex.Kanjidic2.Import.Parsing;
 using Jitendex.Kanjidic2.Import.Parsing.GroupReaders;

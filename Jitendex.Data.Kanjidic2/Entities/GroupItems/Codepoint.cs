@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -18,21 +18,22 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
 
-namespace Jitendex.Kanjidic2.Entities;
+namespace Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-[Table(nameof(Revision))]
-[PrimaryKey(nameof(SequenceId), nameof(Number))]
-public sealed class Revision
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
+public sealed class Codepoint
 {
-    public required int SequenceId { get; init; }
-    public required int Number { get; init; }
-    public required int FileHeaderId { get; init; }
-    public required string DiffJson { get; init; }
+    public required int UnicodeScalarValue { get; init; }
+    public required int GroupOrder { get; init; }
+    public required int Order { get; init; }
+    public required string Text { get; set; }
+    public required string TypeName { get; set; }
 
-    [ForeignKey(nameof(SequenceId))]
-    public required Sequence Sequence { get; init; }
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
+    public CodepointGroup Group { get; init; } = null!;
 
-    [ForeignKey(nameof(FileHeaderId))]
-    public FileHeader FileHeader { get; init; } = null!;
+    [ForeignKey(nameof(TypeName))]
+    public CodepointType Type { get; set; } = null!;
 }

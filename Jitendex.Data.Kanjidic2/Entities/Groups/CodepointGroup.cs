@@ -16,24 +16,21 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Jitendex.Kanjidic2.Entities.Groups;
+using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-namespace Jitendex.Kanjidic2.Entities;
+namespace Jitendex.Data.Kanjidic2.Entities.Groups;
 
-[Table(nameof(Entry))]
-public sealed class Entry
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(Order))]
+public sealed class CodepointGroup
 {
-    [Key]
     public required int UnicodeScalarValue { get; init; }
-    public List<CodepointGroup> CodepointGroups { get; init; } = [];
-    public List<DictionaryGroup> DictionaryGroups { get; init; } = [];
-    public List<MiscGroup> MiscGroups { get; init; } = [];
-    public List<QueryCodeGroup> QueryCodeGroups { get; init; } = [];
-    public List<RadicalGroup> RadicalGroups { get; init; } = [];
-    public List<ReadingMeaningGroup> ReadingMeaningGroups { get; init; } = [];
+    public required int Order { get; init; }
 
     [ForeignKey(nameof(UnicodeScalarValue))]
-    public required Sequence Sequence { get; init; }
+    public Entry Entry { get; init; } = null!;
+
+    [InverseProperty(nameof(Codepoint.Group))]
+    public List<Codepoint> Codepoints { get; init; } = [];
 }

@@ -20,11 +20,11 @@ using System.Collections.Immutable;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Dto.Kanjidic2;
-using Jitendex.Kanjidic2.Entities;
-using Jitendex.Kanjidic2.Entities.Groups;
-using Jitendex.Kanjidic2.Entities.GroupItems;
+using Jitendex.Data.Kanjidic2.Entities;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
+using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-namespace Jitendex.Kanjidic2;
+namespace Jitendex.Data.Kanjidic2;
 
 public static class DtoMapper
 {

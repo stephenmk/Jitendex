@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,24 +16,24 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
 
-namespace Jitendex.Kanjidic2.Entities;
+namespace Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-[Table(nameof(Sequence))]
-public sealed class Sequence
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(Order))]
+public sealed class Radical
 {
-    [Key]
-    public required int Id { get; init; }
-    public required int OriginFileId { get; init; }
+    public required int UnicodeScalarValue { get; init; }
+    public required int GroupOrder { get; init; }
+    public required int Order { get; init; }
+    public required int Number { get; set; }
+    public required string TypeName { get; set; }
 
-    [ForeignKey(nameof(OriginFileId))]
-    public FileHeader OriginFile { get; init; } = null!;
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(GroupOrder)}")]
+    public RadicalGroup Group { get; init; } = null!;
 
-    [InverseProperty(nameof(Revision.Sequence))]
-    public List<Revision> Revisions { get; init; } = [];
-
-    [InverseProperty(nameof(Entry.Sequence))]
-    public Entry? Entry { get; set; }
+    [ForeignKey(nameof(TypeName))]
+    public RadicalType Type { get; set; } = null!;
 }

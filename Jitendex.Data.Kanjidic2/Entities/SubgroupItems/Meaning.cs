@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Kanjidic2.Entities.GroupItems;
+using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 
-namespace Jitendex.Kanjidic2.Entities.SubgroupItems;
+namespace Jitendex.Data.Kanjidic2.Entities.SubgroupItems;
 
 [Table(nameof(Meaning))]
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(GroupOrder), nameof(ReadingMeaningOrder), nameof(Order))]

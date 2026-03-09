@@ -110,7 +110,7 @@ internal partial class CrossReferenceAnalyzer
                 ? order2
                 : kanjiFormOrder is null
                 ? null
-                : kanjiFormToReadings.TryGetValue((entry.Id, (int)kanjiFormOrder), out var readingOrders)
+                : kanjiFormToReadings.TryGetValue((entry.Id, kanjiFormOrder.Value), out var readingOrders)
                 ? readingOrders.First()
                 : null;
 
@@ -189,27 +189,9 @@ internal partial class CrossReferenceAnalyzer
 
     private FrozenDictionary<ReferenceText, List<EntryData>> GetReferenceTextToEntries()
     {
-        var entries = LoadEntryData();
-        var dict = new Dictionary<ReferenceText, List<EntryData>>(entries.Count * 4);
-        foreach (var entry in entries)
-        {
-            foreach (var referenceText in GetReferenceTexts(entry.Readings, entry.KanjiForms))
-            {
-                if (dict.TryGetValue(referenceText, out var values))
-                {
-                    values.Add(entry);
-                }
-                else
-                {
-                    dict.Add(referenceText, [entry]);
-                }
-            }
-        }
-        return dict.ToFrozenDictionary();
-    }
+        var dict = new Dictionary<ReferenceText, List<EntryData>>(1_000_000);
 
-    private ImmutableList<EntryData> LoadEntryData()
-        => context.Entries
+        var entryQuery = context.Entries
             .AsSplitQuery()
             .Select(static e => new EntryData
             (
@@ -227,8 +209,25 @@ internal partial class CrossReferenceAnalyzer
                     .Where(static r => r.Infos.Any(static i => i.TagName == "sk"))
                     .Select(static r => r.Order)
                     .ToFrozenSet()
-            ))
-            .ToImmutableList();
+            ));
+
+        foreach (var entry in entryQuery)
+        {
+            foreach (var referenceText in GetReferenceTexts(entry.Readings, entry.KanjiForms))
+            {
+                if (dict.TryGetValue(referenceText, out var values))
+                {
+                    values.Add(entry);
+                }
+                else
+                {
+                    dict.Add(referenceText, [entry]);
+                }
+            }
+        }
+
+        return dict.ToFrozenDictionary();
+    }
 
     private static IEnumerable<ReferenceText> GetReferenceTexts(ImmutableArray<string> readings, ImmutableArray<string> kanjiForms)
     {

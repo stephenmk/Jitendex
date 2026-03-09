@@ -17,9 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.CommandLine;
-using Jitendex.Import.Home;
 
-namespace Jitendex.HomeData;
+namespace Jitendex.Import.Home;
 
 public static class Program
 {

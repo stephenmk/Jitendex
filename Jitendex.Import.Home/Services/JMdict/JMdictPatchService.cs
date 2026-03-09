@@ -20,9 +20,10 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
-using Jitendex.Import.Home.JMdict.Tables;
+using Jitendex.Import.Home.Models;
+using Jitendex.Import.Home.Tables.JMdict;
 
-namespace Jitendex.Import.Home.JMdict;
+namespace Jitendex.Import.Home.Services.JMdict;
 
 internal sealed class JMdictPatchService
 (

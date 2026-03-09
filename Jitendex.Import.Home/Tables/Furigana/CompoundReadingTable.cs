@@ -16,31 +16,28 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.JMdict;
+using Microsoft.Data.Sqlite;
+using Jitendex.Data;
+using Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Import.Home.Models;
 
-internal sealed record CrossReferenceSequenceRow
-(
-    int EntryId,
-    int SenseNumber,
-    string Text,
-    int? RefEntryId
-);
+namespace Jitendex.Import.Home.Tables.Furigana;
 
-internal sealed record JMdictPatchRow
-(
-    int Id,
-    int SequenceId,
-    DateOnly SequenceDate,
-    DateTime CreatedAt,
-    int AuthorId,
-    string AuthorComment,
-    int? PreviousPatchId,
-    string Json
-);
+internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
+{
+    protected override string Name => nameof(CompoundReading);
 
-internal sealed record JMdictPatchApprovalRow
-(
-    int PatchId,
-    int ApproverId,
-    DateTime CreatedAt
-);
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(CompoundReading.CompoundText),
+        nameof(CompoundReading.Text),
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+
+    protected override SqliteParameter[] Parameters(CompoundReadingRow row) =>
+    [
+        new("@0", row.CompoundText),
+        new("@1", row.Text),
+    ];
+}

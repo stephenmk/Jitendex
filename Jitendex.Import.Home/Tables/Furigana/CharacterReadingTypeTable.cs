@@ -18,34 +18,29 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.JMdict;
+using Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Import.Home.JMdict.Tables;
+namespace Jitendex.Import.Home.Tables.Furigana;
 
-internal sealed class CrossReferenceSequenceTable : Table<CrossReferenceSequenceRow>
+internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
 {
-    protected override string Name => nameof(CrossReferenceSequence);
+    protected override string Name => nameof(CharacterReadingType);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CrossReferenceSequence.EntryId),
-        nameof(CrossReferenceSequence.SenseNumber),
-        nameof(CrossReferenceSequence.Text),
-        nameof(CrossReferenceSequence.RefEntryId),
+        nameof(CharacterReadingType.Id),
+        nameof(CharacterReadingType.Name),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(CrossReferenceSequence.EntryId),
-        nameof(CrossReferenceSequence.SenseNumber),
-        nameof(CrossReferenceSequence.Text),
+        nameof(CharacterReadingType.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(CrossReferenceSequenceRow row) =>
+    protected override SqliteParameter[] Parameters(CharacterReadingTypeRow row) =>
     [
-        new("@0", row.EntryId),
-        new("@1", row.SenseNumber),
-        new("@2", row.Text),
-        new("@3", row.RefEntryId.Nullable()),
+        new("@0", row.Id),
+        new("@1", row.Name),
     ];
 }

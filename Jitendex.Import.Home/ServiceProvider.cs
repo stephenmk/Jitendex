@@ -19,10 +19,11 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.Home;
-using Jitendex.Import.Home.Furigana;
-using Jitendex.Import.Home.Furigana.Tables;
-using Jitendex.Import.Home.JMdict;
-using Jitendex.Import.Home.JMdict.Tables;
+using Jitendex.Import.Home.Services;
+using Jitendex.Import.Home.Services.Furigana;
+using Jitendex.Import.Home.Services.JMdict;
+using Jitendex.Import.Home.Tables.Furigana;
+using Jitendex.Import.Home.Tables.JMdict;
 
 namespace Jitendex.Import.Home;
 

@@ -19,39 +19,34 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.JMdict;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Import.Home.JMdict.Tables;
+namespace Jitendex.Import.Home.Tables.JMdict;
 
-internal sealed class JMdictPatchTable : Table<JMdictPatchRow>
+internal sealed class CrossReferenceSequenceTable : Table<CrossReferenceSequenceRow>
 {
-    protected override string Name => nameof(JMdictPatch);
+    protected override string Name => nameof(CrossReferenceSequence);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(JMdictPatch.Id),
-        nameof(JMdictPatch.SequenceId),
-        nameof(JMdictPatch.SequenceDate),
-        nameof(JMdictPatch.CreatedAt),
-        nameof(JMdictPatch.AuthorId),
-        nameof(JMdictPatch.AuthorComment),
-        nameof(JMdictPatch.PreviousPatchId),
-        nameof(JMdictPatch.Json),
+        nameof(CrossReferenceSequence.EntryId),
+        nameof(CrossReferenceSequence.SenseNumber),
+        nameof(CrossReferenceSequence.Text),
+        nameof(CrossReferenceSequence.RefEntryId),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(JMdictPatch.Id)
+        nameof(CrossReferenceSequence.EntryId),
+        nameof(CrossReferenceSequence.SenseNumber),
+        nameof(CrossReferenceSequence.Text),
     ];
 
-    protected override SqliteParameter[] Parameters(JMdictPatchRow row) =>
+    protected override SqliteParameter[] Parameters(CrossReferenceSequenceRow row) =>
     [
-        new("@0", row.Id),
-        new("@1", row.SequenceId),
-        new("@2", row.SequenceDate),
-        new("@3", row.CreatedAt),
-        new("@4", row.AuthorId),
-        new("@5", row.AuthorComment),
-        new("@6", row.PreviousPatchId.Nullable()),
-        new("@7", row.Json),
+        new("@0", row.EntryId),
+        new("@1", row.SenseNumber),
+        new("@2", row.Text),
+        new("@3", row.RefEntryId.Nullable()),
     ];
 }

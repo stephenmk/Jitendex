@@ -19,9 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.Furigana;
-using Jitendex.Import.Home.Furigana.Models;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Import.Home.Furigana.Tables;
+namespace Jitendex.Import.Home.Tables.Furigana;
 
 internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
 {

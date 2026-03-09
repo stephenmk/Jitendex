@@ -16,28 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.AppDirectory;
+using Microsoft.Data.Sqlite;
+using Jitendex.Data;
+using Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Import.Home;
+namespace Jitendex.Import.Home.Tables.Furigana;
 
-internal sealed record ServiceOptions
+internal sealed class CompoundTable : Table<CompoundRow>
 {
-    public DirectoryInfo DataDirectory { get; }
+    protected override string Name => nameof(Compound);
 
-    public ServiceOptions(DirectoryInfo? dataDirectory)
-    {
-        DataDirectory = dataDirectory
-            ?? DataHome.Get(DataSubdirectory.JitendexDataDirectory);
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Compound.Text),
+    ];
 
-        if (!DataDirectory.Exists)
-        {
-            DataDirectory.Create();
-        }
-    }
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    public DirectoryInfo GetFuriganaDirectory()
-        => DataDirectory.CreateSubdirectory("furigana");
-
-    public DirectoryInfo GetJMdictDirectory()
-        => DataDirectory.CreateSubdirectory("jmdict");
+    protected override SqliteParameter[] Parameters(CompoundRow row) =>
+    [
+        new("@0", row.Text),
+    ];
 }

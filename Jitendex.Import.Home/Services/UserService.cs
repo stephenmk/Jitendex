@@ -21,7 +21,7 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 
-namespace Jitendex.Import.Home;
+namespace Jitendex.Import.Home.Services;
 
 internal sealed class UserService(HomeDataContext context, ServiceOptions options)
 {

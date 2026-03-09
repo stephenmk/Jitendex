@@ -18,27 +18,24 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.JMdict;
+using Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Import.Home.JMdict.Tables;
+namespace Jitendex.Import.Home.Tables.Furigana;
 
-internal sealed class JMdictPatchApprovalTable : Table<JMdictPatchApprovalRow>
+internal sealed class CharacterTable : Table<CharacterRow>
 {
-    protected override string Name => nameof(JMdictPatchApproval);
+    protected override string Name => nameof(Character);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(JMdictPatchApproval.PatchId),
-        nameof(JMdictPatchApproval.ApproverId),
-        nameof(JMdictPatchApproval.CreatedAt),
+        nameof(Character.Value),
     ];
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(JMdictPatchApprovalRow row) =>
+    protected override SqliteParameter[] Parameters(CharacterRow row) =>
     [
-        new("@0", row.PatchId),
-        new("@1", row.ApproverId),
-        new("@2", row.CreatedAt),
+        new("@0", row.Value),
     ];
 }

@@ -18,29 +18,41 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Furigana;
-using Jitendex.Import.Home.Furigana.Models;
+using Jitendex.Data.Home.Entities.JMdict;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Import.Home.Furigana.Tables;
+namespace Jitendex.Import.Home.Tables.JMdict;
 
-internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
+internal sealed class JMdictPatchTable : Table<JMdictPatchRow>
 {
-    protected override string Name => nameof(CharacterReadingType);
+    protected override string Name => nameof(JMdictPatch);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CharacterReadingType.Id),
-        nameof(CharacterReadingType.Name),
+        nameof(JMdictPatch.Id),
+        nameof(JMdictPatch.SequenceId),
+        nameof(JMdictPatch.SequenceDate),
+        nameof(JMdictPatch.CreatedAt),
+        nameof(JMdictPatch.AuthorId),
+        nameof(JMdictPatch.AuthorComment),
+        nameof(JMdictPatch.PreviousPatchId),
+        nameof(JMdictPatch.Json),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(CharacterReadingType.Id)
+        nameof(JMdictPatch.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(CharacterReadingTypeRow row) =>
+    protected override SqliteParameter[] Parameters(JMdictPatchRow row) =>
     [
         new("@0", row.Id),
-        new("@1", row.Name),
+        new("@1", row.SequenceId),
+        new("@2", row.SequenceDate),
+        new("@3", row.CreatedAt),
+        new("@4", row.AuthorId),
+        new("@5", row.AuthorComment),
+        new("@6", row.PreviousPatchId.Nullable()),
+        new("@7", row.Json),
     ];
 }

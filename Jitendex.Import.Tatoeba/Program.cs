@@ -17,9 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.CommandLine;
-using Jitendex.Tatoeba.Import;
 
-namespace Jitendex.Tatoeba;
+namespace Jitendex.Import.Tatoeba;
 
 public static class Program
 {

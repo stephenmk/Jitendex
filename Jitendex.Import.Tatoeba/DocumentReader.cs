@@ -18,11 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.IO.Compression;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import;
-using Jitendex.Tatoeba.Import.Models;
-using Jitendex.Tatoeba.Import.Parsing;
+using Jitendex.Import.Tatoeba.Models;
+using Jitendex.Import.Tatoeba.Parsing;
 
-namespace Jitendex.Tatoeba.Import;
+namespace Jitendex.Import.Tatoeba;
 
 internal sealed class DocumentReader(ILogger<DocumentReader> logger)
     : IDocumentReader<DateOnly, Document>

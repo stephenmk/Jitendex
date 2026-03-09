@@ -20,10 +20,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Data.Tatoeba;
-using Jitendex.Import;
-using Jitendex.Tatoeba.Import.Models;
+using Jitendex.Import.Tatoeba.Models;
 
-namespace Jitendex.Tatoeba.Import;
+namespace Jitendex.Import.Tatoeba;
 
 internal static class ImporterProvider
 {

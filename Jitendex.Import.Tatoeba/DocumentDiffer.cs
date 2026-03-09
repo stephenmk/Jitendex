@@ -16,10 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Import;
-using Jitendex.Tatoeba.Import.Models;
+using Jitendex.Import.Tatoeba.Models;
 
-namespace Jitendex.Tatoeba.Import;
+namespace Jitendex.Import.Tatoeba;
 
 internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, DocumentDiff>
 {

@@ -18,12 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
-using Jitendex.Import;
 using Jitendex.Data.Tatoeba;
-using Jitendex.Tatoeba.Import.Models;
-using Jitendex.Tatoeba.Import.Tables;
+using Jitendex.Import.Tatoeba.Models;
+using Jitendex.Import.Tatoeba.Tables;
 
-namespace Jitendex.Tatoeba.Import;
+namespace Jitendex.Import.Tatoeba;
 
 internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, TatoebaContext context)
     : IDocumentDatabase<DateOnly, Document, DocumentDiff>

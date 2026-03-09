@@ -19,9 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.SQLite;
 using Jitendex.Data.Tatoeba.Entities;
-using Jitendex.Tatoeba.Import.Models;
+using Jitendex.Import.Tatoeba.Models;
 
-namespace Jitendex.Tatoeba.Import.Tables;
+namespace Jitendex.Import.Tatoeba.Tables;
 
 internal sealed class ExampleTable : Table<ExampleElement>
 {

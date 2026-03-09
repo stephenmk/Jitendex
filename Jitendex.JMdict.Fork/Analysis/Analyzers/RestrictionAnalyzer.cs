@@ -81,9 +81,9 @@ internal partial class RestrictionAnalyzer
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {EntryId} contains a reading restriction to invalid kanji form `{KanjiForm}`")]
-    protected partial void LogInvalidRestriction(int entryId, string kanjiForm);
+    partial void LogInvalidRestriction(int entryId, string kanjiForm);
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {EntryId} contains a kanji form restriction to search-only `{KanjiForm}`")]
-    protected partial void LogReferenceToSearchOnlyForm(int entryId, string kanjiForm);
+    partial void LogReferenceToSearchOnlyForm(int entryId, string kanjiForm);
 }

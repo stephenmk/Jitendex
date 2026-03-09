@@ -26,11 +26,11 @@ public static class DtoTextExtensions
         sb.AppendLine($"JMdict Entry #{x.Id}");
         if (x.Entry is not null)
         {
-            sb.AppendLine(x.Entry.ToText());
+            sb.Append(x.Entry.ToText());
         }
         else
         {
-            sb.AppendLine("< deleted >");
+            sb.Append("< deleted >");
         }
         return sb.ToString();
     }

@@ -81,9 +81,9 @@ internal partial class ReadingRestrictionAnalyzer
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {EntryId} contains a sense reading restriction to invalid `{Reading}`")]
-    protected partial void LogInvalidSenseReadingRestriction(int entryId, string reading);
+    partial void LogInvalidSenseReadingRestriction(int entryId, string reading);
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {EntryId} contains a sense reading restriction to search-only `{Reading}`")]
-    protected partial void LogReferenceToSearchOnlyForm(int entryId, string reading);
+    partial void LogReferenceToSearchOnlyForm(int entryId, string reading);
 }

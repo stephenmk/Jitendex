@@ -127,13 +127,13 @@ internal partial class KanjiFormBridgeAnalyzer
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {EntryId} reading `{Reading}` contains redundant restrictions")]
-    protected partial void LogRedundantRestrictions(int entryId, string reading);
+    partial void LogRedundantRestrictions(int entryId, string reading);
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {EntryId} contains a visible kanji form without a corresponding reading")]
-    protected partial void LogOrphanKanjiForms(int entryId);
+    partial void LogOrphanKanjiForms(int entryId);
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {EntryId} contains redundant reading {Reading}")]
-    protected partial void LogRedundantReadings(int entryId, string reading);
+    partial void LogRedundantReadings(int entryId, string reading);
 }

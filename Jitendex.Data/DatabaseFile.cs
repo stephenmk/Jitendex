@@ -16,9 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.SQLite.DatabaseFile;
+using static Jitendex.Data.DatabaseFile;
 
-namespace Jitendex.SQLite;
+namespace Jitendex.Data;
 
 public enum DatabaseFile
 {

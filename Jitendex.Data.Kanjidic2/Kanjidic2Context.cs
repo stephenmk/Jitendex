@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
-using Jitendex.SQLite;
 using Jitendex.Data.Kanjidic2.Entities;
 using Jitendex.Data.Kanjidic2.Entities.SubgroupItems;
 

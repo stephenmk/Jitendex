@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.ChiseIds.Entities;
-using Jitendex.SQLite;
 
 namespace Jitendex.Data.ChiseIds;
 

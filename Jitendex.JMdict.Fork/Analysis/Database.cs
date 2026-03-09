@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
-using Jitendex.SQLite;
+using Jitendex.Data;
 using Jitendex.JMdict.Entities;
 using Jitendex.JMdict.Entities.EntryItems;
 using Jitendex.JMdict.Entities.EntryItems.KanjiFormItems;

@@ -15,6 +15,7 @@
     <Project Path="Libraries/MinimalPatch/Jitendex.MinimalPatch/Jitendex.MinimalPatch.csproj" />
   </Folder>
   <Project Path="Jitendex.AppDirectory/Jitendex.AppDirectory.csproj" />
+  <Project Path="Jitendex.Data/Jitendex.Data.csproj" />
   <Project Path="Jitendex.Data.ChiseIds/Jitendex.Data.ChiseIds.csproj" />
   <Project Path="Jitendex.Data.JMdict/Jitendex.Data.JMdict.csproj" />
   <Project Path="Jitendex.Data.JMnedict/Jitendex.Data.JMnedict.csproj" />
@@ -34,5 +35,4 @@
   <Project Path="Jitendex.Import.Tatoeba/Jitendex.Import.Tatoeba.csproj" />
   <Project Path="Jitendex.JMdict.Fork/Jitendex.JMdict.Fork.csproj" />
   <Project Path="Jitendex.HomeData/Jitendex.HomeData.csproj" />
-  <Project Path="Jitendex.SQLite/Jitendex.SQLite.csproj" />
 </Solution>

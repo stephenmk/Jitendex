@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Data.Sqlite;
-using Jitendex.SQLite;
+using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.Import.JMdict.Models;
 

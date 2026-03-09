@@ -16,6 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jitendex.AppDirectory\Jitendex.AppDirectory.csproj" />
-    <ProjectReference Include="..\Jitendex.SQLite\Jitendex.SQLite.csproj" />
+    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
   </ItemGroup>
 </Project>

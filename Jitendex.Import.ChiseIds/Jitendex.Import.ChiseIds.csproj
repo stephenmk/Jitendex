@@ -14,8 +14,9 @@
     <PackageReference Include="System.CommandLine" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Jitendex.SQLite\Jitendex.SQLite.csproj" />
+    <ProjectReference Include="..\Jitendex.Import\Jitendex.Import.csproj" />
     <ProjectReference Include="..\Jitendex.AppDirectory\Jitendex.AppDirectory.csproj" />
+    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
     <ProjectReference Include="..\Jitendex.Data.ChiseIds\Jitendex.Data.ChiseIds.csproj" />
   </ItemGroup>
 </Project>

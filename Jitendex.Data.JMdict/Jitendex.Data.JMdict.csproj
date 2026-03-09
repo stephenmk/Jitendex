@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Jitendex.Dto\Jitendex.Dto.csproj" />
-    <ProjectReference Include="..\Jitendex.SQLite\Jitendex.SQLite.csproj" />
+    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

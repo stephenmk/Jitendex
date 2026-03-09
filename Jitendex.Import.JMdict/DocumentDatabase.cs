@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Jitendex.Import;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.JMdict;
 using Jitendex.Import.JMdict.Models;

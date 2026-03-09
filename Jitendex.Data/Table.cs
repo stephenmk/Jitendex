@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.SQLite;
+namespace Jitendex.Data;
 
 public abstract class Table<T>
 {

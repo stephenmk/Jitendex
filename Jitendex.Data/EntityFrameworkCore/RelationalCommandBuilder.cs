@@ -16,10 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.SQLite;
+using Microsoft.EntityFrameworkCore.Storage;
 
-public static class Extensions
+namespace Jitendex.Data.EntityFrameworkCore;
+
+internal sealed class SqliteRelationalCommandBuilder : RelationalCommandBuilder
 {
-    public static object Nullable(this object? dbValue)
-        => dbValue ?? DBNull.Value;
+    public SqliteRelationalCommandBuilder(
+        RelationalCommandBuilderDependencies dependencies) : base(dependencies) { }
+
+    public override IRelationalCommand Build() => new RelationalCommand
+    (
+        dependencies: Dependencies,
+        commandText: ToString().WithoutRowId(),
+        logCommandText: string.Empty,
+        parameters: Parameters
+    );
 }

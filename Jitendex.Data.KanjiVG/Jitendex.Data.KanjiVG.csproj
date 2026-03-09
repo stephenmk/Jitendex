@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Jitendex.SQLite\Jitendex.SQLite.csproj" />
+    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

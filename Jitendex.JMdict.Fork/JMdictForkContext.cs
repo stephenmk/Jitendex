@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
-using Jitendex.SQLite;
+using Jitendex.Data;
 using Jitendex.JMdict.Fork.Entities;
 using Jitendex.JMdict.Fork.Entities.EntryItems;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;

@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Jitendex.SQLite.EntityFrameworkCore;
+namespace Jitendex.Data.EntityFrameworkCore;
 
 internal sealed class SqliteRelationalCommandBuilderFactory : RelationalCommandBuilderFactory
 {

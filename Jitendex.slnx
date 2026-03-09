@@ -22,6 +22,7 @@
   <Project Path="Jitendex.Furigana.Test/Jitendex.Furigana.Test.csproj" />
   <Project Path="Jitendex.Furigana/Jitendex.Furigana.csproj" />
   <Project Path="Jitendex.Import/Jitendex.Import.csproj" />
+  <Project Path="Jitendex.Import.Tatoeba/Jitendex.Import.Tatoeba.csproj" />
   <Project Path="Jitendex.JMdict/Jitendex.JMdict.csproj" />
   <Project Path="Jitendex.JMdict.Fork/Jitendex.JMdict.Fork.csproj" />
   <Project Path="Jitendex.JMnedict/Jitendex.JMnedict.csproj" />
@@ -29,5 +30,4 @@
   <Project Path="Jitendex.KanjiVG/Jitendex.KanjiVG.csproj" />
   <Project Path="Jitendex.HomeData/Jitendex.HomeData.csproj" />
   <Project Path="Jitendex.SQLite/Jitendex.SQLite.csproj" />
-  <Project Path="Jitendex.Tatoeba/Jitendex.Tatoeba.csproj" />
 </Solution>

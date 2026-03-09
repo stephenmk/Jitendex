@@ -13,5 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Jitendex.SQLite\Jitendex.SQLite.csproj" />
     <ProjectReference Include="..\Jitendex.Import\Jitendex.Import.csproj" />
+    <ProjectReference Include="..\Jitendex.Data.KanjiVG\Jitendex.Data.KanjiVG.csproj" />
   </ItemGroup>
 </Project>

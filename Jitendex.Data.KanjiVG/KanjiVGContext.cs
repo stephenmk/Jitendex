@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore;
-using Jitendex.KanjiVG.Entities;
+using Jitendex.Data.KanjiVG.Entities;
 using Jitendex.SQLite;
 
-namespace Jitendex.KanjiVG;
+namespace Jitendex.Data.KanjiVG;
 
 public class KanjiVGContext() : SqliteContext(DatabaseFile.KanjiVG)
 {

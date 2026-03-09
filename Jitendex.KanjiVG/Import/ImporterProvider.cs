@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Jitendex.Data.KanjiVG;
 using Jitendex.KanjiVG.Import.Readers;
 
 namespace Jitendex.KanjiVG.Import;

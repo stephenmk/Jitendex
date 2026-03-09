@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.KanjiVG.Entities;
+namespace Jitendex.Data.KanjiVG.Entities;
 
 [Table(nameof(Component))]
 [PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Order))]

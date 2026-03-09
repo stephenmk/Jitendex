@@ -19,32 +19,18 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.KanjiVG.Entities;
+namespace Jitendex.Data.KanjiVG.Entities;
 
-[Table(nameof(ComponentGroup))]
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId))]
-public sealed class ComponentGroup
+[Table(nameof(StrokeNumber))]
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Order))]
+public sealed class StrokeNumber
 {
     public required int UnicodeScalarValue { get; init; }
     public required int VariantTypeId { get; init; }
-    public required string IdAttribute { get; set; }
-    public required int StyleId { get; set; }
+    public required int Order { get; init; }
+    public required string Number { get; set; }
+    public required string TransformAttribute { get; set; }
 
     [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
-    public required Variant Variant { get; init; }
-
-    [ForeignKey(nameof(StyleId))]
-    public required ComponentGroupStyle Style { get; set; }
-
-    [InverseProperty(nameof(Component.Group))]
-    public List<Component> Components { get; init; } = [];
-
-    public string XmlIdAttribute()
-        => $"kvg:StrokePaths_{Variant.FileNameFormat()}";
-
-    public int ComponentCount()
-        => Components.Sum(static c => c.ComponentCount());
-
-    public int StrokeCount()
-        => Components.Sum(static c => c.StrokeCount());
+    public required StrokeNumberGroup Group { get; set; }
 }

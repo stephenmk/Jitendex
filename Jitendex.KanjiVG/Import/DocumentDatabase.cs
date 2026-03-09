@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.Data.KanjiVG;
 using Jitendex.KanjiVG.Import.Tables;
 using Jitendex.KanjiVG.Import.Models;
 

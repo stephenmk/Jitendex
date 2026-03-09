@@ -19,26 +19,26 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.KanjiVG.Entities;
+namespace Jitendex.Data.KanjiVG.Entities;
 
-[Table(nameof(StrokeNumberGroup))]
-[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId))]
-public sealed class StrokeNumberGroup
+[Table(nameof(Stroke))]
+[PrimaryKey(nameof(UnicodeScalarValue), nameof(VariantTypeId), nameof(Order))]
+public sealed class Stroke
 {
     public required int UnicodeScalarValue { get; init; }
     public required int VariantTypeId { get; init; }
+    public required int Order { get; init; }
     public required string IdAttribute { get; set; }
-    public required int StyleId { get; set; }
+    public required int ComponentOrder { get; set; }
+    public required int? TypeId { get; set; }
+    public required string PathData { get; set; }
 
-    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}")]
-    public required Variant Variant { get; init; }
+    [ForeignKey($"{nameof(UnicodeScalarValue)}, {nameof(VariantTypeId)}, {nameof(ComponentOrder)}")]
+    public required Component Component { get; set; }
 
-    [ForeignKey(nameof(StyleId))]
-    public required StrokeNumberGroupStyle Style { get; set; }
-
-    [InverseProperty(nameof(StrokeNumber.Group))]
-    public List<StrokeNumber> StrokeNumbers { get; init; } = [];
+    [ForeignKey(nameof(TypeId))]
+    public required StrokeType? Type { get; set; }
 
     public string XmlIdAttribute()
-        => $"kvg:StrokeNumbers_{Variant.FileNameFormat()}";
+        => $"kvg:{Component.Group.Variant.FileNameFormat()}-s{Order}";
 }

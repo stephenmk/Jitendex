@@ -18,6 +18,7 @@
   <Project Path="Jitendex.Chise/Jitendex.Chise.csproj" />
   <Project Path="Jitendex.Data.JMnedict/Jitendex.Data.JMnedict.csproj" />
   <Project Path="Jitendex.Data.Kanjidic2/Jitendex.Data.Kanjidic2.csproj" />
+  <Project Path="Jitendex.Data.KanjiVG/Jitendex.Data.KanjiVG.csproj" />
   <Project Path="Jitendex.Data.Tatoeba/Jitendex.Data.Tatoeba.csproj" />
   <Project Path="Jitendex.Dto/Jitendex.Dto.csproj" />
   <Project Path="Jitendex.EdrdgDictionaryArchive/Jitendex.EdrdgDictionaryArchive.csproj" />

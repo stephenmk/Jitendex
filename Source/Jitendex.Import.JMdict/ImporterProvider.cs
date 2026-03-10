@@ -35,7 +35,7 @@ internal static class ImporterProvider
         => new ServiceCollection()
 
         // Database context.
-        .AddDbContext<JmdictContext>()
+        .AddDbContext<JMdictContext>()
 
         // Import interfaces.
         .AddEdrdgArchiveService(DictionaryFile.JMdict_e_examp, archiveDirectory)

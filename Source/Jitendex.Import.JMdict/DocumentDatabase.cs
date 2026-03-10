@@ -28,7 +28,7 @@ using Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 namespace Jitendex.Import.JMdict;
 
-internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JmdictContext context)
+internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictContext context)
     : IDocumentDatabase<DateOnly, Document, DocumentDiff>
 {
     private static readonly FileHeaderTable FileHeaderTable = new();

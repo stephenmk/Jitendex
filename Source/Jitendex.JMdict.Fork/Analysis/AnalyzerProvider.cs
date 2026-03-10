@@ -34,7 +34,7 @@ internal static class AnalyzerProvider
         .AddTransient<Analyzer>()
 
         // Databases
-        .AddDbContext<JmdictContext>()
+        .AddDbContext<JMdictContext>()
         .AddDbContext<JMdictForkContext>()
         .AddDbContext<HomeContext>()
         .AddTransient<Database>()

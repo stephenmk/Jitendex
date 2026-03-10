@@ -29,7 +29,7 @@ namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 internal partial class PatchAnalyzer
 (
     ILogger<PatchAnalyzer> logger,
-    JmdictContext jmdictContext,
+    JMdictContext jmdictContext,
     JMdictForkContext forkContext,
     HomeContext homeContext
 )

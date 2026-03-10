@@ -43,9 +43,4 @@ public sealed class CrossReference
 
     [InverseProperty(nameof(AmbiguousReference.Reference))]
     public AmbiguousReference? IsAmbiguous { get; set; }
-
-    /// <summary>
-    /// Stable and unique identifier for this reference in the raw data.
-    /// </summary>
-    public string ToExportKey() => $"{EntryId}・{SenseOrder + 1}・{Text}";
 }

@@ -21,7 +21,6 @@ using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.JMdict;
-using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Services;
 using Jitendex.Forks.JMdict.Tables.References;
@@ -42,6 +41,7 @@ internal partial class CrossReferenceAnalyzer
 )
 {
     private sealed record ReferenceText(string Text1, string? Text2);
+
     private sealed record EntryData
     (
         int Id,
@@ -50,6 +50,17 @@ internal partial class CrossReferenceAnalyzer
         ImmutableArray<string> KanjiForms,
         FrozenSet<int> HiddenReadingIndices
     );
+
+    private sealed record CrossReferenceData
+    (
+        int EntryId,
+        int SenseOrder,
+        int Order,
+        string Text
+    )
+    {
+        public string CacheKey => $"{EntryId}・{SenseOrder + 1}・{Text}";
+    }
 
     public void Analyze()
     {
@@ -72,7 +83,6 @@ internal partial class CrossReferenceAnalyzer
                     .Select(static bridge => bridge.ReadingOrder)
                     .ToImmutableArray()
             })
-            .AsEnumerable()
             .ToFrozenDictionary
             (
                 keySelector: static g => (g.Key.EntryId, g.Key.KanjiFormOrder),
@@ -84,7 +94,10 @@ internal partial class CrossReferenceAnalyzer
         var kanjiFormRefs = new List<KanjiFormReferenceRow>(50_000);
         var ambiguousRefs = new List<AmbiguousReferenceRow>(5_000);
 
-        foreach (var xref in context.CrossReferences.AsNoTracking())
+        var xrefs = context.CrossReferences
+            .Select(static x => new CrossReferenceData(x.EntryId, x.SenseOrder, x.Order, x.Text));
+
+        foreach (var xref in xrefs)
         {
             var parsedRef = parser.Parse(xref.Text);
 
@@ -100,7 +113,7 @@ internal partial class CrossReferenceAnalyzer
                 ? null
                 : potentialEntries.Length == 1
                 ? potentialEntries[0].Id
-                : FindIdInCache(xref.ToExportKey(), potentialEntryIds.ToArray(), entryIdCache);
+                : FindIdInCache(xref.CacheKey, potentialEntryIds.ToArray(), entryIdCache);
 
             var entry = entryId is null ? null
                 : potentialEntries.First(e => e.Id == entryId);
@@ -177,7 +190,7 @@ internal partial class CrossReferenceAnalyzer
 
     private EntryData[] GetPotentialEntries
     (
-        CrossReference xref,
+        CrossReferenceData xref,
         ParsedReferenceText parsed,
         FrozenDictionary<ReferenceText, List<EntryData>> referenceTextToEntries
     )
@@ -186,7 +199,7 @@ internal partial class CrossReferenceAnalyzer
 
         if (!referenceTextToEntries.TryGetValue(key, out var entryInfos))
         {
-            LogImpossibleReference(xref.ToExportKey());
+            LogImpossibleReference(xref.CacheKey);
             return [];
         }
 
@@ -196,7 +209,7 @@ internal partial class CrossReferenceAnalyzer
 
         if (possibleTargetEntries.Length == 0)
         {
-            LogBizarreReference(xref.ToExportKey());
+            LogBizarreReference(xref.CacheKey);
         }
 
         return possibleTargetEntries;
@@ -267,7 +280,7 @@ internal partial class CrossReferenceAnalyzer
 
     private void LogReferenceInconsistencies
     (
-        CrossReference xref,
+        CrossReferenceData xref,
         ParsedReferenceText parsed,
         EntryData? entry,
         int? readingOrder,
@@ -281,21 +294,21 @@ internal partial class CrossReferenceAnalyzer
         }
         else if (readingOrder is null)
         {
-            LogMissingReading(xref.ToExportKey());
+            LogMissingReading(xref.CacheKey);
         }
         else if (entry.HiddenReadingIndices.Contains((int)readingOrder))
         {
-            LogReferenceToSearchOnlyReading(xref.ToExportKey());
+            LogReferenceToSearchOnlyReading(xref.CacheKey);
         }
         else if (kanjiFormOrder is null && parsed.Text2 is not null)
         {
-            LogMissingKanjiForm(xref.ToExportKey());
+            LogMissingKanjiForm(xref.CacheKey);
         }
         else if (kanjiFormOrder is not null &&
                 kanjiFormToReadings.TryGetValue((entry.Id, (int)kanjiFormOrder), out var readings) &&
                 !readings.Contains((int)readingOrder))
         {
-            LogInvalidPair(xref.ToExportKey());
+            LogInvalidPair(xref.CacheKey);
         }
     }
 

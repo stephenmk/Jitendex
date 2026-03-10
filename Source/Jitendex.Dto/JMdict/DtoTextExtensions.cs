@@ -30,7 +30,7 @@ public static class DtoTextExtensions
         }
         else
         {
-            sb.Append("< deleted >");
+            sb.AppendLine("< deleted >");
         }
         return sb.ToString();
     }
@@ -173,7 +173,7 @@ public static class DtoTextExtensions
             : $"[{x.TypeName}] {x.Text}";
 
     private static string ToText(this CrossReferenceDto x)
-        => $"⇒{x.TypeName}: {x.Text}";
+        => $"⇒ {x.TypeName}: {x.Text}";
 
     private static string ToText(this LanguageSourceDto x)
     {

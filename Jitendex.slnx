@@ -14,6 +14,9 @@
     <Project Path="Source/Jitendex.Data.KanjiVG/Jitendex.Data.KanjiVG.csproj" />
     <Project Path="Source/Jitendex.Data.Tatoeba/Jitendex.Data.Tatoeba.csproj" />
   </Folder>
+  <Folder Name="/Forks/">
+    <Project Path="Source/Jitendex.Forks.JMdict/Jitendex.Forks.JMdict.csproj" />
+  </Folder>
   <Folder Name="/Import/">
     <Project Path="Source/Jitendex.Import/Jitendex.Import.csproj" />
     <Project Path="Source/Jitendex.Import.ChiseIds/Jitendex.Import.ChiseIds.csproj" />
@@ -34,5 +37,4 @@
   <Project Path="Source/Jitendex.EdrdgDictionaryArchive/Jitendex.EdrdgDictionaryArchive.csproj" />
   <Project Path="Source/Jitendex.Furigana/Jitendex.Furigana.csproj" />
   <Project Path="Source/Jitendex.Furigana.Test/Jitendex.Furigana.Test.csproj" />
-  <Project Path="Source/Jitendex.JMdict.Fork/Jitendex.JMdict.Fork.csproj" />
 </Solution>

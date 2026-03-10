@@ -75,7 +75,7 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<ReadingReference> ReadingReferences { get; set; } = null!;
     public DbSet<KanjiFormReference> KanjiFormReferences { get; set; } = null!;
     public DbSet<SenseReference> SenseReferences { get; set; } = null!;
-    public DbSet<AmbiguityFlag> AmbiguityFlags { get; set; } = null!;
+    public DbSet<AmbiguousReference> AmbiguousReferences { get; set; } = null!;
     #endregion
 
     #region Furigana Items

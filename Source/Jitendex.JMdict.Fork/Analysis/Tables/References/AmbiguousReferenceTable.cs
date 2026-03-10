@@ -23,20 +23,20 @@ using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
 namespace Jitendex.JMdict.Fork.Analysis.Tables.References;
 
-internal sealed class AmbiguityFlagTable : Table<AmbiguityFlagRow>
+internal sealed class AmbiguousReferenceTable : Table<AmbiguousReferenceRow>
 {
-    protected override string Name => nameof(AmbiguityFlag);
+    protected override string Name => nameof(AmbiguousReference);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(AmbiguityFlag.EntryId),
-        nameof(AmbiguityFlag.SenseOrder),
-        nameof(AmbiguityFlag.CrossReferenceOrder),
+        nameof(AmbiguousReference.EntryId),
+        nameof(AmbiguousReference.SenseOrder),
+        nameof(AmbiguousReference.CrossReferenceOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(AmbiguityFlagRow row) =>
+    protected override SqliteParameter[] Parameters(AmbiguousReferenceRow row) =>
     [
         new("@0", row.EntryId),
         new("@1", row.SenseOrder),

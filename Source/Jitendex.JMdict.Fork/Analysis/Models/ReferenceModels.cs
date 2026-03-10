@@ -25,7 +25,7 @@ internal sealed record ParsedReferenceText
     int SenseNumber
 );
 
-internal sealed record AmbiguityFlagRow
+internal sealed record AmbiguousReferenceRow
 (
     int EntryId,
     int SenseOrder,

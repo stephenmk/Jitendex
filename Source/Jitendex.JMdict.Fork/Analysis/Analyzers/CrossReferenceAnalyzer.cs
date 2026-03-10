@@ -34,7 +34,7 @@ internal partial class CrossReferenceAnalyzer
     CrossReferenceCacheService cacheService,
     CrossReferenceTextParser parser,
 
-    AmbiguityFlagTable ambiguityFlagTable,
+    AmbiguousReferenceTable ambiguityFlagTable,
     EntryReferenceTable entryReferenceTable,
     SenseReferenceTable senseReferenceTable,
     ReadingReferenceTable readingReferenceTable,
@@ -83,7 +83,7 @@ internal partial class CrossReferenceAnalyzer
         var senseRefs = new List<SenseReferenceRow>(50_000);
         var readingRefs = new List<ReadingReferenceRow>(50_000);
         var kanjiFormRefs = new List<KanjiFormReferenceRow>(50_000);
-        var ambiguityFlags = new List<AmbiguityFlagRow>(5_000);
+        var ambiguityFlags = new List<AmbiguousReferenceRow>(5_000);
 
         foreach (var xref in context.CrossReferences.AsNoTracking())
         {

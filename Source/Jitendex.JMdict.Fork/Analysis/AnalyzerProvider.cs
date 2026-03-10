@@ -61,7 +61,7 @@ internal static class AnalyzerProvider
         .AddTransient<CrossReferenceCacheService>()
 
         // Tables
-        .AddTransient<AmbiguityFlagTable>()
+        .AddTransient<AmbiguousReferenceTable>()
         .AddTransient<EntryReferenceTable>()
         .AddTransient<SenseReferenceTable>()
         .AddTransient<ReadingReferenceTable>()

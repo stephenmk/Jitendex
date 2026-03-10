@@ -40,13 +40,13 @@ internal sealed class CrossReferenceCacheService
 
     public void Export()
     {
-        var dictionary = forkContext.AmbiguityFlags
+        var dictionary = forkContext.AmbiguousReferences
             .Select(static x => new
             {
-                Key = new Key(x.EntryId, x.SenseOrder + 1, x.Source.Text),
-                Value = x.Source.EntryReference == null
+                Key = new Key(x.EntryId, x.SenseOrder + 1, x.Reference.Text),
+                Value = x.Reference.EntryReference == null
                     ? null
-                    : (int?)x.Source.EntryReference.EntryId
+                    : (int?)x.Reference.EntryReference.EntryId
             })
             .ToDictionary(static x => x.Key, static x => x.Value);
 

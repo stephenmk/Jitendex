@@ -22,14 +22,14 @@ using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
-[Table(nameof(AmbiguityFlag))]
+[Table(nameof(AmbiguousReference))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
-public sealed class AmbiguityFlag
+public sealed class AmbiguousReference
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int CrossReferenceOrder { get; init; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
-    public CrossReference Source { get; init; } = null!;
+    public CrossReference Reference { get; init; } = null!;
 }

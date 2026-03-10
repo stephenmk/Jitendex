@@ -51,6 +51,12 @@ internal partial class CrossReferenceAnalyzer
         FrozenSet<int> HiddenReadingIndices
     );
 
+    private readonly record struct KanjiFormKey
+    (
+        int EntryId,
+        int KanjiFormOrder
+    );
+
     private sealed record CrossReferenceData
     (
         int EntryId,
@@ -72,22 +78,7 @@ internal partial class CrossReferenceAnalyzer
     private void SolveSequences(FrozenDictionary<string, int?> entryIdCache)
     {
         var referenceTextToEntries = GetReferenceTextToEntries();
-
-        var kanjiFormToReadings = context.ReadingKanjiFormBridges
-            .GroupBy(static x => new { x.EntryId, x.KanjiFormOrder })
-            .Select(static group => new
-            {
-                group.Key,
-                Value = group
-                    .OrderBy(static bridge => bridge.ReadingOrder)
-                    .Select(static bridge => bridge.ReadingOrder)
-                    .ToImmutableArray()
-            })
-            .ToFrozenDictionary
-            (
-                keySelector: static g => (g.Key.EntryId, g.Key.KanjiFormOrder),
-                elementSelector: static g => g.Value
-            );
+        var kanjiFormToReadings = GetKanjiFormToReadings();
 
         var entryRefs = new List<EntryReferenceRow>(50_000);
         var readingRefs = new List<ReadingReferenceRow>(50_000);
@@ -130,7 +121,7 @@ internal partial class CrossReferenceAnalyzer
                 ? order2
                 : kanjiFormOrder is null
                 ? null
-                : kanjiFormToReadings.TryGetValue((entry.Id, kanjiFormOrder.Value), out var readingOrders)
+                : kanjiFormToReadings.TryGetValue(new(entry.Id, kanjiFormOrder.Value), out var readingOrders)
                 ? readingOrders.First()
                 : null;
 
@@ -159,6 +150,22 @@ internal partial class CrossReferenceAnalyzer
         readingReferenceTable.InsertItems(context, readingRefs);
         kanjiFormReferenceTable.InsertItems(context, kanjiFormRefs);
     }
+
+    private FrozenDictionary<KanjiFormKey, ImmutableArray<int>> GetKanjiFormToReadings()
+        => context.ReadingKanjiFormBridges
+            .GroupBy(static x => new { x.EntryId, x.KanjiFormOrder })
+            .Select(static group => new
+            {
+                group.Key,
+                Value = group
+                    .OrderBy(static bridge => bridge.ReadingOrder)
+                    .Select(static bridge => bridge.ReadingOrder)
+            })
+            .ToFrozenDictionary
+            (
+                keySelector: static g => new KanjiFormKey(g.Key.EntryId, g.Key.KanjiFormOrder),
+                elementSelector: static g => g.Value.ToImmutableArray()
+            );
 
     private int? FindIdInCache(string key, int[] potentialEntryIds, FrozenDictionary<string, int?> entryIdCache)
     {
@@ -285,7 +292,7 @@ internal partial class CrossReferenceAnalyzer
         EntryData? entry,
         int? readingOrder,
         int? kanjiFormOrder,
-        FrozenDictionary<(int SequenceId, int KanjiFormOrder), ImmutableArray<int>> kanjiFormToReadings
+        FrozenDictionary<KanjiFormKey, ImmutableArray<int>> kanjiFormToReadings
     )
     {
         if (entry is null)
@@ -296,7 +303,7 @@ internal partial class CrossReferenceAnalyzer
         {
             LogMissingReading(xref.CacheKey);
         }
-        else if (entry.HiddenReadingIndices.Contains((int)readingOrder))
+        else if (entry.HiddenReadingIndices.Contains(readingOrder.Value))
         {
             LogReferenceToSearchOnlyReading(xref.CacheKey);
         }
@@ -304,9 +311,9 @@ internal partial class CrossReferenceAnalyzer
         {
             LogMissingKanjiForm(xref.CacheKey);
         }
-        else if (kanjiFormOrder is not null &&
-                kanjiFormToReadings.TryGetValue((entry.Id, (int)kanjiFormOrder), out var readings) &&
-                !readings.Contains((int)readingOrder))
+        else if (kanjiFormOrder.HasValue &&
+                kanjiFormToReadings.TryGetValue(new(entry.Id, kanjiFormOrder.Value), out var readings) &&
+                !readings.Contains(readingOrder.Value))
         {
             LogInvalidPair(xref.CacheKey);
         }

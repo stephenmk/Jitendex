@@ -35,5 +35,5 @@ public sealed class FuriganaSegment
     public required string? TypeName { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
-    public KanjiFormBridge KanjiFormBridge { get; init; } = null!;
+    public ReadingKanjiFormBridge KanjiFormBridge { get; init; } = null!;
 }

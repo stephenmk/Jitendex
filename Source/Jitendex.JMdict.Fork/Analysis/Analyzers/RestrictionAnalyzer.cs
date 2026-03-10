@@ -26,7 +26,7 @@ internal partial class RestrictionAnalyzer
 (
     ILogger<RestrictionAnalyzer> logger,
     JMdictForkContext context,
-    RestrictionTable table
+    RestrictionLinkTable table
 )
 {
     public void Analyze()
@@ -49,7 +49,7 @@ internal partial class RestrictionAnalyzer
             })
             .ToList();
 
-        var updates = new List<RestrictionRow>(restrictions.Count);
+        var updates = new List<RestrictionLinkRow>(restrictions.Count);
 
         foreach (var r in restrictions)
         {

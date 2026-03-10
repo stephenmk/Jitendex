@@ -26,7 +26,7 @@ internal partial class KanjiFormRestrictionAnalyzer
 (
     ILogger<KanjiFormRestrictionAnalyzer> logger,
     JMdictForkContext context,
-    KanjiFormRestrictionTable table
+    KanjiFormRestrictionLinkTable table
 )
 {
     public void Analyze()
@@ -49,7 +49,7 @@ internal partial class KanjiFormRestrictionAnalyzer
             })
             .ToList();
 
-        var updates = new List<KanjiFormRestrictionRow>(restrictions.Count);
+        var updates = new List<KanjiFormRestrictionLinkRow>(restrictions.Count);
 
         foreach (var r in restrictions)
         {

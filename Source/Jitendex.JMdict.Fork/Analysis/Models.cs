@@ -25,27 +25,27 @@ internal sealed record ParsedReferenceText
     int SenseNumber
 );
 
-internal sealed record RestrictionRow
+internal sealed record RestrictionLinkRow
 (
     int EntryId,
     int ReadingOrder,
-    int Order,
+    int RestrictionOrder,
     int KanjiFormOrder
 );
 
-internal sealed record ReadingRestrictionRow
+internal sealed record ReadingRestrictionLinkRow
 (
     int EntryId,
     int SenseOrder,
-    int Order,
+    int RestrictionOrder,
     int ReadingOrder
 );
 
-internal sealed record KanjiFormRestrictionRow
+internal sealed record KanjiFormRestrictionLinkRow
 (
     int EntryId,
     int SenseOrder,
-    int Order,
+    int RestrictionOrder,
     int KanjiFormOrder
 );
 

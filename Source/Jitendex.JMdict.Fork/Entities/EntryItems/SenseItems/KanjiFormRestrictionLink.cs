@@ -19,22 +19,20 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
-[Table(nameof(KanjiFormBridge))]
-[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder))]
-public sealed class KanjiFormBridge
+[Table(nameof(KanjiFormRestrictionLink))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(RestrictionOrder))]
+public sealed class KanjiFormRestrictionLink
 {
     public required int EntryId { get; init; }
-    public required int ReadingOrder { get; init; }
-    public required int KanjiFormOrder { get; init; }
+    public required int SenseOrder { get; init; }
+    public required int RestrictionOrder { get; init; }
+    public required int KanjiFormOrder { get; set; }
 
-    [InverseProperty(nameof(FuriganaSegment.KanjiFormBridge))]
-    public List<FuriganaSegment> FuriganaSegments { get; init; } = [];
-
-    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
-    public Reading Reading { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(RestrictionOrder)}")]
+    public KanjiFormRestriction Source { get; init; } = null!;
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
-    public KanjiForm KanjiForm { get; init; } = null!;
+    public KanjiForm KanjiForm { get; set; } = null!;
 }

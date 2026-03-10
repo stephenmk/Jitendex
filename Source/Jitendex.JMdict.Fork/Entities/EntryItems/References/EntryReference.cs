@@ -18,28 +18,28 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
-using Jitendex.JMdict.Fork.Entities.EntryItems.KanjiFormItems;
 using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
-using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
-namespace Jitendex.JMdict.Fork.Entities.EntryItems;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
-[Table(nameof(KanjiForm))]
-[PrimaryKey(nameof(EntryId), nameof(Order))]
-public sealed class KanjiForm
+[Table(nameof(EntryReference))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
+public sealed class EntryReference
 {
     public required int EntryId { get; init; }
-    public required int Order { get; init; }
-    public required string Text { get; set; }
+    public required int SenseOrder { get; init; }
+    public required int CrossReferenceOrder { get; init; }
+    public required int RefEntryId { get; set; }
 
-    [ForeignKey(nameof(EntryId))]
-    public Entry Entry { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
+    public CrossReference Source { get; init; } = null!;
 
-    public List<KanjiFormInfo> Infos { get; init; } = [];
-    public List<KanjiFormPriority> Priorities { get; init; } = [];
+    [InverseProperty(nameof(References.KanjiFormReference.Source))]
+    public KanjiFormReference? KanjiFormReference { get; set; }
 
-    public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
-    public List<KanjiFormReference> References { get; init; } = [];
-    public List<KanjiFormRestrictionLink> RestrictionLinks { get; init; } = [];
+    [InverseProperty(nameof(References.ReadingReference.Source))]
+    public ReadingReference? ReadingReference { get; set; }
+
+    [InverseProperty(nameof(References.SenseReference.Source))]
+    public SenseReference? SenseReference { get; set; }
 }

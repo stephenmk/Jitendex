@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 using Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
 using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
 namespace Jitendex.JMdict.Fork.Entities.EntryItems;
 
@@ -33,19 +34,14 @@ public sealed class Reading
     public required string Text { get; set; }
     public required bool NoKanji { get; set; }
 
+    [ForeignKey(nameof(EntryId))]
+    public Entry Entry { get; init; } = null!;
+
     public List<ReadingInfo> Infos { get; init; } = [];
     public List<ReadingPriority> Priorities { get; init; } = [];
     public List<Restriction> Restrictions { get; init; } = [];
 
-    [ForeignKey(nameof(EntryId))]
-    public Entry Entry { get; init; } = null!;
-
-    [InverseProperty(nameof(KanjiFormBridge.Reading))]
-    public List<KanjiFormBridge> Bridges { get; init; } = [];
-
-    [InverseProperty(nameof(CrossReference.ReferencedReading))]
-    public List<CrossReference> ReverseCrossReferences { get; init; } = [];
-
-    [InverseProperty(nameof(ReadingRestriction.Reading))]
-    public List<ReadingRestriction> RestrictedSenses { get; init; } = [];
+    public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
+    public List<ReadingReference> ReverseReferences { get; init; } = [];
+    public List<ReadingRestrictionLink> RestrictionLinks { get; init; } = [];
 }

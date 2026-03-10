@@ -18,34 +18,34 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdict.Fork.Analysis.Tables;
 
-internal sealed class RestrictionTable : Table<RestrictionRow>
+internal sealed class KanjiFormRestrictionLinkTable : Table<KanjiFormRestrictionLinkRow>
 {
-    protected override string Name => nameof(Restriction);
+    protected override string Name => nameof(KanjiFormRestrictionLink);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Restriction.EntryId),
-        nameof(Restriction.ReadingOrder),
-        nameof(Restriction.Order),
-        nameof(Restriction.KanjiFormOrder),
+        nameof(KanjiFormRestrictionLink.EntryId),
+        nameof(KanjiFormRestrictionLink.SenseOrder),
+        nameof(KanjiFormRestrictionLink.RestrictionOrder),
+        nameof(KanjiFormRestrictionLink.KanjiFormOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(Restriction.EntryId),
-        nameof(Restriction.ReadingOrder),
-        nameof(Restriction.Order),
+        nameof(KanjiFormRestrictionLink.EntryId),
+        nameof(KanjiFormRestrictionLink.SenseOrder),
+        nameof(KanjiFormRestrictionLink.RestrictionOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(RestrictionRow update) =>
+    protected override SqliteParameter[] Parameters(KanjiFormRestrictionLinkRow row) =>
     [
-        new("@0", update.EntryId),
-        new("@1", update.ReadingOrder),
-        new("@2", update.Order),
-        new("@3", update.KanjiFormOrder),
+        new("@0", row.EntryId),
+        new("@1", row.SenseOrder),
+        new("@2", row.RestrictionOrder),
+        new("@3", row.KanjiFormOrder),
     ];
 }

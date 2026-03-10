@@ -22,30 +22,30 @@ using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdict.Fork.Analysis.Tables;
 
-internal sealed class ReadingRestrictionTable : Table<ReadingRestrictionRow>
+internal sealed class ReadingRestrictionLinkTable : Table<ReadingRestrictionLinkRow>
 {
-    protected override string Name => nameof(ReadingRestriction);
+    protected override string Name => nameof(ReadingRestrictionLink);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(ReadingRestriction.EntryId),
-        nameof(ReadingRestriction.SenseOrder),
-        nameof(ReadingRestriction.Order),
-        nameof(ReadingRestriction.ReadingOrder),
+        nameof(ReadingRestrictionLink.EntryId),
+        nameof(ReadingRestrictionLink.SenseOrder),
+        nameof(ReadingRestrictionLink.RestrictionOrder),
+        nameof(ReadingRestrictionLink.ReadingOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(ReadingRestriction.EntryId),
-        nameof(ReadingRestriction.SenseOrder),
-        nameof(ReadingRestriction.Order),
+        nameof(ReadingRestrictionLink.EntryId),
+        nameof(ReadingRestrictionLink.SenseOrder),
+        nameof(ReadingRestrictionLink.RestrictionOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(ReadingRestrictionRow update) =>
+    protected override SqliteParameter[] Parameters(ReadingRestrictionLinkRow row) =>
     [
-        new("@0", update.EntryId),
-        new("@1", update.SenseOrder),
-        new("@2", update.Order),
-        new("@3", update.ReadingOrder),
+        new("@0", row.EntryId),
+        new("@1", row.SenseOrder),
+        new("@2", row.RestrictionOrder),
+        new("@3", row.ReadingOrder),
     ];
 }

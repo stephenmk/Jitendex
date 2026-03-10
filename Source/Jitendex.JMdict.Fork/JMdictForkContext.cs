@@ -71,7 +71,7 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<CharacterReadingType> CharacterReadingTypes { get; set; } = null!;
     public DbSet<DerivedCharacterReading> DerivedCharacterReadings { get; set; } = null!;
     public DbSet<DerivedCharacterReadingType> DerivedCharacterReadingTypes { get; set; } = null!;
-    public DbSet<KanjiFormBridge> KanjiFormBridges { get; set; } = null!;
+    public DbSet<ReadingKanjiFormBridge> KanjiFormBridges { get; set; } = null!;
     #endregion
 
     #region Keywords

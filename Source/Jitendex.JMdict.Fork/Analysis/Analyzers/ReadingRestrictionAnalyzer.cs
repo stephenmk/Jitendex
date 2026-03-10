@@ -26,7 +26,7 @@ internal partial class ReadingRestrictionAnalyzer
 (
     ILogger<ReadingRestrictionAnalyzer> logger,
     JMdictForkContext context,
-    ReadingRestrictionTable table
+    ReadingRestrictionLinkTable table
 )
 {
     public void Analyze()
@@ -49,7 +49,7 @@ internal partial class ReadingRestrictionAnalyzer
             })
             .ToList();
 
-        var updates = new List<ReadingRestrictionRow>(restrictions.Count);
+        var updates = new List<ReadingRestrictionLinkRow>(restrictions.Count);
 
         foreach (var r in restrictions)
         {

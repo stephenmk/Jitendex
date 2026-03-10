@@ -28,7 +28,7 @@ internal partial class KanjiFormBridgeAnalyzer
 (
     ILogger<KanjiFormBridgeAnalyzer> logger,
     JMdictForkContext context,
-    KanjiFormBridgeTable table
+    ReadingKanjiFormBridgeTable table
 )
 {
     private readonly record struct ReadingData

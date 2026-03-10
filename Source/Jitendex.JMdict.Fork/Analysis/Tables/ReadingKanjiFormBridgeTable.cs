@@ -18,34 +18,32 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
 namespace Jitendex.JMdict.Fork.Analysis.Tables;
 
-internal sealed class KanjiFormRestrictionTable : Table<KanjiFormRestrictionRow>
+internal sealed class ReadingKanjiFormBridgeTable : Table<KanjiFormBridgeRow>
 {
-    protected override string Name => nameof(KanjiFormRestriction);
+    protected override string Name => nameof(ReadingKanjiFormBridge);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(KanjiFormRestriction.EntryId),
-        nameof(KanjiFormRestriction.SenseOrder),
-        nameof(KanjiFormRestriction.Order),
-        nameof(KanjiFormRestriction.KanjiFormOrder),
+        nameof(ReadingKanjiFormBridge.EntryId),
+        nameof(ReadingKanjiFormBridge.ReadingOrder),
+        nameof(ReadingKanjiFormBridge.KanjiFormOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(KanjiFormRestriction.EntryId),
-        nameof(KanjiFormRestriction.SenseOrder),
-        nameof(KanjiFormRestriction.Order),
+        nameof(ReadingKanjiFormBridge.EntryId),
+        nameof(ReadingKanjiFormBridge.ReadingOrder),
+        nameof(ReadingKanjiFormBridge.KanjiFormOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormRestrictionRow update) =>
+    protected override SqliteParameter[] Parameters(KanjiFormBridgeRow bridge) =>
     [
-        new("@0", update.EntryId),
-        new("@1", update.SenseOrder),
-        new("@2", update.Order),
-        new("@3", update.KanjiFormOrder),
+        new("@0", bridge.EntryId),
+        new("@1", bridge.ReadingOrder),
+        new("@2", bridge.KanjiFormOrder),
     ];
 }

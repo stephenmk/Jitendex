@@ -29,11 +29,10 @@ public sealed class Restriction
     public required int ReadingOrder { get; init; }
     public required int Order { get; init; }
     public required string KanjiFormText { get; set; }
-    public int? KanjiFormOrder { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
     public Reading Reading { get; init; } = null!;
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
-    public KanjiForm? KanjiForm { get; set; }
+    [InverseProperty(nameof(RestrictionLink.Source))]
+    public RestrictionLink? Link { get; set; }
 }

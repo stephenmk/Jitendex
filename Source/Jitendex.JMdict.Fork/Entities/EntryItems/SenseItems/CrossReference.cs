@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
@@ -31,26 +32,14 @@ public sealed class CrossReference
     public required string TypeName { get; set; }
     public required string Text { get; set; }
 
-    public int? RefEntryId { get; set; }
-    public int? RefReadingOrder { get; set; }
-    public int? RefKanjiFormOrder { get; set; }
-    public int? RefSenseOrder { get; set; }
-    public bool? IsAmbiguous { get; set; }
-
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;
 
     [ForeignKey(nameof(TypeName))]
     public CrossReferenceType Type { get; set; } = null!;
 
-    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefReadingOrder)}")]
-    public Reading? ReferencedReading { get; set; }
-
-    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefKanjiFormOrder)}")]
-    public KanjiForm? ReferencedKanjiForm { get; set; }
-
-    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefSenseOrder)}")]
-    public Sense? ReferencedSense { get; set; }
+    [InverseProperty(nameof(References.EntryReference.Source))]
+    public EntryReference? EntryReference { get; set; }
 
     /// <summary>
     /// Stable and unique identifier for this reference in the raw data.

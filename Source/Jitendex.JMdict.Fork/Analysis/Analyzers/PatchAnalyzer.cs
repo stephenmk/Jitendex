@@ -20,7 +20,8 @@ using System.Collections.Frozen;
 using System.Text.Json;
 using Microsoft.AspNetCore.JsonPatch.SystemTextJson;
 using Microsoft.Extensions.Logging;
-using Jitendex.HomeData;
+using Jitendex.Data.Home;
+using Jitendex.Data.JMdict;
 using Jitendex.Dto.JMdict;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
@@ -30,7 +31,7 @@ internal partial class PatchAnalyzer
     ILogger<PatchAnalyzer> logger,
     JmdictContext jmdictContext,
     JMdictForkContext forkContext,
-    HomeDataContext homeContext
+    HomeContext homeContext
 )
 {
     private sealed record PatchData(int Id, int FileId, string Json);

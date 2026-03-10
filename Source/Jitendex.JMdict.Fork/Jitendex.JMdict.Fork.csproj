@@ -15,10 +15,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
-    <ProjectReference Include="..\Jitendex.Furigana\Jitendex.Furigana.csproj" />
-    <ProjectReference Include="..\Jitendex.JMdict\Jitendex.JMdict.csproj" />
-    <ProjectReference Include="..\Jitendex.HomeData\Jitendex.HomeData.csproj" />
     <ProjectReference Include="..\..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
+    <ProjectReference Include="..\Jitendex.Furigana\Jitendex.Furigana.csproj" />
+    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
+    <ProjectReference Include="..\Jitendex.Data.Home\Jitendex.Data.Home.csproj" />
+    <ProjectReference Include="..\Jitendex.Data.JMdict\Jitendex.Data.JMdict.csproj" />
   </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.HomeData;
+using Jitendex.Data.Home;
 using Jitendex.JMdict.Fork.Analysis.Tables;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
@@ -24,7 +24,7 @@ namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 internal sealed class CharacterAnalyzer
 (
     JMdictForkContext forkContext,
-    HomeDataContext homeContext,
+    HomeContext homeContext,
     CharacterTable table
 )
 {

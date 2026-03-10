@@ -17,13 +17,13 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Frozen;
-using Jitendex.HomeData;
+using Jitendex.Data.Home;
 
 namespace Jitendex.JMdict.Fork.Analysis.Services;
 
 internal sealed class CrossReferenceCacheService
 (
-    HomeDataContext homeContext,
+    HomeContext homeContext,
     JMdictForkContext forkContext
 )
 {

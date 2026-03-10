@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Jitendex.HomeData;
+using Jitendex.Data.Home;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
 
 namespace Jitendex.JMdict.Fork.Analysis;
@@ -26,7 +26,7 @@ internal sealed class Analyzer
 (
     ILogger<Analyzer> logger,
     JMdictForkContext forkContext,
-    HomeDataContext homeContext,
+    HomeContext homeContext,
     Database database,
 
     PatchAnalyzer patchAnalyzer,

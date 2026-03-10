@@ -18,7 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using Jitendex.HomeData;
+using Jitendex.Data.Home;
+using Jitendex.Data.JMdict;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
 using Jitendex.JMdict.Fork.Analysis.Services;
 using Jitendex.JMdict.Fork.Analysis.Tables;
@@ -33,7 +34,7 @@ internal static class AnalyzerProvider
         // Databases
         .AddDbContext<JmdictContext>()
         .AddDbContext<JMdictForkContext>()
-        .AddDbContext<HomeDataContext>()
+        .AddDbContext<HomeContext>()
         .AddTransient<Database>()
 
         // Analyzers

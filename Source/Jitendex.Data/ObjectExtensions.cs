@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Data;
 
-public static class Extensions
+public static class ObjectExtensions
 {
     public static object Nullable(this object? dbValue)
         => dbValue ?? DBNull.Value;

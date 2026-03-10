@@ -80,7 +80,7 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        string[] ignoredNamespaces =
+        string[] forkNamespaces =
         [
             $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.Furigana)}",
             $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.Text)}",
@@ -88,10 +88,10 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
             $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.EntryItems)}.{nameof(Entities.EntryItems.Links)}",
         ];
 
-        var typesToIgnore = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(t => ignoredNamespaces.Contains(t.Namespace) && !t.IsAbstract);
+        var forkTypes = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(t => forkNamespaces.Contains(t.Namespace) && !t.IsAbstract);
 
-        foreach (var type in typesToIgnore)
+        foreach (var type in forkTypes)
         {
             modelBuilder.Ignore(type);
         }

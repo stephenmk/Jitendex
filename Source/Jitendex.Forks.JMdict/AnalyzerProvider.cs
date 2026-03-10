@@ -37,7 +37,11 @@ internal static class AnalyzerProvider
         .AddDbContext<JMdictContext>()
         .AddDbContext<JMdictForkContext>()
         .AddDbContext<HomeContext>()
-        .AddTransient<Database>()
+
+        // Helpers
+        .AddTransient<DatabaseCopier>()
+        .AddTransient<CrossReferenceTextParser>()
+        .AddTransient<CrossReferenceCacheService>()
 
         // Analyzers
         .AddTransient<PatchAnalyzer>()
@@ -55,10 +59,6 @@ internal static class AnalyzerProvider
         .AddTransient<DerivedReadingTypeAnalyzer>()
         .AddTransient<KanjiFormBridgeAnalyzer>()
         .AddTransient<FuriganaSegmentAnalyzer>()
-
-        // Helpers
-        .AddTransient<CrossReferenceTextParser>()
-        .AddTransient<CrossReferenceCacheService>()
 
         // Tables
         .AddTransient<RestrictionLinkTable>()

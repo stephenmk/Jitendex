@@ -25,11 +25,11 @@ using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.Forks.JMdict;
+namespace Jitendex.Forks.JMdict.Services;
 
-internal sealed class Database(JMdictForkContext context)
+internal sealed class DatabaseCopier(JMdictForkContext context)
 {
-    public void TransferDataFromJmdict()
+    public void CopyDataFromJmdict()
     {
         context.AttachDatabase(DatabaseFile.JMdict);
         context.Database.ExecuteSqlRaw(TransferCommandText);

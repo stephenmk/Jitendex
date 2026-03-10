@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Analyzers;
+using Jitendex.Forks.JMdict.Services;
 
 namespace Jitendex.Forks.JMdict;
 
@@ -28,7 +29,7 @@ internal sealed class Analyzer
     ILogger<Analyzer> logger,
     JMdictForkContext forkContext,
     HomeContext homeContext,
-    Database database,
+    DatabaseCopier databaseCopier,
 
     PatchAnalyzer patchAnalyzer,
 
@@ -54,32 +55,39 @@ internal sealed class Analyzer
         using var forkTransaction = forkContext.Database.BeginTransaction();
 
         logger.LogInformation("Copying data from the JMdict database file");
-
-        database.TransferDataFromJmdict();
+        databaseCopier.CopyDataFromJmdict();
 
         logger.LogInformation("Starting data analysis");
-
-        patchAnalyzer.Analyze();
-
-        restrictionAnalyzer.Analyze();
-        readingRestrictionAnalyzer.Analyze();
-        kanjiFormRestrictionAnalyzer.Analyze();
-        kanjiFormBridgeAnalyzer.Analyze();
-
-        crossReferenceAnalyzer.Analyze();
-
-        compoundAnalyzer.Analyze();
-        characterAnalyzer.Analyze();
-        characterReadingAnalyzer.Analyze();
-
-        derivedReadingTypeAnalyzer.Analyze();
-        derivedReadingAnalyzer.Analyze();
-
-        furiganaSegmentAnalyzer.Analyze();
+        RunAnalyzers();
 
         forkTransaction.Commit();
         homeTransaction.Commit();
 
         forkContext.ExecuteVacuum();
+    }
+
+    private void RunAnalyzers()
+    {
+        // Apply home-grown data patches.
+        patchAnalyzer.Analyze();
+
+        // Make the implicit relationships in the data explicit.
+        restrictionAnalyzer.Analyze();
+        readingRestrictionAnalyzer.Analyze();
+        kanjiFormRestrictionAnalyzer.Analyze();
+        kanjiFormBridgeAnalyzer.Analyze();
+        crossReferenceAnalyzer.Analyze();
+
+        // Transfer home-grown character information.
+        compoundAnalyzer.Analyze();
+        characterAnalyzer.Analyze();
+        characterReadingAnalyzer.Analyze();
+
+        // Add inflections of standard readings.
+        derivedReadingTypeAnalyzer.Analyze();
+        derivedReadingAnalyzer.Analyze();
+
+        // Run furigana solver for all reading + kanji form pairs.
+        furiganaSegmentAnalyzer.Analyze();
     }
 }

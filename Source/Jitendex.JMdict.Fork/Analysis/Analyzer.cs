@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
+using Jitendex.Data.JMdict;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
 
 namespace Jitendex.JMdict.Fork.Analysis;

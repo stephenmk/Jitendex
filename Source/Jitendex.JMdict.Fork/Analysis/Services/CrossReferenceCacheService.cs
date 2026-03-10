@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Frozen;
 using Jitendex.Data.Home;
+using Jitendex.Data.JMdict;
 
 namespace Jitendex.JMdict.Fork.Analysis.Services;
 

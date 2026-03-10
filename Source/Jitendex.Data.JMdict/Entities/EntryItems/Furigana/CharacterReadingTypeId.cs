@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,26 +16,16 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.Data;
-using Jitendex.JMdict.Fork.Analysis.Models;
-using Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
-
-internal sealed class CompoundTable : Table<CompoundRow>
+public enum CharacterReadingTypeId
 {
-    protected override string Name => nameof(Compound);
-
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(Compound.Text)
-    ];
-
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
-
-    protected override SqliteParameter[] Parameters(CompoundRow row) =>
-    [
-        new("@0", row.Text)
-    ];
+    Onyomi,
+    Kunyomi,
+    Chinese,
+    Korean,
+    Kana,
+    Alphanumeric,
+    Symbol,
+    Unknown,
 }

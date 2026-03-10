@@ -16,9 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.Data.JMdict;
+using Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
 using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
-using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 

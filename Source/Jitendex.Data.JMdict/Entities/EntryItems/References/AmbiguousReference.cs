@@ -18,21 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.References;
 
-[Table(nameof(ReadingRestriction))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class ReadingRestriction
+[Table(nameof(AmbiguousReference))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
+public sealed class AmbiguousReference
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
-    public required int Order { get; init; }
-    public required string ReadingText { get; set; }
+    public required int CrossReferenceOrder { get; init; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; init; } = null!;
-
-    [InverseProperty(nameof(ReadingRestrictionLink.Source))]
-    public ReadingRestrictionLink? Link { get; set; }
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
+    public CrossReference Reference { get; init; } = null!;
 }

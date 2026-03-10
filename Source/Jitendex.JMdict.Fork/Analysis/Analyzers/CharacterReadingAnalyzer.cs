@@ -17,9 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.Home;
+using Jitendex.Data.JMdict;
 using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
-using F = Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
+using F = Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
 using H = Jitendex.Data.Home.Entities.Furigana;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;

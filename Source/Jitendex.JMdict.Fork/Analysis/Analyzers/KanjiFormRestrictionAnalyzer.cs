@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict;
 using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Analysis.Tables.Links;
-using System.Collections.Immutable;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 

@@ -18,7 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
 using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
+using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
+using Jitendex.Data.JMdict.Entities.EntryItems.References;
 
 namespace Jitendex.Data.JMdict.Entities.EntryItems;
 
@@ -30,9 +34,14 @@ public sealed class KanjiForm
     public required int Order { get; init; }
     public required string Text { get; set; }
 
+    [ForeignKey(nameof(EntryId))]
+    public Entry Entry { get; init; } = null!;
+
     public List<KanjiFormInfo> Infos { get; init; } = [];
     public List<KanjiFormPriority> Priorities { get; init; } = [];
 
-    [ForeignKey(nameof(EntryId))]
-    public Entry Entry { get; init; } = null!;
+    public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
+    public List<KanjiFormReference> SenseReferences { get; init; } = [];
+    public List<RestrictionLink> ReadingRestrictions { get; init; } = [];
+    public List<KanjiFormRestrictionLink> SenseRestrictions { get; init; } = [];
 }

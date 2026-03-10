@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.JMdict.Fork.Analysis.Models;
-using Jitendex.JMdict.Fork.Entities.EntryItems.References;
+using Jitendex.Data.JMdict.Entities.EntryItems.References;
 
 namespace Jitendex.JMdict.Fork.Analysis.Tables.References;
 

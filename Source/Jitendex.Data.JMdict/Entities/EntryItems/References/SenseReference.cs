@@ -19,20 +19,21 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.References;
 
-[Table(nameof(ReadingRestriction))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class ReadingRestriction
+[Table(nameof(SenseReference))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), nameof(RefEntryId))]
+public sealed class SenseReference
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
-    public required int Order { get; init; }
-    public required string ReadingText { get; set; }
+    public required int CrossReferenceOrder { get; init; }
+    public required int RefEntryId { get; init; }
+    public required int RefSenseOrder { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}, {nameof(RefEntryId)}")]
+    public EntryReference Source { get; init; } = null!;
 
-    [InverseProperty(nameof(ReadingRestrictionLink.Source))]
-    public ReadingRestrictionLink? Link { get; set; }
+    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefSenseOrder)}")]
+    public Sense Sense { get; set; } = null!;
 }

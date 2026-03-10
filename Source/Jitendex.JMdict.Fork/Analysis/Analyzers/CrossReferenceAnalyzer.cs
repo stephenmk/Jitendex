@@ -20,9 +20,10 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Jitendex.Data.JMdict;
+using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Analysis.Services;
-using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 using Jitendex.JMdict.Fork.Analysis.Tables.References;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;

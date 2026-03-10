@@ -19,20 +19,21 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
 
-[Table(nameof(ReadingRestriction))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class ReadingRestriction
+[Table(nameof(DerivedCharacterReading))]
+[PrimaryKey(nameof(ReadingId), nameof(Text))]
+public sealed class DerivedCharacterReading
 {
-    public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
-    public required int Order { get; init; }
-    public required string ReadingText { get; set; }
+    public required int ReadingId { get; init; }
+    public required string Text { get; init; }
+    public required bool IsPrefix { get; init; }
+    public required bool IsSuffix { get; init; }
+    public required DerivedCharacterReadingTypeId TypeId { get; init; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; init; } = null!;
+    [ForeignKey(nameof(ReadingId))]
+    public CharacterReading Source { get; init; } = null!;
 
-    [InverseProperty(nameof(ReadingRestrictionLink.Source))]
-    public ReadingRestrictionLink? Link { get; set; }
+    [ForeignKey(nameof(TypeId))]
+    public DerivedCharacterReadingType Type { get; init; } = null!;
 }

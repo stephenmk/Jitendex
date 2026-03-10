@@ -20,6 +20,7 @@ using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Jitendex.JapaneseTextUtils;
+using Jitendex.Data.JMdict;
 using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 

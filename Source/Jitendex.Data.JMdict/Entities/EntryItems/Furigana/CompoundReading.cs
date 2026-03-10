@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -19,20 +19,15 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
 
-[Table(nameof(ReadingRestriction))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class ReadingRestriction
+[Table(nameof(CompoundReading))]
+[PrimaryKey(nameof(CompoundText), nameof(Text))]
+public sealed class CompoundReading
 {
-    public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
-    public required int Order { get; init; }
-    public required string ReadingText { get; set; }
+    public required string CompoundText { get; init; }
+    public required string Text { get; init; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; init; } = null!;
-
-    [InverseProperty(nameof(ReadingRestrictionLink.Source))]
-    public ReadingRestrictionLink? Link { get; set; }
+    [ForeignKey(nameof(CompoundText))]
+    public Compound Compound { get; init; } = null!;
 }

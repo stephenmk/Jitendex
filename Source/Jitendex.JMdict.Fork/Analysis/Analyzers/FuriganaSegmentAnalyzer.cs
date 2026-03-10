@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Jitendex.Furigana;
+using Jitendex.Data.JMdict;
 using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 

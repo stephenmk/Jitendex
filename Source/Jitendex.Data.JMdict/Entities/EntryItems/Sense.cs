@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems.References;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.Data.JMdict.Entities.EntryItems;
@@ -28,6 +29,9 @@ public sealed class Sense
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
+
+    [ForeignKey(nameof(EntryId))]
+    public Entry Entry { get; init; } = null!;
 
     public List<KanjiFormRestriction> KanjiFormRestrictions { get; init; } = [];
     public List<ReadingRestriction> ReadingRestrictions { get; init; } = [];
@@ -42,6 +46,5 @@ public sealed class Sense
     public List<LanguageSource> LanguageSources { get; init; } = [];
     public List<CrossReference> CrossReferences { get; init; } = [];
 
-    [ForeignKey(nameof(EntryId))]
-    public Entry Entry { get; init; } = null!;
+    public List<SenseReference> ReverseReferences { get; init; } = [];
 }

@@ -40,7 +40,7 @@ public abstract class SqliteContext : DbContext
 
     protected sealed override void OnConfiguring(DbContextOptionsBuilder options) => options
         .UseSqlite(_dbPath)
-        .ReplaceService<IRelationalCommandBuilderFactory, SqliteRelationalCommandBuilderFactory>();
+        .ReplaceService<IRelationalCommandBuilderFactory, SqliteCommandBuilderFactory>();
 
     /// <summary>
     /// Delete and recreate the database file.

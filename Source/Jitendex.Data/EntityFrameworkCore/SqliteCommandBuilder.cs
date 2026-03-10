@@ -17,19 +17,19 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore.Storage;
+using Dependencies = Microsoft.EntityFrameworkCore.Storage.RelationalCommandBuilderDependencies;
+using Builder = Microsoft.EntityFrameworkCore.Storage.RelationalCommandBuilder;
 
 namespace Jitendex.Data.EntityFrameworkCore;
 
-internal sealed class SqliteRelationalCommandBuilder : RelationalCommandBuilder
+internal sealed class SqliteCommandBuilder(Dependencies dependencies) : Builder(dependencies)
 {
-    public SqliteRelationalCommandBuilder(
-        RelationalCommandBuilderDependencies dependencies) : base(dependencies) { }
-
-    public override IRelationalCommand Build() => new RelationalCommand
-    (
-        dependencies: Dependencies,
-        commandText: ToString().WithoutRowId(),
-        logCommandText: string.Empty,
-        parameters: Parameters
-    );
+    public override IRelationalCommand Build()
+        => new RelationalCommand
+        (
+            dependencies: Dependencies,
+            commandText: ToString().WithoutRowId(),
+            logCommandText: string.Empty,
+            parameters: Parameters
+        );
 }

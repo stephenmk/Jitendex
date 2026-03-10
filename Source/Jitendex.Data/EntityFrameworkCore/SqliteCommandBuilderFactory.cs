@@ -17,14 +17,13 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore.Storage;
+using Dependencies = Microsoft.EntityFrameworkCore.Storage.RelationalCommandBuilderDependencies;
+using Factory = Microsoft.EntityFrameworkCore.Storage.RelationalCommandBuilderFactory;
 
 namespace Jitendex.Data.EntityFrameworkCore;
 
-internal sealed class SqliteRelationalCommandBuilderFactory : RelationalCommandBuilderFactory
+internal sealed class SqliteCommandBuilderFactory(Dependencies dependencies) : Factory(dependencies)
 {
-    public SqliteRelationalCommandBuilderFactory(
-        RelationalCommandBuilderDependencies dependencies) : base(dependencies) { }
-
-    public override IRelationalCommandBuilder Create() =>
-        new SqliteRelationalCommandBuilder(Dependencies);
+    public override IRelationalCommandBuilder Create()
+        => new SqliteCommandBuilder(Dependencies);
 }

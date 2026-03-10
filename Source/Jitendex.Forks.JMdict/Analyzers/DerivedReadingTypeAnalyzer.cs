@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.JMdict;
-using Jitendex.Data.JMdict.Entities.Furigana;
+using Jitendex.Data.JMdict.Entities.Text;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 

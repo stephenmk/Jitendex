@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.Entities.Furigana;
 using Jitendex.Data.JMdict.Entities.References;
 using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.Links;
+using Jitendex.Data.JMdict.Entities.Furigana;
 
 namespace Jitendex.Data.JMdict.Entities.EntryItems;
 

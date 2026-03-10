@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,17 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+namespace Jitendex.Data.JMdict.Entities.Text;
 
-namespace Jitendex.Data.JMdict.Entities.Furigana;
-
-[Table(nameof(Compound))]
-[PrimaryKey(nameof(Text))]
-public sealed class Compound
+public enum DerivedCharacterReadingTypeId
 {
-    public required string Text { get; init; }
-
-    [InverseProperty(nameof(CompoundReading.Compound))]
-    public ICollection<CompoundReading> Readings { get; init; } = [];
+    Onyomi,
+    OnyomiSokuon,
+    OnyomiRendaku,
+    OnyomiSokuonRendaku,
+    Kunyomi,
+    KunyomiRendaku,
+    KunyomiOkurigana,
+    KunyomiRendakuOkurigana,
+    KunyomiMasu,
+    KunyomiRendakuMasu,
+    KunyomiTe,
+    KunyomiRendakuTe,
+    Chinese,
+    Korean,
+    Alphanumeric,
+    Kana,
+    Symbol,
+    Unknown,
 }

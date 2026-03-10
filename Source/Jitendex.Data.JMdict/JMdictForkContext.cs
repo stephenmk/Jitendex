@@ -18,13 +18,14 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities;
-using Jitendex.Data.JMdict.Entities.Furigana;
+using Jitendex.Data.JMdict.Entities.Text;
 using Jitendex.Data.JMdict.Entities.References;
 using Jitendex.Data.JMdict.Entities.EntryItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.Links;
 using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.Furigana;
 
 namespace Jitendex.Data.JMdict;
 

@@ -20,9 +20,10 @@ using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Analysis.Services;
-using Jitendex.JMdict.Fork.Analysis.Tables;
 using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Analysis.Tables.References;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
@@ -31,8 +32,13 @@ internal partial class CrossReferenceAnalyzer
     ILogger<CrossReferenceAnalyzer> logger,
     JMdictForkContext context,
     CrossReferenceCacheService cacheService,
-    CrossReferenceTable table,
-    CrossReferenceTextParser parser
+    CrossReferenceTextParser parser,
+
+    AmbiguityFlagTable ambiguityFlagTable,
+    EntryReferenceTable entryReferenceTable,
+    SenseReferenceTable senseReferenceTable,
+    ReadingReferenceTable readingReferenceTable,
+    KanjiFormReferenceTable kanjiFormReferenceTable
 )
 {
     private sealed record ReferenceText(string Text1, string? Text2);
@@ -56,7 +62,7 @@ internal partial class CrossReferenceAnalyzer
     {
         var referenceTextToEntries = GetReferenceTextToEntries();
 
-        var kanjiFormToReadings = context.KanjiFormBridges
+        var kanjiFormToReadings = context.ReadingKanjiFormBridges
             .GroupBy(static x => new { x.EntryId, x.KanjiFormOrder })
             .Select(static group => new
             {
@@ -73,7 +79,11 @@ internal partial class CrossReferenceAnalyzer
                 elementSelector: static g => g.Value
             );
 
-        var sequencedRefs = new List<CrossReferenceRow>(50_000);
+        var entryRefs = new List<EntryReferenceRow>(50_000);
+        var senseRefs = new List<SenseReferenceRow>(50_000);
+        var readingRefs = new List<ReadingReferenceRow>(50_000);
+        var kanjiFormRefs = new List<KanjiFormReferenceRow>(50_000);
+        var ambiguityFlags = new List<AmbiguityFlagRow>(5_000);
 
         foreach (var xref in context.CrossReferences.AsNoTracking())
         {
@@ -86,8 +96,6 @@ internal partial class CrossReferenceAnalyzer
 
             var potentialEntries = GetPotentialEntries(xref, parsedRef, referenceTextToEntries);
             var potentialEntryIds = potentialEntries.Select(static e => e.Id);
-
-            bool? isAmbiguous = potentialEntries.Length == 0 ? null : potentialEntries.Length > 1;
 
             var entryId = potentialEntries.Length == 0
                 ? null
@@ -116,20 +124,30 @@ internal partial class CrossReferenceAnalyzer
 
             LogReferenceInconsistencies(xref, parsedRef, entry, readingOrder, kanjiFormOrder, kanjiFormToReadings);
 
-            sequencedRefs.Add(new
-            (
-                EntryId: xref.EntryId,
-                SenseOrder: xref.SenseOrder,
-                Order: xref.Order,
-                RefEntryId: entryId,
-                RefReadingOrder: readingOrder,
-                RefKanjiFormOrder: kanjiFormOrder,
-                RefSenseOrder: parsedRef.SenseNumber - 1,
-                IsAmbiguous: isAmbiguous
-            ));
+            if (potentialEntries.Length > 1)
+            {
+                ambiguityFlags.Add(new(xref.EntryId, xref.SenseOrder, xref.Order));
+            }
+            if (entryId.HasValue)
+            {
+                entryRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value));
+                senseRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, parsedRef.SenseNumber - 1));
+                if (readingOrder.HasValue)
+                {
+                    readingRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, readingOrder.Value));
+                }
+                if (kanjiFormOrder.HasValue)
+                {
+                    kanjiFormRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, kanjiFormOrder.Value));
+                }
+            }
         }
 
-        table.UpdateItems(context, sequencedRefs);
+        ambiguityFlagTable.InsertItems(context, ambiguityFlags);
+        entryReferenceTable.InsertItems(context, entryRefs);
+        senseReferenceTable.InsertItems(context, senseRefs);
+        readingReferenceTable.InsertItems(context, readingRefs);
+        kanjiFormReferenceTable.InsertItems(context, kanjiFormRefs);
     }
 
     private int? FindIdInCache(string key, int[] potentialEntryIds, FrozenDictionary<string, int?> entryIdCache)

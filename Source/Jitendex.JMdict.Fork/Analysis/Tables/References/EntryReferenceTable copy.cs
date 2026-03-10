@@ -18,23 +18,28 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.References;
 
-internal sealed class CompoundTable : Table<CompoundRow>
+internal sealed class AmbiguityFlagTable : Table<AmbiguityFlagRow>
 {
-    protected override string Name => nameof(Compound);
+    protected override string Name => nameof(AmbiguityFlag);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Compound.Text)
+        nameof(AmbiguityFlag.EntryId),
+        nameof(AmbiguityFlag.SenseOrder),
+        nameof(AmbiguityFlag.CrossReferenceOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(CompoundRow row) =>
+    protected override SqliteParameter[] Parameters(AmbiguityFlagRow row) =>
     [
-        new("@0", row.Text)
+        new("@0", row.EntryId),
+        new("@1", row.SenseOrder),
+        new("@2", row.CrossReferenceOrder),
     ];
 }

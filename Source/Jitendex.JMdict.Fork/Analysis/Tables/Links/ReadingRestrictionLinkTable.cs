@@ -18,34 +18,35 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
+using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.Links;
 
-internal sealed class KanjiFormRestrictionLinkTable : Table<KanjiFormRestrictionLinkRow>
+internal sealed class ReadingRestrictionLinkTable : Table<ReadingRestrictionLinkRow>
 {
-    protected override string Name => nameof(KanjiFormRestrictionLink);
+    protected override string Name => nameof(ReadingRestrictionLink);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(KanjiFormRestrictionLink.EntryId),
-        nameof(KanjiFormRestrictionLink.SenseOrder),
-        nameof(KanjiFormRestrictionLink.RestrictionOrder),
-        nameof(KanjiFormRestrictionLink.KanjiFormOrder),
+        nameof(ReadingRestrictionLink.EntryId),
+        nameof(ReadingRestrictionLink.SenseOrder),
+        nameof(ReadingRestrictionLink.RestrictionOrder),
+        nameof(ReadingRestrictionLink.ReadingOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(KanjiFormRestrictionLink.EntryId),
-        nameof(KanjiFormRestrictionLink.SenseOrder),
-        nameof(KanjiFormRestrictionLink.RestrictionOrder),
+        nameof(ReadingRestrictionLink.EntryId),
+        nameof(ReadingRestrictionLink.SenseOrder),
+        nameof(ReadingRestrictionLink.RestrictionOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormRestrictionLinkRow row) =>
+    protected override SqliteParameter[] Parameters(ReadingRestrictionLinkRow row) =>
     [
         new("@0", row.EntryId),
         new("@1", row.SenseOrder),
         new("@2", row.RestrictionOrder),
-        new("@3", row.KanjiFormOrder),
+        new("@3", row.ReadingOrder),
     ];
 }

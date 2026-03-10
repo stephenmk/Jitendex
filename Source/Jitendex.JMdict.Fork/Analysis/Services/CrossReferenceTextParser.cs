@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
+using Jitendex.JMdict.Fork.Analysis.Models;
 
 namespace Jitendex.JMdict.Fork.Analysis.Services;
 

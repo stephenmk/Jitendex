@@ -18,34 +18,24 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
+using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 
-internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
+internal sealed class CharacterTable : Table<CharacterRow>
 {
-    protected override string Name => nameof(CharacterReading);
+    protected override string Name => nameof(Character);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CharacterReading.CharacterValue),
-        nameof(CharacterReading.TypeId),
-        nameof(CharacterReading.Text),
-        nameof(CharacterReading.Okurigana),
-        nameof(CharacterReading.IsPrefix),
-        nameof(CharacterReading.IsSuffix),
+        nameof(Character.Value)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(CharacterReadingRow row) =>
+    protected override SqliteParameter[] Parameters(CharacterRow character) =>
     [
-        new("@0", row.CharacterValue),
-        new("@1", row.TypeId),
-        new("@2", row.Text),
-        new("@3", row.Okurigana.Nullable()),
-        new("@4", row.IsPrefix),
-        new("@5", row.IsSuffix),
+        new("@0", character.Value)
     ];
 }

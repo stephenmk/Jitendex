@@ -18,35 +18,35 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.Links;
 
-internal sealed class DerivedCharacterReadingTable : Table<DerivedCharacterReadingRow>
+internal sealed class KanjiFormRestrictionLinkTable : Table<KanjiFormRestrictionLinkRow>
 {
-    protected override string Name => nameof(DerivedCharacterReading);
+    protected override string Name => nameof(KanjiFormRestrictionLink);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(DerivedCharacterReading.ReadingId),
-        nameof(DerivedCharacterReading.Text),
-        nameof(DerivedCharacterReading.IsPrefix),
-        nameof(DerivedCharacterReading.IsSuffix),
-        nameof(DerivedCharacterReading.TypeId),
+        nameof(KanjiFormRestrictionLink.EntryId),
+        nameof(KanjiFormRestrictionLink.SenseOrder),
+        nameof(KanjiFormRestrictionLink.RestrictionOrder),
+        nameof(KanjiFormRestrictionLink.KanjiFormOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(DerivedCharacterReading.ReadingId),
-        nameof(DerivedCharacterReading.Text),
+        nameof(KanjiFormRestrictionLink.EntryId),
+        nameof(KanjiFormRestrictionLink.SenseOrder),
+        nameof(KanjiFormRestrictionLink.RestrictionOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(DerivedCharacterReadingRow row) =>
+    protected override SqliteParameter[] Parameters(KanjiFormRestrictionLinkRow row) =>
     [
-        new("@0", row.ReadingId),
-        new("@1", row.Text),
-        new("@2", row.IsPrefix),
-        new("@3", row.IsSuffix),
-        new("@4", row.TypeId),
+        new("@0", row.EntryId),
+        new("@1", row.SenseOrder),
+        new("@2", row.RestrictionOrder),
+        new("@3", row.KanjiFormOrder),
     ];
 }

@@ -17,7 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.JapaneseTextUtils;
-using Jitendex.JMdict.Fork.Analysis.Tables;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 using static Jitendex.JMdict.Fork.Entities.EntryItems.Furigana.CharacterReadingTypeId;
 

@@ -18,34 +18,35 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.References;
 
-internal sealed class RestrictionLinkTable : Table<RestrictionLinkRow>
+internal sealed class EntryReferenceTable : Table<EntryReferenceRow>
 {
-    protected override string Name => nameof(RestrictionLink);
+    protected override string Name => nameof(EntryReference);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(RestrictionLink.EntryId),
-        nameof(RestrictionLink.ReadingOrder),
-        nameof(RestrictionLink.RestrictionOrder),
-        nameof(RestrictionLink.KanjiFormOrder),
+        nameof(EntryReference.EntryId),
+        nameof(EntryReference.SenseOrder),
+        nameof(EntryReference.CrossReferenceOrder),
+        nameof(EntryReference.RefEntryId),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(RestrictionLink.EntryId),
-        nameof(RestrictionLink.ReadingOrder),
-        nameof(RestrictionLink.RestrictionOrder),
+        nameof(EntryReference.EntryId),
+        nameof(EntryReference.SenseOrder),
+        nameof(EntryReference.CrossReferenceOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(RestrictionLinkRow update) =>
+    protected override SqliteParameter[] Parameters(EntryReferenceRow row) =>
     [
-        new("@0", update.EntryId),
-        new("@1", update.ReadingOrder),
-        new("@2", update.RestrictionOrder),
-        new("@3", update.KanjiFormOrder),
+        new("@0", row.EntryId),
+        new("@1", row.SenseOrder),
+        new("@2", row.CrossReferenceOrder),
+        new("@3", row.RefEntryId),
     ];
 }

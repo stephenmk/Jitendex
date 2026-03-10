@@ -18,28 +18,26 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
+using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 
-internal sealed class DerivedCharacterReadingTypeTable : Table<DerivedCharacterReadingTypeRow>
+internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
 {
-    protected override string Name => nameof(DerivedCharacterReadingType);
+    protected override string Name => nameof(CompoundReading);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(DerivedCharacterReadingType.Id),
-        nameof(DerivedCharacterReadingType.Name),
+        nameof(CompoundReading.CompoundText),
+        nameof(CompoundReading.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
-        nameof(DerivedCharacterReadingType.Id)
-    ];
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(DerivedCharacterReadingTypeRow row) =>
+    protected override SqliteParameter[] Parameters(CompoundReadingRow row) =>
     [
-        new("@0", row.Id),
-        new("@1", row.Name),
+        new("@0", row.CompoundText),
+        new("@1", row.Text),
     ];
 }

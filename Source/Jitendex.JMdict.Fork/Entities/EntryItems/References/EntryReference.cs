@@ -23,7 +23,8 @@ using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 namespace Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
 [Table(nameof(EntryReference))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), nameof(RefEntryId))]
+[Index(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), IsUnique = true)]
 public sealed class EntryReference
 {
     public required int EntryId { get; init; }

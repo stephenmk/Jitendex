@@ -16,28 +16,28 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.JMdict.Fork.Analysis.Models;
-using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
-using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
+namespace Jitendex.JMdict.Fork.Analysis.Models;
 
-namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
-
-internal sealed class DerivedReadingTypeAnalyzer
+internal sealed record RestrictionLinkRow
 (
-    JMdictForkContext forkContext,
-    DerivedCharacterReadingTypeTable table
-)
-{
-    public void Analyze()
-    {
-        table.InsertItems(forkContext, GetTypeRows());
-    }
+    int EntryId,
+    int ReadingOrder,
+    int RestrictionOrder,
+    int KanjiFormOrder
+);
 
-    private static IEnumerable<DerivedCharacterReadingTypeRow> GetTypeRows()
-    {
-        foreach (var type in Enum.GetValues<DerivedCharacterReadingTypeId>())
-        {
-            yield return new DerivedCharacterReadingTypeRow((int)type, type.ToString());
-        }
-    }
-}
+internal sealed record ReadingRestrictionLinkRow
+(
+    int EntryId,
+    int SenseOrder,
+    int RestrictionOrder,
+    int ReadingOrder
+);
+
+internal sealed record KanjiFormRestrictionLinkRow
+(
+    int EntryId,
+    int SenseOrder,
+    int RestrictionOrder,
+    int KanjiFormOrder
+);

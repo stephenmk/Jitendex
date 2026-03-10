@@ -18,32 +18,29 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
+using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 
-internal sealed class ReadingKanjiFormBridgeTable : Table<KanjiFormBridgeRow>
+internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
 {
-    protected override string Name => nameof(ReadingKanjiFormBridge);
+    protected override string Name => nameof(CharacterReadingType);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(ReadingKanjiFormBridge.EntryId),
-        nameof(ReadingKanjiFormBridge.ReadingOrder),
-        nameof(ReadingKanjiFormBridge.KanjiFormOrder),
+        nameof(CharacterReadingType.Id),
+        nameof(CharacterReadingType.Name),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(ReadingKanjiFormBridge.EntryId),
-        nameof(ReadingKanjiFormBridge.ReadingOrder),
-        nameof(ReadingKanjiFormBridge.KanjiFormOrder),
+        nameof(CharacterReadingType.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormBridgeRow bridge) =>
+    protected override SqliteParameter[] Parameters(CharacterReadingTypeRow row) =>
     [
-        new("@0", bridge.EntryId),
-        new("@1", bridge.ReadingOrder),
-        new("@2", bridge.KanjiFormOrder),
+        new("@0", row.Id),
+        new("@1", row.Name),
     ];
 }

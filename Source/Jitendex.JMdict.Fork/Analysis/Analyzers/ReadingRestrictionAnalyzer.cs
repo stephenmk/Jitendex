@@ -16,9 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdict.Fork.Analysis.Tables;
+using Microsoft.EntityFrameworkCore;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Analysis.Tables.Links;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
@@ -32,6 +33,7 @@ internal partial class ReadingRestrictionAnalyzer
     public void Analyze()
     {
         var restrictions = context.ReadingRestrictions
+            .AsSplitQuery()
             .Select(static r => new
             {
                 r.EntryId,
@@ -45,11 +47,9 @@ internal partial class ReadingRestrictionAnalyzer
                         reading.Text,
                         IsSearchOnly = reading.Infos.Any(static i => i.TagName == "sk"),
                     })
-                    .ToImmutableArray(),
-            })
-            .ToList();
+            });
 
-        var updates = new List<ReadingRestrictionLinkRow>(restrictions.Count);
+        var rows = new List<ReadingRestrictionLinkRow>(5_000);
 
         foreach (var r in restrictions)
         {
@@ -64,7 +64,7 @@ internal partial class ReadingRestrictionAnalyzer
                     }
                     else
                     {
-                        updates.Add(new(r.EntryId, r.SenseOrder, r.Order, reading.Order));
+                        rows.Add(new(r.EntryId, r.SenseOrder, r.Order, reading.Order));
                     }
                     found = true;
                     break;
@@ -76,7 +76,7 @@ internal partial class ReadingRestrictionAnalyzer
             }
         }
 
-        table.UpdateItems(context, updates);
+        table.InsertItems(context, rows);
     }
 
     [LoggerMessage(LogLevel.Warning,

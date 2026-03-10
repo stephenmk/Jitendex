@@ -19,7 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Jitendex.Furigana;
-using Jitendex.JMdict.Fork.Analysis.Tables;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
@@ -34,7 +35,7 @@ internal partial class FuriganaSegmentAnalyzer
     {
         var furiganaService = LoadFuriganaService();
 
-        var entries = context.KanjiFormBridges
+        var entries = context.ReadingKanjiFormBridges
             .Select(static b => new
             {
                 Id = b.EntryId,

@@ -20,7 +20,8 @@ using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Jitendex.JapaneseTextUtils;
-using Jitendex.JMdict.Fork.Analysis.Tables;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
@@ -57,14 +58,14 @@ internal partial class KanjiFormBridgeAnalyzer
                             .Select(static i => i.TagName)
                             .Any(static t => t == "sk"),
                         RestrictionOrders: r.Restrictions
-                            .Where(static x => x.KanjiFormOrder != null)
-                            .Select(static x => (int)x.KanjiFormOrder!)
+                            .Where(static x => x.Link != null)
+                            .Select(static x => x.Link!.KanjiFormOrder)
                             .ToImmutableArray()
                     )),
                 KanjiFormOrders = e.KanjiForms
                     .Where(static k => k.Infos.All(static i => i.TagName != "sK"))
                     .Select(static k => k.Order)
-                    .ToImmutableArray(),
+                    .ToImmutableArray()
             });
 
         var bridges = new List<KanjiFormBridgeRow>(250_000);

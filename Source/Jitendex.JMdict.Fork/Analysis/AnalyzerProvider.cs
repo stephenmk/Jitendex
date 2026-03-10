@@ -22,7 +22,9 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.JMdict.Fork.Analysis.Analyzers;
 using Jitendex.JMdict.Fork.Analysis.Services;
-using Jitendex.JMdict.Fork.Analysis.Tables;
+using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
+using Jitendex.JMdict.Fork.Analysis.Tables.Links;
+using Jitendex.JMdict.Fork.Analysis.Tables.References;
 
 namespace Jitendex.JMdict.Fork.Analysis;
 
@@ -39,13 +41,15 @@ internal static class AnalyzerProvider
 
         // Analyzers
         .AddTransient<PatchAnalyzer>()
+
         .AddTransient<RestrictionAnalyzer>()
         .AddTransient<ReadingRestrictionAnalyzer>()
         .AddTransient<KanjiFormRestrictionAnalyzer>()
-        .AddTransient<KanjiFormBridgeAnalyzer>()
-        .AddTransient<FuriganaSegmentAnalyzer>()
+
         .AddTransient<CrossReferenceAnalyzer>()
 
+        .AddTransient<KanjiFormBridgeAnalyzer>()
+        .AddTransient<FuriganaSegmentAnalyzer>()
         .AddTransient<CompoundAnalyzer>()
         .AddTransient<CharacterAnalyzer>()
         .AddTransient<CharacterReadingAnalyzer>()
@@ -57,12 +61,18 @@ internal static class AnalyzerProvider
         .AddTransient<CrossReferenceCacheService>()
 
         // Tables
-        .AddTransient<CrossReferenceTable>()
-        .AddTransient<FuriganaSegmentTable>()
-        .AddTransient<ReadingKanjiFormBridgeTable>()
+        .AddTransient<AmbiguityFlagTable>()
+        .AddTransient<EntryReferenceTable>()
+        .AddTransient<SenseReferenceTable>()
+        .AddTransient<ReadingReferenceTable>()
+        .AddTransient<KanjiFormReferenceTable>()
+
         .AddTransient<KanjiFormRestrictionLinkTable>()
         .AddTransient<ReadingRestrictionLinkTable>()
         .AddTransient<RestrictionLinkTable>()
+
+        .AddTransient<FuriganaSegmentTable>()
+        .AddTransient<ReadingKanjiFormBridgeTable>()
         .AddTransient<CompoundTable>()
         .AddTransient<CompoundReadingTable>()
         .AddTransient<CharacterTable>()

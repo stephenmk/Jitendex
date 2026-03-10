@@ -16,36 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.JMdict.Fork.Analysis;
+namespace Jitendex.JMdict.Fork.Analysis.Models;
 
-internal sealed record ParsedReferenceText
-(
-    string Text1,
-    string? Text2,
-    int SenseNumber
-);
-
-internal sealed record RestrictionLinkRow
+internal sealed record KanjiFormBridgeRow
 (
     int EntryId,
     int ReadingOrder,
-    int RestrictionOrder,
-    int KanjiFormOrder
-);
-
-internal sealed record ReadingRestrictionLinkRow
-(
-    int EntryId,
-    int SenseOrder,
-    int RestrictionOrder,
-    int ReadingOrder
-);
-
-internal sealed record KanjiFormRestrictionLinkRow
-(
-    int EntryId,
-    int SenseOrder,
-    int RestrictionOrder,
     int KanjiFormOrder
 );
 
@@ -58,25 +34,6 @@ internal sealed record FuriganaSegmentRow
     string BaseText,
     string? Furigana,
     string? TypeName
-);
-
-internal sealed record KanjiFormBridgeRow
-(
-    int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder
-);
-
-internal sealed record CrossReferenceRow
-(
-    int EntryId,
-    int SenseOrder,
-    int Order,
-    int? RefEntryId,
-    int? RefReadingOrder,
-    int? RefKanjiFormOrder,
-    int? RefSenseOrder,
-    bool? IsAmbiguous
 );
 
 internal sealed record CompoundRow(string Text);

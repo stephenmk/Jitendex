@@ -41,6 +41,9 @@ public sealed class CrossReference
     [InverseProperty(nameof(References.EntryReference.Source))]
     public EntryReference? EntryReference { get; set; }
 
+    [InverseProperty(nameof(References.AmbiguityFlag.Source))]
+    public AmbiguityFlag? AmbiguityFlag { get; set; }
+
     /// <summary>
     /// Stable and unique identifier for this reference in the raw data.
     /// </summary>

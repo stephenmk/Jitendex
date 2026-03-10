@@ -18,34 +18,38 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.References;
 
-internal sealed class ReadingRestrictionLinkTable : Table<ReadingRestrictionLinkRow>
+internal sealed class KanjiFormReferenceTable : Table<KanjiFormReferenceRow>
 {
-    protected override string Name => nameof(ReadingRestrictionLink);
+    protected override string Name => nameof(KanjiFormReference);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(ReadingRestrictionLink.EntryId),
-        nameof(ReadingRestrictionLink.SenseOrder),
-        nameof(ReadingRestrictionLink.RestrictionOrder),
-        nameof(ReadingRestrictionLink.ReadingOrder),
+        nameof(KanjiFormReference.EntryId),
+        nameof(KanjiFormReference.SenseOrder),
+        nameof(KanjiFormReference.CrossReferenceOrder),
+        nameof(KanjiFormReference.RefEntryId),
+        nameof(KanjiFormReference.RefKanjiFormOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(ReadingRestrictionLink.EntryId),
-        nameof(ReadingRestrictionLink.SenseOrder),
-        nameof(ReadingRestrictionLink.RestrictionOrder),
+        nameof(KanjiFormReference.EntryId),
+        nameof(KanjiFormReference.SenseOrder),
+        nameof(KanjiFormReference.CrossReferenceOrder),
+        nameof(KanjiFormReference.RefEntryId),
     ];
 
-    protected override SqliteParameter[] Parameters(ReadingRestrictionLinkRow row) =>
+    protected override SqliteParameter[] Parameters(KanjiFormReferenceRow row) =>
     [
         new("@0", row.EntryId),
         new("@1", row.SenseOrder),
-        new("@2", row.RestrictionOrder),
-        new("@3", row.ReadingOrder),
+        new("@2", row.CrossReferenceOrder),
+        new("@3", row.RefEntryId),
+        new("@4", row.RefKanjiFormOrder),
     ];
 }

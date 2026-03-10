@@ -18,23 +18,36 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
+using Jitendex.JMdict.Fork.Analysis.Models;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 
-internal sealed class CharacterTable : Table<CharacterRow>
+internal sealed class DerivedCharacterReadingTable : Table<DerivedCharacterReadingRow>
 {
-    protected override string Name => nameof(Character);
+    protected override string Name => nameof(DerivedCharacterReading);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Character.Value)
+        nameof(DerivedCharacterReading.ReadingId),
+        nameof(DerivedCharacterReading.Text),
+        nameof(DerivedCharacterReading.IsPrefix),
+        nameof(DerivedCharacterReading.IsSuffix),
+        nameof(DerivedCharacterReading.TypeId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
-
-    protected override SqliteParameter[] Parameters(CharacterRow character) =>
+    protected override IReadOnlyList<string> KeyColNames =>
     [
-        new("@0", character.Value)
+        nameof(DerivedCharacterReading.ReadingId),
+        nameof(DerivedCharacterReading.Text),
+    ];
+
+    protected override SqliteParameter[] Parameters(DerivedCharacterReadingRow row) =>
+    [
+        new("@0", row.ReadingId),
+        new("@1", row.Text),
+        new("@2", row.IsPrefix),
+        new("@3", row.IsSuffix),
+        new("@4", row.TypeId),
     ];
 }

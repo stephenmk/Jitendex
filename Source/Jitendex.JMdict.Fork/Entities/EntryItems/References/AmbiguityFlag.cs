@@ -16,30 +16,20 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.Data;
-using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.JMdict.Fork.Analysis.Tables;
+namespace Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
-internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
+[Table(nameof(AmbiguityFlag))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
+public sealed class AmbiguityFlag
 {
-    protected override string Name => nameof(CharacterReadingType);
+    public required int EntryId { get; init; }
+    public required int SenseOrder { get; init; }
+    public required int CrossReferenceOrder { get; init; }
 
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(CharacterReadingType.Id),
-        nameof(CharacterReadingType.Name),
-    ];
-
-    protected override IReadOnlyList<string> KeyColNames =>
-    [
-        nameof(CharacterReadingType.Id)
-    ];
-
-    protected override SqliteParameter[] Parameters(CharacterReadingTypeRow row) =>
-    [
-        new("@0", row.Id),
-        new("@1", row.Name),
-    ];
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
+    public CrossReference Source { get; init; } = null!;
 }

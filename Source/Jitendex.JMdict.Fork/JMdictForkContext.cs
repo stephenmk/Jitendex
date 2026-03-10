@@ -23,6 +23,7 @@ using Jitendex.JMdict.Fork.Entities.EntryItems;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 using Jitendex.JMdict.Fork.Entities.EntryItems.KanjiFormItems;
 using Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.JMdict.Fork;
@@ -63,6 +64,20 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<ReadingRestriction> ReadingRestrictions { get; set; } = null!;
     #endregion
 
+    #region Internal Entry Links
+    public DbSet<RestrictionLink> RestrictionLinks { get; set; } = null!;
+    public DbSet<ReadingRestrictionLink> ReadingRestrictionLinks { get; set; } = null!;
+    public DbSet<KanjiFormRestrictionLink> KanjiFormRestrictionLinks { get; set; } = null!;
+    #endregion
+
+    #region External Entry references
+    public DbSet<EntryReference> EntryReferences { get; set; } = null!;
+    public DbSet<ReadingReference> ReadingReferences { get; set; } = null!;
+    public DbSet<KanjiFormReference> KanjiFormReferences { get; set; } = null!;
+    public DbSet<SenseReference> SenseReferences { get; set; } = null!;
+    public DbSet<AmbiguityFlag> AmbiguityFlags { get; set; } = null!;
+    #endregion
+
     #region Furigana Items
     public DbSet<Compound> Compounds { get; set; } = null!;
     public DbSet<CompoundReading> CompoundReadings { get; set; } = null!;
@@ -71,7 +86,7 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<CharacterReadingType> CharacterReadingTypes { get; set; } = null!;
     public DbSet<DerivedCharacterReading> DerivedCharacterReadings { get; set; } = null!;
     public DbSet<DerivedCharacterReadingType> DerivedCharacterReadingTypes { get; set; } = null!;
-    public DbSet<ReadingKanjiFormBridge> KanjiFormBridges { get; set; } = null!;
+    public DbSet<ReadingKanjiFormBridge> ReadingKanjiFormBridges { get; set; } = null!;
     #endregion
 
     #region Keywords

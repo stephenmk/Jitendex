@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 using Jitendex.JMdict.Fork.Entities.EntryItems.KanjiFormItems;
 using Jitendex.JMdict.Fork.Entities.EntryItems.SenseItems;
+using Jitendex.JMdict.Fork.Entities.EntryItems.ReadingItems;
 using Jitendex.JMdict.Fork.Entities.EntryItems.References;
 
 namespace Jitendex.JMdict.Fork.Entities.EntryItems;
@@ -41,5 +42,6 @@ public sealed class KanjiForm
 
     public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
     public List<KanjiFormReference> References { get; init; } = [];
-    public List<KanjiFormRestrictionLink> RestrictionLinks { get; init; } = [];
+    public List<RestrictionLink> ReadingRestrictionLinks { get; init; } = [];
+    public List<KanjiFormRestrictionLink> SenseRestrictionLinks { get; init; } = [];
 }

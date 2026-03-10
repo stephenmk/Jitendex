@@ -16,9 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
-using Jitendex.JMdict.Fork.Analysis.Tables;
+using Microsoft.EntityFrameworkCore;
+using Jitendex.JMdict.Fork.Analysis.Models;
+using Jitendex.JMdict.Fork.Analysis.Tables.Links;
+using System.Collections.Immutable;
 
 namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
 
@@ -32,6 +34,7 @@ internal partial class KanjiFormRestrictionAnalyzer
     public void Analyze()
     {
         var restrictions = context.KanjiFormRestrictions
+            .AsSplitQuery()
             .Select(static r => new
             {
                 r.EntryId,
@@ -45,11 +48,9 @@ internal partial class KanjiFormRestrictionAnalyzer
                         k.Text,
                         IsSearchOnly = k.Infos.Any(static i => i.TagName == "sK"),
                     })
-                    .ToImmutableArray(),
-            })
-            .ToList();
+            });
 
-        var updates = new List<KanjiFormRestrictionLinkRow>(restrictions.Count);
+        var rows = new List<KanjiFormRestrictionLinkRow>(1_500);
 
         foreach (var r in restrictions)
         {
@@ -64,7 +65,7 @@ internal partial class KanjiFormRestrictionAnalyzer
                     }
                     else
                     {
-                        updates.Add(new(r.EntryId, r.SenseOrder, r.Order, kanjiForm.Order));
+                        rows.Add(new(r.EntryId, r.SenseOrder, r.Order, kanjiForm.Order));
                     }
                     found = true;
                     break;
@@ -76,7 +77,7 @@ internal partial class KanjiFormRestrictionAnalyzer
             }
         }
 
-        table.UpdateItems(context, updates);
+        table.InsertItems(context, rows);
     }
 
     [LoggerMessage(LogLevel.Warning,

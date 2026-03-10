@@ -16,28 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Microsoft.Data.Sqlite;
+using Jitendex.Data;
 using Jitendex.JMdict.Fork.Analysis.Models;
-using Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 using Jitendex.JMdict.Fork.Entities.EntryItems.Furigana;
 
-namespace Jitendex.JMdict.Fork.Analysis.Analyzers;
+namespace Jitendex.JMdict.Fork.Analysis.Tables.Furigana;
 
-internal sealed class DerivedReadingTypeAnalyzer
-(
-    JMdictForkContext forkContext,
-    DerivedCharacterReadingTypeTable table
-)
+internal sealed class CompoundTable : Table<CompoundRow>
 {
-    public void Analyze()
-    {
-        table.InsertItems(forkContext, GetTypeRows());
-    }
+    protected override string Name => nameof(Compound);
 
-    private static IEnumerable<DerivedCharacterReadingTypeRow> GetTypeRows()
-    {
-        foreach (var type in Enum.GetValues<DerivedCharacterReadingTypeId>())
-        {
-            yield return new DerivedCharacterReadingTypeRow((int)type, type.ToString());
-        }
-    }
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Compound.Text)
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+
+    protected override SqliteParameter[] Parameters(CompoundRow row) =>
+    [
+        new("@0", row.Text)
+    ];
 }

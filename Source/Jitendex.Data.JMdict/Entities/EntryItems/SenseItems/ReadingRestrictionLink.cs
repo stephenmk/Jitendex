@@ -31,7 +31,7 @@ public sealed class ReadingRestrictionLink
     public required int ReadingOrder { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(RestrictionOrder)}")]
-    public ReadingRestriction Source { get; init; } = null!;
+    public ReadingRestriction Restriction { get; init; } = null!;
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
     public Reading Reading { get; set; } = null!;

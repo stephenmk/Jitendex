@@ -31,7 +31,7 @@ public sealed class KanjiFormRestrictionLink
     public required int KanjiFormOrder { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(RestrictionOrder)}")]
-    public KanjiFormRestriction Source { get; init; } = null!;
+    public KanjiFormRestriction Restriction { get; init; } = null!;
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
     public KanjiForm KanjiForm { get; set; } = null!;

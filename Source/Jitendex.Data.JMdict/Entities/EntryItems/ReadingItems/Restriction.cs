@@ -33,6 +33,6 @@ public sealed class Restriction
     [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
     public Reading Reading { get; init; } = null!;
 
-    [InverseProperty(nameof(RestrictionLink.Source))]
+    [InverseProperty(nameof(RestrictionLink.Restriction))]
     public RestrictionLink? Link { get; set; }
 }

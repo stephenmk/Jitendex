@@ -42,6 +42,6 @@ public sealed class Reading
     public List<Restriction> Restrictions { get; init; } = [];
 
     public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
-    public List<ReadingReference> ReverseReferences { get; init; } = [];
-    public List<ReadingRestrictionLink> SenseRestrictionLinks { get; init; } = [];
+    public List<ReadingReference> SenseReferences { get; init; } = [];
+    public List<ReadingRestrictionLink> SenseRestrictions { get; init; } = [];
 }

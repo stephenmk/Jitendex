@@ -41,7 +41,7 @@ public sealed class KanjiForm
     public List<KanjiFormPriority> Priorities { get; init; } = [];
 
     public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
-    public List<KanjiFormReference> References { get; init; } = [];
-    public List<RestrictionLink> ReadingRestrictionLinks { get; init; } = [];
-    public List<KanjiFormRestrictionLink> SenseRestrictionLinks { get; init; } = [];
+    public List<KanjiFormReference> SenseReferences { get; init; } = [];
+    public List<RestrictionLink> ReadingRestrictions { get; init; } = [];
+    public List<KanjiFormRestrictionLink> SenseRestrictions { get; init; } = [];
 }

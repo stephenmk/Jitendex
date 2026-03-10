@@ -18,8 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.References;
+namespace Jitendex.Data.JMdict.Entities.References;
 
 [Table(nameof(KanjiFormReference))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), nameof(RefEntryId))]

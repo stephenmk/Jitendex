@@ -19,14 +19,15 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
+namespace Jitendex.Data.JMdict.Entities.Furigana;
 
-[Table(nameof(Character))]
-[PrimaryKey(nameof(Value))]
-public sealed class Character
+[Table(nameof(DerivedCharacterReadingType))]
+[PrimaryKey(nameof(Id))]
+public sealed class DerivedCharacterReadingType
 {
-    public required int Value { get; init; }
+    public required DerivedCharacterReadingTypeId Id { get; init; }
+    public required string Name { get; set; }
 
-    [InverseProperty(nameof(CharacterReading.Character))]
-    public ICollection<CharacterReading> Readings { get; init; } = [];
+    [InverseProperty(nameof(DerivedCharacterReading.Type))]
+    public ICollection<DerivedCharacterReading> DerivedReadings { get; init; } = [];
 }

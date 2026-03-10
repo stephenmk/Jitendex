@@ -20,7 +20,7 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Furigana;
-using F = Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
+using J = Jitendex.Data.JMdict.Entities.Furigana;
 using H = Jitendex.Data.Home.Entities.Furigana;
 
 namespace Jitendex.Forks.JMdict.Analyzers;
@@ -55,16 +55,16 @@ internal sealed class CharacterReadingAnalyzer
         table.InsertItems(forkContext, rows);
     }
 
-    private static F.CharacterReadingTypeId ConvertTypeId(H.CharacterReadingTypeId id) => id switch
+    private static J.CharacterReadingTypeId ConvertTypeId(H.CharacterReadingTypeId id) => id switch
     {
-        H.CharacterReadingTypeId.Onyomi       => F.CharacterReadingTypeId.Onyomi,
-        H.CharacterReadingTypeId.Kunyomi      => F.CharacterReadingTypeId.Kunyomi,
-        H.CharacterReadingTypeId.Chinese      => F.CharacterReadingTypeId.Chinese,
-        H.CharacterReadingTypeId.Korean       => F.CharacterReadingTypeId.Korean,
-        H.CharacterReadingTypeId.Kana         => F.CharacterReadingTypeId.Kana,
-        H.CharacterReadingTypeId.Alphanumeric => F.CharacterReadingTypeId.Alphanumeric,
-        H.CharacterReadingTypeId.Symbol       => F.CharacterReadingTypeId.Symbol,
-        H.CharacterReadingTypeId.Unknown      => F.CharacterReadingTypeId.Unknown,
+        H.CharacterReadingTypeId.Onyomi       => J.CharacterReadingTypeId.Onyomi,
+        H.CharacterReadingTypeId.Kunyomi      => J.CharacterReadingTypeId.Kunyomi,
+        H.CharacterReadingTypeId.Chinese      => J.CharacterReadingTypeId.Chinese,
+        H.CharacterReadingTypeId.Korean       => J.CharacterReadingTypeId.Korean,
+        H.CharacterReadingTypeId.Kana         => J.CharacterReadingTypeId.Kana,
+        H.CharacterReadingTypeId.Alphanumeric => J.CharacterReadingTypeId.Alphanumeric,
+        H.CharacterReadingTypeId.Symbol       => J.CharacterReadingTypeId.Symbol,
+        H.CharacterReadingTypeId.Unknown      => J.CharacterReadingTypeId.Unknown,
         _ => throw new ArgumentOutOfRangeException(nameof(id))
     };
 }

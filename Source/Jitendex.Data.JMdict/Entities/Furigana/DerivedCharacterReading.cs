@@ -19,21 +19,21 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.References;
+namespace Jitendex.Data.JMdict.Entities.Furigana;
 
-[Table(nameof(ReadingReference))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), nameof(RefEntryId))]
-public sealed class ReadingReference
+[Table(nameof(DerivedCharacterReading))]
+[PrimaryKey(nameof(ReadingId), nameof(Text))]
+public sealed class DerivedCharacterReading
 {
-    public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
-    public required int CrossReferenceOrder { get; init; }
-    public required int RefEntryId { get; init; }
-    public required int RefReadingOrder { get; set; }
+    public required int ReadingId { get; init; }
+    public required string Text { get; init; }
+    public required bool IsPrefix { get; init; }
+    public required bool IsSuffix { get; init; }
+    public required DerivedCharacterReadingTypeId TypeId { get; init; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}, {nameof(RefEntryId)}")]
-    public EntryReference Source { get; init; } = null!;
+    [ForeignKey(nameof(ReadingId))]
+    public CharacterReading Source { get; init; } = null!;
 
-    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefReadingOrder)}")]
-    public Reading Reading { get; set; } = null!;
+    [ForeignKey(nameof(TypeId))]
+    public DerivedCharacterReadingType Type { get; init; } = null!;
 }

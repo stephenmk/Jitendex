@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Data.JMdict.Entities.EntryItems;
@@ -76,4 +77,22 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
     public DbSet<LanguageSourceType> LanguageSourceTypes { get; set; } = null!;
     public DbSet<Language> Languages { get; set; } = null!;
     #endregion
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        string[] ignoredNamespaces =
+        [
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.Furigana)}",
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.References)}",
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.EntryItems)}.{nameof(Entities.EntryItems.Links)}",
+        ];
+
+        var typesToIgnore = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(t => ignoredNamespaces.Contains(t.Namespace) && !t.IsAbstract);
+
+        foreach (var type in typesToIgnore)
+        {
+            modelBuilder.Ignore(type);
+        }
+    }
 }

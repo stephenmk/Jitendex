@@ -19,20 +19,14 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
+namespace Jitendex.Data.JMdict.Entities.Furigana;
 
-[Table(nameof(RestrictionLink))]
-[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(RestrictionOrder))]
-public sealed class RestrictionLink
+[Table(nameof(Character))]
+[PrimaryKey(nameof(Value))]
+public sealed class Character
 {
-    public required int EntryId { get; init; }
-    public required int ReadingOrder { get; init; }
-    public required int RestrictionOrder { get; init; }
-    public required int KanjiFormOrder { get; set; }
+    public required int Value { get; init; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(RestrictionOrder)}")]
-    public Restriction Restriction { get; init; } = null!;
-
-    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
-    public KanjiForm KanjiForm { get; set; } = null!;
+    [InverseProperty(nameof(CharacterReading.Character))]
+    public ICollection<CharacterReading> Readings { get; init; } = [];
 }

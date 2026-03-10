@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Jitendex.Data.JMdict.Entities.EntryItems.References;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.References;
 
 namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
@@ -38,10 +38,10 @@ public sealed class CrossReference
     [ForeignKey(nameof(TypeName))]
     public CrossReferenceType Type { get; set; } = null!;
 
-    [InverseProperty(nameof(References.EntryReference.Source))]
-    public EntryReference? EntryReference { get; set; }
+    [InverseProperty(nameof(EntryReference.Source))]
+    public EntryReference? ReferencedEntry { get; set; }
 
-    [InverseProperty(nameof(References.AmbiguousReference.Reference))]
+    [InverseProperty(nameof(AmbiguousReference.Reference))]
     public AmbiguousReference? IsAmbiguous { get; set; }
 
     /// <summary>

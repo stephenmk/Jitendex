@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -18,15 +18,22 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
+namespace Jitendex.Data.JMdict.Entities.EntryItems.Links;
 
-[Table(nameof(Compound))]
-[PrimaryKey(nameof(Text))]
-public sealed class Compound
+[Table(nameof(RestrictionLink))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(RestrictionOrder))]
+public sealed class RestrictionLink
 {
-    public required string Text { get; init; }
+    public required int EntryId { get; init; }
+    public required int ReadingOrder { get; init; }
+    public required int RestrictionOrder { get; init; }
+    public required int KanjiFormOrder { get; set; }
 
-    [InverseProperty(nameof(CompoundReading.Compound))]
-    public ICollection<CompoundReading> Readings { get; init; } = [];
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(RestrictionOrder)}")]
+    public Restriction Restriction { get; init; } = null!;
+
+    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
+    public KanjiForm KanjiForm { get; set; } = null!;
 }

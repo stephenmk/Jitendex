@@ -45,9 +45,9 @@ internal sealed class CrossReferenceCacheService
             .Select(static x => new
             {
                 Key = new Key(x.EntryId, x.SenseOrder + 1, x.Reference.Text),
-                Value = x.Reference.EntryReference == null
+                Value = x.Reference.ReferencedEntry == null
                     ? null
-                    : (int?)x.Reference.EntryReference.EntryId
+                    : (int?)x.Reference.ReferencedEntry.EntryId
             })
             .ToDictionary(static x => x.Key, static x => x.Value);
 

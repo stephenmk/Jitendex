@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
+namespace Jitendex.Data.JMdict.Entities.Furigana;
 
 [Table(nameof(CompoundReading))]
 [PrimaryKey(nameof(CompoundText), nameof(Text))]

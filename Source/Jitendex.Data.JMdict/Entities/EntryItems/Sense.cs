@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.Entities.EntryItems.References;
+using Jitendex.Data.JMdict.Entities.References;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.Data.JMdict.Entities.EntryItems;

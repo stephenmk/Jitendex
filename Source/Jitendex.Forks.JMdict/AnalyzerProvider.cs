@@ -48,30 +48,28 @@ internal static class AnalyzerProvider
 
         .AddTransient<CrossReferenceAnalyzer>()
 
-        .AddTransient<KanjiFormBridgeAnalyzer>()
-        .AddTransient<FuriganaSegmentAnalyzer>()
         .AddTransient<CompoundAnalyzer>()
         .AddTransient<CharacterAnalyzer>()
         .AddTransient<CharacterReadingAnalyzer>()
         .AddTransient<DerivedReadingAnalyzer>()
         .AddTransient<DerivedReadingTypeAnalyzer>()
+        .AddTransient<KanjiFormBridgeAnalyzer>()
+        .AddTransient<FuriganaSegmentAnalyzer>()
 
         // Helpers
         .AddTransient<CrossReferenceTextParser>()
         .AddTransient<CrossReferenceCacheService>()
 
         // Tables
+        .AddTransient<RestrictionLinkTable>()
+        .AddTransient<ReadingRestrictionLinkTable>()
+        .AddTransient<KanjiFormRestrictionLinkTable>()
+
         .AddTransient<AmbiguousReferenceTable>()
         .AddTransient<EntryReferenceTable>()
         .AddTransient<ReadingReferenceTable>()
         .AddTransient<KanjiFormReferenceTable>()
 
-        .AddTransient<KanjiFormRestrictionLinkTable>()
-        .AddTransient<ReadingRestrictionLinkTable>()
-        .AddTransient<RestrictionLinkTable>()
-
-        .AddTransient<FuriganaSegmentTable>()
-        .AddTransient<ReadingKanjiFormBridgeTable>()
         .AddTransient<CompoundTable>()
         .AddTransient<CompoundReadingTable>()
         .AddTransient<CharacterTable>()
@@ -79,6 +77,8 @@ internal static class AnalyzerProvider
         .AddTransient<CharacterReadingTypeTable>()
         .AddTransient<DerivedCharacterReadingTable>()
         .AddTransient<DerivedCharacterReadingTypeTable>()
+        .AddTransient<ReadingKanjiFormBridgeTable>()
+        .AddTransient<FuriganaSegmentTable>()
 
         // Logging
         .AddLogging(static builder =>

@@ -16,18 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+namespace Jitendex.Data.JMdict.Entities.Furigana;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
-
-[Table(nameof(DerivedCharacterReadingType))]
-[PrimaryKey(nameof(Id))]
-public sealed class DerivedCharacterReadingType
+public enum DerivedCharacterReadingTypeId
 {
-    public required DerivedCharacterReadingTypeId Id { get; init; }
-    public required string Name { get; set; }
-
-    [InverseProperty(nameof(DerivedCharacterReading.Type))]
-    public ICollection<DerivedCharacterReading> DerivedReadings { get; init; } = [];
+    Onyomi,
+    OnyomiSokuon,
+    OnyomiRendaku,
+    OnyomiSokuonRendaku,
+    Kunyomi,
+    KunyomiRendaku,
+    KunyomiOkurigana,
+    KunyomiRendakuOkurigana,
+    KunyomiMasu,
+    KunyomiRendakuMasu,
+    KunyomiTe,
+    KunyomiRendakuTe,
+    Chinese,
+    Korean,
+    Alphanumeric,
+    Kana,
+    Symbol,
+    Unknown,
 }

@@ -18,18 +18,23 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.EntryItems;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.References;
+namespace Jitendex.Data.JMdict.Entities.References;
 
-[Table(nameof(AmbiguousReference))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
-public sealed class AmbiguousReference
+[Table(nameof(ReadingReference))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), nameof(RefEntryId))]
+public sealed class ReadingReference
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int CrossReferenceOrder { get; init; }
+    public required int RefEntryId { get; init; }
+    public required int RefReadingOrder { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
-    public CrossReference Reference { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}, {nameof(RefEntryId)}")]
+    public EntryReference Source { get; init; } = null!;
+
+    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefReadingOrder)}")]
+    public Reading Reading { get; set; } = null!;
 }

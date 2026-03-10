@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -19,21 +19,14 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.Furigana;
+namespace Jitendex.Data.JMdict.Entities.Furigana;
 
-[Table(nameof(DerivedCharacterReading))]
-[PrimaryKey(nameof(ReadingId), nameof(Text))]
-public sealed class DerivedCharacterReading
+[Table(nameof(Compound))]
+[PrimaryKey(nameof(Text))]
+public sealed class Compound
 {
-    public required int ReadingId { get; init; }
     public required string Text { get; init; }
-    public required bool IsPrefix { get; init; }
-    public required bool IsSuffix { get; init; }
-    public required DerivedCharacterReadingTypeId TypeId { get; init; }
 
-    [ForeignKey(nameof(ReadingId))]
-    public CharacterReading Source { get; init; } = null!;
-
-    [ForeignKey(nameof(TypeId))]
-    public DerivedCharacterReadingType Type { get; init; } = null!;
+    [InverseProperty(nameof(CompoundReading.Compound))]
+    public ICollection<CompoundReading> Readings { get; init; } = [];
 }

@@ -36,7 +36,10 @@ internal sealed record FuriganaSegmentRow
     string? TypeName
 );
 
-internal sealed record CompoundRow(string Text);
+internal sealed record CompoundRow
+(
+    string Text
+);
 
 internal sealed record CompoundReadingRow
 (
@@ -44,7 +47,10 @@ internal sealed record CompoundReadingRow
     string Text
 );
 
-internal sealed record CharacterRow(int Value);
+internal sealed record CharacterRow
+(
+    int Value
+);
 
 internal sealed record CharacterReadingRow
 (

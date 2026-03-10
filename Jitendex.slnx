@@ -4,38 +4,35 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Folder Name="/Libraries/" />
-  <Folder Name="/Libraries/JapaneseTextUtils/">
+  <Folder Name="/Data/">
+    <Project Path="Source/Jitendex.Data/Jitendex.Data.csproj" />
+    <Project Path="Source/Jitendex.Data.ChiseIds/Jitendex.Data.ChiseIds.csproj" />
+    <Project Path="Source/Jitendex.Data.Home/Jitendex.Data.Home.csproj" />
+    <Project Path="Source/Jitendex.Data.JMdict/Jitendex.Data.JMdict.csproj" />
+    <Project Path="Source/Jitendex.Data.JMnedict/Jitendex.Data.JMnedict.csproj" />
+    <Project Path="Source/Jitendex.Data.Kanjidic2/Jitendex.Data.Kanjidic2.csproj" />
+    <Project Path="Source/Jitendex.Data.KanjiVG/Jitendex.Data.KanjiVG.csproj" />
+    <Project Path="Source/Jitendex.Data.Tatoeba/Jitendex.Data.Tatoeba.csproj" />
+  </Folder>
+  <Folder Name="/Import/">
+    <Project Path="Source/Jitendex.Import/Jitendex.Import.csproj" />
+    <Project Path="Source/Jitendex.Import.ChiseIds/Jitendex.Import.ChiseIds.csproj" />
+    <Project Path="Source/Jitendex.Import.Home/Jitendex.Import.Home.csproj" />
+    <Project Path="Source/Jitendex.Import.JMdict/Jitendex.Import.JMdict.csproj" />
+    <Project Path="Source/Jitendex.Import.JMnedict/Jitendex.Import.JMnedict.csproj" />
+    <Project Path="Source/Jitendex.Import.Kanjidic2/Jitendex.Import.Kanjidic2.csproj" />
+    <Project Path="Source/Jitendex.Import.KanjiVG/Jitendex.Import.KanjiVG.csproj" />
+    <Project Path="Source/Jitendex.Import.Tatoeba/Jitendex.Import.Tatoeba.csproj" />
+  </Folder>
+  <Folder Name="/Libraries/">
     <Project Path="Libraries/JapaneseTextUtils/Jitendex.JapaneseTextUtils/Jitendex.JapaneseTextUtils.csproj" />
-  </Folder>
-  <Folder Name="/Libraries/MinimalJsonDiff/">
     <Project Path="Libraries/MinimalJsonDiff/Jitendex.MinimalJsonDiff/Jitendex.MinimalJsonDiff.csproj" />
-  </Folder>
-  <Folder Name="/Libraries/MinimalPatch/">
     <Project Path="Libraries/MinimalPatch/Jitendex.MinimalPatch/Jitendex.MinimalPatch.csproj" />
   </Folder>
-  <Project Path="Source/Jitendex.Api/Jitendex.Api.csproj" />
   <Project Path="Source/Jitendex.AppDirectory/Jitendex.AppDirectory.csproj" />
-  <Project Path="Source/Jitendex.Data/Jitendex.Data.csproj" />
-  <Project Path="Source/Jitendex.Data.ChiseIds/Jitendex.Data.ChiseIds.csproj" />
-  <Project Path="Source/Jitendex.Data.Home/Jitendex.Data.Home.csproj" />
-  <Project Path="Source/Jitendex.Data.JMdict/Jitendex.Data.JMdict.csproj" />
-  <Project Path="Source/Jitendex.Data.JMnedict/Jitendex.Data.JMnedict.csproj" />
-  <Project Path="Source/Jitendex.Data.Kanjidic2/Jitendex.Data.Kanjidic2.csproj" />
-  <Project Path="Source/Jitendex.Data.KanjiVG/Jitendex.Data.KanjiVG.csproj" />
-  <Project Path="Source/Jitendex.Data.Tatoeba/Jitendex.Data.Tatoeba.csproj" />
   <Project Path="Source/Jitendex.Dto/Jitendex.Dto.csproj" />
   <Project Path="Source/Jitendex.EdrdgDictionaryArchive/Jitendex.EdrdgDictionaryArchive.csproj" />
-  <Project Path="Source/Jitendex.Furigana.Test/Jitendex.Furigana.Test.csproj" />
   <Project Path="Source/Jitendex.Furigana/Jitendex.Furigana.csproj" />
-  <Project Path="Source/Jitendex.Import/Jitendex.Import.csproj" />
-  <Project Path="Source/Jitendex.Import.ChiseIds/Jitendex.Import.ChiseIds.csproj" />
-  <Project Path="Source/Jitendex.Import.Home/Jitendex.Import.Home.csproj" />
-  <Project Path="Source/Jitendex.Import.JMdict/Jitendex.Import.JMdict.csproj" />
-  <Project Path="Source/Jitendex.Import.JMnedict/Jitendex.Import.JMnedict.csproj" />
-  <Project Path="Source/Jitendex.Import.Kanjidic2/Jitendex.Import.Kanjidic2.csproj" />
-  <Project Path="Source/Jitendex.Import.KanjiVG/Jitendex.Import.KanjiVG.csproj" />
-  <Project Path="Source/Jitendex.Import.Tatoeba/Jitendex.Import.Tatoeba.csproj" />
+  <Project Path="Source/Jitendex.Furigana.Test/Jitendex.Furigana.Test.csproj" />
   <Project Path="Source/Jitendex.JMdict.Fork/Jitendex.JMdict.Fork.csproj" />
-  <Project Path="Source/Jitendex.Web/Jitendex.Web.csproj" />
 </Solution>

@@ -30,17 +30,18 @@ public sealed class EntryReference
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int CrossReferenceOrder { get; init; }
-    public required int RefEntryId { get; set; }
+    public required int RefEntryId { get; init; }
+    public required int RefSenseOrder { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
     public CrossReference Source { get; init; } = null!;
+
+    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefSenseOrder)}")]
+    public Sense Sense { get; set; } = null!;
 
     [InverseProperty(nameof(References.KanjiFormReference.Source))]
     public KanjiFormReference? KanjiFormReference { get; set; }
 
     [InverseProperty(nameof(References.ReadingReference.Source))]
     public ReadingReference? ReadingReference { get; set; }
-
-    [InverseProperty(nameof(References.SenseReference.Source))]
-    public SenseReference? SenseReference { get; set; }
 }

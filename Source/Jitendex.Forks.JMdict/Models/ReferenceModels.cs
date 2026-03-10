@@ -37,7 +37,8 @@ internal sealed record EntryReferenceRow
     int EntryId,
     int SenseOrder,
     int CrossReferenceOrder,
-    int RefEntryId
+    int RefEntryId,
+    int RefSenseOrder
 );
 
 internal sealed record KanjiFormReferenceRow
@@ -56,13 +57,4 @@ internal sealed record ReadingReferenceRow
     int CrossReferenceOrder,
     int RefEntryId,
     int RefReadingOrder
-);
-
-internal sealed record SenseReferenceRow
-(
-    int EntryId,
-    int SenseOrder,
-    int CrossReferenceOrder,
-    int RefEntryId,
-    int RefSenseOrder
 );

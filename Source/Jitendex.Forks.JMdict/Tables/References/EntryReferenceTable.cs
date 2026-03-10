@@ -33,6 +33,7 @@ internal sealed class EntryReferenceTable : Table<EntryReferenceRow>
         nameof(EntryReference.SenseOrder),
         nameof(EntryReference.CrossReferenceOrder),
         nameof(EntryReference.RefEntryId),
+        nameof(EntryReference.RefSenseOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
@@ -40,6 +41,7 @@ internal sealed class EntryReferenceTable : Table<EntryReferenceRow>
         nameof(EntryReference.EntryId),
         nameof(EntryReference.SenseOrder),
         nameof(EntryReference.CrossReferenceOrder),
+        nameof(EntryReference.RefEntryId),
     ];
 
     protected override SqliteParameter[] Parameters(EntryReferenceRow row) =>
@@ -48,5 +50,6 @@ internal sealed class EntryReferenceTable : Table<EntryReferenceRow>
         new("@1", row.SenseOrder),
         new("@2", row.CrossReferenceOrder),
         new("@3", row.RefEntryId),
+        new("@4", row.RefSenseOrder),
     ];
 }

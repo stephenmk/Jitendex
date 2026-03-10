@@ -63,7 +63,6 @@ internal static class AnalyzerProvider
         // Tables
         .AddTransient<AmbiguousReferenceTable>()
         .AddTransient<EntryReferenceTable>()
-        .AddTransient<SenseReferenceTable>()
         .AddTransient<ReadingReferenceTable>()
         .AddTransient<KanjiFormReferenceTable>()
 

@@ -37,7 +37,6 @@ internal partial class CrossReferenceAnalyzer
 
     AmbiguousReferenceTable ambiguousReferenceTable,
     EntryReferenceTable entryReferenceTable,
-    SenseReferenceTable senseReferenceTable,
     ReadingReferenceTable readingReferenceTable,
     KanjiFormReferenceTable kanjiFormReferenceTable
 )
@@ -81,7 +80,6 @@ internal partial class CrossReferenceAnalyzer
             );
 
         var entryRefs = new List<EntryReferenceRow>(50_000);
-        var senseRefs = new List<SenseReferenceRow>(50_000);
         var readingRefs = new List<ReadingReferenceRow>(50_000);
         var kanjiFormRefs = new List<KanjiFormReferenceRow>(50_000);
         var ambiguousRefs = new List<AmbiguousReferenceRow>(5_000);
@@ -131,8 +129,7 @@ internal partial class CrossReferenceAnalyzer
             }
             if (entryId.HasValue)
             {
-                entryRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value));
-                senseRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, parsedRef.SenseNumber - 1));
+                entryRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, parsedRef.SenseNumber - 1));
                 if (readingOrder.HasValue)
                 {
                     readingRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, readingOrder.Value));
@@ -146,7 +143,6 @@ internal partial class CrossReferenceAnalyzer
 
         ambiguousReferenceTable.InsertItems(context, ambiguousRefs);
         entryReferenceTable.InsertItems(context, entryRefs);
-        senseReferenceTable.InsertItems(context, senseRefs);
         readingReferenceTable.InsertItems(context, readingRefs);
         kanjiFormReferenceTable.InsertItems(context, kanjiFormRefs);
     }

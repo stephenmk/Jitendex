@@ -46,5 +46,5 @@ public sealed class Sense
     public List<LanguageSource> LanguageSources { get; init; } = [];
     public List<CrossReference> CrossReferences { get; init; } = [];
 
-    public List<SenseReference> ReverseReferences { get; init; } = [];
+    public List<EntryReference> ReverseReferences { get; init; } = [];
 }

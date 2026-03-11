@@ -33,6 +33,7 @@ internal partial class IntegrityAnalyzer
         CheckForRightSingleQuotationMarks();
         CheckForZeroWidthSpaces();
         CheckForUnpairedPriorityTags();
+        CheckForPriorityTagsOnRareForms();
 
         context.SaveChanges();
     }
@@ -86,19 +87,44 @@ internal partial class IntegrityAnalyzer
         }
     }
 
-    [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} contains a [uk] misc tag, but no kanji forms.")]
-    partial void LogUkTagOnEntryWithoutKanjiForms(int entryId);
+    private void CheckForPriorityTagsOnRareForms()
+    {
+        var kanjiPriorities = context.KanjiFormPriorities
+            .Where(static p => p.KanjiForm.Infos.Any(static i => i.TagName == "rK" || i.TagName == "sK"));
+
+        var readingPriorities = context.ReadingPriorities
+            .Where(static p => p.Reading.Infos.Any(static i => i.TagName == "rk" || i.TagName == "sk"));
+
+        foreach (var priority in kanjiPriorities)
+        {
+            LogPriorityTagOnRareForm(priority.EntryId, priority.TagName);
+            context.Remove(priority);
+        }
+
+        foreach (var priority in readingPriorities)
+        {
+            LogPriorityTagOnRareForm(priority.EntryId, priority.TagName);
+            context.Remove(priority);
+        }
+    }
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} contains a gloss with the wrong apostrophe: `{Text}`")]
-    partial void LogRightSingleQuotationMark(int entryId, string text);
+    "Entry ID {Id} contains a [uk] misc tag, but no kanji forms.")]
+    partial void LogUkTagOnEntryWithoutKanjiForms(int id);
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID `{entryId}` contains a zero-width space: `{Text}`")]
-    partial void LogZeroWidthSpace(int entryId, string text);
+    "Entry ID {Id} contains a gloss with the wrong apostrophe: `{Text}`")]
+    partial void LogRightSingleQuotationMark(int id, string text);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry ID `{Id}` contains a zero-width space: `{Text}`")]
+    partial void LogZeroWidthSpace(int id, string text);
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID `{Id}` kanji form #{Number} contains an unpaired priority tag `{TagName}`")]
     partial void LogUnpairedPriorityTag(int id, int number, string tagName);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry ID `{Id}` contains a priority tag `{TagName}` on a rare form")]
+    partial void LogPriorityTagOnRareForm(int id, string tagName);
 }

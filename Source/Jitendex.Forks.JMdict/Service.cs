@@ -33,19 +33,19 @@ internal sealed class Service
     HomeContext homeContext,
     JMdictForkContext forkContext,
     DatabaseCopyService databaseCopier,
-    PatchService patchService,
-    RestrictionService restrictionService,
-    ReadingRestrictionService readingRestrictionService,
-    KanjiFormRestrictionService kanjiFormRestrictionService,
-    CrossReferenceService crossReferenceService,
-    CompoundService compoundService,
-    CharacterService characterService,
-    CharacterReadingService characterReadingService,
-    DerivedReadingService derivedReadingService,
-    DerivedReadingTypeService derivedReadingTypeService,
-    KanjiFormBridgeService kanjiFormBridgeService,
-    FuriganaSegmentService furiganaSegmentService,
-    IntegrityService integrityService
+    PatchService patches,
+    RestrictionService restrictions,
+    ReadingRestrictionService readingRestrictions,
+    KanjiFormRestrictionService kanjiFormRestrictions,
+    CrossReferenceService crossReferences,
+    CompoundService compounds,
+    CharacterService characters,
+    CharacterReadingService characterReadings,
+    DerivedReadingService derivedReadings,
+    DerivedReadingTypeService derivedReadingTypes,
+    KanjiFormBridgeService kanjiFormBridges,
+    FuriganaSegmentService furiganaSegments,
+    IntegrityService integrityChecker
 )
 {
     public void Run()
@@ -73,51 +73,54 @@ internal sealed class Service
 
     private void RunPreprocessing()
     {
-        logger.LogInformation("Copying data from the JMdict database file");
+        logger.LogInformation("Copying data from the JMdict database file.");
         databaseCopier.CopyDataFromJmdict();
     }
 
     private void RunPatchServices()
     {
-        // Apply home-grown data patches.
-        patchService.Write();
+        logger.LogInformation("Applying home-grown data patches.");
+        patches.Write();
     }
 
     private void RunRestrictionServices()
     {
-        // Make the implicit relationships in the data explicit.
-        restrictionService.Write();
-        readingRestrictionService.Write();
-        kanjiFormRestrictionService.Write();
+        logger.LogInformation("Making the implicit relationships in the data explicit.");
+        restrictions.Write();
+        readingRestrictions.Write();
+        kanjiFormRestrictions.Write();
     }
 
     private void RunKanwaServices()
     {
-        // Transfer home-grown character information.
-        compoundService.Write();
-        characterService.Write();
-        characterReadingService.Write();
+        logger.LogInformation("Transfer home-grown character information.");
+        compounds.Write();
+        characters.Write();
+        characterReadings.Write();
 
-        // Add inflections of standard readings.
-        derivedReadingTypeService.Write();
-        derivedReadingService.Write();
+        logger.LogInformation("Adding inflections of standard readings.");
+        derivedReadingTypes.Write();
+        derivedReadings.Write();
     }
 
     private void RunFuriganaServices()
     {
-        kanjiFormBridgeService.Write();
-        // Run furigana solver for all reading + kanji form pairs.
-        furiganaSegmentService.Write();
+        logger.LogInformation("Bridging readings with corresponding kanji forms");
+        kanjiFormBridges.Write();
+
+        logger.LogInformation("Running furigana solver.");
+        furiganaSegments.Write();
     }
 
     private void RunReferenceServices()
     {
-        crossReferenceService.Write();
+        logger.LogInformation("Deducing cross reference relationships.");
+        crossReferences.Write();
     }
 
     private void RunPostprocessing()
     {
-        // Check for miscellaneous data integrity issues.
-        integrityService.Write();
+        logger.LogInformation("Checking for miscellaneous data integrity issues.");
+        integrityChecker.Write();
     }
 }

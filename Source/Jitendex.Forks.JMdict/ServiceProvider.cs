@@ -29,10 +29,10 @@ using Jitendex.Forks.JMdict.Tables.References;
 
 namespace Jitendex.Forks.JMdict;
 
-internal static class AnalyzerProvider
+internal static class ServiceProvider
 {
-    public static Analyzer GetAnalyzer() => new ServiceCollection()
-        .AddTransient<Analyzer>()
+    public static Service GetService() => new ServiceCollection()
+        .AddTransient<Service>()
 
         // Databases
         .AddDbContext<JMdictContext>()
@@ -93,5 +93,5 @@ internal static class AnalyzerProvider
 
         // Build and return the Analyzer service.
         .BuildServiceProvider()
-        .GetRequiredService<Analyzer>();
+        .GetRequiredService<Service>();
 }

@@ -24,9 +24,9 @@ using Jitendex.Forks.JMdict.Services;
 
 namespace Jitendex.Forks.JMdict;
 
-internal sealed class Analyzer
+internal sealed class Service
 (
-    ILogger<Analyzer> logger,
+    ILogger<Service> logger,
     JMdictForkContext forkContext,
     HomeContext homeContext,
     DatabaseCopier databaseCopier,
@@ -48,7 +48,7 @@ internal sealed class Analyzer
     FuriganaSegmentAnalyzer furiganaSegmentAnalyzer
 )
 {
-    public void Analyze()
+    public void Run()
     {
         forkContext.RecreateDatabase();
 
@@ -59,7 +59,7 @@ internal sealed class Analyzer
         databaseCopier.CopyDataFromJmdict();
 
         logger.LogInformation("Starting data analysis");
-        RunAnalyzers();
+        RunSubroutines();
 
         forkTransaction.Commit();
         homeTransaction.Commit();
@@ -67,7 +67,7 @@ internal sealed class Analyzer
         forkContext.ExecuteVacuum();
     }
 
-    private void RunAnalyzers()
+    private void RunSubroutines()
     {
         // Apply home-grown data patches.
         patchAnalyzer.Analyze();

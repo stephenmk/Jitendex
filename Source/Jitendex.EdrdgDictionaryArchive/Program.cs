@@ -42,7 +42,7 @@ public static class Program
             Description = "Path to the edrdg-dictionary-archive directory",
         };
 
-        var rootCommand = new RootCommand("Jitendex.EdrdgDictionaryArchive: Retrieve a versioned file from the EDRDG Dictionary Archive")
+        var rootCommand = new RootCommand("Retrieve a versioned file from the EDRDG Dictionary Archive")
         {
             filenameArgument,
             dateOption,

@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.Forks.JMdict.Models;
 
-namespace Jitendex.Forks.JMdict.Services;
+namespace Jitendex.Forks.JMdict.Services.References;
 
 internal partial class CrossReferenceTextParser(ILogger<CrossReferenceTextParser> logger)
 {

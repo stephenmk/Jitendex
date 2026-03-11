@@ -19,8 +19,11 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.Analyzers;
 using Jitendex.Forks.JMdict.Services;
+using Jitendex.Forks.JMdict.Services.Furigana;
+using Jitendex.Forks.JMdict.Services.Kanwa;
+using Jitendex.Forks.JMdict.Services.References;
+using Jitendex.Forks.JMdict.Services.Restrictions;
 
 namespace Jitendex.Forks.JMdict;
 

@@ -23,7 +23,7 @@ using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 
-namespace Jitendex.Forks.JMdict.Analyzers;
+namespace Jitendex.Forks.JMdict.Services.Furigana;
 
 internal partial class FuriganaSegmentAnalyzer
 (

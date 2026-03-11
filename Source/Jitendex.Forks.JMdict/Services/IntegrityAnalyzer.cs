@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.JMdict;
 
-namespace Jitendex.Forks.JMdict.Analyzers;
+namespace Jitendex.Forks.JMdict.Services;
 
 internal partial class IntegrityAnalyzer
 (

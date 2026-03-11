@@ -24,7 +24,7 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Dto.JMdict;
 
-namespace Jitendex.Forks.JMdict.Analyzers;
+namespace Jitendex.Forks.JMdict.Services;
 
 internal partial class PatchAnalyzer
 (

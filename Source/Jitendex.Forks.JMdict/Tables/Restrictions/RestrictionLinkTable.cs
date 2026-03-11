@@ -21,31 +21,31 @@ using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.Links;
 using Jitendex.Forks.JMdict.Models;
 
-namespace Jitendex.Forks.JMdict.Tables.Links;
+namespace Jitendex.Forks.JMdict.Tables.Restrictions;
 
-internal sealed class KanjiFormRestrictionLinkTable : Table<KanjiFormRestrictionLinkRow>
+internal sealed class RestrictionLinkTable : Table<RestrictionLinkRow>
 {
-    protected override string Name => nameof(KanjiFormRestrictionLink);
+    protected override string Name => nameof(RestrictionLink);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(KanjiFormRestrictionLink.EntryId),
-        nameof(KanjiFormRestrictionLink.SenseOrder),
-        nameof(KanjiFormRestrictionLink.RestrictionOrder),
-        nameof(KanjiFormRestrictionLink.KanjiFormOrder),
+        nameof(RestrictionLink.EntryId),
+        nameof(RestrictionLink.ReadingOrder),
+        nameof(RestrictionLink.RestrictionOrder),
+        nameof(RestrictionLink.KanjiFormOrder),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(KanjiFormRestrictionLink.EntryId),
-        nameof(KanjiFormRestrictionLink.SenseOrder),
-        nameof(KanjiFormRestrictionLink.RestrictionOrder),
+        nameof(RestrictionLink.EntryId),
+        nameof(RestrictionLink.ReadingOrder),
+        nameof(RestrictionLink.RestrictionOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormRestrictionLinkRow row) =>
+    protected override SqliteParameter[] Parameters(RestrictionLinkRow row) =>
     [
         new("@0", row.EntryId),
-        new("@1", row.SenseOrder),
+        new("@1", row.ReadingOrder),
         new("@2", row.RestrictionOrder),
         new("@3", row.KanjiFormOrder),
     ];

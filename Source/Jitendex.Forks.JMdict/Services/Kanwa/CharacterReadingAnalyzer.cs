@@ -23,7 +23,7 @@ using Jitendex.Forks.JMdict.Tables.Kanwa;
 using J = Jitendex.Data.JMdict.Entities.Kanwa;
 using H = Jitendex.Data.Home.Entities.Furigana;
 
-namespace Jitendex.Forks.JMdict.Analyzers;
+namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
 internal sealed class CharacterReadingAnalyzer
 (

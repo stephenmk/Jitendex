@@ -20,9 +20,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
-using Jitendex.Forks.JMdict.Tables.Links;
+using Jitendex.Forks.JMdict.Tables.Restrictions;
 
-namespace Jitendex.Forks.JMdict.Analyzers;
+namespace Jitendex.Forks.JMdict.Services.Restrictions;
 
 internal partial class ReadingRestrictionAnalyzer
 (

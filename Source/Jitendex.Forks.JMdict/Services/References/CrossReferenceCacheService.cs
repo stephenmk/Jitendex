@@ -20,7 +20,7 @@ using System.Collections.Frozen;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 
-namespace Jitendex.Forks.JMdict.Services;
+namespace Jitendex.Forks.JMdict.Services.References;
 
 internal sealed class CrossReferenceCacheService
 (

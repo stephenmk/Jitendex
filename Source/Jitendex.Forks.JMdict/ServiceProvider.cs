@@ -20,12 +20,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.Analyzers;
 using Jitendex.Forks.JMdict.Services;
+using Jitendex.Forks.JMdict.Services.Furigana;
+using Jitendex.Forks.JMdict.Services.Kanwa;
+using Jitendex.Forks.JMdict.Services.References;
+using Jitendex.Forks.JMdict.Services.Restrictions;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
-using Jitendex.Forks.JMdict.Tables.Links;
 using Jitendex.Forks.JMdict.Tables.References;
+using Jitendex.Forks.JMdict.Tables.Restrictions;
 
 namespace Jitendex.Forks.JMdict;
 

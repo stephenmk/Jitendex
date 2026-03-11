@@ -23,7 +23,7 @@ using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
 using static Jitendex.Data.JMdict.Entities.Kanwa.CharacterReadingTypeId;
 
-namespace Jitendex.Forks.JMdict.Analyzers;
+namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
 internal sealed class DerivedReadingAnalyzer
 (

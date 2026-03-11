@@ -23,7 +23,7 @@ namespace Jitendex.EdrdgDictionaryArchive.Internal;
 
 internal sealed record Patch(DateOnly Date, string Path);
 
-internal sealed class FileArchive(ILogger<FileArchive> logger)
+internal partial class FileArchive(ILogger<FileArchive> logger)
 {
     public (FileInfo, DateOnly)? GetExistingBaseFile(FileRequest request)
     {
@@ -36,7 +36,7 @@ internal sealed class FileArchive(ILogger<FileArchive> logger)
         var file = new FileInfo(baseFilePath);
         if (!file.Exists)
         {
-            logger.LogInformation("Base file for {File} is missing at path `{Path}`", request.File.ToFileName(), request.ArchiveDirectory.FullName);
+            LogMissingFile(request.File.ToFileName(), request.ArchiveDirectory.FullName);
             return null;
         }
         var baseFileDate = GetBaseFileDate(request.File);
@@ -112,7 +112,7 @@ internal sealed class FileArchive(ILogger<FileArchive> logger)
                 }
             }
         }
-        logger.LogInformation("Requested file {File} for date {Date:yyyy-MM-dd} does not exist in the archive", request.File.ToFileName(), request.Date);
+        LogFileNotFound(request.File.ToFileName(), request.Date);
         return [];
     }
 
@@ -125,12 +125,20 @@ internal sealed class FileArchive(ILogger<FileArchive> logger)
      private static DateOnly GetBaseFileDate(DictionaryFile file)
         => file switch
         {
-            JMdict => new(2023, 8, 20),
-            JMdict_e => new(2025, 10, 9),
-            JMdict_e_examp => new(2023, 8, 26),
-            JMnedict => new(2023, 8, 20),
-            kanjidic2 => new(2023, 8, 20),
-            examples => new(2023, 9, 25),
-            _ => throw new ArgumentOutOfRangeException(nameof(file))
+            JMdict         => new(2023,  8, 20),
+            JMdict_e       => new(2025, 10,  9),
+            JMdict_e_examp => new(2023,  8, 26),
+            JMnedict       => new(2023,  8, 20),
+            kanjidic2      => new(2023,  8, 20),
+            examples       => new(2023,  9, 25),
+            _              => throw new ArgumentOutOfRangeException(nameof(file))
         };
+
+    [LoggerMessage(LogLevel.Information,
+    "Base file for {File} is missing at path `{Path}`")]
+    partial void LogMissingFile(string file, string path);
+
+    [LoggerMessage(LogLevel.Information,
+    "Requested file {File} for date {Date:yyyy-MM-dd} does not exist in the archive")]
+    partial void LogFileNotFound(string file, DateOnly date);
 }

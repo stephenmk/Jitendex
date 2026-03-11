@@ -25,13 +25,13 @@ internal static class DictionaryFileExtensions
     public static string ToFileName(this DictionaryFile file)
         => file switch
         {
-            JMdict => "JMdict",
-            JMdict_e => "JMdict_e",
+            JMdict         => "JMdict",
+            JMdict_e       => "JMdict_e",
             JMdict_e_examp => "JMdict_e_examp",
-            JMnedict => "JMnedict.xml",
-            kanjidic2 => "kanjidic2.xml",
-            examples => "examples.utf",
-            _ => throw new ArgumentOutOfRangeException(nameof(file))
+            JMnedict       => "JMnedict.xml",
+            kanjidic2      => "kanjidic2.xml",
+            examples       => "examples.utf",
+            _              => throw new ArgumentOutOfRangeException(nameof(file))
         };
 
     public static string ToDirectoryName(this DictionaryFile file)

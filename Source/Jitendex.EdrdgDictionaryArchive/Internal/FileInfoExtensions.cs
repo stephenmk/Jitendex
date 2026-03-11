@@ -24,7 +24,7 @@ internal static class FileInfoExtensions
 {
     public static int Length(this FileInfo file)
     {
-        using FileStream fs = new(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+        using FileStream fs = file.OpenRead();
         using BrotliStream bs = new(fs, CompressionMode.Decompress);
         using StreamReader sr = new(bs);
         int length = 0;
@@ -37,7 +37,7 @@ internal static class FileInfoExtensions
 
     public static int ReadInto(this FileInfo file, Span<char> buffer)
     {
-        using FileStream fs = new(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+        using FileStream fs = file.OpenRead();
         using BrotliStream bs = new(fs, CompressionMode.Decompress);
         using StreamReader sr = new(bs);
         int length = 0;
@@ -50,7 +50,7 @@ internal static class FileInfoExtensions
 
     public static void WriteCompressed(this FileInfo file, ReadOnlySpan<char> text)
     {
-        using FileStream fs = new(file.FullName, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+        using FileStream fs = file.OpenWrite();
         using BrotliStream bs = new(fs, CompressionLevel.Optimal); // CompressionLevel.Fastest is 3x larger with hardly any perf increase
         using StreamWriter sw = new(bs);
         sw.Write(text);

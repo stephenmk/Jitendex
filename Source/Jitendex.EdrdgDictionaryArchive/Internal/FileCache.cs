@@ -51,6 +51,6 @@ internal sealed class FileCache
         );
 
     private DirectoryInfo CacheDirectory(FileRequest request)
-        => Cache.Get(EdrdgArchiveDirectory)
+        => AppDirectory.CacheDirectory.Get(EdrdgArchiveDirectory)
             .CreateSubdirectory(request.File.ToDirectoryName());
 }

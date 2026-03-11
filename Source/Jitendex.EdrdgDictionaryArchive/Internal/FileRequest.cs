@@ -31,6 +31,6 @@ internal sealed record FileRequest
     {
         Date = date;
         File = options.File;
-        ArchiveDirectory = options.ArchiveDirectory ?? DataHome.Get(EdrdgArchiveDirectory);
+        ArchiveDirectory = options.ArchiveDirectory ?? DataDirectory.Get(EdrdgArchiveDirectory);
     }
 }

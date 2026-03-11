@@ -21,7 +21,7 @@ using static Jitendex.AppDirectory.CacheSubdirectory;
 
 namespace Jitendex.AppDirectory;
 
-public static class Cache
+public static class CacheDirectory
 {
     public static DirectoryInfo Get(CacheSubdirectory subdir)
         => CacheHomeRoot.CreateSubdirectory(subdir.Name());

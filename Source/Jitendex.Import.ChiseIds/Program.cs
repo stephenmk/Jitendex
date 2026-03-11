@@ -49,7 +49,7 @@ public class Program
         }
 
         var chiseIdsDir = parseResult.GetValue(chiseIdsDirectoryOption)
-            ?? DataHome.Get(DataSubdirectory.ChiseIdsDirectory);
+            ?? DataDirectory.Get(DataSubdirectory.ChiseIdsDirectory);
 
         var logger = new Logger();
         var reader = new DocumentReader(logger);

@@ -90,7 +90,7 @@ public abstract class SqliteContext : DbContext
     private static string GetDataSource(DatabaseFile databaseFile)
         => Path.Join
         (
-            AppDirectory.Cache.Get(SqliteDirectory).FullName,
+            AppDirectory.CacheDirectory.Get(SqliteDirectory).FullName,
             databaseFile.ToFilename()
         );
 }

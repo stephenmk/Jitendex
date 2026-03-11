@@ -48,7 +48,7 @@ public class Program
         }
 
         var kanjivgDir = parseResult.GetValue(kanjivgDirectoryOption)
-            ?? DataHome.Get(DataSubdirectory.KanjiVGDirectory);
+            ?? DataDirectory.Get(DataSubdirectory.KanjiVGDirectory);
 
         var importer = ImporterProvider.GetImporter();
         await importer.ImportAsync(kanjivgDir);

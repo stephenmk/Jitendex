@@ -49,7 +49,7 @@ internal readonly ref struct LogFilePaths
 
     private static ReadOnlySpan<char> InitDirectory()
     {
-        var logDirectory = Cache.Get(CacheSubdirectory.ChiseIdsErrors);
+        var logDirectory = CacheDirectory.Get(CacheSubdirectory.ChiseIdsErrors);
 
         foreach (var file in logDirectory.EnumerateFiles())
         {

@@ -21,7 +21,7 @@ using static Jitendex.AppDirectory.DataSubdirectory;
 
 namespace Jitendex.AppDirectory;
 
-public static class DataHome
+public static class DataDirectory
 {
     public static DirectoryInfo Get(DataSubdirectory subdir)
         => DataHomeRoot.GetDirectories(subdir.Name()) switch

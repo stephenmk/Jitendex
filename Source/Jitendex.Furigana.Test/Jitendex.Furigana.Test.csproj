@@ -3,7 +3,7 @@
     <ProjectReference Include="..\Jitendex.Furigana\Jitendex.Furigana.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="4.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="4.1.0" />
   </ItemGroup>

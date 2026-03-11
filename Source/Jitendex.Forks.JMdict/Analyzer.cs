@@ -32,6 +32,7 @@ internal sealed class Analyzer
     DatabaseCopier databaseCopier,
 
     PatchAnalyzer patchAnalyzer,
+    IntegrityAnalyzer integrityAnalyzer,
 
     RestrictionAnalyzer restrictionAnalyzer,
     ReadingRestrictionAnalyzer readingRestrictionAnalyzer,
@@ -70,6 +71,9 @@ internal sealed class Analyzer
     {
         // Apply home-grown data patches.
         patchAnalyzer.Analyze();
+
+        // Check for miscellaneous data integrity issues.
+        integrityAnalyzer.Analyze();
 
         // Make the implicit relationships in the data explicit.
         restrictionAnalyzer.Analyze();

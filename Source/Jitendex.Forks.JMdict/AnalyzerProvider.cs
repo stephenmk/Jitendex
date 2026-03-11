@@ -45,6 +45,7 @@ internal static class AnalyzerProvider
 
         // Analyzers
         .AddTransient<PatchAnalyzer>()
+        .AddTransient<IntegrityAnalyzer>()
 
         .AddTransient<RestrictionAnalyzer>()
         .AddTransient<ReadingRestrictionAnalyzer>()

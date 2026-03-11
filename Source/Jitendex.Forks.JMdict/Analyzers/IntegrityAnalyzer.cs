@@ -32,6 +32,7 @@ internal partial class IntegrityAnalyzer
         CheckForUkTagOnEntriesWithoutKanjiForms();
         CheckForRightSingleQuotationMarks();
         CheckForZeroWidthSpaces();
+        CheckForUnpairedPriorityTags();
 
         context.SaveChanges();
     }
@@ -40,8 +41,7 @@ internal partial class IntegrityAnalyzer
     {
         var miscs = context.Miscs
             .Where(static misc => misc.TagName == "uk")
-            .Where(static misc => misc.Sense.Entry.KanjiForms.Count == 0)
-            .Select(static misc => misc);
+            .Where(static misc => misc.Sense.Entry.KanjiForms.Count == 0);
 
         foreach (var misc in miscs)
         {
@@ -53,8 +53,7 @@ internal partial class IntegrityAnalyzer
     private void CheckForRightSingleQuotationMarks()
     {
         var glosses = context.Glosses
-            .Where(gloss => gloss.Text.Contains('\u2019'))
-            .Select(static gloss => gloss);
+            .Where(static gloss => gloss.Text.Contains('\u2019'));
 
         foreach (var gloss in glosses)
         {
@@ -66,13 +65,24 @@ internal partial class IntegrityAnalyzer
     private void CheckForZeroWidthSpaces()
     {
         var glosses = context.Glosses
-            .Where(gloss => gloss.Text.Contains('\u200B'))
-            .Select(static gloss => gloss);
+            .Where(static gloss => gloss.Text.Contains('\u200B'));
 
         foreach (var gloss in glosses)
         {
             LogZeroWidthSpace(gloss.EntryId, gloss.Text);
             gloss.Text = gloss.Text.Replace("\u200B", string.Empty);
+        }
+    }
+
+    private void CheckForUnpairedPriorityTags()
+    {
+        var priorities = context.KanjiFormPriorities
+            .Where(static p => !p.KanjiForm.Bridges.Any(b => b.Reading.Priorities.Any(i => i.TagName == p.TagName)));
+
+        foreach (var priority in priorities)
+        {
+            LogUnpairedPriorityTag(priority.EntryId, priority.KanjiFormOrder + 1, priority.TagName);
+            context.Remove(priority);
         }
     }
 
@@ -87,4 +97,8 @@ internal partial class IntegrityAnalyzer
     [LoggerMessage(LogLevel.Warning,
     "Entry ID `{entryId}` contains a zero-width space: `{Text}`")]
     partial void LogZeroWidthSpace(int entryId, string text);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry ID `{Id}` kanji form #{Number} contains an unpaired priority tag `{TagName}`")]
+    partial void LogUnpairedPriorityTag(int id, int number, string tagName);
 }

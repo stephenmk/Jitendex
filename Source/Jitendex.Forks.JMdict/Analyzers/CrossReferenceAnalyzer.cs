@@ -199,7 +199,7 @@ internal partial class CrossReferenceAnalyzer
     (
         CrossReferenceData xref,
         ParsedReferenceText parsed,
-        FrozenDictionary<ReferenceText, List<EntryData>> referenceTextToEntries
+        FrozenDictionary<ReferenceText, ImmutableArray<EntryData>> referenceTextToEntries
     )
     {
         var key = new ReferenceText(parsed.Text1, parsed.Text2);
@@ -222,9 +222,9 @@ internal partial class CrossReferenceAnalyzer
         return possibleTargetEntries;
     }
 
-    private FrozenDictionary<ReferenceText, List<EntryData>> GetReferenceTextToEntries()
+    private FrozenDictionary<ReferenceText, ImmutableArray<EntryData>> GetReferenceTextToEntries()
     {
-        var dict = new Dictionary<ReferenceText, List<EntryData>>(1_000_000);
+        var dict = new Dictionary<ReferenceText, ImmutableArray<EntryData>>(1_000_000);
 
         var entryQuery = context.Entries
             .AsSplitQuery()
@@ -252,7 +252,8 @@ internal partial class CrossReferenceAnalyzer
             {
                 if (dict.TryGetValue(referenceText, out var values))
                 {
-                    values.Add(entry);
+                    // Average array length will be 1.05
+                    dict[referenceText] = values.Add(entry);
                 }
                 else
                 {

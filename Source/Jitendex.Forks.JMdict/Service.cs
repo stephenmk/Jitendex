@@ -30,25 +30,22 @@ namespace Jitendex.Forks.JMdict;
 internal sealed class Service
 (
     ILogger<Service> logger,
-    JMdictForkContext forkContext,
     HomeContext homeContext,
+    JMdictForkContext forkContext,
     DatabaseCopier databaseCopier,
-
     PatchAnalyzer patchAnalyzer,
-    IntegrityAnalyzer integrityAnalyzer,
-
     RestrictionAnalyzer restrictionAnalyzer,
     ReadingRestrictionAnalyzer readingRestrictionAnalyzer,
     KanjiFormRestrictionAnalyzer kanjiFormRestrictionAnalyzer,
-    KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
     CrossReferenceAnalyzer crossReferenceAnalyzer,
-
     CompoundAnalyzer compoundAnalyzer,
     CharacterAnalyzer characterAnalyzer,
     CharacterReadingAnalyzer characterReadingAnalyzer,
     DerivedReadingAnalyzer derivedReadingAnalyzer,
     DerivedReadingTypeAnalyzer derivedReadingTypeAnalyzer,
-    FuriganaSegmentAnalyzer furiganaSegmentAnalyzer
+    KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
+    FuriganaSegmentAnalyzer furiganaSegmentAnalyzer,
+    IntegrityAnalyzer integrityAnalyzer
 )
 {
     public void Run()
@@ -58,11 +55,15 @@ internal sealed class Service
         using var homeTransaction = homeContext.Database.BeginTransaction();
         using var forkTransaction = forkContext.Database.BeginTransaction();
 
-        logger.LogInformation("Copying data from the JMdict database file");
-        databaseCopier.CopyDataFromJmdict();
+        RunPreprocessing();
 
-        logger.LogInformation("Starting data analysis");
-        RunSubroutines();
+        RunPatchServices();
+        RunRestrictionServices();
+        RunKanwaServices();
+        RunFuriganaServices();
+        RunReferenceServices();
+
+        RunPostprocessing();
 
         forkTransaction.Commit();
         homeTransaction.Commit();
@@ -70,18 +71,28 @@ internal sealed class Service
         forkContext.ExecuteVacuum();
     }
 
-    private void RunSubroutines()
+    private void RunPreprocessing()
+    {
+        logger.LogInformation("Copying data from the JMdict database file");
+        databaseCopier.CopyDataFromJmdict();
+    }
+
+    private void RunPatchServices()
     {
         // Apply home-grown data patches.
         patchAnalyzer.Analyze();
+    }
 
+    private void RunRestrictionServices()
+    {
         // Make the implicit relationships in the data explicit.
         restrictionAnalyzer.Analyze();
         readingRestrictionAnalyzer.Analyze();
         kanjiFormRestrictionAnalyzer.Analyze();
-        kanjiFormBridgeAnalyzer.Analyze();
-        crossReferenceAnalyzer.Analyze();
+    }
 
+    private void RunKanwaServices()
+    {
         // Transfer home-grown character information.
         compoundAnalyzer.Analyze();
         characterAnalyzer.Analyze();
@@ -90,10 +101,22 @@ internal sealed class Service
         // Add inflections of standard readings.
         derivedReadingTypeAnalyzer.Analyze();
         derivedReadingAnalyzer.Analyze();
+    }
 
+    private void RunFuriganaServices()
+    {
+        kanjiFormBridgeAnalyzer.Analyze();
         // Run furigana solver for all reading + kanji form pairs.
         furiganaSegmentAnalyzer.Analyze();
+    }
 
+    private void RunReferenceServices()
+    {
+        crossReferenceAnalyzer.Analyze();
+    }
+
+    private void RunPostprocessing()
+    {
         // Check for miscellaneous data integrity issues.
         integrityAnalyzer.Analyze();
     }

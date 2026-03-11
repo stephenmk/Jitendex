@@ -18,6 +18,8 @@
     <Project Path="Source/Jitendex.Forks.JMdict/Jitendex.Forks.JMdict.csproj" />
   </Folder>
   <Folder Name="/Import/">
+    <Project Path="Source/Jitendex.AppDirectory/Jitendex.AppDirectory.csproj" />
+    <Project Path="Source/Jitendex.EdrdgDictionaryArchive/Jitendex.EdrdgDictionaryArchive.csproj" />
     <Project Path="Source/Jitendex.Import/Jitendex.Import.csproj" />
     <Project Path="Source/Jitendex.Import.ChiseIds/Jitendex.Import.ChiseIds.csproj" />
     <Project Path="Source/Jitendex.Import.Home/Jitendex.Import.Home.csproj" />
@@ -32,9 +34,7 @@
     <Project Path="Libraries/MinimalJsonDiff/Jitendex.MinimalJsonDiff/Jitendex.MinimalJsonDiff.csproj" />
     <Project Path="Libraries/MinimalPatch/Jitendex.MinimalPatch/Jitendex.MinimalPatch.csproj" />
   </Folder>
-  <Project Path="Source/Jitendex.AppDirectory/Jitendex.AppDirectory.csproj" />
   <Project Path="Source/Jitendex.Dto/Jitendex.Dto.csproj" />
-  <Project Path="Source/Jitendex.EdrdgDictionaryArchive/Jitendex.EdrdgDictionaryArchive.csproj" />
   <Project Path="Source/Jitendex.Furigana/Jitendex.Furigana.csproj" />
   <Project Path="Source/Jitendex.Furigana.Test/Jitendex.Furigana.Test.csproj" />
 </Solution>

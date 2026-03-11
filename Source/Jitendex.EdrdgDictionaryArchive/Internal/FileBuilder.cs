@@ -52,13 +52,17 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
             : null;
     }
 
-    private sealed record BuildBase(DateOnly Date, FileInfo File, IReadOnlyList<Patch> Patches);
+    private sealed record BuildBase(FileInfo File, DateOnly Date, IReadOnlyList<Patch> Patches);
 
     private FileInfo? BuildFile(FileRequest request)
     {
         if (GetBuildBase(request) is not BuildBase buildBase)
         {
             return null;
+        }
+        else if (buildBase.Patches is [])
+        {
+            return buildBase.File;
         }
 
         int length = buildBase.File.Length();
@@ -93,19 +97,26 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
 
     private BuildBase? GetBuildBase(FileRequest request)
     {
-        var allPatches = archive.GetPatches(request);
-        if (allPatches.Count == 0)
-        {
-            return null;
-        }
-
         FileInfo? baseFile = null;
-        DateOnly baseDate = default;
+        DateOnly? baseDate = null;
 
         if (archive.GetExistingBaseFile(request) is (FileInfo file, DateOnly date))
         {
             baseFile = file;
             baseDate = date;
+        }
+
+        if (baseDate.HasValue && baseDate.Value.Equals(request.Date))
+        {
+            return baseFile is not null
+                ? new(baseFile, baseDate.Value, [])
+                : null;
+        }
+
+        var allPatches = archive.GetPatches(request);
+        if (allPatches.Count == 0)
+        {
+            return null;
         }
 
         List<Patch> patches = new(allPatches.Count);
@@ -125,8 +136,8 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
             }
         }
 
-        return baseFile is not null
-            ? new(baseDate, baseFile, patches)
+        return baseFile is not null && baseDate.HasValue
+            ? new(baseFile, baseDate.Value, patches)
             : null;
     }
 }

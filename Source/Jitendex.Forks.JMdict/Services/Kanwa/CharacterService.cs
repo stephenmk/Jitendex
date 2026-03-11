@@ -16,29 +16,41 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
-internal sealed class DerivedReadingTypeAnalyzer
+internal sealed class CharacterService
 (
     JMdictForkContext forkContext,
-    DerivedCharacterReadingTypeTable table
+    HomeContext homeContext,
+    CharacterTable table
 )
 {
-    public void Analyze()
+    public void Write()
     {
-        table.InsertItems(forkContext, GetTypeRows());
-    }
+        var allRunes = homeContext.Characters
+            .Select(static x => x.Value)
+            .ToHashSet();
 
-    private static IEnumerable<DerivedCharacterReadingTypeRow> GetTypeRows()
-    {
-        foreach (var type in Enum.GetValues<DerivedCharacterReadingTypeId>())
+        var allKanjiFormTexts = forkContext.KanjiForms
+            .Select(static x => x.Text);
+
+        var allCompoundTexts = forkContext.Compounds
+            .Select(static x => x.Text);
+
+        foreach (var text in allKanjiFormTexts.Concat(allCompoundTexts))
         {
-            yield return new DerivedCharacterReadingTypeRow((int)type, type.ToString());
+            foreach (var rune in text.EnumerateRunes())
+            {
+                allRunes.Add(rune.Value);
+            }
         }
+
+        var rows = allRunes.Select(static x => new CharacterRow(x));
+        table.InsertItems(forkContext, rows);
     }
 }

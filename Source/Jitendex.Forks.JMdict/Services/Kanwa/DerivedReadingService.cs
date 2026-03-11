@@ -25,7 +25,7 @@ using static Jitendex.Data.JMdict.Entities.Kanwa.CharacterReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
-internal sealed class DerivedReadingAnalyzer
+internal sealed class DerivedReadingService
 (
     JMdictForkContext context,
     DerivedCharacterReadingTable table
@@ -41,7 +41,7 @@ internal sealed class DerivedReadingAnalyzer
         CharacterReadingTypeId TypeId
     );
 
-    public void Analyze()
+    public void Write()
     {
         var entries = context.CharacterReadings
             .GroupBy(static r => r.TypeId)

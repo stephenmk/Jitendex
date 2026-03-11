@@ -32,20 +32,20 @@ internal sealed class Service
     ILogger<Service> logger,
     HomeContext homeContext,
     JMdictForkContext forkContext,
-    DatabaseCopier databaseCopier,
-    PatchAnalyzer patchAnalyzer,
-    RestrictionAnalyzer restrictionAnalyzer,
-    ReadingRestrictionAnalyzer readingRestrictionAnalyzer,
-    KanjiFormRestrictionAnalyzer kanjiFormRestrictionAnalyzer,
-    CrossReferenceAnalyzer crossReferenceAnalyzer,
-    CompoundAnalyzer compoundAnalyzer,
-    CharacterAnalyzer characterAnalyzer,
-    CharacterReadingAnalyzer characterReadingAnalyzer,
-    DerivedReadingAnalyzer derivedReadingAnalyzer,
-    DerivedReadingTypeAnalyzer derivedReadingTypeAnalyzer,
-    KanjiFormBridgeAnalyzer kanjiFormBridgeAnalyzer,
-    FuriganaSegmentAnalyzer furiganaSegmentAnalyzer,
-    IntegrityAnalyzer integrityAnalyzer
+    DatabaseCopyService databaseCopier,
+    PatchService patchService,
+    RestrictionService restrictionService,
+    ReadingRestrictionService readingRestrictionService,
+    KanjiFormRestrictionService kanjiFormRestrictionService,
+    CrossReferenceService crossReferenceService,
+    CompoundService compoundService,
+    CharacterService characterService,
+    CharacterReadingService characterReadingService,
+    DerivedReadingService derivedReadingService,
+    DerivedReadingTypeService derivedReadingTypeService,
+    KanjiFormBridgeService kanjiFormBridgeService,
+    FuriganaSegmentService furiganaSegmentService,
+    IntegrityService integrityService
 )
 {
     public void Run()
@@ -80,44 +80,44 @@ internal sealed class Service
     private void RunPatchServices()
     {
         // Apply home-grown data patches.
-        patchAnalyzer.Analyze();
+        patchService.Write();
     }
 
     private void RunRestrictionServices()
     {
         // Make the implicit relationships in the data explicit.
-        restrictionAnalyzer.Analyze();
-        readingRestrictionAnalyzer.Analyze();
-        kanjiFormRestrictionAnalyzer.Analyze();
+        restrictionService.Write();
+        readingRestrictionService.Write();
+        kanjiFormRestrictionService.Write();
     }
 
     private void RunKanwaServices()
     {
         // Transfer home-grown character information.
-        compoundAnalyzer.Analyze();
-        characterAnalyzer.Analyze();
-        characterReadingAnalyzer.Analyze();
+        compoundService.Write();
+        characterService.Write();
+        characterReadingService.Write();
 
         // Add inflections of standard readings.
-        derivedReadingTypeAnalyzer.Analyze();
-        derivedReadingAnalyzer.Analyze();
+        derivedReadingTypeService.Write();
+        derivedReadingService.Write();
     }
 
     private void RunFuriganaServices()
     {
-        kanjiFormBridgeAnalyzer.Analyze();
+        kanjiFormBridgeService.Write();
         // Run furigana solver for all reading + kanji form pairs.
-        furiganaSegmentAnalyzer.Analyze();
+        furiganaSegmentService.Write();
     }
 
     private void RunReferenceServices()
     {
-        crossReferenceAnalyzer.Analyze();
+        crossReferenceService.Write();
     }
 
     private void RunPostprocessing()
     {
         // Check for miscellaneous data integrity issues.
-        integrityAnalyzer.Analyze();
+        integrityService.Write();
     }
 }

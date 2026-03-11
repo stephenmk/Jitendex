@@ -26,9 +26,9 @@ using Jitendex.Forks.JMdict.Tables.Furigana;
 
 namespace Jitendex.Forks.JMdict.Services.Furigana;
 
-internal partial class KanjiFormBridgeAnalyzer
+internal partial class KanjiFormBridgeService
 (
-    ILogger<KanjiFormBridgeAnalyzer> logger,
+    ILogger<KanjiFormBridgeService> logger,
     JMdictForkContext context,
     ReadingKanjiFormBridgeTable table
 )
@@ -42,7 +42,7 @@ internal partial class KanjiFormBridgeAnalyzer
         ImmutableArray<int> RestrictionOrders
     );
 
-    public void Analyze()
+    public void Write()
     {
         var entries = context.Entries
             .AsSplitQuery()

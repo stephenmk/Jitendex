@@ -26,9 +26,9 @@ using Jitendex.Dto.JMdict;
 
 namespace Jitendex.Forks.JMdict.Services;
 
-internal partial class PatchAnalyzer
+internal partial class PatchService
 (
-    ILogger<PatchAnalyzer> logger,
+    ILogger<PatchService> logger,
     JMdictContext jmdictContext,
     JMdictForkContext forkContext,
     HomeContext homeContext
@@ -36,7 +36,7 @@ internal partial class PatchAnalyzer
 {
     private sealed record PatchData(int Id, int FileId, string Json);
 
-    public void Analyze()
+    public void Write()
     {
         var patchStacks = GetPatchStacks();
         var seqToLatestFile = GetSequenceToLatestFile();

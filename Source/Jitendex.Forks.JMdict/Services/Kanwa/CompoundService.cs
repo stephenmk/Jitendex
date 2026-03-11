@@ -23,34 +23,23 @@ using Jitendex.Forks.JMdict.Tables.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
-internal sealed class CharacterAnalyzer
+internal sealed class CompoundService
 (
     JMdictForkContext forkContext,
     HomeContext homeContext,
-    CharacterTable table
+    CompoundTable compoundTable,
+    CompoundReadingTable readingTable
 )
 {
-    public void Analyze()
+    public void Write()
     {
-        var allRunes = homeContext.Characters
-            .Select(static x => x.Value)
-            .ToHashSet();
+        var compoundRows = homeContext.Compounds
+            .Select(static x => new CompoundRow(x.Text));
 
-        var allKanjiFormTexts = forkContext.KanjiForms
-            .Select(static x => x.Text);
+        var readingRows = homeContext.CompoundReadings
+            .Select(static x => new CompoundReadingRow(x.CompoundText, x.Text));
 
-        var allCompoundTexts = forkContext.Compounds
-            .Select(static x => x.Text);
-
-        foreach (var text in allKanjiFormTexts.Concat(allCompoundTexts))
-        {
-            foreach (var rune in text.EnumerateRunes())
-            {
-                allRunes.Add(rune.Value);
-            }
-        }
-
-        var rows = allRunes.Select(static x => new CharacterRow(x));
-        table.InsertItems(forkContext, rows);
+        compoundTable.InsertItems(forkContext, compoundRows);
+        readingTable.InsertItems(forkContext, readingRows);
     }
 }

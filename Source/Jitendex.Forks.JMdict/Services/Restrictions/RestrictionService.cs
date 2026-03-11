@@ -17,31 +17,29 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Restrictions;
 
 namespace Jitendex.Forks.JMdict.Services.Restrictions;
 
-internal partial class KanjiFormRestrictionAnalyzer
+internal partial class RestrictionService
 (
-    ILogger<KanjiFormRestrictionAnalyzer> logger,
+    ILogger<RestrictionService> logger,
     JMdictForkContext context,
-    KanjiFormRestrictionLinkTable table
+    RestrictionLinkTable table
 )
 {
-    public void Analyze()
+    public void Write()
     {
-        var restrictions = context.KanjiFormRestrictions
-            .AsSplitQuery()
+        var restrictions = context.Restrictions
             .Select(static r => new
             {
                 r.EntryId,
-                r.SenseOrder,
+                r.ReadingOrder,
                 r.Order,
                 r.KanjiFormText,
-                KanjiForms = r.Sense.Entry.KanjiForms
+                KanjiForms = r.Reading.Entry.KanjiForms
                     .Select(static k => new
                     {
                         k.Order,
@@ -50,7 +48,7 @@ internal partial class KanjiFormRestrictionAnalyzer
                     })
             });
 
-        var rows = new List<KanjiFormRestrictionLinkRow>(1_500);
+        var rows = new List<RestrictionLinkRow>(10_000);
 
         foreach (var r in restrictions)
         {
@@ -65,7 +63,7 @@ internal partial class KanjiFormRestrictionAnalyzer
                     }
                     else
                     {
-                        rows.Add(new(r.EntryId, r.SenseOrder, r.Order, kanjiForm.Order));
+                        rows.Add(new(r.EntryId, r.ReadingOrder, r.Order, kanjiForm.Order));
                     }
                     found = true;
                     break;
@@ -73,7 +71,7 @@ internal partial class KanjiFormRestrictionAnalyzer
             }
             if (!found)
             {
-                LogInvalidSenseKanjiFormRestriction(r.EntryId, r.KanjiFormText);
+                LogInvalidRestriction(r.EntryId, r.KanjiFormText);
             }
         }
 
@@ -81,10 +79,10 @@ internal partial class KanjiFormRestrictionAnalyzer
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} contains a sense kanji form restriction to invalid form `{KanjiForm}`")]
-    partial void LogInvalidSenseKanjiFormRestriction(int entryId, string kanjiForm);
+    "Entry ID {EntryId} contains a reading restriction to invalid kanji form `{KanjiForm}`")]
+    partial void LogInvalidRestriction(int entryId, string kanjiForm);
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} contains a sense kanji form restriction to search-only `{KanjiForm}`")]
+    "Entry ID {EntryId} contains a kanji form restriction to search-only `{KanjiForm}`")]
     partial void LogReferenceToSearchOnlyForm(int entryId, string kanjiForm);
 }

@@ -25,7 +25,7 @@ using H = Jitendex.Data.Home.Entities.Furigana;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
-internal sealed class CharacterReadingAnalyzer
+internal sealed class CharacterReadingService
 (
     JMdictForkContext forkContext,
     HomeContext homeContext,
@@ -33,7 +33,7 @@ internal sealed class CharacterReadingAnalyzer
     CharacterReadingTypeTable typeTable
 )
 {
-    public void Analyze()
+    public void Write()
     {
         var typeRows = homeContext.CharacterReadingTypes
             .Select(static x => x.Id)

@@ -21,13 +21,13 @@ using Jitendex.Data.JMdict;
 
 namespace Jitendex.Forks.JMdict.Services;
 
-internal partial class IntegrityAnalyzer
+internal partial class IntegrityService
 (
-    ILogger<IntegrityAnalyzer> logger,
+    ILogger<IntegrityService> logger,
     JMdictForkContext context
 )
 {
-    public void Analyze()
+    public void Write()
     {
         CheckForUkTagOnEntriesWithoutKanjiForms();
         CheckForRightSingleQuotes();

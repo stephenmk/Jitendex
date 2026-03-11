@@ -25,14 +25,14 @@ using Jitendex.Forks.JMdict.Tables.Furigana;
 
 namespace Jitendex.Forks.JMdict.Services.Furigana;
 
-internal partial class FuriganaSegmentAnalyzer
+internal partial class FuriganaSegmentService
 (
-    ILogger<FuriganaSegmentAnalyzer> logger,
+    ILogger<FuriganaSegmentService> logger,
     JMdictForkContext context,
     FuriganaSegmentTable table
 )
 {
-    public void Analyze()
+    public void Write()
     {
         var furiganaService = LoadFuriganaService();
 

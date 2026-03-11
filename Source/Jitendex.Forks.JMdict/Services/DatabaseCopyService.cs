@@ -27,7 +27,7 @@ using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.Forks.JMdict.Services;
 
-internal sealed class DatabaseCopier(JMdictForkContext context)
+internal sealed class DatabaseCopyService(JMdictForkContext context)
 {
     public void CopyDataFromJmdict()
     {

@@ -43,27 +43,27 @@ internal static class ServiceProvider
         .AddDbContext<HomeContext>()
 
         // Helpers
-        .AddTransient<DatabaseCopier>()
+        .AddTransient<DatabaseCopyService>()
         .AddTransient<CrossReferenceTextParser>()
         .AddTransient<CrossReferenceCacheService>()
 
-        // Analyzers
-        .AddTransient<PatchAnalyzer>()
-        .AddTransient<IntegrityAnalyzer>()
+        // Services
+        .AddTransient<PatchService>()
+        .AddTransient<IntegrityService>()
 
-        .AddTransient<RestrictionAnalyzer>()
-        .AddTransient<ReadingRestrictionAnalyzer>()
-        .AddTransient<KanjiFormRestrictionAnalyzer>()
+        .AddTransient<RestrictionService>()
+        .AddTransient<ReadingRestrictionService>()
+        .AddTransient<KanjiFormRestrictionService>()
 
-        .AddTransient<CrossReferenceAnalyzer>()
+        .AddTransient<CrossReferenceService>()
 
-        .AddTransient<CompoundAnalyzer>()
-        .AddTransient<CharacterAnalyzer>()
-        .AddTransient<CharacterReadingAnalyzer>()
-        .AddTransient<DerivedReadingAnalyzer>()
-        .AddTransient<DerivedReadingTypeAnalyzer>()
-        .AddTransient<KanjiFormBridgeAnalyzer>()
-        .AddTransient<FuriganaSegmentAnalyzer>()
+        .AddTransient<CompoundService>()
+        .AddTransient<CharacterService>()
+        .AddTransient<CharacterReadingService>()
+        .AddTransient<DerivedReadingService>()
+        .AddTransient<DerivedReadingTypeService>()
+        .AddTransient<KanjiFormBridgeService>()
+        .AddTransient<FuriganaSegmentService>()
 
         // Tables
         .AddTransient<RestrictionLinkTable>()
@@ -94,7 +94,7 @@ internal static class ServiceProvider
                 options.TimestampFormat = "HH:mm:ss ";
             }))
 
-        // Build and return the Analyzer service.
+        // Build and return the Service service.
         .BuildServiceProvider()
         .GetRequiredService<Service>();
 }

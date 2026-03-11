@@ -16,30 +16,29 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
+using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
-internal sealed class CompoundAnalyzer
+internal sealed class DerivedReadingTypeService
 (
     JMdictForkContext forkContext,
-    HomeContext homeContext,
-    CompoundTable compoundTable,
-    CompoundReadingTable readingTable
+    DerivedCharacterReadingTypeTable table
 )
 {
-    public void Analyze()
+    public void Write()
     {
-        var compoundRows = homeContext.Compounds
-            .Select(static x => new CompoundRow(x.Text));
+        table.InsertItems(forkContext, GetTypeRows());
+    }
 
-        var readingRows = homeContext.CompoundReadings
-            .Select(static x => new CompoundReadingRow(x.CompoundText, x.Text));
-
-        compoundTable.InsertItems(forkContext, compoundRows);
-        readingTable.InsertItems(forkContext, readingRows);
+    private static IEnumerable<DerivedCharacterReadingTypeRow> GetTypeRows()
+    {
+        foreach (var type in Enum.GetValues<DerivedCharacterReadingTypeId>())
+        {
+            yield return new DerivedCharacterReadingTypeRow((int)type, type.ToString());
+        }
     }
 }

@@ -24,14 +24,14 @@ using Jitendex.Forks.JMdict.Tables.Restrictions;
 
 namespace Jitendex.Forks.JMdict.Services.Restrictions;
 
-internal partial class ReadingRestrictionAnalyzer
+internal partial class ReadingRestrictionService
 (
-    ILogger<ReadingRestrictionAnalyzer> logger,
+    ILogger<ReadingRestrictionService> logger,
     JMdictForkContext context,
     ReadingRestrictionLinkTable table
 )
 {
-    public void Analyze()
+    public void Write()
     {
         var restrictions = context.ReadingRestrictions
             .AsSplitQuery()

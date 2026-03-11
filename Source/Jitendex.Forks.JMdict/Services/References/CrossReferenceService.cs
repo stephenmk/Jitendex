@@ -26,9 +26,9 @@ using Jitendex.Forks.JMdict.Tables.References;
 
 namespace Jitendex.Forks.JMdict.Services.References;
 
-internal partial class CrossReferenceAnalyzer
+internal partial class CrossReferenceService
 (
-    ILogger<CrossReferenceAnalyzer> logger,
+    ILogger<CrossReferenceService> logger,
     JMdictForkContext context,
     CrossReferenceCacheService cacheService,
     CrossReferenceTextParser parser,
@@ -71,7 +71,7 @@ internal partial class CrossReferenceAnalyzer
         public string CacheKey => $"{EntryId}・{SenseOrder + 1}・{Text}";
     }
 
-    public void Analyze()
+    public void Write()
     {
         var entryIdCache = cacheService.Load();
         var referenceTextToEntries = GetReferenceTextToEntries();

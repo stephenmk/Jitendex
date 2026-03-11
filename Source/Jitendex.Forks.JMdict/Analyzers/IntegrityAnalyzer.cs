@@ -32,18 +32,21 @@ internal partial class IntegrityAnalyzer
         CheckForUkTagOnEntriesWithoutKanjiForms();
         CheckForRightSingleQuotationMarks();
         CheckForZeroWidthSpaces();
+
+        context.SaveChanges();
     }
 
     private void CheckForUkTagOnEntriesWithoutKanjiForms()
     {
-        var entryIds = context.Miscs
+        var miscs = context.Miscs
             .Where(static misc => misc.TagName == "uk")
             .Where(static misc => misc.Sense.Entry.KanjiForms.Count == 0)
-            .Select(static misc => misc.EntryId);
+            .Select(static misc => misc);
 
-        foreach (var entryId in entryIds)
+        foreach (var misc in miscs)
         {
-            LogUkTagOnEntryWithoutKanjiForms(entryId);
+            LogUkTagOnEntryWithoutKanjiForms(misc.EntryId);
+            context.Remove(misc);
         }
     }
 
@@ -51,11 +54,12 @@ internal partial class IntegrityAnalyzer
     {
         var glosses = context.Glosses
             .Where(gloss => gloss.Text.Contains('\u2019'))
-            .Select(static gloss => new { gloss.EntryId, gloss.Text });
+            .Select(static gloss => gloss);
 
         foreach (var gloss in glosses)
         {
             LogRightSingleQuotationMark(gloss.EntryId, gloss.Text);
+            gloss.Text = gloss.Text.Replace('\u2019', '\u0027');
         }
     }
 
@@ -63,11 +67,12 @@ internal partial class IntegrityAnalyzer
     {
         var glosses = context.Glosses
             .Where(gloss => gloss.Text.Contains('\u200B'))
-            .Select(static gloss => new { gloss.EntryId, gloss.Text });
+            .Select(static gloss => gloss);
 
         foreach (var gloss in glosses)
         {
             LogZeroWidthSpace(gloss.EntryId, gloss.Text);
+            gloss.Text = gloss.Text.Replace("\u200B", string.Empty);
         }
     }
 

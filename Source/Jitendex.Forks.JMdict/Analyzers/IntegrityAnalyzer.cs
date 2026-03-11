@@ -30,7 +30,7 @@ internal partial class IntegrityAnalyzer
     public void Analyze()
     {
         CheckForUkTagOnEntriesWithoutKanjiForms();
-        CheckForRightSingleQuotationMarks();
+        CheckForRightSingleQuotes();
         CheckForZeroWidthSpaces();
         CheckForUnpairedPriorityTags();
         CheckForPriorityTagsOnRareForms();
@@ -51,27 +51,32 @@ internal partial class IntegrityAnalyzer
         }
     }
 
-    private void CheckForRightSingleQuotationMarks()
+    private void CheckForRightSingleQuotes()
     {
+        const char rightSingleQuote = '\u2019';
+        const char apostrophe = '\u0027';
+
         var glosses = context.Glosses
-            .Where(static gloss => gloss.Text.Contains('\u2019'));
+            .Where(static gloss => gloss.Text.Contains(rightSingleQuote));
 
         foreach (var gloss in glosses)
         {
-            LogRightSingleQuotationMark(gloss.EntryId, gloss.Text);
-            gloss.Text = gloss.Text.Replace('\u2019', '\u0027');
+            LogRightSingleQuote(gloss.EntryId, gloss.Text);
+            gloss.Text = gloss.Text.Replace(rightSingleQuote, apostrophe);
         }
     }
 
     private void CheckForZeroWidthSpaces()
     {
+        const string zeroWidthSpace = "\u200B";
+
         var glosses = context.Glosses
-            .Where(static gloss => gloss.Text.Contains('\u200B'));
+            .Where(static gloss => gloss.Text.Contains(zeroWidthSpace));
 
         foreach (var gloss in glosses)
         {
             LogZeroWidthSpace(gloss.EntryId, gloss.Text);
-            gloss.Text = gloss.Text.Replace("\u200B", string.Empty);
+            gloss.Text = gloss.Text.Replace(zeroWidthSpace, string.Empty);
         }
     }
 
@@ -114,7 +119,7 @@ internal partial class IntegrityAnalyzer
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {Id} contains a gloss with the wrong apostrophe: `{Text}`")]
-    partial void LogRightSingleQuotationMark(int id, string text);
+    partial void LogRightSingleQuote(int id, string text);
 
     [LoggerMessage(LogLevel.Warning,
     "Entry ID `{Id}` contains a zero-width space: `{Text}`")]

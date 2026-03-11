@@ -199,7 +199,7 @@ internal partial class CrossReferenceAnalyzer
     (
         CrossReferenceData xref,
         ParsedReferenceText parsed,
-        FrozenDictionary<ReferenceText, ImmutableArray<EntryData>> referenceTextToEntries
+        IReadOnlyDictionary<ReferenceText, ImmutableArray<EntryData>> referenceTextToEntries
     )
     {
         var key = new ReferenceText(parsed.Text1, parsed.Text2);
@@ -222,7 +222,7 @@ internal partial class CrossReferenceAnalyzer
         return possibleTargetEntries;
     }
 
-    private FrozenDictionary<ReferenceText, ImmutableArray<EntryData>> GetReferenceTextToEntries()
+    private IReadOnlyDictionary<ReferenceText, ImmutableArray<EntryData>> GetReferenceTextToEntries()
     {
         var dict = new Dictionary<ReferenceText, ImmutableArray<EntryData>>(1_000_000);
 
@@ -262,7 +262,7 @@ internal partial class CrossReferenceAnalyzer
             }
         }
 
-        return dict.ToFrozenDictionary();
+        return dict;
     }
 
     private static IEnumerable<ReferenceText> GetReferenceTexts(ImmutableArray<string> readings, ImmutableArray<string> kanjiForms)

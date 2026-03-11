@@ -23,6 +23,7 @@ using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Analyzers;
 using Jitendex.Forks.JMdict.Services;
 using Jitendex.Forks.JMdict.Tables.Furigana;
+using Jitendex.Forks.JMdict.Tables.Kanwa;
 using Jitendex.Forks.JMdict.Tables.Links;
 using Jitendex.Forks.JMdict.Tables.References;
 

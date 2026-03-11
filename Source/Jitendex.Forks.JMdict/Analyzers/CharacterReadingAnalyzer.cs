@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
-using Jitendex.Forks.JMdict.Tables.Furigana;
+using Jitendex.Forks.JMdict.Tables.Kanwa;
 using J = Jitendex.Data.JMdict.Entities.Kanwa;
 using H = Jitendex.Data.Home.Entities.Furigana;
 

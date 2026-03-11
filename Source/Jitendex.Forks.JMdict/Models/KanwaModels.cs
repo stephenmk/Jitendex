@@ -18,20 +18,49 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.Forks.JMdict.Models;
 
-internal sealed record KanjiFormBridgeRow
+internal sealed record CompoundRow
 (
-    int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder
+    string Text
 );
 
-internal sealed record FuriganaSegmentRow
+internal sealed record CompoundReadingRow
 (
-    int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder,
-    int Order,
-    string BaseText,
-    string? Furigana,
-    string? TypeName
+    string CompoundText,
+    string Text
+);
+
+internal sealed record CharacterRow
+(
+    int Value
+);
+
+internal sealed record CharacterReadingRow
+(
+    int CharacterValue,
+    int TypeId,
+    string Text,
+    string? Okurigana,
+    bool IsPrefix,
+    bool IsSuffix
+);
+
+internal sealed record CharacterReadingTypeRow
+(
+    int Id,
+    string Name
+);
+
+internal sealed record DerivedCharacterReadingRow
+(
+    int ReadingId,
+    string Text,
+    bool IsPrefix,
+    bool IsSuffix,
+    int TypeId
+);
+
+internal sealed record DerivedCharacterReadingTypeRow
+(
+    int Id,
+    string Name
 );

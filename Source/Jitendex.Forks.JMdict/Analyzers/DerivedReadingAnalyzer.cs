@@ -20,7 +20,7 @@ using Jitendex.JapaneseTextUtils;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
-using Jitendex.Forks.JMdict.Tables.Furigana;
+using Jitendex.Forks.JMdict.Tables.Kanwa;
 using static Jitendex.Data.JMdict.Entities.Kanwa.CharacterReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Analyzers;

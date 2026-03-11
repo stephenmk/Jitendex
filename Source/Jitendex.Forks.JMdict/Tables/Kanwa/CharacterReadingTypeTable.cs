@@ -21,33 +21,26 @@ using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 
-namespace Jitendex.Forks.JMdict.Tables.Furigana;
+namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
-internal sealed class DerivedCharacterReadingTable : Table<DerivedCharacterReadingRow>
+internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
 {
-    protected override string Name => nameof(DerivedCharacterReading);
+    protected override string Name => nameof(CharacterReadingType);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(DerivedCharacterReading.ReadingId),
-        nameof(DerivedCharacterReading.Text),
-        nameof(DerivedCharacterReading.IsPrefix),
-        nameof(DerivedCharacterReading.IsSuffix),
-        nameof(DerivedCharacterReading.TypeId),
+        nameof(CharacterReadingType.Id),
+        nameof(CharacterReadingType.Name),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(DerivedCharacterReading.ReadingId),
-        nameof(DerivedCharacterReading.Text),
+        nameof(CharacterReadingType.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(DerivedCharacterReadingRow row) =>
+    protected override SqliteParameter[] Parameters(CharacterReadingTypeRow row) =>
     [
-        new("@0", row.ReadingId),
-        new("@1", row.Text),
-        new("@2", row.IsPrefix),
-        new("@3", row.IsSuffix),
-        new("@4", row.TypeId),
+        new("@0", row.Id),
+        new("@1", row.Name),
     ];
 }

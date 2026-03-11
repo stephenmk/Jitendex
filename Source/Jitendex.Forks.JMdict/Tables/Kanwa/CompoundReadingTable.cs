@@ -21,21 +21,23 @@ using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 
-namespace Jitendex.Forks.JMdict.Tables.Furigana;
+namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
-internal sealed class CompoundTable : Table<CompoundRow>
+internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
 {
-    protected override string Name => nameof(Compound);
+    protected override string Name => nameof(CompoundReading);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Compound.Text)
+        nameof(CompoundReading.CompoundText),
+        nameof(CompoundReading.Text),
     ];
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(CompoundRow row) =>
+    protected override SqliteParameter[] Parameters(CompoundReadingRow row) =>
     [
-        new("@0", row.Text)
+        new("@0", row.CompoundText),
+        new("@1", row.Text),
     ];
 }

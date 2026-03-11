@@ -21,32 +21,33 @@ using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 
-namespace Jitendex.Forks.JMdict.Tables.Furigana;
+namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
-internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
+internal sealed class DerivedCharacterReadingTable : Table<DerivedCharacterReadingRow>
 {
-    protected override string Name => nameof(CharacterReading);
+    protected override string Name => nameof(DerivedCharacterReading);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CharacterReading.CharacterValue),
-        nameof(CharacterReading.TypeId),
-        nameof(CharacterReading.Text),
-        nameof(CharacterReading.Okurigana),
-        nameof(CharacterReading.IsPrefix),
-        nameof(CharacterReading.IsSuffix),
+        nameof(DerivedCharacterReading.ReadingId),
+        nameof(DerivedCharacterReading.Text),
+        nameof(DerivedCharacterReading.IsPrefix),
+        nameof(DerivedCharacterReading.IsSuffix),
+        nameof(DerivedCharacterReading.TypeId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
-
-    protected override SqliteParameter[] Parameters(CharacterReadingRow row) =>
+    protected override IReadOnlyList<string> KeyColNames =>
     [
-        new("@0", row.CharacterValue),
-        new("@1", row.TypeId),
-        new("@2", row.Text),
-        new("@3", row.Okurigana.Nullable()),
-        new("@4", row.IsPrefix),
-        new("@5", row.IsSuffix),
+        nameof(DerivedCharacterReading.ReadingId),
+        nameof(DerivedCharacterReading.Text),
+    ];
+
+    protected override SqliteParameter[] Parameters(DerivedCharacterReadingRow row) =>
+    [
+        new("@0", row.ReadingId),
+        new("@1", row.Text),
+        new("@2", row.IsPrefix),
+        new("@3", row.IsSuffix),
+        new("@4", row.TypeId),
     ];
 }

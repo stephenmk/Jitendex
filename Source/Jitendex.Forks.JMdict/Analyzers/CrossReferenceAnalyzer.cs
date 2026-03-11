@@ -40,7 +40,11 @@ internal partial class CrossReferenceAnalyzer
     KanjiFormReferenceTable kanjiFormReferenceTable
 )
 {
-    private sealed record ReferenceText(string Text1, string? Text2);
+    private sealed record ReferenceText
+    (
+        string Text1,
+        string? Text2
+    );
 
     private sealed record EntryData
     (
@@ -71,12 +75,6 @@ internal partial class CrossReferenceAnalyzer
     public void Analyze()
     {
         var entryIdCache = cacheService.Load();
-        SolveSequences(entryIdCache);
-        cacheService.Export();
-    }
-
-    private void SolveSequences(FrozenDictionary<string, int?> entryIdCache)
-    {
         var referenceTextToEntries = GetReferenceTextToEntries();
         var kanjiFormToReadings = GetKanjiFormToReadings();
 
@@ -149,6 +147,8 @@ internal partial class CrossReferenceAnalyzer
         entryReferenceTable.InsertItems(context, entryRefs);
         readingReferenceTable.InsertItems(context, readingRefs);
         kanjiFormReferenceTable.InsertItems(context, kanjiFormRefs);
+
+        cacheService.Export();
     }
 
     private FrozenDictionary<KanjiFormKey, ImmutableArray<int>> GetKanjiFormToReadings()

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -19,14 +19,15 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.Text;
+namespace Jitendex.Data.JMdict.Entities.Kanwa;
 
-[Table(nameof(Compound))]
-[PrimaryKey(nameof(Text))]
-public sealed class Compound
+[Table(nameof(CharacterReadingType))]
+[PrimaryKey(nameof(Id))]
+public sealed class CharacterReadingType
 {
-    public required string Text { get; init; }
+    public required CharacterReadingTypeId Id { get; init; }
+    public required string Name { get; set; }
 
-    [InverseProperty(nameof(CompoundReading.Compound))]
-    public ICollection<CompoundReading> Readings { get; init; } = [];
+    [InverseProperty(nameof(CharacterReading.Type))]
+    public ICollection<CharacterReading> CharacterReadings { get; init; } = [];
 }

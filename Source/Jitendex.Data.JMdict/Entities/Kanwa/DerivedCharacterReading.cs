@@ -19,14 +19,21 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.Text;
+namespace Jitendex.Data.JMdict.Entities.Kanwa;
 
-[Table(nameof(Character))]
-[PrimaryKey(nameof(Value))]
-public sealed class Character
+[Table(nameof(DerivedCharacterReading))]
+[PrimaryKey(nameof(ReadingId), nameof(Text))]
+public sealed class DerivedCharacterReading
 {
-    public required int Value { get; init; }
+    public required int ReadingId { get; init; }
+    public required string Text { get; init; }
+    public required bool IsPrefix { get; init; }
+    public required bool IsSuffix { get; init; }
+    public required DerivedCharacterReadingTypeId TypeId { get; init; }
 
-    [InverseProperty(nameof(CharacterReading.Character))]
-    public ICollection<CharacterReading> Readings { get; init; } = [];
+    [ForeignKey(nameof(ReadingId))]
+    public CharacterReading Source { get; init; } = null!;
+
+    [ForeignKey(nameof(TypeId))]
+    public DerivedCharacterReadingType Type { get; init; } = null!;
 }

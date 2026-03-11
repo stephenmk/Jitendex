@@ -83,7 +83,7 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
         string[] forkNamespaces =
         [
             $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.Furigana)}",
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.Text)}",
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.Kanwa)}",
             $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.References)}",
             $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.EntryItems)}.{nameof(Entities.EntryItems.Links)}",
         ];

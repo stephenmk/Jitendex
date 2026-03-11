@@ -20,7 +20,7 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Furigana;
-using J = Jitendex.Data.JMdict.Entities.Text;
+using J = Jitendex.Data.JMdict.Entities.Kanwa;
 using H = Jitendex.Data.Home.Entities.Furigana;
 
 namespace Jitendex.Forks.JMdict.Analyzers;

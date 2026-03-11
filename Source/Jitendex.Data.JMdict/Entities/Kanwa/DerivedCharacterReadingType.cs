@@ -16,26 +16,18 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Data.JMdict.Entities.Text;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-public enum DerivedCharacterReadingTypeId
+namespace Jitendex.Data.JMdict.Entities.Kanwa;
+
+[Table(nameof(DerivedCharacterReadingType))]
+[PrimaryKey(nameof(Id))]
+public sealed class DerivedCharacterReadingType
 {
-    Onyomi,
-    OnyomiSokuon,
-    OnyomiRendaku,
-    OnyomiSokuonRendaku,
-    Kunyomi,
-    KunyomiRendaku,
-    KunyomiOkurigana,
-    KunyomiRendakuOkurigana,
-    KunyomiMasu,
-    KunyomiRendakuMasu,
-    KunyomiTe,
-    KunyomiRendakuTe,
-    Chinese,
-    Korean,
-    Alphanumeric,
-    Kana,
-    Symbol,
-    Unknown,
+    public required DerivedCharacterReadingTypeId Id { get; init; }
+    public required string Name { get; set; }
+
+    [InverseProperty(nameof(DerivedCharacterReading.Type))]
+    public ICollection<DerivedCharacterReading> DerivedReadings { get; init; } = [];
 }

@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities.Text;
+using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 
 namespace Jitendex.Forks.JMdict.Tables.Furigana;

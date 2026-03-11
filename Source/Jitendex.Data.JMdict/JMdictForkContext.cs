@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities;
-using Jitendex.Data.JMdict.Entities.Text;
+using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Data.JMdict.Entities.References;
 using Jitendex.Data.JMdict.Entities.EntryItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
@@ -79,6 +79,10 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     #endregion
 
     #region Furigana Items
+    public DbSet<ReadingKanjiFormBridge> ReadingKanjiFormBridges { get; set; } = null!;
+    #endregion
+
+    #region Kanwa Items
     public DbSet<Compound> Compounds { get; set; } = null!;
     public DbSet<CompoundReading> CompoundReadings { get; set; } = null!;
     public DbSet<Character> Characters { get; set; } = null!;
@@ -86,7 +90,6 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<CharacterReadingType> CharacterReadingTypes { get; set; } = null!;
     public DbSet<DerivedCharacterReading> DerivedCharacterReadings { get; set; } = null!;
     public DbSet<DerivedCharacterReadingType> DerivedCharacterReadingTypes { get; set; } = null!;
-    public DbSet<ReadingKanjiFormBridge> ReadingKanjiFormBridges { get; set; } = null!;
     #endregion
 
     #region Keywords

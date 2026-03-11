@@ -19,21 +19,27 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.Text;
+namespace Jitendex.Data.JMdict.Entities.Kanwa;
 
-[Table(nameof(DerivedCharacterReading))]
-[PrimaryKey(nameof(ReadingId), nameof(Text))]
-public sealed class DerivedCharacterReading
+[Table(nameof(CharacterReading))]
+[PrimaryKey(nameof(Id))]
+[Index(nameof(CharacterValue), nameof(TypeId), nameof(Text), nameof(Okurigana), IsUnique = true)]
+public sealed class CharacterReading
 {
-    public required int ReadingId { get; init; }
+    public int Id { get; init; }
+    public required int CharacterValue { get; init; }
+    public required CharacterReadingTypeId TypeId { get; init; }
     public required string Text { get; init; }
+    public required string? Okurigana { get; init; }
     public required bool IsPrefix { get; init; }
     public required bool IsSuffix { get; init; }
-    public required DerivedCharacterReadingTypeId TypeId { get; init; }
 
-    [ForeignKey(nameof(ReadingId))]
-    public CharacterReading Source { get; init; } = null!;
+    [ForeignKey(nameof(CharacterValue))]
+    public Character Character { get; init; } = null!;
 
     [ForeignKey(nameof(TypeId))]
-    public DerivedCharacterReadingType Type { get; init; } = null!;
+    public CharacterReadingType Type { get; init; } = null!;
+
+    [InverseProperty(nameof(DerivedCharacterReading.Source))]
+    public ICollection<DerivedCharacterReading> DerivedReadings { get; init; } = [];
 }

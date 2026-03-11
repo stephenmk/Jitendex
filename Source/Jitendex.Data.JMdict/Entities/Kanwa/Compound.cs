@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,26 +16,17 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities.Kanwa;
-using Jitendex.Forks.JMdict.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Forks.JMdict.Tables.Furigana;
+namespace Jitendex.Data.JMdict.Entities.Kanwa;
 
-internal sealed class CharacterTable : Table<CharacterRow>
+[Table(nameof(Compound))]
+[PrimaryKey(nameof(Text))]
+public sealed class Compound
 {
-    protected override string Name => nameof(Character);
+    public required string Text { get; init; }
 
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(Character.Value)
-    ];
-
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
-
-    protected override SqliteParameter[] Parameters(CharacterRow character) =>
-    [
-        new("@0", character.Value)
-    ];
+    [InverseProperty(nameof(CompoundReading.Compound))]
+    public ICollection<CompoundReading> Readings { get; init; } = [];
 }

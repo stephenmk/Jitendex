@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,16 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Data.JMdict.Entities.Text;
+namespace Jitendex.Data.JMdict.Entities.Kanwa;
 
-public enum CharacterReadingTypeId
+public enum DerivedCharacterReadingTypeId
 {
     Onyomi,
+    OnyomiSokuon,
+    OnyomiRendaku,
+    OnyomiSokuonRendaku,
     Kunyomi,
+    KunyomiRendaku,
+    KunyomiOkurigana,
+    KunyomiRendakuOkurigana,
+    KunyomiMasu,
+    KunyomiRendakuMasu,
+    KunyomiTe,
+    KunyomiRendakuTe,
     Chinese,
     Korean,
-    Kana,
     Alphanumeric,
+    Kana,
     Symbol,
     Unknown,
 }

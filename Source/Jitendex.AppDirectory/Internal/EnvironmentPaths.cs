@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -22,19 +22,19 @@ namespace Jitendex.AppDirectory.Internal;
 
 internal static class EnvironmentPaths
 {
-    private static string HomePath
+    private static string LocalUserPath
         => GetFolderPath(SpecialFolder.UserProfile);
 
-    public static string DataHomePath
+    public static string LocalDataPath
         => GetFolderPath(SpecialFolder.LocalApplicationData);
 
-    public static string CacheHomePath
+    public static string LocalCachePath
         => GetEnvironmentVariable("XDG_CACHE_HOME")
         ?? OSVersion.Platform switch
         {
             PlatformID.Unix
-                => Path.Join(HomePath, ".cache"),
+                => Path.Join(LocalUserPath, ".cache"),
             _
-                => Path.Join(DataHomePath, "cache"),
+                => Path.Join(LocalDataPath, "cache"),
         };
 }

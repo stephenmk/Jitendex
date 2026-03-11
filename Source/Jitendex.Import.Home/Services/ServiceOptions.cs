@@ -27,7 +27,7 @@ internal sealed record ServiceOptions
     public ServiceOptions(DirectoryInfo? dataDirectory)
     {
         DataDirectory = dataDirectory
-            ?? AppDirectory.DataDirectory.Get(DataSubdirectory.JitendexDataDirectory);
+            ?? AppDirectory.DataDirectory.Get(DataSubdirectory.HomeDataDirectory);
 
         if (!DataDirectory.Exists)
         {

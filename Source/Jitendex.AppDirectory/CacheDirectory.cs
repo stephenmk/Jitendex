@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -24,10 +24,10 @@ namespace Jitendex.AppDirectory;
 public static class CacheDirectory
 {
     public static DirectoryInfo Get(CacheSubdirectory subdir)
-        => CacheHomeRoot.CreateSubdirectory(subdir.Name());
+        => JitendexCacheDirectory.CreateSubdirectory(subdir.Name());
 
-    private static DirectoryInfo CacheHomeRoot
-        => Root.Get(EnvironmentPaths.CacheHomePath);
+    private static DirectoryInfo JitendexCacheDirectory
+        => JitendexDirectory.Get(EnvironmentPaths.LocalCachePath);
 
     private static string Name(this CacheSubdirectory subdir)
         => subdir switch
@@ -35,7 +35,7 @@ public static class CacheDirectory
             EdrdgArchiveDirectory => "edrdg-dictionary-archive",
             SqliteDirectory       => "sqlite",
             ChiseIdsErrors        => "chise-ids-errors",
-            _ => throw new ArgumentOutOfRangeException(nameof(subdir))
+            _                     => throw new ArgumentOutOfRangeException(nameof(subdir))
         };
 }
 

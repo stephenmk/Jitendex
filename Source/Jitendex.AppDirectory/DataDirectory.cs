@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -24,23 +24,23 @@ namespace Jitendex.AppDirectory;
 public static class DataDirectory
 {
     public static DirectoryInfo Get(DataSubdirectory subdir)
-        => DataHomeRoot.GetDirectories(subdir.Name()) switch
+        => JitendexDataDirectory.GetDirectories(subdir.Name()) switch
         {
             var subdirectories and not [] => subdirectories.First(),
-            _ => throw new DirectoryNotFoundException($"No data directory '{subdir.Name()}' found in '{DataHomeRoot.FullName}'")
+            _ => throw new DirectoryNotFoundException($"No data directory '{subdir.Name()}' found in '{JitendexDataDirectory.FullName}'")
         };
 
-    private static DirectoryInfo DataHomeRoot
-        => Root.Get(EnvironmentPaths.DataHomePath);
+    private static DirectoryInfo JitendexDataDirectory
+        => JitendexDirectory.Get(EnvironmentPaths.LocalDataPath);
 
     private static string Name(this DataSubdirectory subdir)
         => subdir switch
         {
             ChiseIdsDirectory     => "chise-ids",
             EdrdgArchiveDirectory => "edrdg-dictionary-archive",
-            JitendexDataDirectory => "jitendex-data",
+            HomeDataDirectory     => "jitendex-data",
             KanjiVGDirectory      => "kanjivg",
-            _ => throw new ArgumentOutOfRangeException(nameof(subdir))
+            _                     => throw new ArgumentOutOfRangeException(nameof(subdir))
         };
 }
 
@@ -48,6 +48,6 @@ public enum DataSubdirectory : byte
 {
     ChiseIdsDirectory,
     EdrdgArchiveDirectory,
-    JitendexDataDirectory,
+    HomeDataDirectory,
     KanjiVGDirectory,
 }

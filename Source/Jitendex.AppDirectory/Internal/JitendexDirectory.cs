@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2025 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -18,14 +18,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 namespace Jitendex.AppDirectory.Internal;
 
-internal static class Root
+internal static class JitendexDirectory
 {
-    private readonly static string AppDirectoryName = "jitendex";
-
     public static DirectoryInfo Get(string path)
     {
-        var appDirPath = Path.Join(path, AppDirectoryName);
-        DirectoryInfo directory = new(appDirPath);
+        var appDirPath = Path.Join(path, "jitendex");
+        var directory = new DirectoryInfo(appDirPath);
         if (!directory.Exists)
         {
             directory.Create();

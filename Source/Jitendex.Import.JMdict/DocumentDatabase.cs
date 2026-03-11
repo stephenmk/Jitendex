@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.JMdict;
+using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Import.JMdict.Models;
 using Jitendex.Import.JMdict.Tables;
 using Jitendex.Import.JMdict.Tables.EntryElements;
@@ -146,7 +147,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
 
         using var transaction = context.Database.BeginTransaction();
 
-        var aSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
+        var aSequences = SequenceDictionaryLoader.Load(context, sequenceIds);
 
         FileHeaderTable.InsertItem(context, new(diff.Inserts.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
@@ -224,7 +225,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         KanjiFormTable.DeleteItems(context, diff.Deletes.KanjiForms.Values);
         EntryTable.DeleteItems(context, diff.Deletes.Entries.Values);
 
-        var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
+        var bSequences = SequenceDictionaryLoader.Load(context, sequenceIds);
 
         var sequences = context.Sequences
             .Where(seq => sequenceIds.Contains(seq.Id))

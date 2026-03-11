@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.JsonPatch.SystemTextJson;
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
+using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Dto.JMdict;
 
 namespace Jitendex.Forks.JMdict.Services;
@@ -40,7 +41,7 @@ internal partial class PatchService
     {
         var patchStacks = GetPatchStacks();
         var seqToLatestFile = GetSequenceToLatestFile();
-        var sequences = DtoMapper.LoadSequencesWithoutRevisions(jmdictContext, patchStacks.Keys);
+        var sequences = SequenceDictionaryLoader.Load(jmdictContext, patchStacks.Keys);
 
         foreach (var (seqId, stack) in patchStacks)
         {

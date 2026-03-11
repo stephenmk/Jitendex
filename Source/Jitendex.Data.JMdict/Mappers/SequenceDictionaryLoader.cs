@@ -23,11 +23,11 @@ using Jitendex.Dto.JMdict;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Data.JMdict.Entities.EntryItems;
 
-namespace Jitendex.Data.JMdict;
+namespace Jitendex.Data.JMdict.Mappers;
 
-public static class DtoMapper
+public static class SequenceDictionaryLoader
 {
-    public static Dictionary<int, SequenceDto> LoadSequencesWithoutRevisions(JMdictContext context, IEnumerable<int> sequenceIds)
+    public static Dictionary<int, SequenceDto> Load(JMdictContext context, IEnumerable<int> sequenceIds)
         => context.Sequences
             .AsSplitQuery()
             .Where(seq => sequenceIds.Contains(seq.Id))

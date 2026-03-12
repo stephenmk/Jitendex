@@ -80,16 +80,12 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        string[] forkNamespaces =
-        [
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}.{nameof(ForkEntities.Furigana)}",
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}.{nameof(ForkEntities.Kanwa)}",
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}.{nameof(ForkEntities.Links)}",
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}.{nameof(ForkEntities.References)}",
-        ];
+        const string forkNamespace =
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}";
 
         var forkTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(t => forkNamespaces.Contains(t.Namespace) && !t.IsAbstract);
+            .Where(static t => !t.IsAbstract)
+            .Where(static t => t.Namespace is not null && t.Namespace.StartsWith(forkNamespace));
 
         foreach (var type in forkTypes)
         {

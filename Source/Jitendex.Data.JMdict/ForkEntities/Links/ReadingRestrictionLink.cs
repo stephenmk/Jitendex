@@ -18,9 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.Links;
+namespace Jitendex.Data.JMdict.ForkEntities.Links;
 
 [Table(nameof(ReadingRestrictionLink))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(RestrictionOrder))]

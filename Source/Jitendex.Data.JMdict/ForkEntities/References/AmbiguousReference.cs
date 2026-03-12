@@ -18,16 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.Data.JMdict.Entities.Kanwa;
+namespace Jitendex.Data.JMdict.ForkEntities.References;
 
-[Table(nameof(DerivedCharacterReadingType))]
-[PrimaryKey(nameof(Id))]
-public sealed class DerivedCharacterReadingType
+[Table(nameof(AmbiguousReference))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
+public sealed class AmbiguousReference
 {
-    public required DerivedCharacterReadingTypeId Id { get; init; }
-    public required string Name { get; set; }
+    public required int EntryId { get; init; }
+    public required int SenseOrder { get; init; }
+    public required int CrossReferenceOrder { get; init; }
 
-    [InverseProperty(nameof(DerivedCharacterReading.Type))]
-    public ICollection<DerivedCharacterReading> DerivedReadings { get; init; } = [];
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
+    public CrossReference Reference { get; init; } = null!;
 }

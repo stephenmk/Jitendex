@@ -18,18 +18,23 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.EntryItems;
+using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 
-namespace Jitendex.Data.JMdict.Entities.References;
+namespace Jitendex.Data.JMdict.ForkEntities.Links;
 
-[Table(nameof(AmbiguousReference))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
-public sealed class AmbiguousReference
+[Table(nameof(RestrictionLink))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(RestrictionOrder))]
+public sealed class RestrictionLink
 {
     public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
-    public required int CrossReferenceOrder { get; init; }
+    public required int ReadingOrder { get; init; }
+    public required int RestrictionOrder { get; init; }
+    public required int KanjiFormOrder { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
-    public CrossReference Reference { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(RestrictionOrder)}")]
+    public Restriction Restriction { get; init; } = null!;
+
+    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
+    public KanjiForm KanjiForm { get; set; } = null!;
 }

@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities.EntryItems.Links;
 using Jitendex.Forks.JMdict.Models;
+using Jitendex.Data.JMdict.ForkEntities.Links;
 
 namespace Jitendex.Forks.JMdict.Tables.Restrictions;
 

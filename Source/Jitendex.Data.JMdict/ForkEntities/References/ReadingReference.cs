@@ -19,30 +19,22 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities.EntryItems;
-using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-namespace Jitendex.Data.JMdict.Entities.References;
+namespace Jitendex.Data.JMdict.ForkEntities.References;
 
-[Table(nameof(EntryReference))]
+[Table(nameof(ReadingReference))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), nameof(RefEntryId))]
-[Index(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), IsUnique = true)]
-public sealed class EntryReference
+public sealed class ReadingReference
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int CrossReferenceOrder { get; init; }
     public required int RefEntryId { get; init; }
-    public required int RefSenseOrder { get; set; }
+    public required int RefReadingOrder { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
-    public CrossReference Source { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}, {nameof(RefEntryId)}")]
+    public EntryReference Source { get; init; } = null!;
 
-    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefSenseOrder)}")]
-    public Sense Sense { get; set; } = null!;
-
-    [InverseProperty(nameof(References.KanjiFormReference.Source))]
-    public KanjiFormReference? KanjiFormReference { get; set; }
-
-    [InverseProperty(nameof(References.ReadingReference.Source))]
-    public ReadingReference? ReadingReference { get; set; }
+    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefReadingOrder)}")]
+    public Reading Reading { get; set; } = null!;
 }

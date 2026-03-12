@@ -82,10 +82,10 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
     {
         string[] forkNamespaces =
         [
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.Furigana)}",
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.Kanwa)}",
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.References)}",
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(Entities)}.{nameof(Entities.EntryItems)}.{nameof(Entities.EntryItems.Links)}",
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}.{nameof(ForkEntities.Furigana)}",
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}.{nameof(ForkEntities.Kanwa)}",
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}.{nameof(ForkEntities.Links)}",
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}.{nameof(ForkEntities.References)}",
         ];
 
         var forkTypes = Assembly.GetExecutingAssembly().GetTypes()

@@ -18,22 +18,24 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryItems;
 
-namespace Jitendex.Data.JMdict.Entities.Furigana;
+namespace Jitendex.Data.JMdict.ForkEntities.Furigana;
 
-[Table(nameof(FuriganaSegment))]
-[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder), nameof(Order))]
-public sealed class FuriganaSegment
+[Table(nameof(ReadingKanjiFormBridge))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder))]
+public sealed class ReadingKanjiFormBridge
 {
     public required int EntryId { get; init; }
     public required int ReadingOrder { get; init; }
     public required int KanjiFormOrder { get; init; }
-    public required int Order { get; init; }
 
-    public required string BaseText { get; set; }
-    public required string? Furigana { get; set; }
-    public required string? TypeName { get; set; }
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
+    public Reading Reading { get; init; } = null!;
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
-    public ReadingKanjiFormBridge KanjiFormBridge { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
+    public KanjiForm KanjiForm { get; init; } = null!;
+
+    [InverseProperty(nameof(FuriganaSegment.KanjiFormBridge))]
+    public List<FuriganaSegment> FuriganaSegments { get; init; } = [];
 }

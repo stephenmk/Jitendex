@@ -18,23 +18,16 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.Entities.EntryItems;
 
-namespace Jitendex.Data.JMdict.Entities.References;
+namespace Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
-[Table(nameof(KanjiFormReference))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder), nameof(RefEntryId))]
-public sealed class KanjiFormReference
+[Table(nameof(CharacterReadingType))]
+[PrimaryKey(nameof(Id))]
+public sealed class CharacterReadingType
 {
-    public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
-    public required int CrossReferenceOrder { get; init; }
-    public required int RefEntryId { get; init; }
-    public required int RefKanjiFormOrder { get; set; }
+    public required CharacterReadingTypeId Id { get; init; }
+    public required string Name { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}, {nameof(RefEntryId)}")]
-    public EntryReference Source { get; init; } = null!;
-
-    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefKanjiFormOrder)}")]
-    public KanjiForm? KanjiForm { get; set; }
+    [InverseProperty(nameof(CharacterReading.Type))]
+    public ICollection<CharacterReading> CharacterReadings { get; init; } = [];
 }

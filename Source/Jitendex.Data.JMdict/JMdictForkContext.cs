@@ -18,14 +18,14 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities;
-using Jitendex.Data.JMdict.Entities.Kanwa;
-using Jitendex.Data.JMdict.Entities.References;
 using Jitendex.Data.JMdict.Entities.EntryItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
-using Jitendex.Data.JMdict.Entities.EntryItems.Links;
 using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
-using Jitendex.Data.JMdict.Entities.Furigana;
+using Jitendex.Data.JMdict.ForkEntities.Furigana;
+using Jitendex.Data.JMdict.ForkEntities.Kanwa;
+using Jitendex.Data.JMdict.ForkEntities.Links;
+using Jitendex.Data.JMdict.ForkEntities.References;
 
 namespace Jitendex.Data.JMdict;
 
@@ -65,13 +65,13 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<ReadingRestriction> ReadingRestrictions { get; set; } = null!;
     #endregion
 
-    #region Internal Entry Links
+    #region Internal Entry Restriction Links
     public DbSet<RestrictionLink> RestrictionLinks { get; set; } = null!;
     public DbSet<ReadingRestrictionLink> ReadingRestrictionLinks { get; set; } = null!;
     public DbSet<KanjiFormRestrictionLink> KanjiFormRestrictionLinks { get; set; } = null!;
     #endregion
 
-    #region External Entry references
+    #region External Entry References
     public DbSet<EntryReference> EntryReferences { get; set; } = null!;
     public DbSet<ReadingReference> ReadingReferences { get; set; } = null!;
     public DbSet<KanjiFormReference> KanjiFormReferences { get; set; } = null!;

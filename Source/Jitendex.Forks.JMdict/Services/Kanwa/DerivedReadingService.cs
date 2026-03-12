@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Data.JMdict;
-using Jitendex.Data.JMdict.Entities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
-using static Jitendex.Data.JMdict.Entities.Kanwa.CharacterReadingTypeId;
+using static Jitendex.Data.JMdict.ForkEntities.Kanwa.CharacterReadingTypeId;
+using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 

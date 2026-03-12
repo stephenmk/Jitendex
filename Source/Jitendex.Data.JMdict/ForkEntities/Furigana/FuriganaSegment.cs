@@ -19,14 +19,21 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.Kanwa;
+namespace Jitendex.Data.JMdict.ForkEntities.Furigana;
 
-[Table(nameof(Character))]
-[PrimaryKey(nameof(Value))]
-public sealed class Character
+[Table(nameof(FuriganaSegment))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder), nameof(Order))]
+public sealed class FuriganaSegment
 {
-    public required int Value { get; init; }
+    public required int EntryId { get; init; }
+    public required int ReadingOrder { get; init; }
+    public required int KanjiFormOrder { get; init; }
+    public required int Order { get; init; }
 
-    [InverseProperty(nameof(CharacterReading.Character))]
-    public ICollection<CharacterReading> Readings { get; init; } = [];
+    public required string BaseText { get; set; }
+    public required string? Furigana { get; set; }
+    public required string? TypeName { get; set; }
+
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
+    public ReadingKanjiFormBridge KanjiFormBridge { get; init; } = null!;
 }

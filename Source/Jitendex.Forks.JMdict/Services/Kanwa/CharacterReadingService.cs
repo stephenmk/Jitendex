@@ -15,13 +15,13 @@ See the GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License along with Jitendex.
 If not, see <https://www.gnu.org/licenses/>.
 */
-
-using Jitendex.Data.Home;
-using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
-using J = Jitendex.Data.JMdict.Entities.Kanwa;
-using H = Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Data.Home;
+using Jitendex.Data.JMdict;
+using ForkTypeId = Jitendex.Data.JMdict.ForkEntities.Kanwa.CharacterReadingTypeId;
+using HomeTypeId = Jitendex.Data.Home.Entities.Furigana.CharacterReadingTypeId;
+using static Jitendex.Data.Home.Entities.Furigana.CharacterReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
@@ -55,16 +55,16 @@ internal sealed class CharacterReadingService
         table.InsertItems(forkContext, rows);
     }
 
-    private static J.CharacterReadingTypeId ConvertTypeId(H.CharacterReadingTypeId id) => id switch
+    private static ForkTypeId ConvertTypeId(HomeTypeId id) => id switch
     {
-        H.CharacterReadingTypeId.Onyomi       => J.CharacterReadingTypeId.Onyomi,
-        H.CharacterReadingTypeId.Kunyomi      => J.CharacterReadingTypeId.Kunyomi,
-        H.CharacterReadingTypeId.Chinese      => J.CharacterReadingTypeId.Chinese,
-        H.CharacterReadingTypeId.Korean       => J.CharacterReadingTypeId.Korean,
-        H.CharacterReadingTypeId.Kana         => J.CharacterReadingTypeId.Kana,
-        H.CharacterReadingTypeId.Alphanumeric => J.CharacterReadingTypeId.Alphanumeric,
-        H.CharacterReadingTypeId.Symbol       => J.CharacterReadingTypeId.Symbol,
-        H.CharacterReadingTypeId.Unknown      => J.CharacterReadingTypeId.Unknown,
-        _ => throw new ArgumentOutOfRangeException(nameof(id))
+        Onyomi       => ForkTypeId.Onyomi,
+        Kunyomi      => ForkTypeId.Kunyomi,
+        Chinese      => ForkTypeId.Chinese,
+        Korean       => ForkTypeId.Korean,
+        Kana         => ForkTypeId.Kana,
+        Alphanumeric => ForkTypeId.Alphanumeric,
+        Symbol       => ForkTypeId.Symbol,
+        Unknown      => ForkTypeId.Unknown,
+        _            => throw new ArgumentOutOfRangeException(nameof(id))
     };
 }

@@ -23,6 +23,7 @@ using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Services;
 using Jitendex.Forks.JMdict.Services.Furigana;
 using Jitendex.Forks.JMdict.Services.Kanwa;
+using Jitendex.Forks.JMdict.Services.Patching;
 using Jitendex.Forks.JMdict.Services.References;
 using Jitendex.Forks.JMdict.Services.Restrictions;
 using Jitendex.Forks.JMdict.Tables.Furigana;
@@ -49,6 +50,7 @@ internal static class ServiceProvider
 
         // Services
         .AddTransient<PatchService>()
+        .AddTransient<PatchRebaser>()
         .AddTransient<IntegrityService>()
 
         .AddTransient<RestrictionService>()

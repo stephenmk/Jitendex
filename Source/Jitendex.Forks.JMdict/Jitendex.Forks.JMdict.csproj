@@ -16,5 +16,6 @@
     <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
     <ProjectReference Include="..\Jitendex.Data.Home\Jitendex.Data.Home.csproj" />
     <ProjectReference Include="..\Jitendex.Data.JMdict\Jitendex.Data.JMdict.csproj" />
+    <ProjectReference Include="..\..\Libraries\MinimalJsonDiff\Jitendex.MinimalJsonDiff\Jitendex.MinimalJsonDiff.csproj" />
   </ItemGroup>
 </Project>

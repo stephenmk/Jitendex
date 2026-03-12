@@ -25,29 +25,35 @@ using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Dto.JMdict;
 
-namespace Jitendex.Forks.JMdict.Services;
+namespace Jitendex.Forks.JMdict.Services.Patching;
 
 internal partial class PatchService
 (
     ILogger<PatchService> logger,
     JMdictContext jmdictContext,
     JMdictForkContext forkContext,
-    HomeContext homeContext
+    HomeContext homeContext,
+    PatchRebaser rebaser
 )
 {
-    private sealed record PatchData(int Id, int FileId, string Json);
+    private sealed record PatchData
+    (
+        int Id,
+        DateOnly Date,
+        string Json
+    );
 
     public void Write()
     {
         var patchStacks = GetPatchStacks();
-        var seqToLatestFile = GetSequenceToLatestFile();
+        var seqToLatestRevisionDate = GetSequenceIdToLatestRevisionDate();
         var sequences = SequenceDictionaryLoader.Load(jmdictContext, patchStacks.Keys);
 
         foreach (var (seqId, stack) in patchStacks)
         {
             var sequence = sequences[seqId];
-            var latestFileId = seqToLatestFile[seqId];
-            var patchedSequence = ApplyPatchStack(stack, sequence, latestFileId);
+            var latestRevisionDate = seqToLatestRevisionDate[seqId];
+            var patchedSequence = ApplyPatchStack(stack, sequence, latestRevisionDate);
             // TODO: Write new sequence to DB.
         }
     }
@@ -56,9 +62,9 @@ internal partial class PatchService
     {
         var sequences = new Dictionary<int, Stack<PatchData>>();
 
-        var dateToFileId = forkContext.FileHeaders
-            .Select(static f => new { Key = f.Date, Value = f.Id })
-            .ToFrozenDictionary(static x => x.Key, static x => x.Value);
+        var validDates = forkContext.FileHeaders
+            .Select(static f => f.Date)
+            .ToFrozenSet();
 
         var patches = homeContext.JMdictPatches
             .Select(static p => new
@@ -82,12 +88,12 @@ internal partial class PatchService
                 var stack = new Stack<PatchData>();
                 while (patch is not null)
                 {
-                    if (!dateToFileId.TryGetValue(patch.SequenceDate, out var fileId))
+                    if (!validDates.Contains(patch.SequenceDate))
                     {
                         LogInvalidFileDate(patch.Id, patch.SequenceDate);
                         return [];
                     }
-                    var patchData = new PatchData(patch.Id, fileId, patch.Json);
+                    var patchData = new PatchData(patch.Id, patch.SequenceDate, patch.Json);
                     stack.Push(patchData);
                     patch = patch.PreviousPatchId.HasValue
                         ? patches[patch.PreviousPatchId.Value]
@@ -100,28 +106,31 @@ internal partial class PatchService
         return sequences;
     }
 
-    private FrozenDictionary<int, int> GetSequenceToLatestFile()
+    private FrozenDictionary<int, DateOnly> GetSequenceIdToLatestRevisionDate()
         => forkContext.Sequences
             .Select(static s => new
             {
                 Key = s.Id,
-                DefaultValue = s.OriginFileId,
+                DefaultValue = s.OriginFile.Date,
                 Value = s.Revisions
                     .OrderByDescending(static r => r.FileHeader.Date)
-                    .Select(static r => (int?)r.FileHeaderId)
+                    .Select(static r => (DateOnly?)r.FileHeader.Date)
                     .FirstOrDefault()
             })
             .ToFrozenDictionary(static x => x.Key, static x => x.Value ?? x.DefaultValue);
 
-    private SequenceDto? ApplyPatchStack(Stack<PatchData> stack, SequenceDto sequence, int fileId)
+    private SequenceDto? ApplyPatchStack(Stack<PatchData> stack, SequenceDto sequence, DateOnly sequenceDate)
     {
+        var newSequence = sequence;
+        bool outdated = false;
         while (stack.Count > 0)
         {
             var patch = stack.Pop();
 
-            if (patch.FileId != fileId)
+            if (!sequenceDate.Equals(patch.Date))
             {
-                LogOutdatedPatch(patch.Id, sequence.Id, patch.FileId, fileId);
+                outdated = true;
+                LogOutdatedPatch(patch.Id, sequence.Id, patch.Date, sequenceDate);
             }
 
             var patchDoc = JsonSerializer.Deserialize<JsonPatchDocument<SequenceDto>>(patch.Json);
@@ -131,31 +140,34 @@ internal partial class PatchService
                 return null;
             }
 
-            var patchFailure = false;
-            patchDoc.ApplyTo(sequence, jsonPatchError =>
+            var patchError = false;
+            patchDoc.ApplyTo(newSequence, logErrorAction: action =>
             {
-                patchFailure = true;
-                LogPatchFailure(patch.Id, jsonPatchError.ErrorMessage);
+                patchError = true;
+                LogPatchError(patch.Id, action.ErrorMessage);
             });
 
-            if (patchFailure)
+            if (patchError)
             {
                 return null;
             }
         }
-        // TODO: Write new patch to home data if old one was outdated.
-        return sequence;
+        if (outdated)
+        {
+            rebaser.Write(sequence, newSequence, sequenceDate);
+        }
+        return newSequence;
     }
 
     [LoggerMessage(LogLevel.Error, "Invalid sequence date {Date} in patch ID #{Id}")]
     private partial void LogInvalidFileDate(int id, DateOnly date);
 
     [LoggerMessage(LogLevel.Warning,
-    "Patch #{PatchId} for sequence #{SeqId} targets file version #{PatchFileId}, but the the current version is #{SeqFileId}")]
-    private partial void LogOutdatedPatch(int patchId, int seqId, int patchFileId, int seqFileId);
+    "Patch #{PatchId} for sequence #{SeqId} targets file version {PatchDate}, but the the current version is {SeqDate}")]
+    private partial void LogOutdatedPatch(int patchId, int seqId, DateOnly patchDate, DateOnly seqDate);
 
     [LoggerMessage(LogLevel.Warning, "Unable to apply patch ID #{Id}: `{Message}`")]
-    private partial void LogPatchFailure(int id, string message);
+    private partial void LogPatchError(int id, string message);
 
     [LoggerMessage(LogLevel.Error, "Unable to deserialize patch ID #{Id}")]
     private partial void LogDeserializationError(int id);

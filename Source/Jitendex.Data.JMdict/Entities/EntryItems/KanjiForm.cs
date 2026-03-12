@@ -39,8 +39,12 @@ public sealed class KanjiForm
     public List<KanjiFormInfo> Infos { get; init; } = [];
     public List<KanjiFormPriority> Priorities { get; init; } = [];
 
+    #region Fork Properties
+
     public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
     public List<KanjiFormReference> SenseReferences { get; init; } = [];
     public List<RestrictionLink> ReadingRestrictions { get; init; } = [];
     public List<KanjiFormRestrictionLink> SenseRestrictions { get; init; } = [];
+
+    #endregion
 }

@@ -34,6 +34,10 @@ public sealed class ReadingRestriction
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;
 
+    #region Fork Properties
+
     [InverseProperty(nameof(ReadingRestrictionLink.Restriction))]
     public ReadingRestrictionLink? Link { get; set; }
+
+    #endregion
 }

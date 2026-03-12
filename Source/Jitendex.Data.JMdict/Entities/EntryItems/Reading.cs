@@ -41,7 +41,11 @@ public sealed class Reading
     public List<ReadingPriority> Priorities { get; init; } = [];
     public List<Restriction> Restrictions { get; init; } = [];
 
+    #region Fork Properties
+
     public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
     public List<ReadingReference> SenseReferences { get; init; } = [];
     public List<ReadingRestrictionLink> SenseRestrictions { get; init; } = [];
+
+    #endregion
 }

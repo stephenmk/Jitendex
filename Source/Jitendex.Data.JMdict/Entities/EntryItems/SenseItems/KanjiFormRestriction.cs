@@ -34,6 +34,10 @@ public sealed class KanjiFormRestriction
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;
 
+    #region Fork Properties
+
     [InverseProperty(nameof(KanjiFormRestrictionLink.Restriction))]
     public KanjiFormRestrictionLink? Link { get; set; }
+
+    #endregion
 }

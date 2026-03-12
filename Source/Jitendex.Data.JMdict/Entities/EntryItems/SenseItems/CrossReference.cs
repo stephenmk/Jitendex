@@ -38,9 +38,13 @@ public sealed class CrossReference
     [ForeignKey(nameof(TypeName))]
     public CrossReferenceType Type { get; set; } = null!;
 
+    #region Fork Properties
+
     [InverseProperty(nameof(EntryReference.Source))]
     public EntryReference? ReferencedEntry { get; set; }
 
     [InverseProperty(nameof(AmbiguousReference.Reference))]
     public AmbiguousReference? IsAmbiguous { get; set; }
+
+    #endregion
 }

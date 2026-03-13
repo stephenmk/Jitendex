@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Frozen;
 using System.Text.Json;
 using Microsoft.AspNetCore.JsonPatch.SystemTextJson;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
@@ -46,16 +47,27 @@ internal partial class PatchService
     public void Write()
     {
         var patchStacks = GetPatchStacks();
-        var seqToLatestRevisionDate = GetSequenceIdToLatestRevisionDate();
+        var seqToLatestRevisionDate = GetSequenceIdToLatestRevisionDate(patchStacks.Keys);
         var sequences = SequenceDictionaryLoader.Load(jmdictContext, patchStacks.Keys);
 
         foreach (var (seqId, stack) in patchStacks)
         {
             var sequence = sequences[seqId];
-            var latestRevisionDate = seqToLatestRevisionDate[seqId];
-            var patchedSequence = ApplyPatchStack(stack, sequence, latestRevisionDate);
-            // TODO: Write new sequence to DB.
+            var date = seqToLatestRevisionDate[seqId];
+            if (ApplyPatchStack(stack, sequence, date) is SequenceDto patchedSequence)
+            {
+                var newEntry = patchedSequence.Entry?.ToEntry(seqId);
+                forkContext.Entries
+                    .Where(e => e.Id == seqId)
+                    .ExecuteDelete();
+                var seq = forkContext.Sequences
+                    .Where(s => s.Id == seqId)
+                    .First();
+                seq.Entry = newEntry;
+            }
         }
+
+        forkContext.SaveChanges();
     }
 
     private Dictionary<int, Stack<PatchData>> GetPatchStacks()
@@ -106,8 +118,9 @@ internal partial class PatchService
         return sequences;
     }
 
-    private FrozenDictionary<int, DateOnly> GetSequenceIdToLatestRevisionDate()
+    private FrozenDictionary<int, DateOnly> GetSequenceIdToLatestRevisionDate(IEnumerable<int> sequenceIds)
         => forkContext.Sequences
+            .Where(s => sequenceIds.Contains(s.Id))
             .Select(static s => new
             {
                 Key = s.Id,

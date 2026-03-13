@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Dto.Tatoeba;
@@ -45,7 +44,7 @@ public static class DtoMapper
                     .AsQueryable()
                     .OrderBy(static s => s.Order)
                     .Select(SegmentationProjection)
-                    .ToImmutableArray()
+                    .ToList()
             }
         };
 
@@ -57,7 +56,7 @@ public static class DtoMapper
                 .AsQueryable()
                 .OrderBy(static t => t.Order)
                 .Select(TokenProjection)
-                .ToImmutableArray()
+                .ToList()
         };
 
     private static Expression<Func<Token, TokenDto>> TokenProjection =>

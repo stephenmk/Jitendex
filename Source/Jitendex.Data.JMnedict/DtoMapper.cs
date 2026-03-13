@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Dto.JMnedict;
@@ -45,17 +44,17 @@ public static class DtoMapper
                     .AsQueryable()
                     .OrderBy(static kanjiForm => kanjiForm.Order)
                     .Select(KanjiFormProjection)
-                    .ToImmutableArray(),
+                    .ToList(),
                 Readings = seq.Entry.Readings
                     .AsQueryable()
                     .OrderBy(static reading => reading.Order)
                     .Select(ReadingProjection)
-                    .ToImmutableArray(),
+                    .ToList(),
                 Translations = seq.Entry.Translations
                     .AsQueryable()
                     .OrderBy(static translation => translation.Order)
                     .Select(TranslationProjection)
-                    .ToImmutableArray()
+                    .ToList()
             }
         };
 
@@ -66,11 +65,11 @@ public static class DtoMapper
             Infos = kanjiForm.Infos
                 .OrderBy(static info => info.Order)
                 .Select(static info => info.TagName)
-                .ToImmutableArray(),
+                .ToList(),
             Priorities = kanjiForm.Priorities
                 .OrderBy(static prio => prio.Order)
                 .Select(static prio => prio.TagName)
-                .ToImmutableArray(),
+                .ToList(),
         };
 
     private static Expression<Func<Reading, ReadingDto>> ReadingProjection =>
@@ -80,15 +79,15 @@ public static class DtoMapper
             Infos = reading.Infos
                 .OrderBy(static info => info.Order)
                 .Select(static info => info.TagName)
-                .ToImmutableArray(),
+                .ToList(),
             Priorities = reading.Priorities
                 .OrderBy(static prio => prio.Order)
                 .Select(static prio => prio.TagName)
-                .ToImmutableArray(),
+                .ToList(),
             Restrictions = reading.Restrictions
                 .OrderBy(static rstr => rstr.Order)
                 .Select(static rstr => rstr.KanjiFormText)
-                .ToImmutableArray(),
+                .ToList(),
         };
 
     private static Expression<Func<Translation, TranslationDto>> TranslationProjection =>
@@ -97,14 +96,14 @@ public static class DtoMapper
             CrossReferences = translation.CrossReferences
                 .OrderBy(static x => x.Order)
                 .Select(static x => x.Text)
-                .ToImmutableArray(),
+                .ToList(),
             Details = translation.Details
                 .OrderBy(static detail => detail.Order)
                 .Select(static detail => new DetailDto(detail.Text, detail.LanguageName))
-                .ToImmutableArray(),
+                .ToList(),
             NameTypes = translation.NameTypes
                 .OrderBy(static m => m.Order)
                 .Select(static m => m.TagName)
-                .ToImmutableArray(),
+                .ToList(),
         };
 }

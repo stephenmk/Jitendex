@@ -22,7 +22,7 @@ public sealed record SequenceDto
 {
     public required int Id { get; init; }
     public required DateOnly CreatedDate { get; init; }
-    public ImmutableArray<RevisionDto> Revisions { get; init; } = [];
+    public List<RevisionDto> Revisions { get; init; } = [];
     public EntryDto? Entry { get; init; }
 }
 
@@ -35,22 +35,22 @@ public sealed record RevisionDto
 
 public sealed record EntryDto
 {
-    public ImmutableArray<CodepointGroupDto> CodepointGroups { get; init; } = [];
-    public ImmutableArray<DictionaryGroupDto> DictionaryGroups { get; init; } = [];
-    public ImmutableArray<MiscGroupDto> MiscGroups { get; init; } = [];
-    public ImmutableArray<QueryCodeGroupDto> QueryCodeGroups { get; init; } = [];
-    public ImmutableArray<RadicalGroupDto> RadicalGroups { get; init; } = [];
-    public ImmutableArray<ReadingMeaningGroupDto> ReadingMeaningGroups { get; init; } = [];
+    public List<CodepointGroupDto> CodepointGroups { get; init; } = [];
+    public List<DictionaryGroupDto> DictionaryGroups { get; init; } = [];
+    public List<MiscGroupDto> MiscGroups { get; init; } = [];
+    public List<QueryCodeGroupDto> QueryCodeGroups { get; init; } = [];
+    public List<RadicalGroupDto> RadicalGroups { get; init; } = [];
+    public List<ReadingMeaningGroupDto> ReadingMeaningGroups { get; init; } = [];
 }
 
 public sealed record CodepointGroupDto
 {
-    public ImmutableArray<CodepointDto> Codepoints { get; init; } = [];
+    public List<CodepointDto> Codepoints { get; init; } = [];
 }
 
 public sealed record DictionaryGroupDto
 {
-    public ImmutableArray<DictionaryDto> Dictionaries { get; init; } = [];
+    public List<DictionaryDto> Dictionaries { get; init; } = [];
 }
 
 public sealed record MiscGroupDto
@@ -58,33 +58,33 @@ public sealed record MiscGroupDto
     public required int? Grade { get; init; }
     public required int? Frequency { get; init; }
     public required int? JlptLevel { get; init; }
-    public ImmutableArray<string> RadicalNames { get; init; } = [];
-    public ImmutableArray<int> StrokeCounts { get; init; } = [];
-    public ImmutableArray<VariantDto> Variants { get; init; } = [];
+    public List<string> RadicalNames { get; init; } = [];
+    public List<int> StrokeCounts { get; init; } = [];
+    public List<VariantDto> Variants { get; init; } = [];
 }
 
 public sealed record QueryCodeGroupDto
 {
-    public ImmutableArray<QueryCodeDto> QueryCodes { get; init; } = [];
+    public List<QueryCodeDto> QueryCodes { get; init; } = [];
 }
 
 public sealed record RadicalGroupDto
 {
-    public ImmutableArray<RadicalDto> Radicals { get; init; } = [];
+    public List<RadicalDto> Radicals { get; init; } = [];
 }
 
 public sealed record ReadingMeaningGroupDto
 {
-    public ImmutableArray<ReadingMeaningDto> ReadingMeanings { get; init; } = [];
-    public ImmutableArray<string> Nanoris { get; init; } = [];
+    public List<ReadingMeaningDto> ReadingMeanings { get; init; } = [];
+    public List<string> Nanoris { get; init; } = [];
 }
 
 public sealed record ReadingMeaningDto
 {
     public required bool IsKokuji { get; init; }
     public required bool IsGhost { get; init; }
-    public ImmutableArray<string> Meanings { get; init; } = [];
-    public ImmutableArray<ReadingDto> Readings { get; init; } = [];
+    public List<string> Meanings { get; init; } = [];
+    public List<ReadingDto> Readings { get; init; } = [];
 }
 
 public sealed record CodepointDto

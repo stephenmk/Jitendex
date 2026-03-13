@@ -47,16 +47,30 @@ public static class DtoTextExtensions
         return sb.ToString();
     }
 
-    private static string ToText(this SegmentationDto segmentation) =>
-        $"""
-        --Translation--
-        {segmentation.Translation.ToText()}
-        --Tokens--
-        {string.Join(' ', segmentation.Tokens.Select(static t => t.ToText()))}
-        """;
+    private static string ToText(this SegmentationDto segmentation)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine("--Translation--");
+        sb.AppendLine(segmentation.Translation.ToText());
+        sb.AppendLine("--Tokens--");
+        sb.AppendLine(segmentation.Tokens.ToText());
+
+        return sb.ToString();
+    }
 
     private static string ToText(this TranslationDto translation)
         => $"#{translation.Id}: {translation.Text}";
+
+    private static string ToText(this IList<TokenDto> tokens)
+    {
+        var tokenStrings = new string[tokens.Count];
+        for (int i = 0; i < tokens.Count; i++)
+        {
+            tokenStrings[i] = tokens[i].ToText();
+        }
+        return string.Join(' ', tokenStrings);
+    }
 
     private static string ToText(this TokenDto token)
     {

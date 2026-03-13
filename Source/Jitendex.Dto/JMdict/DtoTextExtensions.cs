@@ -38,26 +38,26 @@ public static class DtoTextExtensions
     private static string ToText(this EntryDto x)
     {
         var sb = new StringBuilder();
-        if (x.KanjiForms.Length > 0)
+        if (x.KanjiForms.Count > 0)
         {
             sb.AppendLine("Kanji Forms");
-            for (int i = 0; i < x.KanjiForms.Length; i++)
+            for (int i = 0; i < x.KanjiForms.Count; i++)
             {
                 sb.AppendLine($"\t{i + 1}: {x.KanjiForms[i].ToText()}");
             }
         }
-        if (x.Readings.Length > 0)
+        if (x.Readings.Count > 0)
         {
             sb.AppendLine("Readings");
-            for (int i = 0; i < x.Readings.Length; i++)
+            for (int i = 0; i < x.Readings.Count; i++)
             {
                 sb.AppendLine($"\t{i + 1}: {x.Readings[i].ToText()}");
             }
         }
-        if (x.Senses.Length > 0)
+        if (x.Senses.Count > 0)
         {
             sb.AppendLine("Senses");
-            for (int i = 0; i < x.Senses.Length; i++)
+            for (int i = 0; i < x.Senses.Count; i++)
             {
                 sb.AppendLine($"\t{i + 1}. {x.Senses[i].ToText()}");
             }
@@ -68,11 +68,11 @@ public static class DtoTextExtensions
     private static string ToText(this KanjiFormDto x)
     {
         var sb = new StringBuilder(x.Text);
-        if (x.Infos.Length > 0)
+        if (x.Infos.Count > 0)
         {
             sb.Append($"[{string.Join(", ", x.Infos)}]");
         }
-        if (x.Priorities.Length > 0)
+        if (x.Priorities.Count > 0)
         {
             sb.Append($"[{string.Join(", ", x.Priorities)}]");
         }
@@ -82,15 +82,15 @@ public static class DtoTextExtensions
     private static string ToText(this ReadingDto x)
     {
         var sb = new StringBuilder(x.Text);
-        if (x.Infos.Length > 0)
+        if (x.Infos.Count > 0)
         {
             sb.Append($"[{string.Join(",", x.Infos)}]");
         }
-        if (x.Priorities.Length > 0)
+        if (x.Priorities.Count > 0)
         {
             sb.Append($"[{string.Join(",", x.Priorities)}]");
         }
-        if (x.Restrictions.Length > 0)
+        if (x.Restrictions.Count > 0)
         {
             sb.Append($"[{string.Join("；", x.Restrictions)}]");
         }
@@ -104,27 +104,27 @@ public static class DtoTextExtensions
     private static string ToText(this SenseDto x)
     {
         var sb = new StringBuilder();
-        if (x.PartsOfSpeech.Length > 0)
+        if (x.PartsOfSpeech.Count > 0)
         {
             sb.Append($"[{string.Join(", ", x.PartsOfSpeech)}]");
         }
-        if (x.Miscs.Length > 0)
+        if (x.Miscs.Count > 0)
         {
             sb.Append($"[{string.Join(", ", x.Miscs)}]");
         }
-        if (x.Fields.Length > 0)
+        if (x.Fields.Count > 0)
         {
             sb.Append($"{{{string.Join(", ", x.Fields)}}}");
         }
-        if (x.KanjiFormRestrictions.Length > 0)
+        if (x.KanjiFormRestrictions.Count > 0)
         {
             sb.Append($"[{string.Join("；", x.KanjiFormRestrictions)}]");
         }
-        if (x.ReadingRestrictions.Length > 0)
+        if (x.ReadingRestrictions.Count > 0)
         {
             sb.Append($"[{string.Join("；", x.ReadingRestrictions)}]");
         }
-        if (x.Dialects.Length > 0)
+        if (x.Dialects.Count > 0)
         {
             foreach (var dialect in x.Dialects)
             {
@@ -132,7 +132,7 @@ public static class DtoTextExtensions
                 sb.Append($"\t[dialect = {dialect}]");
             }
         }
-        if (x.LanguageSources.Length > 0)
+        if (x.LanguageSources.Count > 0)
         {
             foreach (var langSource in x.LanguageSources)
             {
@@ -140,7 +140,7 @@ public static class DtoTextExtensions
                 sb.Append($"\t[langsrc = {langSource.ToText()}]");
             }
         }
-        if (x.Notes.Length > 0)
+        if (x.Notes.Count > 0)
         {
             foreach (var note in x.Notes)
             {
@@ -148,7 +148,7 @@ public static class DtoTextExtensions
                 sb.Append($"\t《{note}》");
             }
         }
-        if (x.Glosses.Length > 0)
+        if (x.Glosses.Count > 0)
         {
             foreach (var gloss in x.Glosses)
             {
@@ -156,7 +156,7 @@ public static class DtoTextExtensions
                 sb.Append($"\t▶ {gloss.ToText()}");
             }
         }
-        if (x.CrossReferences.Length > 0)
+        if (x.CrossReferences.Count > 0)
         {
             foreach (var xref in x.CrossReferences)
             {

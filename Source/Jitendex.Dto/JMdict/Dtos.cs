@@ -23,44 +23,44 @@ public sealed record SequenceDto
     public required int Id { get; init; }
     public required DateOnly CreatedDate { get; init; }
     public EntryDto? Entry { get; init; }
-    public ImmutableArray<RevisionDto> Revisions { get; init; } = [];
+    public List<RevisionDto> Revisions { get; init; } = [];
 }
 
 public sealed record EntryDto
 {
-    public ImmutableArray<KanjiFormDto> KanjiForms { get; init; } = [];
-    public ImmutableArray<ReadingDto> Readings { get; init; } = [];
-    public ImmutableArray<SenseDto> Senses { get; init; } = [];
+    public List<KanjiFormDto> KanjiForms { get; init; } = [];
+    public List<ReadingDto> Readings { get; init; } = [];
+    public List<SenseDto> Senses { get; init; } = [];
 }
 
 public sealed record KanjiFormDto
 {
     public required string Text { get; init; }
-    public ImmutableArray<string> Infos { get; init; } = [];
-    public ImmutableArray<string> Priorities { get; init; } = [];
+    public List<string> Infos { get; init; } = [];
+    public List<string> Priorities { get; init; } = [];
 }
 
 public sealed record ReadingDto
 {
     public required string Text { get; init; }
     public required bool NoKanji { get; init; }
-    public ImmutableArray<string> Infos { get; init; } = [];
-    public ImmutableArray<string> Priorities { get; init; } = [];
-    public ImmutableArray<string> Restrictions { get; init; } = [];
+    public List<string> Infos { get; init; } = [];
+    public List<string> Priorities { get; init; } = [];
+    public List<string> Restrictions { get; init; } = [];
 }
 
 public sealed record SenseDto
 {
-    public ImmutableArray<string> KanjiFormRestrictions { get; init; } = [];
-    public ImmutableArray<string> ReadingRestrictions { get; init; } = [];
-    public ImmutableArray<string> PartsOfSpeech { get; init; } = [];
-    public ImmutableArray<string> Fields { get; init; } = [];
-    public ImmutableArray<string> Miscs { get; init; } = [];
-    public ImmutableArray<string> Dialects { get; init; } = [];
-    public ImmutableArray<LanguageSourceDto> LanguageSources { get; init; } = [];
-    public ImmutableArray<string> Notes { get; init; } = [];
-    public ImmutableArray<GlossDto> Glosses { get; init; } = [];
-    public ImmutableArray<CrossReferenceDto> CrossReferences { get; init; } = [];
+    public List<string> KanjiFormRestrictions { get; init; } = [];
+    public List<string> ReadingRestrictions { get; init; } = [];
+    public List<string> PartsOfSpeech { get; init; } = [];
+    public List<string> Fields { get; init; } = [];
+    public List<string> Miscs { get; init; } = [];
+    public List<string> Dialects { get; init; } = [];
+    public List<LanguageSourceDto> LanguageSources { get; init; } = [];
+    public List<string> Notes { get; init; } = [];
+    public List<GlossDto> Glosses { get; init; } = [];
+    public List<CrossReferenceDto> CrossReferences { get; init; } = [];
 }
 
 public sealed record RevisionDto

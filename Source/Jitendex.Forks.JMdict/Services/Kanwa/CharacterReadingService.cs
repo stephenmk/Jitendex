@@ -15,13 +15,13 @@ See the GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License along with Jitendex.
 If not, see <https://www.gnu.org/licenses/>.
 */
+
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using ForkTypeId = Jitendex.Data.JMdict.ForkEntities.Kanwa.CharacterReadingTypeId;
 using HomeTypeId = Jitendex.Data.Home.Entities.Furigana.CharacterReadingTypeId;
-using static Jitendex.Data.Home.Entities.Furigana.CharacterReadingTypeId;
+using ForkTypeId = Jitendex.Data.JMdict.ForkEntities.Kanwa.CharacterReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
@@ -57,14 +57,14 @@ internal sealed class CharacterReadingService
 
     private static ForkTypeId ConvertTypeId(HomeTypeId id) => id switch
     {
-        Onyomi       => ForkTypeId.Onyomi,
-        Kunyomi      => ForkTypeId.Kunyomi,
-        Chinese      => ForkTypeId.Chinese,
-        Korean       => ForkTypeId.Korean,
-        Kana         => ForkTypeId.Kana,
-        Alphanumeric => ForkTypeId.Alphanumeric,
-        Symbol       => ForkTypeId.Symbol,
-        Unknown      => ForkTypeId.Unknown,
-        _            => throw new ArgumentOutOfRangeException(nameof(id))
+        HomeTypeId.Onyomi       => ForkTypeId.Onyomi,
+        HomeTypeId.Kunyomi      => ForkTypeId.Kunyomi,
+        HomeTypeId.Chinese      => ForkTypeId.Chinese,
+        HomeTypeId.Korean       => ForkTypeId.Korean,
+        HomeTypeId.Kana         => ForkTypeId.Kana,
+        HomeTypeId.Alphanumeric => ForkTypeId.Alphanumeric,
+        HomeTypeId.Symbol       => ForkTypeId.Symbol,
+        HomeTypeId.Unknown      => ForkTypeId.Unknown,
+        _                       => throw new ArgumentOutOfRangeException(nameof(id))
     };
 }

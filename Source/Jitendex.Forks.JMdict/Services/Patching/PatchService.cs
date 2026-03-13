@@ -56,14 +56,14 @@ internal partial class PatchService
             var date = seqToLatestRevisionDate[seqId];
             if (ApplyPatchStack(stack, sequence, date) is SequenceDto patchedSequence)
             {
-                var newEntry = patchedSequence.Entry?.ToEntry(seqId);
+                var patchedEntry = patchedSequence.Entry?.ToEntry(seqId);
                 forkContext.Entries
                     .Where(e => e.Id == seqId)
                     .ExecuteDelete();
                 var seq = forkContext.Sequences
                     .Where(s => s.Id == seqId)
                     .First();
-                seq.Entry = newEntry;
+                seq.Entry = patchedEntry;
             }
         }
 

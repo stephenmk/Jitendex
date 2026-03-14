@@ -63,7 +63,7 @@ internal partial class EntryLinkService
                 x.IsPriority
             ));
 
-        var rows = new List<EntryLinkRow>(1_500_000);
+        var rows = new List<EntryLinkRow>(4_000_000);
 
         foreach (var token in tokens)
         {

@@ -67,16 +67,13 @@ internal partial class EntryLinkService
 
         foreach (var token in tokens)
         {
-            if (token.EntryId.HasValue)
-            {
-                if (GetExplicitLink(token, data) is EntryLinkRow row)
-                {
-                    rows.Add(row);
-                }
-            }
-            else
+            if (token.EntryId is null)
             {
                 rows.AddRange(GetImplicitLinks(token, data));
+            }
+            else if (GetExplicitLink(token, data) is EntryLinkRow row)
+            {
+                rows.Add(row);
             }
         }
 
@@ -133,46 +130,48 @@ internal partial class EntryLinkService
 
     private EntryLinkRow? GetExplicitLink(TokenData token, JMdictData data)
     {
+        int entryId = token.EntryId!.Value;
         bool match;
+
         if (token.Reading is not null)
         {
             match =
                 data.KanjiFormToEntryIds.TryGetValue(token.Headword, out var kIds)
-                && kIds.Contains(token.EntryId!.Value)
+                && kIds.Contains(entryId)
                 && data.ReadingToEntryIds.TryGetValue(token.Reading, out var rIds)
-                && rIds.Contains(token.EntryId.Value);
+                && rIds.Contains(entryId);
         }
         else if (token.Headword.IsAllKana())
         {
             match =
                 data.ReadingToEntryIds.TryGetValue(token.Headword, out var ids)
-                && ids.Contains(token.EntryId!.Value);
+                && ids.Contains(entryId);
         }
         else
         {
             match =
                 data.KanjiFormToEntryIds.TryGetValue(token.Headword, out var ids)
-                && ids.Contains(token.EntryId!.Value);
+                && ids.Contains(entryId);
         }
 
         if (!match)
         {
-            LogIncorrectEntryId(token.ExampleId, token.SegmentationOrder, token.Order, token.EntryId!.Value);
+            LogIncorrectEntryId(token.ExampleId, token.SegmentationOrder, token.Order, entryId);
             return null;
         }
 
         if (token.SenseNumber.HasValue)
         {
-            match = data.EntryIdToSenseCount.TryGetValue(token.EntryId!.Value, out var senseCount)
+            match = data.EntryIdToSenseCount.TryGetValue(entryId, out var senseCount)
                 && token.SenseNumber.Value <= senseCount;
             if (!match)
             {
-                LogIncorrectSenseNumber(token.ExampleId, token.SegmentationOrder, token.Order, token.EntryId!.Value, token.SenseNumber.Value);
+                LogIncorrectSenseNumber(token.ExampleId, token.SegmentationOrder, token.Order, entryId, token.SenseNumber.Value);
                 return null;
             }
         }
 
-        return new EntryLinkRow(token.ExampleId, token.SegmentationOrder, token.Order, token.EntryId!.Value);
+        return new EntryLinkRow(token.ExampleId, token.SegmentationOrder, token.Order, entryId);
     }
 
     [LoggerMessage(LogLevel.Warning,

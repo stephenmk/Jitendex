@@ -32,5 +32,5 @@ public sealed class Example
     public List<Segmentation> Segmentations { get; init; } = [];
 
     [ForeignKey(nameof(Id))]
-    public required Sequence Sequence { get; init; }
+    public Sequence Sequence { get; init; } = null!;
 }

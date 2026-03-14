@@ -16,6 +16,7 @@
   </Folder>
   <Folder Name="/Forks/">
     <Project Path="Source/Jitendex.Forks.JMdict/Jitendex.Forks.JMdict.csproj" />
+    <Project Path="Source/Jitendex.Forks.Tatoeba/Jitendex.Forks.Tatoeba.csproj" />
   </Folder>
   <Folder Name="/Import/">
     <Project Path="Source/Jitendex.AppDirectory/Jitendex.AppDirectory.csproj" />

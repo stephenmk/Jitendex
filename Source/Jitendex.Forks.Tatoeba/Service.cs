@@ -16,25 +16,36 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Jitendex.Data.Tatoeba;
+using Jitendex.Forks.Tatoeba.Services;
 
-namespace Jitendex.Data.Tatoeba.Entities;
+namespace Jitendex.Forks.Tatoeba;
 
-[Table(nameof(Segmentation))]
-[PrimaryKey(nameof(ExampleId), nameof(Order))]
-public sealed class Segmentation
+internal sealed class Service
+(
+    ILogger<Service> logger,
+    TatoebaForkContext forkContext,
+    DatabaseCopyService databaseCopier
+)
 {
-    public required int ExampleId { get; init; }
-    public required int Order { get; init; }
-    public required int TranslationId { get; set; }
+    public void Run()
+    {
+        forkContext.RecreateDatabase();
 
-    [ForeignKey(nameof(ExampleId))]
-    public Example Example { get; init; } = null!;
+        using var forkTransaction = forkContext.Database.BeginTransaction();
 
-    [ForeignKey(nameof(TranslationId))]
-    public Translation Translation { get; set; } = null!;
+        RunPreprocessing();
 
-    [InverseProperty(nameof(Token.Segmentation))]
-    public List<Token> Tokens { get; init; } = [];
+        forkTransaction.Commit();
+
+        forkContext.ExecuteVacuum();
+    }
+
+    private void RunPreprocessing()
+    {
+        logger.LogInformation("Copying data from the Tatoeba database file.");
+        databaseCopier.CopyDataFromTatoeba();
+    }
+
 }

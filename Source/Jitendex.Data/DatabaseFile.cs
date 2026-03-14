@@ -27,6 +27,7 @@ public enum DatabaseFile
     JMnedict,
     Kanjidic2,
     Tatoeba,
+    TatoebaFork,
     KanjiVG,
     ChiseIds,
     Home,
@@ -37,14 +38,15 @@ internal static class DatabaseFileExtensions
     public static string ToFilename(this DatabaseFile databaseFile)
         => databaseFile switch
         {
-            JMdict     => "jmdict.db",
-            JMdictFork => "jmdict_fork.db",
-            JMnedict   => "jmnedict.db",
-            Kanjidic2  => "kanjidic2.db",
-            Tatoeba    => "tatoeba.db",
-            KanjiVG    => "kanjivg.db",
-            ChiseIds   => "chise_ids.db",
-            Home       => "home.db",
-            _          => throw new ArgumentOutOfRangeException(nameof(databaseFile))
+            JMdict      => "jmdict.db",
+            JMdictFork  => "jmdict_fork.db",
+            JMnedict    => "jmnedict.db",
+            Kanjidic2   => "kanjidic2.db",
+            Tatoeba     => "tatoeba.db",
+            TatoebaFork => "tatoeba_fork.db",
+            KanjiVG     => "kanjivg.db",
+            ChiseIds    => "chise_ids.db",
+            Home        => "home.db",
+            _           => throw new ArgumentOutOfRangeException(nameof(databaseFile))
         };
 }

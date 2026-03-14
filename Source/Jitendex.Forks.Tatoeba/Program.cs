@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -16,25 +16,14 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+namespace Jitendex.Forks.Tatoeba;
 
-namespace Jitendex.Data.Tatoeba.Entities;
-
-[Table(nameof(Segmentation))]
-[PrimaryKey(nameof(ExampleId), nameof(Order))]
-public sealed class Segmentation
+public static class Program
 {
-    public required int ExampleId { get; init; }
-    public required int Order { get; init; }
-    public required int TranslationId { get; set; }
-
-    [ForeignKey(nameof(ExampleId))]
-    public Example Example { get; init; } = null!;
-
-    [ForeignKey(nameof(TranslationId))]
-    public Translation Translation { get; set; } = null!;
-
-    [InverseProperty(nameof(Token.Segmentation))]
-    public List<Token> Tokens { get; init; } = [];
+    public static int Main()
+    {
+        var analyzer = ServiceProvider.GetService();
+        analyzer.Run();
+        return 0;
+    }
 }

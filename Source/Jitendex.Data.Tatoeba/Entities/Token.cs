@@ -37,5 +37,5 @@ public sealed class Token
     public required bool IsPriority { get; set; }
 
     [ForeignKey($"{nameof(ExampleId)}, {nameof(SegmentationOrder)}")]
-    public required Segmentation Segmentation { get; init; }
+    public Segmentation Segmentation { get; init; } = null!;
 }

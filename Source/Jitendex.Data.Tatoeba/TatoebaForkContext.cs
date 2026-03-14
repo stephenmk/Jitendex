@@ -16,25 +16,18 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.Tatoeba.Entities;
 
-namespace Jitendex.Data.Tatoeba.Entities;
+namespace Jitendex.Data.Tatoeba;
 
-[Table(nameof(Segmentation))]
-[PrimaryKey(nameof(ExampleId), nameof(Order))]
-public sealed class Segmentation
+public sealed class TatoebaForkContext() : SqliteContext(DatabaseFile.TatoebaFork)
 {
-    public required int ExampleId { get; init; }
-    public required int Order { get; init; }
-    public required int TranslationId { get; set; }
-
-    [ForeignKey(nameof(ExampleId))]
-    public Example Example { get; init; } = null!;
-
-    [ForeignKey(nameof(TranslationId))]
-    public Translation Translation { get; set; } = null!;
-
-    [InverseProperty(nameof(Token.Segmentation))]
-    public List<Token> Tokens { get; init; } = [];
+    public DbSet<FileHeader> FileHeaders { get; set; } = null!;
+    public DbSet<Sequence> Sequences { get; set; } = null!;
+    public DbSet<Example> Examples { get; set; } = null!;
+    public DbSet<Translation> EnglishSentences { get; set; } = null!;
+    public DbSet<Segmentation> Segmentations { get; set; } = null!;
+    public DbSet<Token> Tokens { get; set; } = null!;
+    public DbSet<Revision> Revisions { get; set; } = null!;
 }

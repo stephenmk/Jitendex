@@ -26,7 +26,8 @@ internal sealed class Service
 (
     ILogger<Service> logger,
     TatoebaForkContext forkContext,
-    DatabaseCopyService databaseCopier
+    DatabaseCopyService databaseCopier,
+    EntryLinkService entryLinkService
 )
 {
     public void Run()
@@ -35,17 +36,14 @@ internal sealed class Service
 
         using var forkTransaction = forkContext.Database.BeginTransaction();
 
-        RunPreprocessing();
+        logger.LogInformation("Copying data from the Tatoeba database file.");
+        databaseCopier.CopyDataFromTatoeba();
+
+        logger.LogInformation("Linking examples to JMdict entries.");
+        entryLinkService.Write();
 
         forkTransaction.Commit();
 
         forkContext.ExecuteVacuum();
     }
-
-    private void RunPreprocessing()
-    {
-        logger.LogInformation("Copying data from the Tatoeba database file.");
-        databaseCopier.CopyDataFromTatoeba();
-    }
-
 }

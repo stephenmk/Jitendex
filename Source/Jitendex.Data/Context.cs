@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Reflection;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -41,6 +42,18 @@ public abstract class SqliteContext : DbContext
     protected sealed override void OnConfiguring(DbContextOptionsBuilder options) => options
         .UseSqlite(_dbPath)
         .ReplaceService<IRelationalCommandBuilderFactory, SqliteCommandBuilderFactory>();
+
+    protected void IgnoreForkTypesOnModelCreating(ModelBuilder modelBuilder, string forkNamespace)
+    {
+        var forkTypes = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(static t => !t.IsAbstract)
+            .Where(t => t.Namespace is not null && t.Namespace.StartsWith(forkNamespace));
+
+        foreach (var type in forkTypes)
+        {
+            modelBuilder.Ignore(type);
+        }
+    }
 
     /// <summary>
     /// Delete and recreate the database file.

@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.Tatoeba;
 using Jitendex.Forks.Tatoeba.Services;
+using Jitendex.Forks.Tatoeba.Tables;
 
 namespace Jitendex.Forks.Tatoeba;
 
@@ -34,8 +35,13 @@ internal static class ServiceProvider
         .AddDbContext<TatoebaContext>()
         .AddDbContext<TatoebaForkContext>()
 
-        // Helpers
+        // Services
         .AddTransient<DatabaseCopyService>()
+        .AddTransient<EntryLinkService>()
+        .AddTransient<JMdictDataService>()
+
+        // Tables
+        .AddTransient<EntryLinkTable>()
 
         // Logging
         .AddLogging(static builder =>

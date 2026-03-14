@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Data.JMdict.Entities.EntryItems;
@@ -79,17 +78,8 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
     #endregion
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        const string forkNamespace =
-            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}";
+        => IgnoreForkTypesOnModelCreating(modelBuilder, ForkNamespace);
 
-        var forkTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(static t => !t.IsAbstract)
-            .Where(static t => t.Namespace is not null && t.Namespace.StartsWith(forkNamespace));
-
-        foreach (var type in forkTypes)
-        {
-            modelBuilder.Ignore(type);
-        }
-    }
+    private const string ForkNamespace =
+        $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}";
 }

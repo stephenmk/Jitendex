@@ -30,4 +30,10 @@ public sealed class TatoebaContext() : SqliteContext(DatabaseFile.Tatoeba)
     public DbSet<Segmentation> Segmentations { get; set; } = null!;
     public DbSet<Token> Tokens { get; set; } = null!;
     public DbSet<Revision> Revisions { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        => IgnoreForkTypesOnModelCreating(modelBuilder, ForkNamespace);
+
+    private const string ForkNamespace =
+        $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(Tatoeba)}.{nameof(ForkEntities)}";
 }

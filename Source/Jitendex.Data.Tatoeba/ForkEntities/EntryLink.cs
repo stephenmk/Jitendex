@@ -18,31 +18,19 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.Tatoeba.ForkEntities;
+using Jitendex.Data.Tatoeba.Entities;
 
-namespace Jitendex.Data.Tatoeba.Entities;
+namespace Jitendex.Data.Tatoeba.ForkEntities;
 
-[Table(nameof(Token))]
-[PrimaryKey(nameof(ExampleId), nameof(SegmentationOrder), nameof(Order))]
-public sealed class Token
+[Table(nameof(EntryLink))]
+[PrimaryKey(nameof(ExampleId), nameof(SegmentationOrder), nameof(TokenOrder), nameof(EntryId))]
+public sealed class EntryLink
 {
     public required int ExampleId { get; init; }
     public required int SegmentationOrder { get; init; }
-    public required int Order { get; init; }
+    public required int TokenOrder { get; init; }
+    public required int EntryId { get; init; }
 
-    public required string Headword { get; set; }
-    public required string? Reading { get; set; }
-    public required int? EntryId { get; set; }
-    public required int? SenseNumber { get; set; }
-    public required string? SentenceForm { get; set; }
-    public required bool IsPriority { get; set; }
-
-    [ForeignKey($"{nameof(ExampleId)}, {nameof(SegmentationOrder)}")]
-    public Segmentation Segmentation { get; init; } = null!;
-
-    #region Fork Properties
-
-    public ICollection<EntryLink> EntryLinks { get; init; } = [];
-
-    #endregion
+    [ForeignKey($"{nameof(ExampleId)}, {nameof(SegmentationOrder)}, {nameof(TokenOrder)}")]
+    public Token Token { get; init; } = null!;
 }

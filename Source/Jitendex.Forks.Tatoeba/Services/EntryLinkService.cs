@@ -124,7 +124,12 @@ internal partial class EntryLinkService
 
         foreach (var entryId in entryIds)
         {
-            yield return new EntryLinkRow(token.ExampleId, token.SegmentationOrder, token.Order, entryId);
+            int? senseOrder = token.SenseNumber.HasValue
+                ? token.SenseNumber.Value - 1
+                : data.EntryIdToSenseCount.TryGetValue(entryId, out int count) && count is 1
+                ? 0
+                : null;
+            yield return new EntryLinkRow(token.ExampleId, token.SegmentationOrder, token.Order, entryId, senseOrder);
         }
     }
 
@@ -160,18 +165,27 @@ internal partial class EntryLinkService
             return null;
         }
 
-        if (token.SenseNumber.HasValue)
+        int? senseOrder;
+        if (!data.EntryIdToSenseCount.TryGetValue(entryId, out var senseCount))
         {
-            match = data.EntryIdToSenseCount.TryGetValue(entryId, out var senseCount)
-                && token.SenseNumber.Value <= senseCount;
-            if (!match)
-            {
-                LogIncorrectSenseNumber(token.ExampleId, token.SegmentationOrder, token.Order, entryId, token.SenseNumber.Value);
-                return null;
-            }
+            LogIncorrectEntryId(token.ExampleId, token.SegmentationOrder, token.Order, entryId);
+            return null;
+        }
+        else if (!token.SenseNumber.HasValue)
+        {
+            senseOrder = senseCount == 1 ? 0 : null;
+        }
+        else if (token.SenseNumber.Value > senseCount)
+        {
+            LogIncorrectSenseNumber(token.ExampleId, token.SegmentationOrder, token.Order, entryId, token.SenseNumber.Value);
+            return null;
+        }
+        else
+        {
+            senseOrder = token.SenseNumber.Value - 1;
         }
 
-        return new EntryLinkRow(token.ExampleId, token.SegmentationOrder, token.Order, entryId);
+        return new EntryLinkRow(token.ExampleId, token.SegmentationOrder, token.Order, entryId, senseOrder);
     }
 
     [LoggerMessage(LogLevel.Warning,

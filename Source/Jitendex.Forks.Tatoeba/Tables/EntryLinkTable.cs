@@ -33,14 +33,23 @@ internal sealed class EntryLinkTable : Table<EntryLinkRow>
         nameof(EntryLink.SegmentationOrder),
         nameof(EntryLink.TokenOrder),
         nameof(EntryLink.EntryId),
+        nameof(EntryLink.SenseOrder),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(EntryLink.ExampleId),
+        nameof(EntryLink.SegmentationOrder),
+        nameof(EntryLink.TokenOrder),
+        nameof(EntryLink.EntryId),
+    ];
+
     protected override SqliteParameter[] Parameters(EntryLinkRow row) =>
     [
         new("@0", row.ExampleId),
         new("@1", row.SegmentationOrder),
         new("@2", row.TokenOrder),
         new("@3", row.EntryId),
+        new("@4", row.SenseOrder.Nullable()),
     ];
 }

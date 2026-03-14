@@ -23,5 +23,6 @@ internal sealed record EntryLinkRow
     int ExampleId,
     int SegmentationOrder,
     int TokenOrder,
-    int EntryId
+    int EntryId,
+    int? SenseOrder
 );

@@ -30,6 +30,7 @@ public sealed class EntryLink
     public required int SegmentationOrder { get; init; }
     public required int TokenOrder { get; init; }
     public required int EntryId { get; init; }
+    public required int? SenseOrder { get; init; }
 
     [ForeignKey($"{nameof(ExampleId)}, {nameof(SegmentationOrder)}, {nameof(TokenOrder)}")]
     public Token Token { get; init; } = null!;

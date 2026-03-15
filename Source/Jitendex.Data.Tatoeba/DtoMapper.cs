@@ -51,7 +51,7 @@ public static class DtoMapper
     private static Expression<Func<Segmentation, SegmentationDto>> SegmentationProjection =>
         static segmentation => new SegmentationDto
         {
-            TranslationId = segmentation.TranslationId,
+            Translation = new TranslationDto(segmentation.TranslationId, segmentation.Translation.Text),
             Tokens = segmentation.Tokens
                 .AsQueryable()
                 .OrderBy(static t => t.Order)

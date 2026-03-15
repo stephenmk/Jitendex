@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home.Entities;
 using Jitendex.Data.Home.Entities.Furigana;
 using Jitendex.Data.Home.Entities.JMdict;
+using Jitendex.Data.Home.Entities.Tatoeba;
 
 namespace Jitendex.Data.Home;
 
@@ -39,5 +40,10 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
     public DbSet<CrossReferenceSequence> CrossReferenceSequences { get; set; } = null!;
     public DbSet<JMdictPatch> JMdictPatches { get; set; } = null!;
     public DbSet<JMdictPatchApproval> JMdictPatchApprovals { get; set; } = null!;
+    #endregion
+
+    #region Tatoeba
+    public DbSet<Example> Examples { get; set; } = null!;
+    public DbSet<ExampleFurigana> ExampleFurigana { get; set; } = null!;
     #endregion
 }

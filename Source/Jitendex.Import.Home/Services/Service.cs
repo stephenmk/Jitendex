@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Services.Furigana;
 using Jitendex.Import.Home.Services.JMdict;
+using Jitendex.Import.Home.Services.Tatoeba;
 
 namespace Jitendex.Import.Home.Services;
 
@@ -30,7 +31,8 @@ internal sealed class Service
     CrossReferenceDataService crossReferenceDataService,
     UserService userService,
     JMdictPatchService jmdictPatchService,
-    JMdictPatchApprovalService jmdictPatchApprovalService
+    JMdictPatchApprovalService jmdictPatchApprovalService,
+    ExampleFuriganaService exampleFuriganaService
 )
 {
     public async Task ImportAsync()
@@ -47,6 +49,8 @@ internal sealed class Service
         await jmdictPatchService.ImportAsync();
         await jmdictPatchApprovalService.ImportAsync();
 
+        await exampleFuriganaService.ImportAsync();
+
         transaction.Commit();
         context.ExecuteVacuum();
     }
@@ -60,5 +64,7 @@ internal sealed class Service
         await userService.ExportAsync();
         await jmdictPatchService.ExportAsync();
         await jmdictPatchApprovalService.ExportAsync();
+
+        await exampleFuriganaService.ExportAsync();
     }
 }

@@ -22,8 +22,10 @@ using Jitendex.Data.Home;
 using Jitendex.Import.Home.Services;
 using Jitendex.Import.Home.Services.Furigana;
 using Jitendex.Import.Home.Services.JMdict;
+using Jitendex.Import.Home.Services.Tatoeba;
 using Jitendex.Import.Home.Tables.Furigana;
 using Jitendex.Import.Home.Tables.JMdict;
+using Jitendex.Import.Home.Tables.Tatoeba;
 
 namespace Jitendex.Import.Home;
 
@@ -47,6 +49,8 @@ internal static class ServiceProvider
         .AddTransient<CrossReferenceSequenceTable>()
         .AddTransient<JMdictPatchTable>()
         .AddTransient<JMdictPatchApprovalTable>()
+        .AddTransient<ExampleTable>()
+        .AddTransient<ExampleFuriganaTable>()
 
         // Import services.
         .AddTransient<CharacterService>()
@@ -55,6 +59,7 @@ internal static class ServiceProvider
         .AddTransient<UserService>()
         .AddTransient<JMdictPatchService>()
         .AddTransient<JMdictPatchApprovalService>()
+        .AddTransient<ExampleFuriganaService>()
 
         // Logging
         .AddLogging(static builder =>

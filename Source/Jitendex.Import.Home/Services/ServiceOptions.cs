@@ -40,4 +40,7 @@ internal sealed record ServiceOptions
 
     public DirectoryInfo GetJMdictDirectory()
         => DataDirectory.CreateSubdirectory("jmdict");
+
+    public DirectoryInfo GetTatoebaDirectory()
+        => DataDirectory.CreateSubdirectory("tatoeba");
 }

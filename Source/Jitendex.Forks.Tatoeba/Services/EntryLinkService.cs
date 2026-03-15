@@ -16,13 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Data.Tatoeba;
-using Jitendex.Data.JMdict;
 using Jitendex.Forks.Tatoeba.Models;
 using Jitendex.Forks.Tatoeba.Tables;
-using System.Collections.Immutable;
 
 namespace Jitendex.Forks.Tatoeba.Services;
 
@@ -85,36 +84,37 @@ internal partial class EntryLinkService
         ImmutableArray<int> entryIds;
         if (token.Reading is not null)
         {
-            entryIds =
-                data.KanjiFormToEntryIds.TryGetValue(token.Headword, out var kIds)
-                && data.ReadingToEntryIds.TryGetValue(token.Reading, out var rIds)
-                ? rIds.Intersect(kIds).ToImmutableArray()
+            entryIds = data.BridgeToEntryIds.TryGetValue((token.Headword, token.Reading), out var ids)
+                ? ids
                 : [];
         }
         else if (token.Headword.IsAllKana())
         {
-            entryIds = data.ReadingToEntryIds.TryGetValue(token.Headword, out var rIds)
-                ? rIds
+            entryIds = data.ReadingToEntryIds.TryGetValue(token.Headword, out var ids)
+                ? ids
                 : [];
         }
         else
         {
-            entryIds = data.KanjiFormToEntryIds.TryGetValue(token.Headword, out var kIds)
-                ? kIds
+            entryIds = data.KanjiFormToEntryIds.TryGetValue(token.Headword, out var ids)
+                ? ids
                 : [];
         }
 
         if (token.SenseNumber is not null)
         {
-            var validList = new List<int>();
+            int i = 0;
+            var validList = entryIds.Length < 100
+                ? stackalloc int[entryIds.Length]
+                : new int[entryIds.Length];
             foreach (var entryId in entryIds)
             {
                 if (data.EntryIdToSenseCount.TryGetValue(entryId, out var count) && token.SenseNumber.Value <= count)
                 {
-                    validList.Add(entryId);
+                    validList[i++] = entryId;
                 }
             }
-            entryIds = validList.ToImmutableArray();
+            entryIds = ImmutableArray.Create(validList[..i]);
         }
 
         if (entryIds.Length == 0 && token.IsPriority)

@@ -25,5 +25,6 @@ public sealed record JMdictData
 {
     public required FrozenDictionary<string, ImmutableArray<int>> ReadingToEntryIds { get; init; }
     public required FrozenDictionary<string, ImmutableArray<int>> KanjiFormToEntryIds { get; init; }
+    public required FrozenDictionary<(string, string), ImmutableArray<int>> BridgeToEntryIds { get; init; }
     public required FrozenDictionary<int, int> EntryIdToSenseCount { get; init; }
 }

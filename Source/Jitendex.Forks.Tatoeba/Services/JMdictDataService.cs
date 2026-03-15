@@ -49,6 +49,18 @@ internal partial class JMdictDataService(JMdictForkContext jmdictContext)
             })
             .ToFrozenDictionary(static x => x.Key, static x => x.Values);
 
+        var bridgeToEntryIds = jmdictContext.ReadingKanjiFormBridges
+            .GroupBy(static b => new { KanjiForm = b.KanjiForm.Text, Reading = b.Reading.Text })
+            .Select(static group => new
+            {
+                Key1 = group.Key.KanjiForm,
+                Key2 = group.Key.Reading,
+                Values = group
+                    .Select(static b => b.EntryId)
+                    .ToImmutableArray()
+            })
+            .ToFrozenDictionary(static x => (x.Key1, x.Key2), static x => x.Values);
+
         var entryIdToSenseCount = jmdictContext.Entries
             .Select(static e => new
             {
@@ -61,6 +73,7 @@ internal partial class JMdictDataService(JMdictForkContext jmdictContext)
         {
             ReadingToEntryIds = readingToEntryIds,
             KanjiFormToEntryIds = kanjiFormToEntryIds,
+            BridgeToEntryIds = bridgeToEntryIds,
             EntryIdToSenseCount = entryIdToSenseCount,
         };
     }

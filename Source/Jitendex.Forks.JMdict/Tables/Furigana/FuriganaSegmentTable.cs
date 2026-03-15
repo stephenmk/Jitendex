@@ -35,7 +35,6 @@ internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
         nameof(FuriganaSegment.Order),
         nameof(FuriganaSegment.BaseText),
         nameof(FuriganaSegment.Furigana),
-        nameof(FuriganaSegment.TypeName),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
@@ -54,6 +53,5 @@ internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
         new("@3", segment.Order),
         new("@4", segment.BaseText),
         new("@5", segment.Furigana.Nullable()),
-        new("@6", segment.TypeName.Nullable()),
     ];
 }

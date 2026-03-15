@@ -67,8 +67,7 @@ internal partial class FuriganaSegmentService
                     entry.KanjiFormOrder,
                     i,
                     part.BaseText,
-                    part.RubyText,
-                    null
+                    part.RubyText
                 ));
             }
         }

@@ -32,6 +32,5 @@ internal sealed record FuriganaSegmentRow
     int KanjiFormOrder,
     int Order,
     string BaseText,
-    string? Furigana,
-    string? TypeName
+    string? Furigana
 );

@@ -33,7 +33,6 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
         };
 
         DiffDictionaryProperties<int, ExampleElement>(diff, docA, docB, propertyName: nameof(Document.Examples));
-        DiffDictionaryProperties<int, TranslationElement>(diff, docA, docB, propertyName: nameof(Document.Translations));
         DiffDictionaryProperties<(int, int), SegmentationElement>(diff, docA, docB, propertyName: nameof(Document.Segmentations));
         DiffDictionaryProperties<(int, int, int), TokenElement>(diff, docA, docB, propertyName: nameof(Document.Tokens));
 

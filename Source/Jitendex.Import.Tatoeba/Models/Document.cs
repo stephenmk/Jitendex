@@ -22,16 +22,14 @@ internal sealed class Document : IDocument<DateOnly>
 {
     public required DateOnly ArchiveKey { get; init; }
     public Dictionary<int, ExampleElement> Examples { get; init; }
-    public Dictionary<int, TranslationElement> Translations { get; init; }
     public Dictionary<(int, int), SegmentationElement> Segmentations { get; init; }
     public Dictionary<(int, int, int), TokenElement> Tokens { get; init; }
 
-    public Document(int expectedExampleCount = 150_000)
+    public Document(int expectedExampleCount = 300_000)
     {
         Examples = new(expectedExampleCount);
-        Translations = new(expectedExampleCount);
-        Segmentations = new(expectedExampleCount);
-        Tokens = new(expectedExampleCount * 8);
+        Segmentations = new(expectedExampleCount / 2);
+        Tokens = new(expectedExampleCount * 4);
     }
 
     public IEnumerable<SequenceElement> GetSequences(int fileHeaderId)

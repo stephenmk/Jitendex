@@ -52,15 +52,12 @@ public static class DtoTextExtensions
         var sb = new StringBuilder();
 
         sb.AppendLine("--Translation--");
-        sb.AppendLine(segmentation.Translation.ToText());
+        sb.AppendLine($"ID #{segmentation.TranslationId}");
         sb.AppendLine("--Tokens--");
         sb.AppendLine(segmentation.Tokens.ToText());
 
         return sb.ToString();
     }
-
-    private static string ToText(this TranslationDto translation)
-        => $"#{translation.Id}: {translation.Text}";
 
     private static string ToText(this IList<TokenDto> tokens)
     {

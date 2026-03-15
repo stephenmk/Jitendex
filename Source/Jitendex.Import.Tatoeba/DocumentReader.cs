@@ -104,46 +104,28 @@ internal sealed class DocumentReader(ILogger<DocumentReader> logger)
     private ExampleElement GetExample(in ExampleText text, Document document)
     {
         var id = text.GetExampleId();
-
-        if (document.Translations.ContainsKey(id))
-        {
-            logger.LogWarning("Sequence ID {Id} is used for different language sentences", id);
-        }
-
         var example = new ExampleElement(id, text.GetExampleText());
-
-        if (!document.Examples.TryGetValue(id, out var oldSentence))
-        {
-            document.Examples.Add(id, example);
-        }
-        else if (!string.Equals(example.Text, oldSentence.Text, StringComparison.Ordinal))
-        {
-            logger.LogWarning("Japanese sentence #{ID} has more than one distinct text", id);
-        }
-
+        CheckExample(example, document);
         return example;
     }
 
-    private TranslationElement GetTranslation(in ExampleText text, Document document)
+    private ExampleElement GetTranslation(in ExampleText text, Document document)
     {
         var id = text.GetTranslationId();
-
-        if (document.Examples.ContainsKey(id))
-        {
-            logger.LogWarning("Sequence ID {Id} is used for different language sentences", id);
-        }
-
-        var translation = new TranslationElement(id, text.GetTranslationText());
-
-        if (!document.Translations.TryGetValue(id, out var oldSentence))
-        {
-            document.Translations.Add(id, translation);
-        }
-        else if (!string.Equals(translation.Text, oldSentence.Text, StringComparison.Ordinal))
-        {
-            logger.LogWarning("English sentence #{ID} has more than one distinct text", id);
-        }
-
+        var translation = new ExampleElement(id, text.GetTranslationText());
+        CheckExample(translation, document);
         return translation;
+    }
+
+    private void CheckExample(ExampleElement example, Document document)
+    {
+        if (!document.Examples.TryGetValue(example.Id, out var oldSentence))
+        {
+            document.Examples.Add(example.Id, example);
+        }
+        else if (!string.Equals(example.Text, oldSentence.Text, StringComparison.Ordinal))
+        {
+            logger.LogWarning("Sentence #{ID} has more than one distinct text", example.Id);
+        }
     }
 }

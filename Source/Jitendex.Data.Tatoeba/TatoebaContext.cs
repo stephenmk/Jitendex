@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Tatoeba.Entities;
 
@@ -26,14 +27,22 @@ public sealed class TatoebaContext() : SqliteContext(DatabaseFile.Tatoeba)
     public DbSet<FileHeader> FileHeaders { get; set; } = null!;
     public DbSet<Sequence> Sequences { get; set; } = null!;
     public DbSet<Example> Examples { get; set; } = null!;
-    public DbSet<Translation> EnglishSentences { get; set; } = null!;
     public DbSet<Segmentation> Segmentations { get; set; } = null!;
     public DbSet<Token> Tokens { get; set; } = null!;
     public DbSet<Revision> Revisions { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-        => IgnoreForkTypesOnModelCreating(modelBuilder, ForkNamespace);
+    {
+        const string forkNamespace =
+            $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(Tatoeba)}.{nameof(ForkEntities)}";
 
-    private const string ForkNamespace =
-        $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(Tatoeba)}.{nameof(ForkEntities)}";
+        var forkTypes = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(static t => !t.IsAbstract)
+            .Where(t => t.Namespace is not null && t.Namespace.StartsWith(forkNamespace));
+
+        foreach (var type in forkTypes)
+        {
+            modelBuilder.Ignore(type);
+        }
+    }
 }

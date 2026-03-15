@@ -31,7 +31,6 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
     private static readonly RevisionTable RevisionTable = new();
     private static readonly SequenceTable SequenceTable = new();
     private static readonly ExampleTable ExampleTable = new();
-    private static readonly TranslationTable TranslationTable = new();
     private static readonly SegmentationTable SegmentationTable = new();
     private static readonly TokenTable TokenTable = new();
 
@@ -58,7 +57,6 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
         ExampleTable.InsertItems(context, document.Examples.Values);
-        TranslationTable.InsertItems(context, document.Translations.Values);
         SegmentationTable.InsertItems(context, document.Segmentations.Values);
         TokenTable.InsertItems(context, document.Tokens.Values);
 
@@ -84,18 +82,15 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
         SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
 
         ExampleTable.InsertItems(context, diff.Inserts.Examples.Values);
-        TranslationTable.InsertItems(context, diff.Inserts.Translations.Values);
         SegmentationTable.InsertItems(context, diff.Inserts.Segmentations.Values);
         TokenTable.InsertItems(context, diff.Inserts.Tokens.Values);
 
         ExampleTable.UpdateItems(context, diff.Updates.Examples.Values);
-        TranslationTable.UpdateItems(context, diff.Updates.Translations.Values);
         SegmentationTable.UpdateItems(context, diff.Updates.Segmentations.Values);
         TokenTable.UpdateItems(context, diff.Updates.Tokens.Values);
 
         TokenTable.DeleteItems(context, diff.Deletes.Tokens.Values);
         SegmentationTable.DeleteItems(context, diff.Deletes.Segmentations.Values);
-        TranslationTable.DeleteItems(context, diff.Deletes.Translations.Values);
         ExampleTable.DeleteItems(context, diff.Deletes.Examples.Values);
 
         var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);

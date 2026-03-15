@@ -31,6 +31,9 @@ public sealed class Example
     [InverseProperty(nameof(Segmentation.Example))]
     public List<Segmentation> Segmentations { get; init; } = [];
 
+    [InverseProperty(nameof(Segmentation.Translation))]
+    public List<Segmentation> TranslatedSegmentations { get; init; } = [];
+
     [ForeignKey(nameof(Id))]
     public Sequence Sequence { get; init; } = null!;
 }

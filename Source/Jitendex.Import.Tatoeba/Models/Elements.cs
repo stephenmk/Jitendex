@@ -44,12 +44,6 @@ internal sealed record ExampleElement
     string Text
 );
 
-internal sealed record TranslationElement
-(
-    int Id,
-    string Text
-);
-
 internal sealed record SegmentationElement
 {
     public required int ExampleId { get; init; }

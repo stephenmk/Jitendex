@@ -46,13 +46,6 @@ internal sealed class DatabaseCopyService(TatoebaForkContext context)
              , "{nameof(FileHeader.Date)}"
           FROM "{Schema}"."{nameof(FileHeader)}";
 
-        INSERT INTO "{nameof(Translation)}"
-             ( "{nameof(Translation.Id)}"
-             , "{nameof(Translation.Text)}")
-        SELECT "{nameof(Translation.Id)}"
-             , "{nameof(Translation.Text)}"
-          FROM "{Schema}"."{nameof(Translation)}";
-
         INSERT INTO "{nameof(Sequence)}"
              ( "{nameof(Sequence.Id)}"
              , "{nameof(Sequence.OriginFileId)}")

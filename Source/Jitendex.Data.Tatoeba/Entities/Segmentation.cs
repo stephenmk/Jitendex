@@ -33,7 +33,7 @@ public sealed class Segmentation
     public Example Example { get; init; } = null!;
 
     [ForeignKey(nameof(TranslationId))]
-    public Translation Translation { get; set; } = null!;
+    public Example Translation { get; set; } = null!;
 
     [InverseProperty(nameof(Token.Segmentation))]
     public List<Token> Tokens { get; init; } = [];

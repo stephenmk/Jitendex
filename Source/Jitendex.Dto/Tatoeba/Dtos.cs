@@ -42,15 +42,9 @@ public sealed record ExampleDto
 
 public sealed record SegmentationDto
 {
-    public required TranslationDto Translation { get; init; }
+    public required int TranslationId { get; init; }
     public List<TokenDto> Tokens { get; init; } = [];
 }
-
-public sealed record TranslationDto
-(
-    int Id,
-    string Text
-);
 
 public sealed record TokenDto
 (

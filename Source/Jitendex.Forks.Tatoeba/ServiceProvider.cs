@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.Tatoeba;
 using Jitendex.Forks.Tatoeba.Services;
@@ -31,6 +32,7 @@ internal static class ServiceProvider
         .AddTransient<Service>()
 
         // Databases
+        .AddDbContext<HomeContext>()
         .AddDbContext<JMdictForkContext>()
         .AddDbContext<TatoebaContext>()
         .AddDbContext<TatoebaForkContext>()
@@ -39,9 +41,11 @@ internal static class ServiceProvider
         .AddTransient<DatabaseCopyService>()
         .AddTransient<EntryLinkService>()
         .AddTransient<JMdictDataService>()
+        .AddTransient<ExampleFuriganaService>()
 
         // Tables
         .AddTransient<EntryLinkTable>()
+        .AddTransient<ExampleFuriganaTable>()
 
         // Logging
         .AddLogging(static builder =>

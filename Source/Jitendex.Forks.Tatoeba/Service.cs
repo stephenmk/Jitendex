@@ -27,7 +27,8 @@ internal sealed class Service
     ILogger<Service> logger,
     TatoebaForkContext forkContext,
     DatabaseCopyService databaseCopier,
-    EntryLinkService entryLinkService
+    EntryLinkService entryLinkService,
+    ExampleFuriganaService furiganaService
 )
 {
     public void Run()
@@ -41,6 +42,8 @@ internal sealed class Service
 
         logger.LogInformation("Linking examples to JMdict entries.");
         entryLinkService.Write();
+
+        furiganaService.Write();
 
         forkTransaction.Commit();
 

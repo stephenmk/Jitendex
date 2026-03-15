@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Jitendex.Data.Tatoeba.ForkEntities;
 
 namespace Jitendex.Data.Tatoeba.Entities;
 
@@ -36,4 +37,8 @@ public sealed class Example
 
     [ForeignKey(nameof(Id))]
     public Sequence Sequence { get; init; } = null!;
+
+    #region Fork Properties
+    public List<ExampleFurigana> Furigana { get; init; } = [];
+    #endregion
 }

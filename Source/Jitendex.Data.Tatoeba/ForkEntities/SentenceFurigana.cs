@@ -16,13 +16,21 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Forks.Tatoeba.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.Tatoeba.Entities;
 
-internal sealed record EntryLinkRow
-(
-    int ExampleId,
-    int SegmentationOrder,
-    int TokenOrder,
-    int EntryId,
-    int? SenseOrder
-);
+namespace Jitendex.Data.Tatoeba.ForkEntities;
+
+[Table(nameof(ExampleFurigana))]
+[PrimaryKey(nameof(ExampleId), nameof(Order))]
+public sealed class ExampleFurigana
+{
+    public required int ExampleId { get; init; }
+    public required int Order { get; init; }
+    public required string BaseText { get; init; }
+    public required string? RubyText { get; init; }
+
+    [ForeignKey(nameof(ExampleId))]
+    public Example Example { get; init; } = null!;
+}

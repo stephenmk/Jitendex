@@ -191,12 +191,12 @@ public static class DtoExtensions
             SenseOrder = senseOrder,
             Order = order,
             Text = gloss.Text,
-            TypeName = gloss.TypeName is null ? null : new()
+            Type = gloss.TypeName is null ? null : new()
             {
                 EntryId = entryId,
                 SenseOrder = senseOrder,
                 GlossOrder = order,
-                Value = gloss.TypeName
+                TagName = gloss.TypeName
             }
         };
 

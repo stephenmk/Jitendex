@@ -34,5 +34,5 @@ public sealed class Gloss
     public Sense Sense { get; init; } = null!;
 
     [InverseProperty(nameof(Gloss))]
-    public GlossTypeName? TypeName { get; set; }
+    public GlossType? Type { get; set; }
 }

@@ -116,8 +116,8 @@ public sealed class DialectTag : IKeyword
     public List<Dialect> Dialects { get; init; } = [];
 }
 
-[Table(nameof(GlossType))]
-public sealed class GlossType : IKeyword
+[Table(nameof(GlossTypeTag))]
+public sealed class GlossTypeTag : IKeyword
 {
     [Key]
     public required string Name { get; init; }
@@ -126,8 +126,8 @@ public sealed class GlossType : IKeyword
     [ForeignKey(nameof(OriginFileId))]
     public FileHeader OriginFile { get; init; } = null!;
 
-    [InverseProperty(nameof(GlossTypeName.Type))]
-    public List<GlossTypeName> Glosses { get; init; } = [];
+    [InverseProperty(nameof(GlossType.Tag))]
+    public List<GlossType> Types { get; init; } = [];
 }
 
 [Table(nameof(CrossReferenceType))]

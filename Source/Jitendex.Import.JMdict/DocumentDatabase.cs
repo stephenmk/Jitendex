@@ -59,7 +59,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
     private static readonly DialectTable DialectTable = new();
     private static readonly FieldTable FieldTable = new();
     private static readonly GlossTable GlossTable = new();
-    private static readonly GlossTypeNameTable GlossTypeNameTable = new();
+    private static readonly GlossTypeTable GlossTypeTable = new();
     private static readonly KanjiFormRestrictionTable KanjiFormRestrictionTable = new();
     private static readonly LanguageSourceTable LanguageSourceTable = new();
     private static readonly MiscTable MiscTable = new();
@@ -75,7 +75,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
     private static readonly KeywordTable<FieldTagElement> FieldTagTable = new();
     private static readonly KeywordTable<MiscTagElement> MiscTagTable = new();
     private static readonly KeywordTable<DialectTagElement> DialectTagTable = new();
-    private static readonly KeywordTable<GlossTypeElement> GlossTypeTable = new();
+    private static readonly KeywordTable<GlossTypeTagElement> GlossTypeTagTable = new();
     private static readonly KeywordTable<CrossReferenceTypeElement> CrossReferenceTypeTable = new();
     private static readonly KeywordTable<LanguageSourceTypeElement> LanguageSourceTypeTable = new();
     private static readonly KeywordTable<PriorityTagElement> PriorityTagTable = new();
@@ -110,7 +110,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         FieldTagTable.InsertItems(context, document.GetFieldTags(fileHeaderId));
         MiscTagTable.InsertItems(context, document.GetMiscTags(fileHeaderId));
         DialectTagTable.InsertItems(context, document.GetDialectTags(fileHeaderId));
-        GlossTypeTable.InsertItems(context, document.GetGlossTypes(fileHeaderId));
+        GlossTypeTagTable.InsertItems(context, document.GetGlossTypeTags(fileHeaderId));
         CrossReferenceTypeTable.InsertItems(context, document.GetCrossReferenceTypes(fileHeaderId));
         LanguageSourceTypeTable.InsertItems(context, document.GetLanguageSourceTypes(fileHeaderId));
         PriorityTagTable.InsertItems(context, document.GetPriorityTags(fileHeaderId));
@@ -129,7 +129,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         DialectTable.InsertItems(context, document.Dialects.Values);
         FieldTable.InsertItems(context, document.Fields.Values);
         GlossTable.InsertItems(context, document.Glosses.Values);
-        GlossTypeNameTable.InsertItems(context, document.GlossTypeNames.Values);
+        GlossTypeTable.InsertItems(context, document.GlossTypes.Values);
         KanjiFormRestrictionTable.InsertItems(context, document.KanjiFormRestrictions.Values);
         LanguageSourceTable.InsertItems(context, document.LanguageSources.Values);
         MiscTable.InsertItems(context, document.Miscs.Values);
@@ -161,7 +161,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         FieldTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetFieldTags(fileHeaderId));
         MiscTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetMiscTags(fileHeaderId));
         DialectTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetDialectTags(fileHeaderId));
-        GlossTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetGlossTypes(fileHeaderId));
+        GlossTypeTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetGlossTypeTags(fileHeaderId));
         CrossReferenceTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetCrossReferenceTypes(fileHeaderId));
         LanguageSourceTypeTable.InsertOrIgnoreItems(context, diff.Inserts.GetLanguageSourceTypes(fileHeaderId));
         PriorityTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetPriorityTags(fileHeaderId));
@@ -180,7 +180,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         DialectTable.InsertItems(context, diff.Inserts.Dialects.Values);
         FieldTable.InsertItems(context, diff.Inserts.Fields.Values);
         GlossTable.InsertItems(context, diff.Inserts.Glosses.Values);
-        GlossTypeNameTable.InsertItems(context, diff.Inserts.GlossTypeNames.Values);
+        GlossTypeTable.InsertItems(context, diff.Inserts.GlossTypes.Values);
         KanjiFormRestrictionTable.InsertItems(context, diff.Inserts.KanjiFormRestrictions.Values);
         LanguageSourceTable.InsertItems(context, diff.Inserts.LanguageSources.Values);
         MiscTable.InsertItems(context, diff.Inserts.Miscs.Values);
@@ -201,7 +201,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         DialectTable.UpdateItems(context, diff.Updates.Dialects.Values);
         FieldTable.UpdateItems(context, diff.Updates.Fields.Values);
         GlossTable.UpdateItems(context, diff.Updates.Glosses.Values);
-        GlossTypeNameTable.UpdateItems(context, diff.Updates.GlossTypeNames.Values);
+        GlossTypeTable.UpdateItems(context, diff.Updates.GlossTypes.Values);
         KanjiFormRestrictionTable.UpdateItems(context, diff.Updates.KanjiFormRestrictions.Values);
         LanguageSourceTable.UpdateItems(context, diff.Updates.LanguageSources.Values);
         MiscTable.UpdateItems(context, diff.Updates.Miscs.Values);
@@ -215,7 +215,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         MiscTable.DeleteItems(context, diff.Deletes.Miscs.Values);
         LanguageSourceTable.DeleteItems(context, diff.Deletes.LanguageSources.Values);
         KanjiFormRestrictionTable.DeleteItems(context, diff.Deletes.KanjiFormRestrictions.Values);
-        GlossTypeNameTable.DeleteItems(context, diff.Deletes.GlossTypeNames.Values);
+        GlossTypeTable.DeleteItems(context, diff.Deletes.GlossTypes.Values);
         GlossTable.DeleteItems(context, diff.Deletes.Glosses.Values);
         FieldTable.DeleteItems(context, diff.Deletes.Fields.Values);
         DialectTable.DeleteItems(context, diff.Deletes.Dialects.Values);

@@ -23,30 +23,30 @@ using Jitendex.Import.JMdict.Models;
 
 namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
-internal sealed class GlossTypeNameTable : Table<GlossTypeNameElement>
+internal sealed class GlossTypeTable : Table<GlossTypeElement>
 {
-    protected override string Name => nameof(GlossTypeName);
+    protected override string Name => nameof(GlossType);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(GlossTypeName.EntryId),
-        nameof(GlossTypeName.SenseOrder),
-        nameof(GlossTypeName.GlossOrder),
-        nameof(GlossTypeName.Value),
+        nameof(GlossType.EntryId),
+        nameof(GlossType.SenseOrder),
+        nameof(GlossType.GlossOrder),
+        nameof(GlossType.TagName),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(GlossTypeName.EntryId),
-        nameof(GlossTypeName.SenseOrder),
-        nameof(GlossTypeName.GlossOrder),
+        nameof(GlossType.EntryId),
+        nameof(GlossType.SenseOrder),
+        nameof(GlossType.GlossOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(GlossTypeNameElement name) =>
+    protected override SqliteParameter[] Parameters(GlossTypeElement name) =>
     [
         new("@0", name.EntryId),
         new("@1", name.ParentOrder),
         new("@2", name.Order),
-        new("@3", name.Value),
+        new("@3", name.TagName),
     ];
 }

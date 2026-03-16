@@ -58,6 +58,7 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<Dialect> Dialects { get; set; } = null!;
     public DbSet<Field> Fields { get; set; } = null!;
     public DbSet<Gloss> Glosses { get; set; } = null!;
+    public DbSet<GlossType> GlossTypes { get; set; } = null!;
     public DbSet<KanjiFormRestriction> KanjiFormRestrictions { get; set; } = null!;
     public DbSet<LanguageSource> LanguageSources { get; set; } = null!;
     public DbSet<Misc> Miscs { get; set; } = null!;
@@ -102,7 +103,7 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<MiscTag> MiscTags { get; set; } = null!;
     public DbSet<DialectTag> DialectTags { get; set; } = null!;
 
-    public DbSet<GlossType> GlossTypes { get; set; } = null!;
+    public DbSet<GlossTypeTag> GlossTypeTags { get; set; } = null!;
     public DbSet<CrossReferenceType> CrossReferenceTypes { get; set; } = null!;
     public DbSet<LanguageSourceType> LanguageSourceTypes { get; set; } = null!;
     public DbSet<Language> Languages { get; set; } = null!;

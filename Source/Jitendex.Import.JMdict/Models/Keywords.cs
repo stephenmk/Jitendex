@@ -30,7 +30,7 @@ internal sealed record PartOfSpeechTagElement(string Name, int OriginFileId) : I
 internal sealed record FieldTagElement(string Name, int OriginFileId) : IKeywordElement;
 internal sealed record MiscTagElement(string Name, int OriginFileId) : IKeywordElement;
 internal sealed record DialectTagElement(string Name, int OriginFileId) : IKeywordElement;
-internal sealed record GlossTypeElement(string Name, int OriginFileId) : IKeywordElement;
+internal sealed record GlossTypeTagElement(string Name, int OriginFileId) : IKeywordElement;
 internal sealed record CrossReferenceTypeElement(string Name, int OriginFileId) : IKeywordElement;
 internal sealed record LanguageSourceTypeElement(string Name, int OriginFileId) : IKeywordElement;
 internal sealed record PriorityTagElement(string Name, int OriginFileId) : IKeywordElement;

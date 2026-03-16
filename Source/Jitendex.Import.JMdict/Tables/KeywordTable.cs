@@ -46,17 +46,17 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
 
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
-        nameof(ReadingInfoTagElement) => nameof(ReadingInfoTag),
-        nameof(KanjiFormInfoTagElement) => nameof(KanjiFormInfoTag),
-        nameof(PartOfSpeechTagElement) => nameof(PartOfSpeechTag),
-        nameof(FieldTagElement) => nameof(FieldTag),
-        nameof(MiscTagElement) => nameof(MiscTag),
-        nameof(DialectTagElement) => nameof(DialectTag),
-        nameof(GlossTypeElement) => nameof(GlossType),
+        nameof(ReadingInfoTagElement)     => nameof(ReadingInfoTag),
+        nameof(KanjiFormInfoTagElement)   => nameof(KanjiFormInfoTag),
+        nameof(PartOfSpeechTagElement)    => nameof(PartOfSpeechTag),
+        nameof(FieldTagElement)           => nameof(FieldTag),
+        nameof(MiscTagElement)            => nameof(MiscTag),
+        nameof(DialectTagElement)         => nameof(DialectTag),
+        nameof(GlossTypeTagElement)       => nameof(GlossTypeTag),
         nameof(CrossReferenceTypeElement) => nameof(CrossReferenceType),
         nameof(LanguageSourceTypeElement) => nameof(LanguageSourceType),
-        nameof(PriorityTagElement) => nameof(PriorityTag),
-        nameof(LanguageElement) => nameof(Language),
+        nameof(PriorityTagElement)        => nameof(PriorityTag),
+        nameof(LanguageElement)           => nameof(Language),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
 }

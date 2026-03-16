@@ -26,11 +26,11 @@ internal sealed class GlossReader(ILogger<GlossReader> logger) : XmlBaseReader(l
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseElement sense)
     {
-        var typeName = xmlReader.GetAttribute(XmlAttributeName.GlossType);
+        var typeTag = xmlReader.GetAttribute(XmlAttributeName.GlossType);
 
-        if (typeName is not null)
+        if (typeTag is not null)
         {
-            document.GlossTypes.Add(typeName);
+            document.GlossTypeTags.Add(typeTag);
         }
 
         var gloss = new GlossElement
@@ -43,16 +43,16 @@ internal sealed class GlossReader(ILogger<GlossReader> logger) : XmlBaseReader(l
 
         document.Glosses.Add(gloss.Key(), gloss);
 
-        if (typeName is not null)
+        if (typeTag is not null)
         {
-            var glossTypeName = new GlossTypeNameElement
+            var glossType = new GlossTypeElement
             (
                 sense.EntryId,
                 sense.Order,
                 gloss.Order,
-                typeName
+                typeTag
             );
-            document.GlossTypeNames.Add(glossTypeName.Key(), glossTypeName);
+            document.GlossTypes.Add(glossType.Key(), glossType);
         }
     }
 }

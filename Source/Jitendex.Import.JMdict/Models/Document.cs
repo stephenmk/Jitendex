@@ -45,7 +45,7 @@ internal sealed class Document : IDocument<DateOnly>
     public Dictionary<(int, int, int), DialectElement> Dialects { get; init; }
     public Dictionary<(int, int, int), FieldElement> Fields { get; init; }
     public Dictionary<(int, int, int), GlossElement> Glosses { get; init; }
-    public Dictionary<(int, int, int), GlossTypeNameElement> GlossTypeNames { get; init; }
+    public Dictionary<(int, int, int), GlossTypeElement> GlossTypes { get; init; }
     public Dictionary<(int, int, int), KanjiFormRestrictionElement> KanjiFormRestrictions { get; init; }
     public Dictionary<(int, int, int), LanguageSourceElement> LanguageSources { get; init; }
     public Dictionary<(int, int, int), MiscElement> Miscs { get; init; }
@@ -62,7 +62,7 @@ internal sealed class Document : IDocument<DateOnly>
     public HashSet<string> FieldTags { get; init; } = [];
     public HashSet<string> MiscTags { get; init; } = [];
     public HashSet<string> DialectTags { get; init; } = [];
-    public HashSet<string> GlossTypes { get; init; } = [];
+    public HashSet<string> GlossTypeTags { get; init; } = [];
     public HashSet<string> CrossReferenceTypes { get; init; } = [];
     public HashSet<string> LanguageSourceTypes { get; init; } = [];
     public HashSet<string> Languages { get; init; } = [];
@@ -89,7 +89,7 @@ internal sealed class Document : IDocument<DateOnly>
         Dialects = new(expectedEntryCount / 100);
         Fields = new(expectedEntryCount / 5);
         Glosses = new(expectedEntryCount * 2);
-        GlossTypeNames = new(expectedEntryCount / 30);
+        GlossTypes = new(expectedEntryCount / 30);
         KanjiFormRestrictions = new(expectedEntryCount / 100);
         LanguageSources = new(expectedEntryCount / 30);
         Miscs = new(expectedEntryCount / 5);
@@ -122,8 +122,8 @@ internal sealed class Document : IDocument<DateOnly>
     public IEnumerable<DialectTagElement> GetDialectTags(int fileHeaderId)
         => DialectTags.Select(t => new DialectTagElement(t, fileHeaderId));
 
-    public IEnumerable<GlossTypeElement> GetGlossTypes(int fileHeaderId)
-        => GlossTypes.Select(t => new GlossTypeElement(t, fileHeaderId));
+    public IEnumerable<GlossTypeTagElement> GetGlossTypeTags(int fileHeaderId)
+        => GlossTypeTags.Select(t => new GlossTypeTagElement(t, fileHeaderId));
 
     public IEnumerable<CrossReferenceTypeElement> GetCrossReferenceTypes(int fileHeaderId)
         => CrossReferenceTypes.Select(t => new CrossReferenceTypeElement(t, fileHeaderId));
@@ -148,7 +148,7 @@ internal sealed class Document : IDocument<DateOnly>
             .Concat(Dialects.EntryIds())
             .Concat(Fields.EntryIds())
             .Concat(Glosses.EntryIds())
-            .Concat(GlossTypeNames.EntryIds())
+            .Concat(GlossTypes.EntryIds())
             .Concat(KanjiFormRestrictions.EntryIds())
             .Concat(LanguageSources.EntryIds())
             .Concat(Miscs.EntryIds())

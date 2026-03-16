@@ -21,18 +21,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
-[Table(nameof(GlossTypeName))]
+[Table(nameof(GlossType))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(GlossOrder))]
-public sealed class GlossTypeName
+public sealed class GlossType
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int GlossOrder { get; init; }
-    public required string Value { get; set; }
+    public required string TagName { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(GlossOrder)}")]
     public Gloss Gloss { get; init; } = null!;
 
-    [ForeignKey(nameof(Value))]
-    public GlossType Type { get; set; } = null!;
+    [ForeignKey(nameof(TagName))]
+    public GlossTypeTag Tag { get; set; } = null!;
 }

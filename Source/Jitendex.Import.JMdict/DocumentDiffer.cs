@@ -38,7 +38,7 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
         FindNew<string>(diff, docA, docB, nameof(Document.FieldTags));
         FindNew<string>(diff, docA, docB, nameof(Document.MiscTags));
         FindNew<string>(diff, docA, docB, nameof(Document.DialectTags));
-        FindNew<string>(diff, docA, docB, nameof(Document.GlossTypes));
+        FindNew<string>(diff, docA, docB, nameof(Document.GlossTypeTags));
         FindNew<string>(diff, docA, docB, nameof(Document.CrossReferenceTypes));
         FindNew<string>(diff, docA, docB, nameof(Document.LanguageSourceTypes));
         FindNew<string>(diff, docA, docB, nameof(Document.PriorityTags));
@@ -61,7 +61,7 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
         DiffDictionaryProperties<(int, int, int), DialectElement>(diff, docA, docB, nameof(Document.Dialects));
         DiffDictionaryProperties<(int, int, int), FieldElement>(diff, docA, docB, nameof(Document.Fields));
         DiffDictionaryProperties<(int, int, int), GlossElement>(diff, docA, docB, nameof(Document.Glosses));
-        DiffDictionaryProperties<(int, int, int), GlossTypeNameElement>(diff, docA, docB, nameof(Document.GlossTypeNames));
+        DiffDictionaryProperties<(int, int, int), GlossTypeElement>(diff, docA, docB, nameof(Document.GlossTypes));
         DiffDictionaryProperties<(int, int, int), KanjiFormRestrictionElement>(diff, docA, docB, nameof(Document.KanjiFormRestrictions));
         DiffDictionaryProperties<(int, int, int), LanguageSourceElement>(diff, docA, docB, nameof(Document.LanguageSources));
         DiffDictionaryProperties<(int, int, int), MiscElement>(diff, docA, docB, nameof(Document.Miscs));

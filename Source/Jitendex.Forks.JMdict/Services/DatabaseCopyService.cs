@@ -71,12 +71,12 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
              , "{nameof(FieldTag.OriginFileId)}"
           FROM "{Schema}"."{nameof(FieldTag)}";
 
-        INSERT INTO "{nameof(GlossType)}"
-             ( "{nameof(GlossType.Name)}"
-             , "{nameof(GlossType.OriginFileId)}")
-        SELECT "{nameof(GlossType.Name)}"
-             , "{nameof(GlossType.OriginFileId)}"
-          FROM "{Schema}"."{nameof(GlossType)}";
+        INSERT INTO "{nameof(GlossTypeTag)}"
+             ( "{nameof(GlossTypeTag.Name)}"
+             , "{nameof(GlossTypeTag.OriginFileId)}")
+        SELECT "{nameof(GlossTypeTag.Name)}"
+             , "{nameof(GlossTypeTag.OriginFileId)}"
+          FROM "{Schema}"."{nameof(GlossTypeTag)}";
 
         INSERT INTO "{nameof(KanjiFormInfoTag)}"
              ( "{nameof(KanjiFormInfoTag.Name)}"
@@ -276,16 +276,16 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
              , "{nameof(Gloss.Text)}"
           FROM "{Schema}"."{nameof(Gloss)}";
 
-        INSERT INTO "{nameof(GlossTypeName)}"
-             ( "{nameof(GlossTypeName.EntryId)}"
-             , "{nameof(GlossTypeName.SenseOrder)}"
-             , "{nameof(GlossTypeName.GlossOrder)}"
-             , "{nameof(GlossTypeName.Value)}")
-        SELECT "{nameof(GlossTypeName.EntryId)}"
-             , "{nameof(GlossTypeName.SenseOrder)}"
-             , "{nameof(GlossTypeName.GlossOrder)}"
-             , "{nameof(GlossTypeName.Value)}"
-          FROM "{Schema}"."{nameof(GlossTypeName)}";
+        INSERT INTO "{nameof(GlossType)}"
+             ( "{nameof(GlossType.EntryId)}"
+             , "{nameof(GlossType.SenseOrder)}"
+             , "{nameof(GlossType.GlossOrder)}"
+             , "{nameof(GlossType.TagName)}")
+        SELECT "{nameof(GlossType.EntryId)}"
+             , "{nameof(GlossType.SenseOrder)}"
+             , "{nameof(GlossType.GlossOrder)}"
+             , "{nameof(GlossType.TagName)}"
+          FROM "{Schema}"."{nameof(GlossType)}";
 
         INSERT INTO "{nameof(KanjiFormRestriction)}"
              ( "{nameof(KanjiFormRestriction.EntryId)}"

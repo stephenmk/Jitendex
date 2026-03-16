@@ -54,8 +54,8 @@ public sealed class FileHeader
     [InverseProperty(nameof(DialectTag.OriginFile))]
     public List<DialectTag> NewDialectTags { get; init; } = [];
 
-    [InverseProperty(nameof(GlossType.OriginFile))]
-    public List<GlossType> NewGlossTypes { get; init; } = [];
+    [InverseProperty(nameof(GlossTypeTag.OriginFile))]
+    public List<GlossTypeTag> NewGlossTypeTags { get; init; } = [];
 
     [InverseProperty(nameof(CrossReferenceType.OriginFile))]
     public List<CrossReferenceType> NewCrossReferenceTypes { get; init; } = [];

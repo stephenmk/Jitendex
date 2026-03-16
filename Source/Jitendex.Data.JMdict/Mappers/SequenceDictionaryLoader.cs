@@ -109,7 +109,7 @@ public static class SequenceDictionaryLoader
                 .ToList(),
             Glosses = sense.Glosses
                 .OrderBy(static gloss => gloss.Order)
-                .Select(static gloss => new GlossDto(gloss.TypeName == null ? null : gloss.TypeName.Value, gloss.Text))
+                .Select(static gloss => new GlossDto(gloss.Type == null ? null : gloss.Type.TagName, gloss.Text))
                 .ToList(),
             KanjiFormRestrictions = sense.KanjiFormRestrictions
                 .OrderBy(static rstr => rstr.Order)

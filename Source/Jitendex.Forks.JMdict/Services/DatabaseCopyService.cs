@@ -269,14 +269,23 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
              ( "{nameof(Gloss.EntryId)}"
              , "{nameof(Gloss.SenseOrder)}"
              , "{nameof(Gloss.Order)}"
-             , "{nameof(Gloss.TypeName)}"
              , "{nameof(Gloss.Text)}")
         SELECT "{nameof(Gloss.EntryId)}"
              , "{nameof(Gloss.SenseOrder)}"
              , "{nameof(Gloss.Order)}"
-             , "{nameof(Gloss.TypeName)}"
              , "{nameof(Gloss.Text)}"
           FROM "{Schema}"."{nameof(Gloss)}";
+
+        INSERT INTO "{nameof(GlossTypeName)}"
+             ( "{nameof(GlossTypeName.EntryId)}"
+             , "{nameof(GlossTypeName.SenseOrder)}"
+             , "{nameof(GlossTypeName.GlossOrder)}"
+             , "{nameof(GlossTypeName.Value)}")
+        SELECT "{nameof(GlossTypeName.EntryId)}"
+             , "{nameof(GlossTypeName.SenseOrder)}"
+             , "{nameof(GlossTypeName.GlossOrder)}"
+             , "{nameof(GlossTypeName.Value)}"
+          FROM "{Schema}"."{nameof(GlossTypeName)}";
 
         INSERT INTO "{nameof(KanjiFormRestriction)}"
              ( "{nameof(KanjiFormRestriction.EntryId)}"

@@ -38,10 +38,21 @@ internal sealed class GlossReader(ILogger<GlossReader> logger) : XmlBaseReader(l
             EntryId: sense.EntryId,
             ParentOrder: sense.Order,
             Order: document.Glosses.NextOrder(sense.Key()),
-            TypeName: typeName,
             Text: await xmlReader.ReadElementContentAsStringAsync()
         );
 
         document.Glosses.Add(gloss.Key(), gloss);
+
+        if (typeName is not null)
+        {
+            var glossTypeName = new GlossTypeNameElement
+            (
+                sense.EntryId,
+                sense.Order,
+                gloss.Order,
+                typeName
+            );
+            document.GlossTypeNames.Add(glossTypeName.Key(), glossTypeName);
+        }
     }
 }

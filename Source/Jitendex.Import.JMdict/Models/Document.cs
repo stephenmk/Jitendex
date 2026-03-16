@@ -45,6 +45,7 @@ internal sealed class Document : IDocument<DateOnly>
     public Dictionary<(int, int, int), DialectElement> Dialects { get; init; }
     public Dictionary<(int, int, int), FieldElement> Fields { get; init; }
     public Dictionary<(int, int, int), GlossElement> Glosses { get; init; }
+    public Dictionary<(int, int, int), GlossTypeNameElement> GlossTypeNames { get; init; }
     public Dictionary<(int, int, int), KanjiFormRestrictionElement> KanjiFormRestrictions { get; init; }
     public Dictionary<(int, int, int), LanguageSourceElement> LanguageSources { get; init; }
     public Dictionary<(int, int, int), MiscElement> Miscs { get; init; }
@@ -88,6 +89,7 @@ internal sealed class Document : IDocument<DateOnly>
         Dialects = new(expectedEntryCount / 100);
         Fields = new(expectedEntryCount / 5);
         Glosses = new(expectedEntryCount * 2);
+        GlossTypeNames = new(expectedEntryCount / 30);
         KanjiFormRestrictions = new(expectedEntryCount / 100);
         LanguageSources = new(expectedEntryCount / 30);
         Miscs = new(expectedEntryCount / 5);
@@ -146,6 +148,7 @@ internal sealed class Document : IDocument<DateOnly>
             .Concat(Dialects.EntryIds())
             .Concat(Fields.EntryIds())
             .Concat(Glosses.EntryIds())
+            .Concat(GlossTypeNames.EntryIds())
             .Concat(KanjiFormRestrictions.EntryIds())
             .Concat(LanguageSources.EntryIds())
             .Concat(Miscs.EntryIds())

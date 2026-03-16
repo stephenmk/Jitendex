@@ -191,7 +191,13 @@ public static class DtoExtensions
             SenseOrder = senseOrder,
             Order = order,
             Text = gloss.Text,
-            TypeName = gloss.TypeName,
+            TypeName = gloss.TypeName is null ? null : new()
+            {
+                EntryId = entryId,
+                SenseOrder = senseOrder,
+                GlossOrder = order,
+                Value = gloss.TypeName
+            }
         };
 
     private static KanjiFormRestriction ToKanjiFormRestriction(this string kanjiFormText, int entryId, int senseOrder, int order)

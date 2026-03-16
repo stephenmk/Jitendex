@@ -126,8 +126,8 @@ public sealed class GlossType : IKeyword
     [ForeignKey(nameof(OriginFileId))]
     public FileHeader OriginFile { get; init; } = null!;
 
-    [InverseProperty(nameof(Gloss.Type))]
-    public List<Gloss> Glosses { get; init; } = [];
+    [InverseProperty(nameof(GlossTypeName.Type))]
+    public List<GlossTypeName> Glosses { get; init; } = [];
 }
 
 [Table(nameof(CrossReferenceType))]

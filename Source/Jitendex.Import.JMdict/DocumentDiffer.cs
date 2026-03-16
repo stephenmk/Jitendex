@@ -61,6 +61,7 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
         DiffDictionaryProperties<(int, int, int), DialectElement>(diff, docA, docB, nameof(Document.Dialects));
         DiffDictionaryProperties<(int, int, int), FieldElement>(diff, docA, docB, nameof(Document.Fields));
         DiffDictionaryProperties<(int, int, int), GlossElement>(diff, docA, docB, nameof(Document.Glosses));
+        DiffDictionaryProperties<(int, int, int), GlossTypeNameElement>(diff, docA, docB, nameof(Document.GlossTypeNames));
         DiffDictionaryProperties<(int, int, int), KanjiFormRestrictionElement>(diff, docA, docB, nameof(Document.KanjiFormRestrictions));
         DiffDictionaryProperties<(int, int, int), LanguageSourceElement>(diff, docA, docB, nameof(Document.LanguageSources));
         DiffDictionaryProperties<(int, int, int), MiscElement>(diff, docA, docB, nameof(Document.Miscs));

@@ -70,11 +70,11 @@ public static class DtoTextExtensions
         var sb = new StringBuilder(x.Text);
         if (x.Infos.Count > 0)
         {
-            sb.Append($"[{string.Join(", ", x.Infos)}]");
+            sb.Append($"[{string.Join(",", x.Infos)}]");
         }
         if (x.Priorities.Count > 0)
         {
-            sb.Append($"[{string.Join(", ", x.Priorities)}]");
+            sb.Append($"[{string.Join(",", x.Priorities)}]");
         }
         return sb.ToString();
     }

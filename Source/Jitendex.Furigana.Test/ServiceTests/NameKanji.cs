@@ -26,6 +26,7 @@ public class NameKanji : ServiceTest
     private const string _text = "佐藤";
     private const string _reading = "さとう";
     private const string _solution = "[佐|さ][藤|とう]";
+    private const string _lazyIgnorantSolution = "[佐藤|さとう]";
 
     private static readonly Dictionary<string, string[]> _kanji = new()
     {
@@ -46,25 +47,31 @@ public class NameKanji : ServiceTest
         AddNameKanji(_nameKanji);
 
         var solution = Service.SolveName(_text, _reading);
+        var expected = GetExpectedSolution();
+
         Assert.IsNotNull(solution);
+        Assert.AreEqual(expected, solution);
+    }
 
+    [TestMethod]
+    public void TestLazyIgnorantSolution()
+    {
+        var solution = Service.SolveName(_text, _reading);
+        var expected = GetExpectedLazyIgnorantSolution();
+
+        Assert.IsNotNull(solution);
+        Assert.AreEqual(expected, solution);
+    }
+
+    private static Solution GetExpectedSolution()
+    {
         var nameEntry = new Entry(_text, _reading, EntryType.Name);
-        var expectedSolution = TextSolution.Parse(_solution, nameEntry);
-        Assert.AreEqual(expectedSolution, solution);
+        return TextSolution.Parse(_solution, nameEntry);
     }
 
-    [TestMethod]
-    public void TestUnsolvable()
+    private static Solution? GetExpectedLazyIgnorantSolution()
     {
-        var solution = Service.Solve(_text, _reading);
-        Assert.IsNull(solution);
-    }
-
-    [TestMethod]
-    public void TestUnsolvableWithBogusKanji()
-    {
-        AddCharacters(_kanji);
-        var solution = Service.Solve(_text, _reading);
-        Assert.IsNull(solution);
+        var nameEntry = new Entry(_text, _reading, EntryType.Name);
+        return TextSolution.Parse(_lazyIgnorantSolution, nameEntry);
     }
 }

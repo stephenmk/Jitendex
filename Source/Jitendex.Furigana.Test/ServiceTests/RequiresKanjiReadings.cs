@@ -76,14 +76,38 @@ public class RequiresKanjiReadings : ServiceTest
         ("好き嫌い", "すききらい", "[好|す]き[嫌|きら]い"),
     ];
 
+    private static readonly SolvableData _lazySolvableData =
+    [
+        ("御姉さん", "おねえさん", "[御姉|おねえ]さん"),
+        ("御母さん", "おかあさん", "[御母|おかあ]さん"),
+        ("御兄さん", "おにいさん", "[御兄|おにい]さん"),
+        ("東京湾", "とうきょうわん", "[東京湾|とうきょうわん]"),
+        ("日独協会", "にちどくきょうかい", "[日独協会|にちどくきょうかい]"),
+        ("可能", "かのう", "[可能|かのう]"),
+        ("津波", "つなみ", "[津波|つなみ]"),
+        ("問題", "もんだい", "[問題|もんだい]"),
+        ("質問", "しつもん", "[質問|しつもん]"),
+        ("乱脈", "らんみゃく", "[乱脈|らんみゃく]"),
+        ("蝶蝶", "ちょうちょ", "[蝶蝶|ちょうちょ]"),
+        ("夫夫", "ふうふ", "[夫夫|ふうふ]"),
+    ];
+
     private static readonly UnsolvableData _unsolvableData =
-        _data.Select(static x => (x.Text, x.Reading));
+    [
+        ("好き嫌い", "すききらい")
+    ];
 
     [TestMethod]
     public void TestSolvable()
     {
         AddCharacters(_kanji);
         TestSolvable(_data);
+    }
+
+    [TestMethod]
+    public void TestLazySolvable()
+    {
+        TestSolvable(_lazySolvableData);
     }
 
     [TestMethod]

@@ -33,9 +33,9 @@ public class RequiresSpecialExpressionReadings : ServiceTest
 
     private static readonly SolvableData _data =
     [
-        ("芝生", "しばふ", "[芝生|しばふ]"),
-        ("草履", "ぞうり", "[草履|ぞうり]"),
-        ("竹刀", "しない", "[竹刀|しない]"),
+        ("芝生芝生", "しばふしばふ", "[芝生|しばふ][芝生|しばふ]"),
+        ("草履草履", "ぞうりぞうり", "[草履|ぞうり][草履|ぞうり]"),
+        ("竹刀竹刀", "しないしない", "[竹刀|しない][竹刀|しない]"),
         ("大人の人", "おとなのひと", "[大人|おとな]の[人|ひと]"),
 
         // Three kanji, two furigana characters
@@ -49,9 +49,17 @@ public class RequiresSpecialExpressionReadings : ServiceTest
         ("発条仕掛け", "ああああけ", "[発|あ][条|あ][仕|あ][掛|あ]け"),
     ];
 
-    private static readonly UnsolvableData _unsolvableData =
+    private static readonly SolvableData _lazySolvableData =
     [
-        ("発条仕掛け", "はつじょうじかけ"),
+        ("芝生芝生", "しばふしばふ", "[芝生芝生|しばふしばふ]"),
+        ("草履草履", "ぞうりぞうり", "[草履草履|ぞうりぞうり]"),
+        ("竹刀竹刀", "しないしない", "[竹刀竹刀|しないしない]"),
+        ("大人の人", "おとなのひと", "[大人|おとな]の[人|ひと]"),
+        ("鯛なくば狗母魚", "たいなくばえそ", "[鯛|たい]なくば[狗母魚|えそ]"),
+        ("発条仕掛け", "ぜんまいじかけ", "[発条仕掛|ぜんまいじか]け"),
+        ("発条仕掛け", "ばねじかけ", "[発|ば][条|ね][仕|じ][掛|か]け"),
+        ("発条仕掛け", "ああああけ", "[発|あ][条|あ][仕|あ][掛|あ]け"),
+        ("発条仕掛け", "はつじょうじかけ", "[発条仕掛|はつじょうじか]け"),
     ];
 
     [TestMethod]
@@ -62,9 +70,8 @@ public class RequiresSpecialExpressionReadings : ServiceTest
     }
 
     [TestMethod]
-    public void TestUnsolvable()
+    public void TestLazySolvable()
     {
-        AddCompounds(_compounds);
-        TestUnsolvable(_unsolvableData);
+        TestSolvable(_lazySolvableData);
     }
 }

@@ -27,9 +27,9 @@ public interface IFuriganaService
     public Solution? SolveChineseLoanword(string text, string reading);
     public Solution? SolveKoreanLoanword(string text, string reading);
 
-    public void AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false);
-    public void AddNameReading(Rune kanji, string reading, bool isPrefix = false, bool isSuffix = false);
-    public void AddHanziReading(Rune hanzi, string reading, bool isPrefix = false, bool isSuffix = false);
-    public void AddHanjaReading(Rune hanja, string reading, bool isPrefix = false, bool isSuffix = false);
-    public void AddCompoundReading(string compound, string reading, bool isPrefix = false, bool isSuffix = false);
+    public int AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false);
+    public int AddNameReading(Rune kanji, string reading, bool isPrefix = false, bool isSuffix = false);
+    public int AddHanziReading(Rune hanzi, string reading, bool isPrefix = false, bool isSuffix = false);
+    public int AddHanjaReading(Rune hanja, string reading, bool isPrefix = false, bool isSuffix = false);
+    public int AddCompoundReading(string compound, string reading, bool isPrefix = false, bool isSuffix = false);
 }

@@ -28,54 +28,61 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
     {
         var texts = GetValidReadingTexts(entryType, textSlice, readingState);
 
-        if (texts.Length == 0)
+        if (texts.Count == 0)
         {
             return [];
         }
 
         var baseText = textSlice.RawRunes.FastToString();
-        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(texts.Length);
+        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(texts.Count);
 
-        foreach (var text in texts)
+        foreach (var (text, readingIds) in texts)
         {
             var furigana = baseText.IsKanaEquivalent(text)
                 ? null
                 : new string(readingState.RemainingText[..text.Length]);
 
-            var part = new Solution.Part(baseText, furigana);
+            var part = new Solution.Part(baseText, furigana)
+            {
+                ReadingIds = ImmutableArray.Create(readingIds)
+            };
             partsLists.Add([part]);
         }
 
         return partsLists.MoveToImmutable();
     }
 
-    private ReadOnlySpan<string> GetValidReadingTexts(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
+    private Dictionary<string, int[]> GetValidReadingTexts(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
     {
         var texts = GetCachedTexts(entryType, textSlice);
         if (texts.Count == 0)
         {
             return [];
         }
-        var validTexts = new string[texts.Count];
         int i = 0;
-        foreach (var text in texts)
+        var invalidKeys = new string[texts.Count];
+        foreach (var key in texts.Keys)
         {
-            if (readingState.RemainingTextNormalized.StartsWith(text, StringComparison.Ordinal))
+            if (!readingState.RemainingTextNormalized.StartsWith(key, StringComparison.Ordinal))
             {
-                validTexts[i++] = text;
+                invalidKeys[i++] = key;
             }
         }
-        return validTexts.AsSpan(0, i);
+        foreach (var key in invalidKeys.AsSpan(0, i))
+        {
+            texts.Remove(key);
+        }
+        return texts;
     }
 
-    private HashSet<string> GetCachedTexts(EntryType entryType, in TextSlice textSlice)
+    private Dictionary<string, int[]> GetCachedTexts(EntryType entryType, in TextSlice textSlice)
         => textSlice.Runes switch
         {
             { Length: 1 } => GetCharacterTexts(entryType, textSlice),
-                        _ => GetCompoundTexts(textSlice)
+            _             => GetCompoundTexts(textSlice)
         };
 
-    private HashSet<string> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
+    private Dictionary<string, int[]> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
     {
         var rune = textSlice.Runes[0];
 
@@ -86,7 +93,7 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
             EntryType.Name    => cache.GetNameKanjiReadings(rune),
             EntryType.Chinese => cache.GetHanziReadings(rune),
             EntryType.Korean  => cache.GetHanjaReadings(rune),
-                            _ => throw new ArgumentOutOfRangeException()
+            _                 => throw new ArgumentOutOfRangeException()
         };
 
         int readingCount = characterReadings.Count + specialReadings.Count;
@@ -101,7 +108,7 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
         return FilterReadings(textSlice, readings, readingCount);
     }
 
-    private HashSet<string> GetCompoundTexts(in TextSlice textSlice)
+    private Dictionary<string, int[]> GetCompoundTexts(in TextSlice textSlice)
     {
         var readings = cache.GetCompoundReadings(textSlice.Runes);
         return readings.Count == 0
@@ -109,9 +116,9 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
             : FilterReadings(textSlice, readings, readings.Count);
     }
 
-    private static HashSet<string> FilterReadings(in TextSlice textSlice, IEnumerable<Reading> readings, int readingCount)
+    private static Dictionary<string, int[]> FilterReadings(in TextSlice textSlice, IEnumerable<Reading> readings, int readingCount)
     {
-        var texts = new HashSet<string>(readingCount);
+        var texts = new Dictionary<string, int[]>(readingCount);
 
         foreach (var reading in readings)
         {
@@ -123,7 +130,14 @@ internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
             {
                 continue;
             }
-            texts.Add(reading.Text);
+            if (texts.TryGetValue(reading.Text, out var readingIds))
+            {
+                texts[reading.Text] = [.. readingIds, reading.Id];
+            }
+            else
+            {
+                texts[reading.Text] = [reading.Id];
+            }
         }
 
         return texts;

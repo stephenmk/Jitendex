@@ -22,12 +22,14 @@ namespace Jitendex.Furigana.Internal.Models;
 
 internal sealed record Reading
 {
+    public int Id { get; }
     public string Text { get; }
     public bool IsPrefix { get; }
     public bool IsSuffix { get; }
 
-    public Reading(string text, bool isPrefix = false, bool isSuffix = false)
+    public Reading(int id, string text, bool isPrefix = false, bool isSuffix = false)
     {
+        Id = id;
         Text = text.KatakanaToHiragana();
         IsPrefix = isPrefix;
         IsSuffix = isSuffix;

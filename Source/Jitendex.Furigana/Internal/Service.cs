@@ -24,22 +24,24 @@ namespace Jitendex.Furigana.Internal;
 
 internal sealed class Service(ImmutableArray<IterationSolver> solvers, Knowledge cache) : IFuriganaService
 {
-    public void AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(character.Value, new Reading(reading, isPrefix, isSuffix), cache.Characters);
+    private int _nextId = 0;
 
-    public void AddNameReading(Rune kanji, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(kanji.Value, new Reading(reading, isPrefix, isSuffix), cache.NameKanji);
+    public int AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(character.Value, new Reading(_nextId, reading, isPrefix, isSuffix), cache.Characters);
 
-    public void AddHanziReading(Rune hanzi, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(hanzi.Value, new Reading(reading, isPrefix, isSuffix), cache.Hanzi);
+    public int AddNameReading(Rune kanji, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(kanji.Value, new Reading(_nextId, reading, isPrefix, isSuffix), cache.NameKanji);
 
-    public void AddHanjaReading(Rune hanja, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(hanja.Value, new Reading(reading, isPrefix, isSuffix), cache.Hanja);
+    public int AddHanziReading(Rune hanzi, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(hanzi.Value, new Reading(_nextId, reading, isPrefix, isSuffix), cache.Hanzi);
 
-    public void AddCompoundReading(string compound, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(compound, new Reading(reading, isPrefix, isSuffix), cache.Compounds);
+    public int AddHanjaReading(Rune hanja, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(hanja.Value, new Reading(_nextId, reading, isPrefix, isSuffix), cache.Hanja);
 
-    private void AddReading<T>(T key, Reading value, Dictionary<T, List<Reading>> dictionary) where T : notnull
+    public int AddCompoundReading(string compound, string reading, bool isPrefix = false, bool isSuffix = false)
+        => AddReading(compound, new Reading(_nextId, reading, isPrefix, isSuffix), cache.Compounds);
+
+    private int AddReading<T>(T key, Reading value, Dictionary<T, List<Reading>> dictionary) where T : notnull
     {
         if (dictionary.TryGetValue(key, out var readings))
         {
@@ -49,6 +51,7 @@ internal sealed class Service(ImmutableArray<IterationSolver> solvers, Knowledge
         {
             dictionary.Add(key, [value]);
         }
+        return _nextId++;
     }
 
     public Solution? Solve(string text, string reading)

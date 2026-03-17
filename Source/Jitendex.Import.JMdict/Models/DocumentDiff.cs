@@ -21,12 +21,10 @@ namespace Jitendex.Import.JMdict.Models;
 internal sealed class DocumentDiff : IDocumentDiff<DateOnly, Document>
 {
     public required DateOnly ArchiveKey { get; init; }
-    public required Document Inserts { get; init; }
-    public required Document Updates { get; init; }
+    public required Document Upserts { get; init; }
     public required Document Deletes { get; init; }
     public IReadOnlySet<int> SequenceIds()
-        => Inserts.ConcatAllEntryIds()
-            .Concat(Updates.ConcatAllEntryIds())
+        => Upserts.ConcatAllEntryIds()
             .Concat(Deletes.ConcatAllEntryIds())
             .ToHashSet();
 }

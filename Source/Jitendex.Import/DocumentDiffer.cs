@@ -29,7 +29,7 @@ public abstract class DocumentDiffer<TKey, TDocument, TDiff> : IDocumentDiffer<T
         var prop = typeof(TDocument).GetProperty(propertyName)!;
         var setA = (HashSet<T>)prop.GetValue(docA)!;
         var setB = (HashSet<T>)prop.GetValue(docB)!;
-        var inserts = (HashSet<T>)prop.GetValue(diff.Inserts)!;
+        var inserts = (HashSet<T>)prop.GetValue(diff.Upserts)!;
 
         foreach (var value in setB)
         {
@@ -47,8 +47,7 @@ public abstract class DocumentDiffer<TKey, TDocument, TDiff> : IDocumentDiffer<T
         var prop = typeof(TDocument).GetProperty(propertyName)!;
         var dictA = (Dictionary<T1, T2>)prop.GetValue(docA)!;
         var dictB = (Dictionary<T1, T2>)prop.GetValue(docB)!;
-        var inserts = (Dictionary<T1, T2>)prop.GetValue(diff.Inserts)!;
-        var updates = (Dictionary<T1, T2>)prop.GetValue(diff.Updates)!;
+        var upserts = (Dictionary<T1, T2>)prop.GetValue(diff.Upserts)!;
         var deletes = (Dictionary<T1, T2>)prop.GetValue(diff.Deletes)!;
         var comparer = EqualityComparer<T2>.Default;
 
@@ -60,14 +59,14 @@ public abstract class DocumentDiffer<TKey, TDocument, TDiff> : IDocumentDiffer<T
             }
             else if (!comparer.Equals(valueA, valueB))  // Hot spot!!!
             {
-                updates.Add(key, valueB);
+                upserts.Add(key, valueB);
             }
         }
         foreach (var (key, valueB) in dictB)
         {
             if (!dictA.ContainsKey(key))
             {
-                inserts.Add(key, valueB);
+                upserts.Add(key, valueB);
             }
         }
     }

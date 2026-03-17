@@ -41,8 +41,7 @@ public interface IDocumentDiff<TKey, TDocument>
     where TDocument : IDocument<TKey>
 {
     TKey ArchiveKey { get; init; }
-    TDocument Inserts { get; init; }
-    TDocument Updates { get; init; }
+    TDocument Upserts { get; init; }
     TDocument Deletes { get; init; }
 }
 

@@ -79,15 +79,11 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
 
         FileHeaderTable.InsertItem(context, new(diff.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
-        SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
+        SequenceTable.InsertOrIgnoreItems(context, diff.Upserts.GetSequences(fileHeaderId));
 
-        ExampleTable.InsertItems(context, diff.Inserts.Examples.Values);
-        SegmentationTable.InsertItems(context, diff.Inserts.Segmentations.Values);
-        TokenTable.InsertItems(context, diff.Inserts.Tokens.Values);
-
-        ExampleTable.UpdateItems(context, diff.Updates.Examples.Values);
-        SegmentationTable.UpdateItems(context, diff.Updates.Segmentations.Values);
-        TokenTable.UpdateItems(context, diff.Updates.Tokens.Values);
+        ExampleTable.UpsertItems(context, diff.Upserts.Examples.Values);
+        SegmentationTable.UpsertItems(context, diff.Upserts.Segmentations.Values);
+        TokenTable.UpsertItems(context, diff.Upserts.Tokens.Values);
 
         TokenTable.DeleteItems(context, diff.Deletes.Tokens.Values);
         SegmentationTable.DeleteItems(context, diff.Deletes.Segmentations.Values);

@@ -124,39 +124,26 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMnedic
 
         FileHeaderTable.InsertItem(context, new(diff.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
-        SequenceTable.InsertOrIgnoreItems(context, diff.Inserts.GetSequences(fileHeaderId));
+        SequenceTable.InsertOrIgnoreItems(context, diff.Upserts.GetSequences(fileHeaderId));
 
-        PriorityTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetPriorityTags(fileHeaderId));
-        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetReadingInfoTags(fileHeaderId));
-        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetKanjiFormInfoTags(fileHeaderId));
-        NameTypeTagTable.InsertOrIgnoreItems(context, diff.Inserts.GetNameTypeTags(fileHeaderId));
-        DetailLanguageTable.InsertItems(context, diff.Inserts.GetDetailLanguages(fileHeaderId));
+        PriorityTagTable.InsertOrIgnoreItems(context, diff.Upserts.GetPriorityTags(fileHeaderId));
+        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Upserts.GetReadingInfoTags(fileHeaderId));
+        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Upserts.GetKanjiFormInfoTags(fileHeaderId));
+        NameTypeTagTable.InsertOrIgnoreItems(context, diff.Upserts.GetNameTypeTags(fileHeaderId));
+        DetailLanguageTable.InsertOrIgnoreItems(context, diff.Upserts.GetDetailLanguages(fileHeaderId));
 
-        EntryTable.InsertItems(context, diff.Inserts.Entries.Values);
-        KanjiFormTable.InsertItems(context, diff.Inserts.KanjiForms.Values);
-        ReadingTable.InsertItems(context, diff.Inserts.Readings.Values);
-        TranslationTable.InsertItems(context, diff.Inserts.Translations.Values);
-        KanjiFormInfoTable.InsertItems(context, diff.Inserts.KanjiFormInfos.Values);
-        KanjiFormPriorityTable.InsertItems(context, diff.Inserts.KanjiFormPriorities.Values);
-        ReadingInfoTable.InsertItems(context, diff.Inserts.ReadingInfos.Values);
-        ReadingPriorityTable.InsertItems(context, diff.Inserts.ReadingPriorities.Values);
-        RestrictionTable.InsertItems(context, diff.Inserts.Restrictions.Values);
-        CrossReferenceTable.InsertItems(context, diff.Inserts.CrossReferences.Values);
-        DetailTable.InsertItems(context, diff.Inserts.Details.Values);
-        NameTypeTable.InsertItems(context, diff.Inserts.NameTypes.Values);
-
-        EntryTable.UpdateItems(context, diff.Updates.Entries.Values);
-        KanjiFormTable.UpdateItems(context, diff.Updates.KanjiForms.Values);
-        ReadingTable.UpdateItems(context, diff.Updates.Readings.Values);
-        TranslationTable.UpdateItems(context, diff.Updates.Translations.Values);
-        KanjiFormInfoTable.UpdateItems(context, diff.Updates.KanjiFormInfos.Values);
-        KanjiFormPriorityTable.UpdateItems(context, diff.Updates.KanjiFormPriorities.Values);
-        ReadingInfoTable.UpdateItems(context, diff.Updates.ReadingInfos.Values);
-        ReadingPriorityTable.UpdateItems(context, diff.Updates.ReadingPriorities.Values);
-        RestrictionTable.UpdateItems(context, diff.Updates.Restrictions.Values);
-        CrossReferenceTable.UpdateItems(context, diff.Updates.CrossReferences.Values);
-        DetailTable.UpdateItems(context, diff.Updates.Details.Values);
-        NameTypeTable.UpdateItems(context, diff.Updates.NameTypes.Values);
+        EntryTable.UpsertItems(context, diff.Upserts.Entries.Values);
+        KanjiFormTable.UpsertItems(context, diff.Upserts.KanjiForms.Values);
+        ReadingTable.UpsertItems(context, diff.Upserts.Readings.Values);
+        TranslationTable.UpsertItems(context, diff.Upserts.Translations.Values);
+        KanjiFormInfoTable.UpsertItems(context, diff.Upserts.KanjiFormInfos.Values);
+        KanjiFormPriorityTable.UpsertItems(context, diff.Upserts.KanjiFormPriorities.Values);
+        ReadingInfoTable.UpsertItems(context, diff.Upserts.ReadingInfos.Values);
+        ReadingPriorityTable.UpsertItems(context, diff.Upserts.ReadingPriorities.Values);
+        RestrictionTable.UpsertItems(context, diff.Upserts.Restrictions.Values);
+        CrossReferenceTable.UpsertItems(context, diff.Upserts.CrossReferences.Values);
+        DetailTable.UpsertItems(context, diff.Upserts.Details.Values);
+        NameTypeTable.UpsertItems(context, diff.Upserts.NameTypes.Values);
 
         NameTypeTable.DeleteItems(context, diff.Deletes.NameTypes.Values);
         DetailTable.DeleteItems(context, diff.Deletes.Details.Values);

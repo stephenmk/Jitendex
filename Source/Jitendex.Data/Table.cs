@@ -49,6 +49,18 @@ public abstract class Table<T>
         WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = @{idx:X}"))};
         """;
 
+    private string UpsertCommandText =>
+        ColumnNames.Except(KeyColNames).ToArray() is var updateColNames && updateColNames is []
+        ? InsertOrIgnoreCommandText
+        : $"""
+        INSERT INTO "{Name}"
+        ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
+        ({string.Join(',', ColumnNames.Select(static (_, idx) => $"@{idx:X}"))})
+        ON CONFLICT({string.Join(",", KeyColNames.Select(static name => $"\"{name}\""))})
+        DO UPDATE SET
+        {string.Join(',', updateColNames.Select(static name => $"\"{name}\" = excluded.\"{name}\""))};
+        """;
+
     private string DeleteCommandText =>
         $"""
         DELETE FROM "{Name}"
@@ -66,6 +78,9 @@ public abstract class Table<T>
 
     public void UpdateItems(SqliteContext db, IEnumerable<T> items)
         => ExecuteNonQuery(db, items, UpdateCommandText);
+
+    public void UpsertItems(SqliteContext db, IEnumerable<T> items)
+        => ExecuteNonQuery(db, items, UpsertCommandText);
 
     public void DeleteItems(SqliteContext db, IEnumerable<T> items)
         => ExecuteNonQuery(db, items, DeleteCommandText);

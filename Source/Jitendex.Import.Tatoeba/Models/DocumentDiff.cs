@@ -21,19 +21,16 @@ namespace Jitendex.Import.Tatoeba.Models;
 internal sealed class DocumentDiff : IDocumentDiff<DateOnly, Document>
 {
     public required DateOnly ArchiveKey { get; init; }
-    public required Document Inserts { get; init; }
-    public required Document Updates { get; init; }
+    public required Document Upserts { get; init; }
     public required Document Deletes { get; init; }
 
     public IReadOnlySet<int> SequenceIds()
-        => Inserts.ConcatAllExampleIds()
-            .Concat(Updates.ConcatAllExampleIds())
+        => Upserts.ConcatAllExampleIds()
             .Concat(Deletes.ConcatAllExampleIds())
             .ToHashSet();
 
     public IReadOnlySet<int> PrioritySequenceIds()
-        => Inserts.PriorityEntryIds()
-            .Concat(Updates.PriorityEntryIds())
+        => Upserts.PriorityEntryIds()
             .Concat(Deletes.PriorityEntryIds())
             .ToHashSet();
 }

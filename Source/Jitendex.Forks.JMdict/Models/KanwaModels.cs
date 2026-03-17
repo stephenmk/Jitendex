@@ -20,12 +20,13 @@ namespace Jitendex.Forks.JMdict.Models;
 
 internal sealed record CompoundRow
 (
+    int Id,
     string Text
 );
 
 internal sealed record CompoundReadingRow
 (
-    string CompoundText,
+    int CompoundId,
     string Text
 );
 

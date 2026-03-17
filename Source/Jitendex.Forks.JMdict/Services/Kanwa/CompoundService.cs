@@ -34,10 +34,10 @@ internal sealed class CompoundService
     public void Write()
     {
         var compoundRows = homeContext.Compounds
-            .Select(static x => new CompoundRow(x.Text));
+            .Select(static x => new CompoundRow(x.Id, x.Text));
 
         var readingRows = homeContext.CompoundReadings
-            .Select(static x => new CompoundReadingRow(x.CompoundText, x.Text));
+            .Select(static x => new CompoundReadingRow(x.CompoundId, x.Text));
 
         compoundTable.InsertItems(forkContext, compoundRows);
         readingTable.InsertItems(forkContext, readingRows);

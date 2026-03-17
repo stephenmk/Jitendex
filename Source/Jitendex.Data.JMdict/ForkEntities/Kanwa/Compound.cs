@@ -22,9 +22,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
 [Table(nameof(Compound))]
-[PrimaryKey(nameof(Text))]
+[PrimaryKey(nameof(Id))]
 public sealed class Compound
 {
+    public required int Id { get; init; }
     public required string Text { get; init; }
 
     [InverseProperty(nameof(CompoundReading.Compound))]

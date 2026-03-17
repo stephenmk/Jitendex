@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Frozen;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -45,13 +46,22 @@ internal sealed class CompoundService
         foreach (var (key, values) in data)
         {
             compoundRows.Add(new(key));
-            foreach (var value in values)
-            {
-                readingRows.Add(new(key, value));
-            }
         }
 
         compoundTable.InsertItems(context, compoundRows);
+
+        var compoundToId = context.Compounds
+            .Select(static c => new {Key = c.Text, Value = c.Id})
+            .ToFrozenDictionary(static x => x.Key, static x => x.Value);
+
+        foreach (var (key, values) in data)
+        {
+            foreach (var value in values)
+            {
+                readingRows.Add(new(compoundToId[key], value));
+            }
+        }
+
         compoundReadingTable.InsertItems(context, readingRows);
     }
 

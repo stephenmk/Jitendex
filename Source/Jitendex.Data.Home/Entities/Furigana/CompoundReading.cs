@@ -22,12 +22,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.Data.Home.Entities.Furigana;
 
 [Table(nameof(CompoundReading))]
-[PrimaryKey(nameof(CompoundText), nameof(Text))]
+[PrimaryKey(nameof(CompoundId), nameof(Text))]
 public sealed class CompoundReading
 {
-    public required string CompoundText { get; init; }
+    public required int CompoundId { get; init; }
     public required string Text { get; init; }
 
-    [ForeignKey(nameof(CompoundText))]
+    [ForeignKey(nameof(CompoundId))]
     public Compound Compound { get; init; } = null!;
 }

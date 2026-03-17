@@ -29,10 +29,11 @@ internal sealed class CompoundTable : Table<CompoundRow>
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(Compound.Text),
+        nameof(Compound.Text)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override IReadOnlyList<string> KeyColNames
+        => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
 
     protected override SqliteParameter[] Parameters(CompoundRow row) =>
     [

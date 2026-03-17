@@ -29,7 +29,7 @@ internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CompoundReading.CompoundText),
+        nameof(CompoundReading.CompoundId),
         nameof(CompoundReading.Text),
     ];
 
@@ -37,7 +37,7 @@ internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
 
     protected override SqliteParameter[] Parameters(CompoundReadingRow row) =>
     [
-        new("@0", row.CompoundText),
+        new("@0", row.CompoundId),
         new("@1", row.Text),
     ];
 }

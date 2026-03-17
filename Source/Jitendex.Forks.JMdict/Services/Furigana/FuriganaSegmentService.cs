@@ -95,16 +95,19 @@ internal partial class FuriganaSegmentService
             }
         }
 
-        var compoundReadings = context.CompoundReadings
+        var compounds = context.Compounds
             .Select(static c => new
             {
-                c.CompoundText,
                 c.Text,
+                Readings = c.Readings.Select(static r => r.Text),
             });
 
-        foreach (var reading in compoundReadings)
+        foreach (var compound in compounds)
         {
-            service.AddCompoundReading(reading.CompoundText, reading.Text);
+            foreach (var reading in compound.Readings)
+            {
+                service.AddCompoundReading(compound.Text, reading);
+            }
         }
 
         return service;

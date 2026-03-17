@@ -134,7 +134,6 @@ internal partial class PatchService
 
     private SequenceDto? ApplyPatchStack(Stack<PatchData> stack, SequenceDto sequence, DateOnly sequenceDate)
     {
-        var newSequence = sequence;
         bool outdated = false;
         while (stack.Count > 0)
         {
@@ -154,7 +153,7 @@ internal partial class PatchService
             }
 
             var patchError = false;
-            patchDoc.ApplyTo(newSequence, logErrorAction: action =>
+            patchDoc.ApplyTo(sequence, logErrorAction: action =>
             {
                 patchError = true;
                 LogPatchError(patch.Id, action.ErrorMessage);
@@ -167,21 +166,23 @@ internal partial class PatchService
         }
         if (outdated)
         {
-            rebaser.Write(sequence, newSequence, sequenceDate);
+            var oldSequences = SequenceDictionaryLoader.Load(jmdictContext, [sequence.Id]);
+            var oldSequence = oldSequences[sequence.Id];
+            rebaser.Write(oldSequence, sequence, sequenceDate);
         }
-        return newSequence;
+        return sequence;
     }
 
     [LoggerMessage(LogLevel.Error, "Invalid sequence date {Date} in patch ID #{Id}")]
     private partial void LogInvalidFileDate(int id, DateOnly date);
 
     [LoggerMessage(LogLevel.Warning,
-    "Patch #{PatchId} for sequence #{SeqId} targets file version {PatchDate}, but the the current version is {SeqDate}")]
+    "Patch ID {PatchId} for sequence #{SeqId} targets file version {PatchDate}, but the the current version is {SeqDate}")]
     private partial void LogOutdatedPatch(int patchId, int seqId, DateOnly patchDate, DateOnly seqDate);
 
     [LoggerMessage(LogLevel.Warning, "Unable to apply patch ID #{Id}: `{Message}`")]
     private partial void LogPatchError(int id, string message);
 
-    [LoggerMessage(LogLevel.Error, "Unable to deserialize patch ID #{Id}")]
+    [LoggerMessage(LogLevel.Error, "Unable to deserialize patch ID {Id}")]
     private partial void LogDeserializationError(int id);
 }

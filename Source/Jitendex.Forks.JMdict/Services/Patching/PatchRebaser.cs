@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Text.Json;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities;
 using Jitendex.Dto.JMdict;
@@ -34,7 +35,7 @@ internal sealed class PatchRebaser(HomeContext context)
             return;
         }
 
-        var json = JsonDiffer.Diff(oldSequence, newSequence);
+        var json = JsonDiffer.Diff(oldSequence, newSequence, JsonSerializerOptions);
         var comment = $"Rebasing and squashing patches onto new sequence version from date {sequenceDate}";
 
         context.JMdictPatches.Add(new()
@@ -75,6 +76,12 @@ internal sealed class PatchRebaser(HomeContext context)
 
         return user;
     }
+
+    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        WriteIndented = true,
+        IndentSize = 4,
+    };
 
     private int ExistingPatchesCount(int sequenceId, DateOnly sequenceDate, int authorId)
         => context.JMdictPatches

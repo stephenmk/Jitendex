@@ -21,16 +21,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
-[Table(nameof(Compound))]
-[PrimaryKey(nameof(Id))]
-public sealed class Compound
+[Table(nameof(CompoundCharacter))]
+[PrimaryKey(nameof(CompoundId), nameof(Order))]
+public sealed class CompoundCharacter
 {
-    public required int Id { get; init; }
-    public required string Text { get; init; }
+    public required int CompoundId { get; init; }
+    public required int Order { get; init; }
+    public required int CharacterValue { get; init; }
 
-    [InverseProperty(nameof(CompoundCharacter.Compound))]
-    public ICollection<CompoundCharacter> Characters { get; init; } = [];
+    [ForeignKey(nameof(CompoundId))]
+    public Compound Compound { get; init; } = null!;
 
-    [InverseProperty(nameof(CompoundReading.Compound))]
-    public ICollection<CompoundReading> Readings { get; init; } = [];
+    [ForeignKey(nameof(CharacterValue))]
+    public Character Character { get; init; } = null!;
 }

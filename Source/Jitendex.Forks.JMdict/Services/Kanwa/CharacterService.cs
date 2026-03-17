@@ -27,10 +27,35 @@ internal sealed class CharacterService
 (
     JMdictForkContext forkContext,
     HomeContext homeContext,
-    CharacterTable table
+    CompoundTable compoundTable,
+    CompoundReadingTable readingTable,
+    CharacterTable characterTable,
+    CompoundCharacterTable compoundCharacterTable
 )
 {
     public void Write()
+    {
+        WriteCompounds();
+        WriteCompoundReadings();
+        WriteCharacters();
+        WriteCompoundCharacters();
+    }
+
+    private void WriteCompounds()
+    {
+        var compoundRows = homeContext.Compounds
+            .Select(static x => new CompoundRow(x.Id, x.Text));
+        compoundTable.InsertItems(forkContext, compoundRows);
+    }
+
+    private void WriteCompoundReadings()
+    {
+        var readingRows = homeContext.CompoundReadings
+            .Select(static x => new CompoundReadingRow(x.CompoundId, x.Text));
+        readingTable.InsertItems(forkContext, readingRows);
+    }
+
+    private void WriteCharacters()
     {
         var allRunes = homeContext.Characters
             .Select(static x => x.Value)
@@ -51,6 +76,25 @@ internal sealed class CharacterService
         }
 
         var rows = allRunes.Select(static x => new CharacterRow(x));
-        table.InsertItems(forkContext, rows);
+        characterTable.InsertItems(forkContext, rows);
+    }
+
+    private void WriteCompoundCharacters()
+    {
+        var rows = new List<CompoundCharacterRow>();
+
+        var compounds = forkContext.Compounds
+            .Select(static x => new { x.Id, x.Text });
+
+        foreach (var compound in compounds)
+        {
+            int i = 0;
+            foreach (var rune in compound.Text.EnumerateRunes())
+            {
+                rows.Add(new(compound.Id, i++, rune.Value));
+            }
+        }
+
+        compoundCharacterTable.InsertItems(forkContext, rows);
     }
 }

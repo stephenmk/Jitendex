@@ -39,7 +39,6 @@ internal sealed class Service
     ReadingRestrictionService readingRestrictions,
     KanjiFormRestrictionService kanjiFormRestrictions,
     CrossReferenceService crossReferences,
-    CompoundService compounds,
     CharacterService characters,
     CharacterReadingService characterReadings,
     DerivedReadingService derivedReadings,
@@ -95,7 +94,6 @@ internal sealed class Service
     private void RunKanwaServices()
     {
         logger.LogInformation("Transfer home-grown character information.");
-        compounds.Write();
         characters.Write();
         characterReadings.Write();
 

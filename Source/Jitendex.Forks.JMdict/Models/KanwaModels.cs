@@ -30,6 +30,13 @@ internal sealed record CompoundReadingRow
     string Text
 );
 
+internal sealed record CompoundCharacterRow
+(
+    int CompoundId,
+    int Order,
+    int CharacterValue
+);
+
 internal sealed record CharacterRow
 (
     int Value

@@ -29,4 +29,7 @@ public sealed class Character
 
     [InverseProperty(nameof(CharacterReading.Character))]
     public ICollection<CharacterReading> Readings { get; init; } = [];
+
+    [InverseProperty(nameof(CompoundCharacter.Character))]
+    public ICollection<CompoundCharacter> Compounds { get; init; } = [];
 }

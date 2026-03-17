@@ -59,7 +59,6 @@ internal static class ServiceProvider
 
         .AddTransient<CrossReferenceService>()
 
-        .AddTransient<CompoundService>()
         .AddTransient<CharacterService>()
         .AddTransient<CharacterReadingService>()
         .AddTransient<DerivedReadingService>()
@@ -79,6 +78,7 @@ internal static class ServiceProvider
 
         .AddTransient<CompoundTable>()
         .AddTransient<CompoundReadingTable>()
+        .AddTransient<CompoundCharacterTable>()
         .AddTransient<CharacterTable>()
         .AddTransient<CharacterReadingTable>()
         .AddTransient<CharacterReadingTypeTable>()

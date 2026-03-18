@@ -17,28 +17,26 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Furigana;
 
-[Table(nameof(FuriganaSegment))]
-[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder), nameof(Order))]
-public sealed class FuriganaSegment
+[Table(nameof(CompoundReadingLink))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder), nameof(FuriganaSegmentOrder))]
+public sealed class CompoundReadingLink
 {
     public required int EntryId { get; init; }
     public required int ReadingOrder { get; init; }
     public required int KanjiFormOrder { get; init; }
-    public required int Order { get; init; }
+    public required int FuriganaSegmentOrder { get; init; }
 
-    public required string BaseText { get; set; }
-    public required string? Furigana { get; set; }
+    public required int CompoundId { get; set; }
+    public required string ReadingText { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
-    public ReadingKanjiFormBridge KanjiFormBridge { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}, {nameof(FuriganaSegmentOrder)}")]
+    public FuriganaSegment FuriganaSegment { get; init; } = null!;
 
-    [InverseProperty(nameof(CharacterReadingLink.FuriganaSegment))]
-    public CharacterReadingLink? CharacterLink { get; set; } = null!;
-
-    [InverseProperty(nameof(CharacterReadingLink.FuriganaSegment))]
-    public CompoundReadingLink? CompoundLink { get; set; } = null!;
+    [ForeignKey($"{nameof(CompoundId)}, {nameof(ReadingText)}")]
+    public CompoundReading Reading { get; set; } = null!;
 }

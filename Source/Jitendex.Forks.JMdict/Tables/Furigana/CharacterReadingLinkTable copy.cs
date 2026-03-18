@@ -23,35 +23,35 @@ using Jitendex.Data.JMdict.ForkEntities.Furigana;
 
 namespace Jitendex.Forks.JMdict.Tables.Furigana;
 
-internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
+internal sealed class CompoundReadingLinkTable : Table<CompoundReadingLinkRow>
 {
-    protected override string Name => nameof(FuriganaSegment);
+    protected override string Name => nameof(CompoundReadingLink);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(FuriganaSegment.EntryId),
-        nameof(FuriganaSegment.ReadingOrder),
-        nameof(FuriganaSegment.KanjiFormOrder),
-        nameof(FuriganaSegment.Order),
-        nameof(FuriganaSegment.BaseText),
-        nameof(FuriganaSegment.Furigana),
+        nameof(CompoundReadingLink.EntryId),
+        nameof(CompoundReadingLink.ReadingOrder),
+        nameof(CompoundReadingLink.KanjiFormOrder),
+        nameof(CompoundReadingLink.FuriganaSegmentOrder),
+        nameof(CompoundReadingLink.CompoundId),
+        nameof(CompoundReadingLink.ReadingText),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(FuriganaSegment.EntryId),
-        nameof(FuriganaSegment.ReadingOrder),
-        nameof(FuriganaSegment.KanjiFormOrder),
-        nameof(FuriganaSegment.Order),
+        nameof(CompoundReadingLink.EntryId),
+        nameof(CompoundReadingLink.ReadingOrder),
+        nameof(CompoundReadingLink.KanjiFormOrder),
+        nameof(CompoundReadingLink.FuriganaSegmentOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(FuriganaSegmentRow row) =>
+    protected override SqliteParameter[] Parameters(CompoundReadingLinkRow row) =>
     [
         new("@0", row.EntryId),
         new("@1", row.ReadingOrder),
         new("@2", row.KanjiFormOrder),
-        new("@3", row.Order),
-        new("@4", row.BaseText),
-        new("@5", row.Furigana.Nullable()),
+        new("@3", row.FuriganaSegmentOrder),
+        new("@4", row.CompoundId),
+        new("@5", row.ReadingText),
     ];
 }

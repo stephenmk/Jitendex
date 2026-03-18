@@ -34,3 +34,23 @@ internal sealed record FuriganaSegmentRow
     string BaseText,
     string? Furigana
 );
+
+internal sealed record CharacterReadingLinkRow
+(
+    int EntryId,
+    int ReadingOrder,
+    int KanjiFormOrder,
+    int FuriganaSegmentOrder,
+    int CharacterReadingId,
+    string DerivedReadingText
+);
+
+internal sealed record CompoundReadingLinkRow
+(
+    int EntryId,
+    int ReadingOrder,
+    int KanjiFormOrder,
+    int FuriganaSegmentOrder,
+    int CompoundId,
+    string ReadingText
+);

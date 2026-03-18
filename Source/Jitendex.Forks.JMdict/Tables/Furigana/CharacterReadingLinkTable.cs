@@ -23,35 +23,35 @@ using Jitendex.Data.JMdict.ForkEntities.Furigana;
 
 namespace Jitendex.Forks.JMdict.Tables.Furigana;
 
-internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
+internal sealed class CharacterReadingLinkTable : Table<CharacterReadingLinkRow>
 {
-    protected override string Name => nameof(FuriganaSegment);
+    protected override string Name => nameof(CharacterReadingLink);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(FuriganaSegment.EntryId),
-        nameof(FuriganaSegment.ReadingOrder),
-        nameof(FuriganaSegment.KanjiFormOrder),
-        nameof(FuriganaSegment.Order),
-        nameof(FuriganaSegment.BaseText),
-        nameof(FuriganaSegment.Furigana),
+        nameof(CharacterReadingLink.EntryId),
+        nameof(CharacterReadingLink.ReadingOrder),
+        nameof(CharacterReadingLink.KanjiFormOrder),
+        nameof(CharacterReadingLink.FuriganaSegmentOrder),
+        nameof(CharacterReadingLink.CharacterReadingId),
+        nameof(CharacterReadingLink.DerivedReadingText),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(FuriganaSegment.EntryId),
-        nameof(FuriganaSegment.ReadingOrder),
-        nameof(FuriganaSegment.KanjiFormOrder),
-        nameof(FuriganaSegment.Order),
+        nameof(CharacterReadingLink.EntryId),
+        nameof(CharacterReadingLink.ReadingOrder),
+        nameof(CharacterReadingLink.KanjiFormOrder),
+        nameof(CharacterReadingLink.FuriganaSegmentOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(FuriganaSegmentRow row) =>
+    protected override SqliteParameter[] Parameters(CharacterReadingLinkRow row) =>
     [
         new("@0", row.EntryId),
         new("@1", row.ReadingOrder),
         new("@2", row.KanjiFormOrder),
-        new("@3", row.Order),
-        new("@4", row.BaseText),
-        new("@5", row.Furigana.Nullable()),
+        new("@3", row.FuriganaSegmentOrder),
+        new("@4", row.CharacterReadingId),
+        new("@5", row.DerivedReadingText),
     ];
 }

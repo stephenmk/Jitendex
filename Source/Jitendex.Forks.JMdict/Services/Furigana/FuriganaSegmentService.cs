@@ -16,14 +16,15 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Immutable;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Jitendex.Furigana;
 using Jitendex.Data.JMdict;
+using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 using static Jitendex.Data.JMdict.ForkEntities.Kanwa.DerivedCharacterReadingTypeId;
-using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Services.Furigana;
 
@@ -42,8 +43,6 @@ internal partial class FuriganaSegmentService
 
     public void Write()
     {
-        var (furiganaService, idToReadingKey) = LoadFuriganaService();
-
         var entries = context.ReadingKanjiFormBridges
             .Select(static b => new
             {
@@ -54,6 +53,7 @@ internal partial class FuriganaSegmentService
                 KanjiFormText = b.KanjiForm.Text,
             });
 
+        var (furiganaService, idToReadingKey) = LoadFuriganaService();
         var chineseEntryIds = LoadLanguageEntryIds("chi");
         var koreanEntryIds = LoadLanguageEntryIds("kor");
 
@@ -82,22 +82,15 @@ internal partial class FuriganaSegmentService
             {
                 var part = solution.Parts[i];
                 segments.Add(new(entry.Id, entry.ReadingOrder, entry.KanjiFormOrder, i, part.BaseText, part.RubyText));
-
-                if (GetKey(idToReadingKey, part.ReadingIds) is not ReadingKey key)
+                var key = GetKey(idToReadingKey, part.ReadingIds);
+                switch (key)
                 {
-                    continue;
-                }
-                else if (key is CharacterReadingKey)
-                {
-                    characterLinks.Add(new(entry.Id, entry.ReadingOrder, entry.KanjiFormOrder, i, key.Id, key.Text));
-                }
-                else if (key is CompoundReadingKey)
-                {
-                    compoundLinks.Add(new(entry.Id, entry.ReadingOrder, entry.KanjiFormOrder, i, key.Id, key.Text));
-                }
-                else
-                {
-                    throw new NotSupportedException();
+                    case CharacterReadingKey:
+                        characterLinks.Add(new(entry.Id, entry.ReadingOrder, entry.KanjiFormOrder, i, key.Id, key.Text));
+                        break;
+                    case CompoundReadingKey:
+                        compoundLinks.Add(new(entry.Id, entry.ReadingOrder, entry.KanjiFormOrder, i, key.Id, key.Text));
+                        break;
                 }
             }
         }
@@ -160,13 +153,13 @@ internal partial class FuriganaSegmentService
             .Select(static l => l.EntryId)
             .ToHashSet();
 
-    private static ReadingKey? GetKey(Dictionary<int, ReadingKey> idToKey, IList<int> ids)
+    private static ReadingKey? GetKey(Dictionary<int, ReadingKey> idToKey, ImmutableArray<int> ids)
     {
-        if (ids is [])
+        if (ids.Length == 0)
         {
             return null;
         }
-        if (ids.Count == 1)
+        if (ids.Length == 1)
         {
             return idToKey[ids[0]];
         }

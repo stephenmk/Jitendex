@@ -52,10 +52,9 @@ internal sealed class SingleCharacterAlgorithm : CharacterAlgorithm
 
         if (currentRune.IsKana())
         {
-            if (readingState.FirstRemainingChar.IsKanaEquivalent((char)currentRune.Value))
-            {
-                return [currentRune.ToString()];
-            }
+            return readingState.FirstRemainingChar.IsKanaEquivalent((char)currentRune.Value)
+                ? [currentRune.ToString()]
+                : [];
         }
 
         if (textSlice.PreviousRune.IsKanaOrDefault() && textSlice.NextRune.IsKanaOrDefault())

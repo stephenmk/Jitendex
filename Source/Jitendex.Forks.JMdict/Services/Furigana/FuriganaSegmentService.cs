@@ -127,8 +127,8 @@ internal partial class FuriganaSegmentService
                 var id = r.TypeId switch
                 {
                     Chinese => service.AddHanziReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
-                    Korean => service.AddHanjaReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
-                    _ => service.AddCharacterReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
+                    Korean  => service.AddHanjaReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
+                    _   => service.AddCharacterReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
                 };
                 idToKey[id] = new CharacterReadingKey(r.ReadingId, r.Text, r.TypeId);
             }

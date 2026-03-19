@@ -23,14 +23,13 @@ namespace Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
 [Table(nameof(CharacterReading))]
 [PrimaryKey(nameof(Id))]
-[Index(nameof(CharacterValue), nameof(TypeId), nameof(Text), nameof(Okurigana), IsUnique = true)]
+[Index(nameof(CharacterValue), nameof(TypeId), nameof(Text), IsUnique = true)]
 public sealed class CharacterReading
 {
     public int Id { get; init; }
     public required int CharacterValue { get; init; }
     public required CharacterReadingTypeId TypeId { get; init; }
     public required string Text { get; init; }
-    public required string? Okurigana { get; init; }
     public required bool IsPrefix { get; init; }
     public required bool IsSuffix { get; init; }
 
@@ -39,6 +38,9 @@ public sealed class CharacterReading
 
     [ForeignKey(nameof(TypeId))]
     public CharacterReadingType Type { get; init; } = null!;
+
+    [InverseProperty(nameof(CharacterReadingOkurigana.Reading))]
+    public ICollection<CharacterReadingOkurigana> Okuriganas { get; init; } = [];
 
     [InverseProperty(nameof(DerivedCharacterReading.Source))]
     public ICollection<DerivedCharacterReading> DerivedReadings { get; init; } = [];

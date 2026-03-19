@@ -23,28 +23,24 @@ using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
-internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
+internal sealed class CharacterReadingOkuriganaTable : Table<CharacterReadingOkuriganaRow>
 {
-    protected override string Name => nameof(CharacterReading);
+    protected override string Name => nameof(CharacterReadingOkurigana);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CharacterReading.CharacterValue),
-        nameof(CharacterReading.TypeId),
-        nameof(CharacterReading.Text),
-        nameof(CharacterReading.IsPrefix),
-        nameof(CharacterReading.IsSuffix),
+        nameof(CharacterReadingOkurigana.ReadingId),
+        nameof(CharacterReadingOkurigana.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
-
-    protected override SqliteParameter[] Parameters(CharacterReadingRow row) =>
+    protected override IReadOnlyList<string> KeyColNames =>
     [
-        new("@0", row.CharacterValue),
-        new("@1", row.TypeId),
-        new("@2", row.Text),
-        new("@3", row.IsPrefix),
-        new("@4", row.IsSuffix),
+        nameof(CharacterReadingOkurigana.ReadingId)
+    ];
+
+    protected override SqliteParameter[] Parameters(CharacterReadingOkuriganaRow row) =>
+    [
+        new("@0", row.ReadingId),
+        new("@1", row.Text),
     ];
 }

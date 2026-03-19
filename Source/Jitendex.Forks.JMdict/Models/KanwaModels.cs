@@ -47,9 +47,14 @@ internal sealed record CharacterReadingRow
     int CharacterValue,
     int TypeId,
     string Text,
-    string? Okurigana,
     bool IsPrefix,
     bool IsSuffix
+);
+
+internal sealed record CharacterReadingOkuriganaRow
+(
+    int ReadingId,
+    string Text
 );
 
 internal sealed record CharacterReadingTypeRow

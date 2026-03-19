@@ -82,6 +82,7 @@ internal static class ServiceProvider
         .AddTransient<CharacterTable>()
         .AddTransient<CharacterReadingTable>()
         .AddTransient<CharacterReadingTypeTable>()
+        .AddTransient<CharacterReadingOkuriganaTable>()
         .AddTransient<DerivedCharacterReadingTable>()
         .AddTransient<DerivedCharacterReadingTypeTable>()
         .AddTransient<ReadingKanjiFormBridgeTable>()

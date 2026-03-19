@@ -23,6 +23,7 @@ using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 using static Jitendex.Data.JMdict.ForkEntities.Kanwa.DerivedCharacterReadingTypeId;
+using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Services.Furigana;
 
@@ -35,7 +36,8 @@ internal partial class FuriganaSegmentService
     CompoundReadingLinkTable compoundTable
 )
 {
-    private record ReadingKey(int Id, string Text);
+    private abstract record ReadingKey(int Id, string Text);
+    private sealed record CharacterReadingKey(int Id, string Text, DerivedCharacterReadingTypeId TypeId) : ReadingKey(Id, Text);
     private sealed record CompoundReadingKey(int Id, string Text) : ReadingKey(Id, Text);
 
     public void Write()
@@ -56,10 +58,8 @@ internal partial class FuriganaSegmentService
         var koreanEntryIds = LoadLanguageEntryIds("kor");
 
         var segments = new List<FuriganaSegmentRow>(700_000);
-        var characterLinks = new List<CharacterReadingLinkRow>(700_000);
-        var compoundLinks = new List<CompoundReadingLinkRow>(700_000);
-
-        var troubleReadings = new Dictionary<(string, string?), int>();
+        var characterLinks = new List<CharacterReadingLinkRow>(600_000);
+        var compoundLinks = new List<CompoundReadingLinkRow>(10_000);
 
         foreach (var entry in entries)
         {
@@ -81,64 +81,26 @@ internal partial class FuriganaSegmentService
             for (int i = 0; i < solution.Parts.Length; i++)
             {
                 var part = solution.Parts[i];
-                segments.Add(new
-                (
-                    entry.Id,
-                    entry.ReadingOrder,
-                    entry.KanjiFormOrder,
-                    i,
-                    part.BaseText,
-                    part.RubyText
-                ));
-                if (part.ReadingIds is [])
+                segments.Add(new(entry.Id, entry.ReadingOrder, entry.KanjiFormOrder, i, part.BaseText, part.RubyText));
+
+                if (GetKey(idToReadingKey, part.ReadingIds) is not ReadingKey key)
                 {
                     continue;
                 }
-                var key = idToReadingKey[part.ReadingIds.First()];
-                if (part.ReadingIds.Length > 1)
+                else if (key is CharacterReadingKey)
                 {
-                    // LogMultipleReadings(part.BaseText, part.RubyText, entry.KanjiFormText);
-                    if (troubleReadings.TryGetValue((part.BaseText, part.RubyText), out var count))
-                    {
-                        troubleReadings[(part.BaseText, part.RubyText)] = count + 1;
-                    }
-                    else
-                    {
-                        troubleReadings[(part.BaseText, part.RubyText)] = 1;
-                    }
+                    characterLinks.Add(new(entry.Id, entry.ReadingOrder, entry.KanjiFormOrder, i, key.Id, key.Text));
                 }
-                if (key is CompoundReadingKey)
+                else if (key is CompoundReadingKey)
                 {
-                    compoundLinks.Add(new
-                    (
-                        entry.Id,
-                        entry.ReadingOrder,
-                        entry.KanjiFormOrder,
-                        i,
-                        key.Id,
-                        key.Text
-                    ));
+                    compoundLinks.Add(new(entry.Id, entry.ReadingOrder, entry.KanjiFormOrder, i, key.Id, key.Text));
                 }
                 else
                 {
-                    characterLinks.Add(new
-                    (
-                        entry.Id,
-                        entry.ReadingOrder,
-                        entry.KanjiFormOrder,
-                        i,
-                        key.Id,
-                        key.Text
-                    ));
+                    throw new NotSupportedException();
                 }
             }
         }
-
-        foreach(var x in troubleReadings)
-        {
-            Console.Error.WriteLine($"{x.Key.Item1}\t{x.Key.Item2}\t{x.Value}");
-        }
-        Console.Error.WriteLine(troubleReadings.Count);
 
         segmentTable.InsertItems(context, segments);
         characterTable.InsertItems(context, characterLinks);
@@ -168,7 +130,7 @@ internal partial class FuriganaSegmentService
                     Korean => service.AddHanjaReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
                     _ => service.AddCharacterReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
                 };
-                idToKey[id] = new ReadingKey(r.ReadingId, r.Text);
+                idToKey[id] = new CharacterReadingKey(r.ReadingId, r.Text, r.TypeId);
             }
         }
 
@@ -197,6 +159,26 @@ internal partial class FuriganaSegmentService
             .Where(l => l.LanguageCode == languageCode)
             .Select(static l => l.EntryId)
             .ToHashSet();
+
+    private static ReadingKey? GetKey(Dictionary<int, ReadingKey> idToKey, IList<int> ids)
+    {
+        if (ids is [])
+        {
+            return null;
+        }
+        if (ids.Count == 1)
+        {
+            return idToKey[ids[0]];
+        }
+        var keys = ids.Select(id => idToKey[id]).ToArray();
+        if (keys.All(static k => k is CharacterReadingKey))
+        {
+            return keys
+                .OrderBy(static k => ((CharacterReadingKey)k).TypeId)
+                .First();
+        }
+        return keys.First();
+    }
 
     [LoggerMessage(LogLevel.Warning,
     "Unable to solve furigana for {KanjiForm}【{Reading}】 from Entry ID {EntryId}")]

@@ -16,12 +16,13 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Immutable;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Data.JMdict;
+using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
 using static Jitendex.Data.JMdict.ForkEntities.Kanwa.CharacterReadingTypeId;
-using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
@@ -35,10 +36,10 @@ internal sealed class DerivedReadingService
     (
         int Id,
         string Text,
-        string? Okurigana,
         bool IsPrefix,
         bool IsSuffix,
-        CharacterReadingTypeId TypeId
+        CharacterReadingTypeId TypeId,
+        ImmutableArray<string> Okuriganas
     );
 
     public void Write()
@@ -52,10 +53,12 @@ internal sealed class DerivedReadingService
                 (
                     Id: r.Id,
                     Text: r.Text,
-                    Okurigana: r.Okurigana,
                     IsPrefix: r.IsPrefix,
                     IsSuffix: r.IsSuffix,
-                    TypeId: r.TypeId
+                    TypeId: r.TypeId,
+                    Okuriganas: r.Okuriganas
+                        .Select(static o => o.Text)
+                        .ToImmutableArray()
                 ))
             });
 
@@ -67,12 +70,15 @@ internal sealed class DerivedReadingService
             {
                 Onyomi  => entry.Readings.SelectMany(GetDerivedOnReadings),
                 Kunyomi => entry.Readings.SelectMany(GetDerivedKunReadings),
-                      _ => entry.Readings.SelectMany(GetDerivedReadings),
+                _       => entry.Readings.SelectMany(GetDerivedReadings),
             };
             rows.AddRange(newRows);
         }
 
-        table.InsertItems(context, rows);
+        var distinctRows = rows
+            .DistinctBy(static r => new { r.ReadingId, r.Text });
+
+        table.InsertItems(context, distinctRows);
     }
 
     private IEnumerable<DerivedCharacterReadingRow> GetDerivedOnReadings(ReadingData rdg)
@@ -133,7 +139,7 @@ internal sealed class DerivedReadingService
 
     private IEnumerable<DerivedCharacterReadingRow> GetDerivedKunReadings(ReadingData rdg)
     {
-        if (rdg.Okurigana is null)
+        if (rdg.Okuriganas is [])
         {
             return GetDerivedKunStems(rdg);
         }
@@ -175,54 +181,57 @@ internal sealed class DerivedReadingService
         {
             yield return stem;
 
-            for (int i = 0; i < rdg.Okurigana!.Length; i++)
+            foreach (var okurigana in rdg.Okuriganas)
             {
-                yield return new
-                (
-                    rdg.Id,
-                    Text: string.Concat(stem.Text, rdg.Okurigana[..(i + 1)]),
-                    IsPrefix: rdg.IsPrefix && i == rdg.Okurigana.Length - 1,
-                    IsSuffix: stem.IsSuffix,
-                    TypeId: stem.TypeId == (int)DerivedCharacterReadingTypeId.Kunyomi
-                        ? (int)DerivedCharacterReadingTypeId.KunyomiOkurigana
-                        : (int)DerivedCharacterReadingTypeId.KunyomiRendakuOkurigana
-                );
-            }
+                for (int i = 0; i < okurigana.Length; i++)
+                {
+                    yield return new
+                    (
+                        rdg.Id,
+                        Text: string.Concat(stem.Text, okurigana[..(i + 1)]),
+                        IsPrefix: false,
+                        IsSuffix: stem.IsSuffix,
+                        TypeId: stem.TypeId == (int)DerivedCharacterReadingTypeId.Kunyomi
+                            ? (int)DerivedCharacterReadingTypeId.KunyomiOkurigana
+                            : (int)DerivedCharacterReadingTypeId.KunyomiRendakuOkurigana
+                    );
+                }
 
-            var fullText = string.Concat(stem.Text, rdg.Okurigana);
+                var fullText = string.Concat(stem.Text, okurigana);
 
-            if (fullText.VerbToMasuStem() is string masuStem)
-            {
-                yield return new
-                (
-                    rdg.Id,
-                    Text: masuStem,
-                    IsPrefix: false,
-                    IsSuffix: stem.IsSuffix,
-                    TypeId: stem.TypeId == (int)DerivedCharacterReadingTypeId.Kunyomi
-                        ? (int)DerivedCharacterReadingTypeId.KunyomiMasu
-                        : (int)DerivedCharacterReadingTypeId.KunyomiRendakuMasu
-                );
-            }
+                if (fullText.VerbToMasuStem() is string masuStem)
+                {
+                    yield return new
+                    (
+                        rdg.Id,
+                        Text: masuStem,
+                        IsPrefix: false,
+                        IsSuffix: stem.IsSuffix,
+                        TypeId: stem.TypeId == (int)DerivedCharacterReadingTypeId.Kunyomi
+                            ? (int)DerivedCharacterReadingTypeId.KunyomiMasu
+                            : (int)DerivedCharacterReadingTypeId.KunyomiRendakuMasu
+                    );
+                }
 
-            if (rdg.Okurigana.EndsWith('す') || rdg.Okurigana.EndsWith('ず'))
-            {
-                // Masu stems and Te stems are identical.
-                continue;
-            }
+                if (okurigana.EndsWith('す') || okurigana.EndsWith('ず'))
+                {
+                    // Masu stems and Te stems are identical.
+                    continue;
+                }
 
-            if (fullText.VerbToTeStem() is string teStem)
-            {
-                yield return new
-                (
-                    rdg.Id,
-                    Text: teStem,
-                    IsPrefix: false,
-                    IsSuffix: stem.IsSuffix,
-                    TypeId: stem.TypeId == (int)DerivedCharacterReadingTypeId.Kunyomi
-                        ? (int)DerivedCharacterReadingTypeId.KunyomiTe
-                        : (int)DerivedCharacterReadingTypeId.KunyomiRendakuTe
-                );
+                if (fullText.VerbToTeStem() is string teStem)
+                {
+                    yield return new
+                    (
+                        rdg.Id,
+                        Text: teStem,
+                        IsPrefix: false,
+                        IsSuffix: stem.IsSuffix,
+                        TypeId: stem.TypeId == (int)DerivedCharacterReadingTypeId.Kunyomi
+                            ? (int)DerivedCharacterReadingTypeId.KunyomiTe
+                            : (int)DerivedCharacterReadingTypeId.KunyomiRendakuTe
+                    );
+                }
             }
         }
     }

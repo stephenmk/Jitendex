@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Data.Sqlite;
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Import.Home.Tables.Furigana;
+namespace Jitendex.Import.Home.Tables.Kanwa;
 
 internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
 {

@@ -22,9 +22,9 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Models;
-using Jitendex.Import.Home.Tables.Furigana;
+using Jitendex.Import.Home.Tables.Kanwa;
 
-namespace Jitendex.Import.Home.Services.Furigana;
+namespace Jitendex.Import.Home.Services.Kanwa;
 
 internal sealed class CompoundService
 (
@@ -93,7 +93,7 @@ internal sealed class CompoundService
     private string GetJsonFilePath()
         => Path.Join
         (
-            options.GetFuriganaDirectory().FullName,
+            options.GetKanwaDirectory().FullName,
             "compounds.json"
         );
 

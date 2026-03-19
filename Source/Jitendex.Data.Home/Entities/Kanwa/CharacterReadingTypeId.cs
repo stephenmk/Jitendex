@@ -16,28 +16,16 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
-using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Furigana;
-using Jitendex.Import.Home.Models;
+namespace Jitendex.Data.Home.Entities.Kanwa;
 
-namespace Jitendex.Import.Home.Tables.Furigana;
-
-internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
+public enum CharacterReadingTypeId
 {
-    protected override string Name => nameof(CompoundReading);
-
-    protected override IReadOnlyList<string> ColumnNames =>
-    [
-        nameof(CompoundReading.CompoundId),
-        nameof(CompoundReading.Text),
-    ];
-
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
-
-    protected override SqliteParameter[] Parameters(CompoundReadingRow row) =>
-    [
-        new("@0", row.CompoundId),
-        new("@1", row.Text),
-    ];
+    Onyomi,
+    Kunyomi,
+    Chinese,
+    Korean,
+    Kana,
+    Alphanumeric,
+    Symbol,
+    Unknown,
 }

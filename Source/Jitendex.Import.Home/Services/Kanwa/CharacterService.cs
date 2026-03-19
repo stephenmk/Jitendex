@@ -20,12 +20,12 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
-using Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.Models;
-using Jitendex.Import.Home.Tables.Furigana;
+using Jitendex.Import.Home.Tables.Kanwa;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Import.Home.Services.Furigana;
+namespace Jitendex.Import.Home.Services.Kanwa;
 
 internal sealed class CharacterService
 (
@@ -93,7 +93,7 @@ internal sealed class CharacterService
     private string GetJsonFilePath()
         => Path.Join
         (
-            options.GetFuriganaDirectory().FullName,
+            options.GetKanwaDirectory().FullName,
             "characters.json"
         );
 

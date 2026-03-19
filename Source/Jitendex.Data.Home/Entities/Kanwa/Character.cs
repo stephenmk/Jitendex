@@ -19,15 +19,14 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.Home.Entities.Furigana;
+namespace Jitendex.Data.Home.Entities.Kanwa;
 
-[Table(nameof(Compound))]
-[PrimaryKey(nameof(Id))]
-public sealed class Compound
+[Table(nameof(Character))]
+[PrimaryKey(nameof(Value))]
+public sealed class Character
 {
-    public required int Id { get; init; }
-    public required string Text { get; init; }
+    public required int Value { get; init; }
 
-    [InverseProperty(nameof(CompoundReading.Compound))]
-    public ICollection<CompoundReading> Readings { get; init; } = [];
+    [InverseProperty(nameof(CharacterReading.Character))]
+    public ICollection<CharacterReading> Readings { get; init; } = [];
 }

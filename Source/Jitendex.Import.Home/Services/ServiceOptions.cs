@@ -35,8 +35,8 @@ internal sealed record ServiceOptions
         }
     }
 
-    public DirectoryInfo GetFuriganaDirectory()
-        => DataDirectory.CreateSubdirectory("furigana");
+    public DirectoryInfo GetKanwaDirectory()
+        => DataDirectory.CreateSubdirectory("kanwa");
 
     public DirectoryInfo GetJMdictDirectory()
         => DataDirectory.CreateSubdirectory("jmdict");

@@ -16,16 +16,18 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Data.Home.Entities.Furigana;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-public enum CharacterReadingTypeId
+namespace Jitendex.Data.Home.Entities.Kanwa;
+
+[Table(nameof(CompoundReading))]
+[PrimaryKey(nameof(CompoundId), nameof(Text))]
+public sealed class CompoundReading
 {
-    Onyomi,
-    Kunyomi,
-    Chinese,
-    Korean,
-    Kana,
-    Alphanumeric,
-    Symbol,
-    Unknown,
+    public required int CompoundId { get; init; }
+    public required string Text { get; init; }
+
+    [ForeignKey(nameof(CompoundId))]
+    public Compound Compound { get; init; } = null!;
 }

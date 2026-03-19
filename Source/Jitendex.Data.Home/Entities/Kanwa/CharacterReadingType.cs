@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.Home.Entities.Furigana;
+namespace Jitendex.Data.Home.Entities.Kanwa;
 
 [Table(nameof(CharacterReadingType))]
 [PrimaryKey(nameof(Id))]

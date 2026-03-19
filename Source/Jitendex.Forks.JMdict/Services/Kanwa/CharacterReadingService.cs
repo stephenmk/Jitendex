@@ -20,7 +20,7 @@ using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using HomeTypeId = Jitendex.Data.Home.Entities.Furigana.CharacterReadingTypeId;
+using HomeTypeId = Jitendex.Data.Home.Entities.Kanwa.CharacterReadingTypeId;
 using ForkTypeId = Jitendex.Data.JMdict.ForkEntities.Kanwa.CharacterReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;

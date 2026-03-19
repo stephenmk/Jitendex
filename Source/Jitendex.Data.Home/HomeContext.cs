@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home.Entities;
-using Jitendex.Data.Home.Entities.Furigana;
+using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Data.Home.Entities.JMdict;
 using Jitendex.Data.Home.Entities.Tatoeba;
 

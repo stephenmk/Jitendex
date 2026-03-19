@@ -81,6 +81,9 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
 
     #region Furigana Items
     public DbSet<ReadingKanjiFormBridge> ReadingKanjiFormBridges { get; set; } = null!;
+    public DbSet<FuriganaSegment> FuriganaSegments { get; set; } = null!;
+    public DbSet<CharacterReadingLink> CharacterReadingLinks { get; set; } = null!;
+    public DbSet<CompoundReadingLink> CompoundReadingLinks { get; set; } = null!;
     #endregion
 
     #region Kanwa Items

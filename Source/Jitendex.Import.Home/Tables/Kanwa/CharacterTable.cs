@@ -16,18 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+using Jitendex.Data;
+using Jitendex.Data.Home.Entities.Kanwa;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Data.Home.Entities.Furigana;
+namespace Jitendex.Import.Home.Tables.Kanwa;
 
-[Table(nameof(CompoundReading))]
-[PrimaryKey(nameof(CompoundId), nameof(Text))]
-public sealed class CompoundReading
+internal sealed class CharacterTable : Table<CharacterRow>
 {
-    public required int CompoundId { get; init; }
-    public required string Text { get; init; }
+    protected override string Name => nameof(Character);
 
-    [ForeignKey(nameof(CompoundId))]
-    public Compound Compound { get; init; } = null!;
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(Character.Value),
+    ];
+
+    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+
+    protected override SqliteParameter[] Parameters(CharacterRow row) =>
+    [
+        new("@0", row.Value),
+    ];
 }

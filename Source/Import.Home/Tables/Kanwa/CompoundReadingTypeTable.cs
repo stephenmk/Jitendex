@@ -16,22 +16,31 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+using Jitendex.Data;
+using Jitendex.Data.Home.Entities.Kanwa;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Data.Home.Entities.Kanwa;
+namespace Jitendex.Import.Home.Tables.Kanwa;
 
-[Table(nameof(CompoundReading))]
-[PrimaryKey(nameof(CompoundId), nameof(Text))]
-public sealed class CompoundReading
+internal sealed class CompoundReadingTypeTable : Table<CompoundReadingTypeRow>
 {
-    public required int CompoundId { get; init; }
-    public required string Text { get; init; }
-    public required CompoundReadingTypeId TypeId { get; init; }
+    protected override string Name => nameof(CompoundReadingType);
 
-    [ForeignKey(nameof(CompoundId))]
-    public Compound Compound { get; init; } = null!;
+    protected override IReadOnlyList<string> ColumnNames =>
+    [
+        nameof(CompoundReadingType.Id),
+        nameof(CompoundReadingType.Name),
+    ];
 
-    [ForeignKey(nameof(TypeId))]
-    public CompoundReadingType Type { get; init; } = null!;
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(CompoundReadingType.Id)
+    ];
+
+    protected override SqliteParameter[] Parameters(CompoundReadingTypeRow row) =>
+    [
+        new("@0", row.Id),
+        new("@1", row.Name),
+    ];
 }

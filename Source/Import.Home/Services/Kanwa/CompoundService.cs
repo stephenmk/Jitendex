@@ -16,11 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Frozen;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
+using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.Models;
 using Jitendex.Import.Home.Tables.Kanwa;
 
@@ -31,54 +31,69 @@ internal sealed class CompoundService
     HomeContext context,
     ServiceOptions options,
     CompoundTable compoundTable,
-    CompoundReadingTable compoundReadingTable
+    CompoundReadingTable readingTable,
+    CompoundReadingTypeTable typeTable
 )
 {
     public async Task ImportAsync()
     {
         var filePath = GetJsonFilePath();
         await using var stream = File.OpenRead(filePath);
-        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, string[]>>(stream) ?? [];
+        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, CompoundReadingsObject>>(stream, ReadOptions) ?? [];
 
-        var compoundRows = new List<CompoundRow>();
-        var readingRows = new List<CompoundReadingRow>();
-
-        foreach (var (key, values) in data)
-        {
-            compoundRows.Add(new(key));
-        }
-
+        var compoundRows = data.Keys.Select(static k => new CompoundRow(k));
         compoundTable.InsertItems(context, compoundRows);
 
         var compoundToId = context.Compounds
-            .Select(static c => new {Key = c.Text, Value = c.Id})
-            .ToFrozenDictionary(static x => x.Key, static x => x.Value);
+            .Select(static c => new { Key = c.Text, Value = c.Id })
+            .ToDictionary(static x => x.Key, x => x.Value);
 
-        foreach (var (key, values) in data)
+        typeTable.InsertItems(context, GetTypeRows());
+
+        var readingRows = new List<CompoundReadingRow>();
+        foreach (var (key, value) in data)
         {
-            foreach (var value in values)
-            {
-                readingRows.Add(new(compoundToId[key], value));
-            }
+            var id = compoundToId[key];
+            readingRows.AddRange(value.ToReadingRows(id));
         }
-
-        compoundReadingTable.InsertItems(context, readingRows);
+        readingTable.InsertItems(context, readingRows);
     }
 
     public async Task ExportAsync()
     {
-        var dictionary = context.Compounds
-            .Select(static x => new
+        var compounds = context.Compounds
+            .Select(static compound => new
             {
-                Key = x.Text,
-                Value = x.Readings
-                    .Select(static r => r.Text)
-                    .Order()
-                    .ToArray()
+                compound.Text,
+                Readings = compound.Readings
+                    .OrderBy(static r => r.Text)
+                    .Select(static r => new
+                    {
+                        TypeName = r.Type.Name,
+                        r.Text,
+                    })
             })
             .AsEnumerable()
-            .OrderBy(static x => x.Key, StringComparer)
-            .ToDictionary(static x => x.Key, static x => x.Value);
+            .OrderBy(static x => x.Text, StringComparer);
+
+        var dictionary = new Dictionary<string, Dictionary<string, List<string>>>();
+
+        foreach (var compound in compounds)
+        {
+            var subdictionary = new Dictionary<string, List<string>>();
+            foreach (var reading in compound.Readings)
+            {
+                if (subdictionary.TryGetValue(reading.TypeName, out var texts))
+                {
+                    texts.Add(reading.Text);
+                }
+                else
+                {
+                    subdictionary[reading.TypeName] = [reading.Text];
+                }
+            }
+            dictionary[compound.Text] = subdictionary;
+        }
 
         var filePath = GetJsonFilePath();
         if (File.Exists(filePath))
@@ -97,12 +112,25 @@ internal sealed class CompoundService
             "compounds.json"
         );
 
+    private readonly static JsonSerializerOptions ReadOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     private readonly static JsonSerializerOptions WriteOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
+
+    private static IEnumerable<CompoundReadingTypeRow> GetTypeRows()
+    {
+        foreach (var type in Enum.GetValues<CompoundReadingTypeId>())
+        {
+            yield return new CompoundReadingTypeRow((int)type, type.ToString().ToLower());
+        }
+    }
 
     private readonly static StringComparer StringComparer =
         StringComparer.Create(new CultureInfo("ja-JP"), CompareOptions.NumericOrdering);

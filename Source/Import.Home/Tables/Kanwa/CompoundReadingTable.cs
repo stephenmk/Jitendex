@@ -31,13 +31,19 @@ internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
     [
         nameof(CompoundReading.CompoundId),
         nameof(CompoundReading.Text),
+        nameof(CompoundReading.TypeId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override IReadOnlyList<string> KeyColNames =>
+    [
+        nameof(CompoundReading.CompoundId),
+        nameof(CompoundReading.Text),
+    ];
 
     protected override SqliteParameter[] Parameters(CompoundReadingRow row) =>
     [
         new("@0", row.CompoundId),
         new("@1", row.Text),
+        new("@2", row.TypeId),
     ];
 }

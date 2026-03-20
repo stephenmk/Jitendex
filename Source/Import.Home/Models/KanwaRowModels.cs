@@ -44,5 +44,12 @@ internal sealed record CompoundRow
 internal sealed record CompoundReadingRow
 (
     int CompoundId,
-    string Text
+    string Text,
+    int TypeId
+);
+
+internal sealed record CompoundReadingTypeRow
+(
+    int Id,
+    string Name
 );

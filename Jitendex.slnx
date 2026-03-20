@@ -5,37 +5,37 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Data/">
-    <Project Path="Source/Jitendex.Data/Jitendex.Data.csproj" />
-    <Project Path="Source/Jitendex.Data.ChiseIds/Jitendex.Data.ChiseIds.csproj" />
-    <Project Path="Source/Jitendex.Data.Home/Jitendex.Data.Home.csproj" />
-    <Project Path="Source/Jitendex.Data.JMdict/Jitendex.Data.JMdict.csproj" />
-    <Project Path="Source/Jitendex.Data.JMnedict/Jitendex.Data.JMnedict.csproj" />
-    <Project Path="Source/Jitendex.Data.Kanjidic2/Jitendex.Data.Kanjidic2.csproj" />
-    <Project Path="Source/Jitendex.Data.KanjiVG/Jitendex.Data.KanjiVG.csproj" />
-    <Project Path="Source/Jitendex.Data.Tatoeba/Jitendex.Data.Tatoeba.csproj" />
+    <Project Path="Source/Data/Jitendex.Data.csproj" />
+    <Project Path="Source/Data.ChiseIds/Jitendex.Data.ChiseIds.csproj" />
+    <Project Path="Source/Data.Home/Jitendex.Data.Home.csproj" />
+    <Project Path="Source/Data.JMdict/Jitendex.Data.JMdict.csproj" />
+    <Project Path="Source/Data.JMnedict/Jitendex.Data.JMnedict.csproj" />
+    <Project Path="Source/Data.Kanjidic2/Jitendex.Data.Kanjidic2.csproj" />
+    <Project Path="Source/Data.KanjiVG/Jitendex.Data.KanjiVG.csproj" />
+    <Project Path="Source/Data.Tatoeba/Jitendex.Data.Tatoeba.csproj" />
   </Folder>
   <Folder Name="/Forks/">
-    <Project Path="Source/Jitendex.Forks.JMdict/Jitendex.Forks.JMdict.csproj" />
-    <Project Path="Source/Jitendex.Forks.Tatoeba/Jitendex.Forks.Tatoeba.csproj" />
+    <Project Path="Source/Forks.JMdict/Jitendex.Forks.JMdict.csproj" />
+    <Project Path="Source/Forks.Tatoeba/Jitendex.Forks.Tatoeba.csproj" />
   </Folder>
   <Folder Name="/Import/">
-    <Project Path="Source/Jitendex.AppDirectory/Jitendex.AppDirectory.csproj" />
-    <Project Path="Source/Jitendex.EdrdgDictionaryArchive/Jitendex.EdrdgDictionaryArchive.csproj" />
-    <Project Path="Source/Jitendex.Import/Jitendex.Import.csproj" />
-    <Project Path="Source/Jitendex.Import.ChiseIds/Jitendex.Import.ChiseIds.csproj" />
-    <Project Path="Source/Jitendex.Import.Home/Jitendex.Import.Home.csproj" />
-    <Project Path="Source/Jitendex.Import.JMdict/Jitendex.Import.JMdict.csproj" />
-    <Project Path="Source/Jitendex.Import.JMnedict/Jitendex.Import.JMnedict.csproj" />
-    <Project Path="Source/Jitendex.Import.Kanjidic2/Jitendex.Import.Kanjidic2.csproj" />
-    <Project Path="Source/Jitendex.Import.KanjiVG/Jitendex.Import.KanjiVG.csproj" />
-    <Project Path="Source/Jitendex.Import.Tatoeba/Jitendex.Import.Tatoeba.csproj" />
+    <Project Path="Source/AppDirectory/Jitendex.AppDirectory.csproj" />
+    <Project Path="Source/EdrdgDictionaryArchive/Jitendex.EdrdgDictionaryArchive.csproj" />
+    <Project Path="Source/Import/Jitendex.Import.csproj" />
+    <Project Path="Source/Import.ChiseIds/Jitendex.Import.ChiseIds.csproj" />
+    <Project Path="Source/Import.Home/Jitendex.Import.Home.csproj" />
+    <Project Path="Source/Import.JMdict/Jitendex.Import.JMdict.csproj" />
+    <Project Path="Source/Import.JMnedict/Jitendex.Import.JMnedict.csproj" />
+    <Project Path="Source/Import.Kanjidic2/Jitendex.Import.Kanjidic2.csproj" />
+    <Project Path="Source/Import.KanjiVG/Jitendex.Import.KanjiVG.csproj" />
+    <Project Path="Source/Import.Tatoeba/Jitendex.Import.Tatoeba.csproj" />
   </Folder>
   <Folder Name="/Libraries/">
     <Project Path="Libraries/JapaneseTextUtils/Jitendex.JapaneseTextUtils/Jitendex.JapaneseTextUtils.csproj" />
     <Project Path="Libraries/MinimalJsonDiff/Jitendex.MinimalJsonDiff/Jitendex.MinimalJsonDiff.csproj" />
     <Project Path="Libraries/MinimalPatch/Jitendex.MinimalPatch/Jitendex.MinimalPatch.csproj" />
   </Folder>
-  <Project Path="Source/Jitendex.Dto/Jitendex.Dto.csproj" />
-  <Project Path="Source/Jitendex.Furigana/Jitendex.Furigana.csproj" />
-  <Project Path="Source/Jitendex.Furigana.Test/Jitendex.Furigana.Test.csproj" />
+  <Project Path="Source/Dto/Jitendex.Dto.csproj" />
+  <Project Path="Source/Furigana/Jitendex.Furigana.csproj" />
+  <Project Path="Source/Furigana.Test/Jitendex.Furigana.Test.csproj" />
 </Solution>

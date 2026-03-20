@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.Models;
@@ -61,39 +62,26 @@ internal sealed class CompoundService
 
     public async Task ExportAsync()
     {
-        var compounds = context.Compounds
-            .Select(static compound => new
-            {
-                compound.Text,
-                Readings = compound.Readings
-                    .OrderBy(static r => r.Text)
-                    .Select(static r => new
-                    {
-                        TypeName = r.Type.Name,
-                        r.Text,
-                    })
-            })
+        var dictionary = context.Compounds
+            .AsNoTracking()
+            .Include(static c => c.Readings)
+            .ThenInclude(static r => r.Type)
             .AsEnumerable()
-            .OrderBy(static x => x.Text, StringComparer);
-
-        var dictionary = new Dictionary<string, Dictionary<string, List<string>>>();
-
-        foreach (var compound in compounds)
-        {
-            var subdictionary = new Dictionary<string, List<string>>();
-            foreach (var reading in compound.Readings)
-            {
-                if (subdictionary.TryGetValue(reading.TypeName, out var texts))
-                {
-                    texts.Add(reading.Text);
-                }
-                else
-                {
-                    subdictionary[reading.TypeName] = [reading.Text];
-                }
-            }
-            dictionary[compound.Text] = subdictionary;
-        }
+            .OrderBy(static x => x.Text, StringComparer)
+            .ToDictionary
+            (
+                keySelector: static compound => compound.Text,
+                elementSelector: static compound => compound.Readings
+                    .OrderBy(static r => r.Type.Name)
+                    .GroupBy(static r => r.Type.Name)
+                    .ToDictionary
+                    (
+                        keySelector: static x => x.Key,
+                        elementSelector: static subgroup => subgroup
+                            .Select(static r => r.Text)
+                            .ToArray()
+                    )
+            );
 
         var filePath = GetJsonFilePath();
         if (File.Exists(filePath))

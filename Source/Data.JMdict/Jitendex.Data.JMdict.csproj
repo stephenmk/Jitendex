@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Jitendex.Dto\Jitendex.Dto.csproj" />
-    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
+    <ProjectReference Include="..\Dto\Jitendex.Dto.csproj" />
+    <ProjectReference Include="..\Data\Jitendex.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

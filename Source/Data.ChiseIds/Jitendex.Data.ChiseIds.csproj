@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
+    <ProjectReference Include="..\Data\Jitendex.Data.csproj" />
   </ItemGroup>
 
 </Project>

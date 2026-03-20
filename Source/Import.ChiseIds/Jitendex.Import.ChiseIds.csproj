@@ -10,9 +10,9 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.5" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Jitendex.Import\Jitendex.Import.csproj" />
-    <ProjectReference Include="..\Jitendex.AppDirectory\Jitendex.AppDirectory.csproj" />
-    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
-    <ProjectReference Include="..\Jitendex.Data.ChiseIds\Jitendex.Data.ChiseIds.csproj" />
+    <ProjectReference Include="..\Import\Jitendex.Import.csproj" />
+    <ProjectReference Include="..\AppDirectory\Jitendex.AppDirectory.csproj" />
+    <ProjectReference Include="..\Data\Jitendex.Data.csproj" />
+    <ProjectReference Include="..\Data.ChiseIds\Jitendex.Data.ChiseIds.csproj" />
   </ItemGroup>
 </Project>

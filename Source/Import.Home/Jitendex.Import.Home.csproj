@@ -11,8 +11,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.5" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Jitendex.AppDirectory\Jitendex.AppDirectory.csproj" />
-    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
-    <ProjectReference Include="..\Jitendex.Data.Home\Jitendex.Data.Home.csproj" />
+    <ProjectReference Include="..\AppDirectory\Jitendex.AppDirectory.csproj" />
+    <ProjectReference Include="..\Data\Jitendex.Data.csproj" />
+    <ProjectReference Include="..\Data.Home\Jitendex.Data.Home.csproj" />
   </ItemGroup>
 </Project>

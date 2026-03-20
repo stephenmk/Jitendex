@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Jitendex.Data\Jitendex.Data.csproj" />
-    <ProjectReference Include="..\Jitendex.Data.JMdict\Jitendex.Data.JMdict.csproj" />
-    <ProjectReference Include="..\Jitendex.Data.Tatoeba\Jitendex.Data.Tatoeba.csproj" />
+    <ProjectReference Include="..\Data\Jitendex.Data.csproj" />
+    <ProjectReference Include="..\Data.JMdict\Jitendex.Data.JMdict.csproj" />
+    <ProjectReference Include="..\Data.Tatoeba\Jitendex.Data.Tatoeba.csproj" />
+    <ProjectReference Include="..\Data.Home\Jitendex.Data.Home.csproj" />
     <ProjectReference Include="..\..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
-    <ProjectReference Include="..\Jitendex.Data.Home\Jitendex.Data.Home.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.5" />

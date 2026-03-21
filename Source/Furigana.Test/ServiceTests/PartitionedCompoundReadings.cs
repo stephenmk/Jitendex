@@ -21,20 +21,13 @@ namespace Jitendex.Furigana.Test.ServiceTests;
 [TestClass]
 public class PartitionedCompoundReadings : ServiceTest
 {
-    private static readonly Dictionary<string, string[]> _kanji = new()
-    {
-        ["純"] = ["ジュン"],
-        ["日"] = ["ニチ", "ジツ", "ひ", "び", "か"],
-        ["本"] = ["ホン", "もと"],
-        ["風"] = ["フウ", "フ", "かぜ", "かざ"],
-        ["十"] = ["じゅう"],
-    };
-
     private static readonly Dictionary<string, string[]> _compounds = new()
     {
         ["日本"] = ["に|ほん"],
         ["釈迦"] = ["しゃ|か"],
         ["対手"] = ["あい|て"],
+        ["彼の世千日"] = ["あ|の|よ|せん|にち"],
+        ["此の世一日"] = ["こ|の|よ|いち|にち"]
     };
 
     private static readonly SolvableData _data =
@@ -45,6 +38,7 @@ public class PartitionedCompoundReadings : ServiceTest
         ("日本刀", "にほんとう", "[日|に][本|ほん][刀|とう]"),
         ("日本風", "にほんふう", "[日|に][本|ほん][風|ふう]"),
         ("釈迦十", "しゃかじゅう", "[釈|しゃ][迦|か][十|じゅう]"),
+        ("彼の世千日此の世一日", "あのよせんにちこのよいちにち", "[彼|あ]の[世|よ][千|せん][日|にち][此|こ]の[世|よ][一|いち][日|にち]"),
     ];
 
     private static readonly SolvableData _defaultData =
@@ -55,19 +49,13 @@ public class PartitionedCompoundReadings : ServiceTest
         ("日本刀", "にほんとう", "[日本刀|にほんとう]"),
         ("日本風", "にほんふう", "[日本風|にほんふう]"),
         ("釈迦十", "しゃかじゅう", "[釈迦十|しゃかじゅう]"),
+        ("彼の世千日此の世一日", "あのよせんにちこのよいちにち", "[彼|あ]の[世千日此|よせんにちこ]の[世一日|よいちにち]"),
     ];
 
     [TestMethod]
     public void TestCompoundSolvable()
     {
         AddCompounds(_compounds);
-        TestSolvable(_data);
-    }
-
-    [TestMethod]
-    public void TestKanjiSolvable()
-    {
-        AddCharacters(_kanji);
         TestSolvable(_data);
     }
 

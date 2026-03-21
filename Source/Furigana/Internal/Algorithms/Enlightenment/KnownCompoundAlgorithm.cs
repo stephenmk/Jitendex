@@ -26,87 +26,72 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
 {
     public ImmutableArray<ImmutableArray<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
-        var texts = GetValidReadingTexts(textSlice, readingState);
-
-        if (texts.Count == 0)
-        {
-            return [];
-        }
-
-        var baseText = textSlice.RawRunes.FastToString();
-        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(texts.Count);
-
-        foreach (var (text, readingIds) in texts)
-        {
-            var furigana = baseText.IsKanaEquivalent(text)
-                ? null
-                : new string(readingState.RemainingText[..text.Length]);
-
-            var part = new Solution.Part(baseText, furigana)
-            {
-                ReadingIds = ImmutableArray.Create(readingIds)
-            };
-            partsLists.Add([part]);
-        }
-
-        return partsLists.MoveToImmutable();
-    }
-
-    private Dictionary<string, int[]> GetValidReadingTexts(in TextSlice textSlice, in ReadingState readingState)
-    {
-        var texts = GetCompoundTexts(textSlice);
-        if (texts.Count == 0)
-        {
-            return [];
-        }
-        int i = 0;
-        var invalidKeys = new string[texts.Count];
-        foreach (var key in texts.Keys)
-        {
-            if (!readingState.RemainingTextNormalized.StartsWith(key, StringComparison.Ordinal))
-            {
-                invalidKeys[i++] = key;
-            }
-        }
-        foreach (var key in invalidKeys.AsSpan(0, i))
-        {
-            texts.Remove(key);
-        }
-        return texts;
-    }
-
-    private Dictionary<string, int[]> GetCompoundTexts(in TextSlice textSlice)
-    {
         var readings = knowledge.GetCompoundReadings(textSlice.Runes);
-        return readings.Count == 0
-            ? []
-            : FilterReadings(textSlice, readings, readings.Count);
-    }
-
-    private static Dictionary<string, int[]> FilterReadings(in TextSlice textSlice, IEnumerable<Reading> readings, int readingCount)
-    {
-        var texts = new Dictionary<string, int[]>(readingCount);
-
-        foreach (var reading in readings)
+        if (readings.Count == 0)
         {
-            if (reading.IsSuffix && textSlice.ContainsFirstRune)
-            {
-                continue;
-            }
-            if (reading.IsPrefix && textSlice.ContainsFinalRune)
-            {
-                continue;
-            }
-            if (texts.TryGetValue(reading.Text, out var readingIds))
-            {
-                texts[reading.Text] = [.. readingIds, reading.Id];
-            }
-            else
-            {
-                texts[reading.Text] = [reading.Id];
-            }
+            return [];
         }
 
-        return texts;
+        var partsLists = new ImmutableArray<Solution.Part>[readings.Count];
+        int i = 0;
+
+        foreach (var readingArray in readings)
+        {
+            if (readingArray[0].IsSuffix && textSlice.ContainsFirstRune)
+            {
+                continue;
+            }
+            if (readingArray[^1].IsPrefix && textSlice.ContainsFinalRune)
+            {
+                continue;
+            }
+
+            var text = string.Join(string.Empty, readingArray.Select(static r => r.Text));
+
+            if (!readingState.RemainingTextNormalized.StartsWith(text, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            // If the array contains one reading, then there is one
+            // reading for all the runes in the surface form.
+            if (readingArray.Length == 1)
+            {
+                var baseText = textSlice.RawRunes.FastToString();
+                var furigana = baseText.IsKanaEquivalent(text)
+                    ? null
+                    : new string(readingState.RemainingText[..text.Length]);
+
+                var part = new Solution.Part(baseText, furigana)
+                {
+                    ReadingIds = [readingArray[0].Id]
+                };
+                partsLists[i++] = [part];
+                continue;
+            }
+
+            // If the array contains multiple readings, then
+            // there is one reading per surface rune.
+            var partsList = new Solution.Part[readingArray.Length];
+            int start = 0;
+            for (int j = 0; j < readingArray.Length; j++)
+            {
+                var partBaseText = textSlice.RawRunes[j].ToString();
+                var length = readingArray[j].Text.Length;
+                var range = new Range(start, start + length);
+                var partReading = readingState.RemainingText[range];
+                var partFurigana = partBaseText.IsKanaEquivalent(partReading)
+                    ? null
+                    : new string(partReading);
+                partsList[j] = new Solution.Part(partBaseText, partFurigana)
+                {
+                    ReadingIds = [readingArray[j].Id]
+                };
+                start += length;
+            }
+            partsLists[i++] = ImmutableArray.Create(partsList);
+        }
+
+        return ImmutableArray.Create(partsLists.AsSpan(0, i));
     }
 }

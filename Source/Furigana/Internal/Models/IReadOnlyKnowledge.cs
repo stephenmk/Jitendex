@@ -16,13 +16,14 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Immutable;
 using System.Text;
 
 namespace Jitendex.Furigana.Internal.Models;
 
 internal interface IReadOnlyKnowledge
 {
-    public IReadOnlyList<Reading> GetCompoundReadings(ReadOnlySpan<Rune> runes);
+    public IReadOnlyList<ImmutableArray<Reading>> GetCompoundReadings(ReadOnlySpan<Rune> runes);
     public IReadOnlyList<Reading> GetCharacterReadings(Rune rune);
     public IReadOnlyList<Reading> GetNameKanjiReadings(Rune rune);
     public IReadOnlyList<Reading> GetHanziReadings(Rune rune);

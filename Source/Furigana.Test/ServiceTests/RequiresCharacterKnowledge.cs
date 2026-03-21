@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 namespace Jitendex.Furigana.Test.ServiceTests;
 
 [TestClass]
-public class RequiresKanjiReadings : ServiceTest
+public class RequiresCharacterKnowledge : ServiceTest
 {
     private static readonly Dictionary<string, string[]> _kanji = new()
     {

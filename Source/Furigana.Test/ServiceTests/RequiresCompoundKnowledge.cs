@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 namespace Jitendex.Furigana.Test.ServiceTests;
 
 [TestClass]
-public class RequiresSpecialExpressionReadings : ServiceTest
+public class RequiresCompoundKnowledge : ServiceTest
 {
     private static readonly Dictionary<string, string[]> _compounds = new()
     {

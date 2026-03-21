@@ -17,129 +17,21 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal.Models;
+using Jitendex.Furigana.Internal.Algorithms.Enlightenment;
 
 namespace Jitendex.Furigana.Internal.Algorithms;
 
-internal sealed class InformedAlgorithm(IReadOnlyKnowledge cache) : IAlgorithm
+internal sealed class InformedAlgorithm
+(
+    KnownCharacterAlgorithm character,
+    KnownCompoundAlgorithm compound
+) : IAlgorithm
 {
     public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
-    {
-        var texts = GetValidReadingTexts(entryType, textSlice, readingState);
-
-        if (texts.Count == 0)
-        {
-            return [];
-        }
-
-        var baseText = textSlice.RawRunes.FastToString();
-        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(texts.Count);
-
-        foreach (var (text, readingIds) in texts)
-        {
-            var furigana = baseText.IsKanaEquivalent(text)
-                ? null
-                : new string(readingState.RemainingText[..text.Length]);
-
-            var part = new Solution.Part(baseText, furigana)
-            {
-                ReadingIds = ImmutableArray.Create(readingIds)
-            };
-            partsLists.Add([part]);
-        }
-
-        return partsLists.MoveToImmutable();
-    }
-
-    private Dictionary<string, int[]> GetValidReadingTexts(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
-    {
-        var texts = GetCachedTexts(entryType, textSlice);
-        if (texts.Count == 0)
-        {
-            return [];
-        }
-        int i = 0;
-        var invalidKeys = new string[texts.Count];
-        foreach (var key in texts.Keys)
-        {
-            if (!readingState.RemainingTextNormalized.StartsWith(key, StringComparison.Ordinal))
-            {
-                invalidKeys[i++] = key;
-            }
-        }
-        foreach (var key in invalidKeys.AsSpan(0, i))
-        {
-            texts.Remove(key);
-        }
-        return texts;
-    }
-
-    private Dictionary<string, int[]> GetCachedTexts(EntryType entryType, in TextSlice textSlice)
         => textSlice.Runes switch
         {
-            { Length: 1 } => GetCharacterTexts(entryType, textSlice),
-            _             => GetCompoundTexts(textSlice)
+            { Length: 1 } => character.Solve(entryType, textSlice, readingState),
+            _             => compound.Solve(textSlice, readingState),
         };
-
-    private Dictionary<string, int[]> GetCharacterTexts(EntryType entryType, in TextSlice textSlice)
-    {
-        var rune = textSlice.Runes[0];
-
-        var characterReadings = cache.GetCharacterReadings(rune);
-        var specialReadings = entryType switch
-        {
-            EntryType.Regular => [],
-            EntryType.Name    => cache.GetNameKanjiReadings(rune),
-            EntryType.Chinese => cache.GetHanziReadings(rune),
-            EntryType.Korean  => cache.GetHanjaReadings(rune),
-            _                 => throw new ArgumentOutOfRangeException()
-        };
-
-        int readingCount = characterReadings.Count + specialReadings.Count;
-
-        if (readingCount == 0)
-        {
-            return [];
-        }
-
-        var readings = characterReadings.Concat(specialReadings);
-
-        return FilterReadings(textSlice, readings, readingCount);
-    }
-
-    private Dictionary<string, int[]> GetCompoundTexts(in TextSlice textSlice)
-    {
-        var readings = cache.GetCompoundReadings(textSlice.Runes);
-        return readings.Count == 0
-            ? []
-            : FilterReadings(textSlice, readings, readings.Count);
-    }
-
-    private static Dictionary<string, int[]> FilterReadings(in TextSlice textSlice, IEnumerable<Reading> readings, int readingCount)
-    {
-        var texts = new Dictionary<string, int[]>(readingCount);
-
-        foreach (var reading in readings)
-        {
-            if (reading.IsSuffix && textSlice.ContainsFirstRune)
-            {
-                continue;
-            }
-            if (reading.IsPrefix && textSlice.ContainsFinalRune)
-            {
-                continue;
-            }
-            if (texts.TryGetValue(reading.Text, out var readingIds))
-            {
-                texts[reading.Text] = [.. readingIds, reading.Id];
-            }
-            else
-            {
-                texts[reading.Text] = [reading.Id];
-            }
-        }
-
-        return texts;
-    }
 }

@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Jitendex.Furigana.Internal;
 using Jitendex.Furigana.Internal.Models;
 using Jitendex.Furigana.Internal.Algorithms;
+using Jitendex.Furigana.Internal.Algorithms.Enlightenment;
 using Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
 namespace Jitendex.Furigana;
@@ -29,7 +30,11 @@ public static class FuriganaServiceProvider
     {
         var knowledge = new Knowledge();
 
-        var informedAlgo = new InformedAlgorithm(knowledge);
+        var informedAlgo = new InformedAlgorithm
+        (
+            new KnownCharacterAlgorithm(knowledge),
+            new KnownCompoundAlgorithm(knowledge)
+        );
         var ignorantAlgo = new IgnorantAlgorithm
         (
             new SingleCharacterAlgorithm(),
@@ -48,7 +53,16 @@ public static class FuriganaServiceProvider
         var ignorantSolver = new IterationSolver([ignorantAlgo]);
         var lazyIgnorantSolver = new IterationSolver([lazyIgnorantAlgo]);
 
-        var service = new Service([informedSolver, ignorantSolver, lazyIgnorantSolver], knowledge);
+        var service = new Service
+        (
+            knowledge,
+            solvers: [
+                informedSolver,
+                ignorantSolver,
+                lazyIgnorantSolver
+            ]
+        );
+
         return service;
     }
 }

@@ -22,24 +22,24 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal;
 
-internal sealed class Service(ImmutableArray<IterationSolver> solvers, Knowledge cache) : IFuriganaService
+internal sealed class Service(Knowledge knowledge, ImmutableArray<IterationSolver> solvers) : IFuriganaService
 {
     private int _nextId = 0;
 
     public int AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(character.Value, new Reading(_nextId, reading, isPrefix, isSuffix), cache.Characters);
+        => AddReading(character.Value, new Reading(_nextId, reading, isPrefix, isSuffix), knowledge.Characters);
 
     public int AddNameReading(Rune kanji, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(kanji.Value, new Reading(_nextId, reading, isPrefix, isSuffix), cache.NameKanji);
+        => AddReading(kanji.Value, new Reading(_nextId, reading, isPrefix, isSuffix), knowledge.NameKanji);
 
     public int AddHanziReading(Rune hanzi, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(hanzi.Value, new Reading(_nextId, reading, isPrefix, isSuffix), cache.Hanzi);
+        => AddReading(hanzi.Value, new Reading(_nextId, reading, isPrefix, isSuffix), knowledge.Hanzi);
 
     public int AddHanjaReading(Rune hanja, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(hanja.Value, new Reading(_nextId, reading, isPrefix, isSuffix), cache.Hanja);
+        => AddReading(hanja.Value, new Reading(_nextId, reading, isPrefix, isSuffix), knowledge.Hanja);
 
     public int AddCompoundReading(string compound, string reading, bool isPrefix = false, bool isSuffix = false)
-        => AddReading(compound, new Reading(_nextId, reading, isPrefix, isSuffix), cache.Compounds);
+        => AddReading(compound, new Reading(_nextId, reading, isPrefix, isSuffix), knowledge.Compounds);
 
     private int AddReading<T>(T key, Reading value, Dictionary<T, List<Reading>> dictionary) where T : notnull
     {

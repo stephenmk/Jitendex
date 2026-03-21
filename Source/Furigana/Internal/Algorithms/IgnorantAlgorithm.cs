@@ -26,6 +26,7 @@ internal sealed class IgnorantAlgorithm
 (
     SingleCharacterAlgorithm singleSolver,
     RepeatedKanjiAlgorithm repeatedSolver,
+    IdentityAlgorithm identityAlgorithm,
     ConsecutiveKanjiAlgorithm? consecutiveSolver = null
 ) : IAlgorithm
 {
@@ -46,5 +47,7 @@ internal sealed class IgnorantAlgorithm
             : SolveAnyRuneLengthText(textSlice, readingState);
 
     private ImmutableArray<ImmutableArray<Solution.Part>> SolveAnyRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
-        => consecutiveSolver?.Solve(textSlice, readingState) ?? [];
+        => identityAlgorithm.Solve(textSlice, readingState) is var parts and not []
+            ? parts
+            : consecutiveSolver?.Solve(textSlice, readingState) ?? [];
 }

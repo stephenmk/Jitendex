@@ -33,12 +33,14 @@ public static class FuriganaServiceProvider
         var ignorantAlgo = new IgnorantAlgorithm
         (
             new SingleCharacterAlgorithm(),
-            new RepeatedKanjiAlgorithm()
+            new RepeatedKanjiAlgorithm(),
+            new IdentityAlgorithm()
         );
         var lazyIgnorantAlgo = new IgnorantAlgorithm
         (
             new SingleCharacterAlgorithm(),
             new RepeatedKanjiAlgorithm(),
+            new IdentityAlgorithm(),
             new ConsecutiveKanjiAlgorithm()
         );
 

@@ -58,7 +58,16 @@ internal sealed record CharacterReadingsObject
 
     private static CharacterReadingRow ToReadingRow(int characterValue, string text, CharacterReadingTypeId readingType)
     {
-        var split = text.Replace("-", "").Split('.');
+        const string hyphen = "-";
+        const char delimiter = '.';
+
+        if (text.Equals(hyphen, StringComparison.Ordinal))
+        {
+            return new(characterValue, text, false, false, null, (int)readingType);
+        }
+
+        var split = text.Replace(hyphen, string.Empty).Split(delimiter);
+
         return new
         (
             CharacterValue: characterValue,

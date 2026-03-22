@@ -95,13 +95,16 @@ internal partial class CrossReferenceService
             }
 
             var potentialEntries = GetPotentialEntries(xref, parsedRef, referenceTextToEntries);
-            var potentialEntryIds = potentialEntries.Select(static e => e.Id);
+            var potentialEntryIds = new int[potentialEntries.Length];
 
-            var entryId = potentialEntries.Length == 0
+            for (int i = 0; i < potentialEntries.Length; i++)
+                potentialEntryIds[i] = potentialEntries[i].Id;
+
+            var entryId = potentialEntries.IsEmpty
                 ? null
                 : potentialEntries.Length == 1
                 ? potentialEntries[0].Id
-                : FindIdInCache(xref.CacheKey, potentialEntryIds.ToArray(), entryIdCache);
+                : FindIdInCache(xref.CacheKey, potentialEntryIds, entryIdCache);
 
             var entry = entryId is null ? null
                 : potentialEntries.First(e => e.Id == entryId);
@@ -163,7 +166,10 @@ internal partial class CrossReferenceService
             })
             .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 
-    private int? FindIdInCache(string key, int[] potentialEntryIds, FrozenDictionary<string, int?> entryIdCache)
+    private int? FindIdInCache(
+        string key,
+        ReadOnlySpan<int> potentialEntryIds,
+        FrozenDictionary<string, int?> entryIdCache)
     {
         int? entryId;
         if (!entryIdCache.TryGetValue(key, out var cachedId))
@@ -174,7 +180,7 @@ internal partial class CrossReferenceService
         {
             entryId = null;
         }
-        else if (!potentialEntryIds.Contains((int)cachedId))
+        else if (!potentialEntryIds.Contains(cachedId.Value))
         {
             entryId = null;
         }
@@ -185,18 +191,16 @@ internal partial class CrossReferenceService
 
         if (entryId is null)
         {
-            LogAmbiguousReference(key, potentialEntryIds.Length, potentialEntryIds);
+            LogAmbiguousReference(key, potentialEntryIds.Length, potentialEntryIds.ToArray());
         }
 
         return entryId;
     }
 
-    private EntryData[] GetPotentialEntries
-    (
+    private ImmutableArray<EntryData> GetPotentialEntries(
         CrossReferenceData xref,
         ParsedReferenceText parsed,
-        IReadOnlyDictionary<ReferenceText, ImmutableArray<EntryData>> referenceTextToEntries
-    )
+        IReadOnlyDictionary<ReferenceText, ImmutableArray<EntryData>> referenceTextToEntries)
     {
         var key = new ReferenceText(parsed.Text1, parsed.Text2);
 
@@ -206,16 +210,22 @@ internal partial class CrossReferenceService
             return [];
         }
 
-        var possibleTargetEntries = entryInfos
-            .Where(e => e.Id != xref.EntryId && e.SenseCount >= parsed.SenseNumber)
-            .ToArray();
+        var validEntries = new EntryData[entryInfos.Length];
+        int count = 0;
+        foreach (var entryInfo in entryInfos)
+        {
+            if (entryInfo.Id != xref.EntryId && entryInfo.SenseCount >= parsed.SenseNumber)
+            {
+                validEntries[count++] = entryInfo;
+            }
+        }
 
-        if (possibleTargetEntries.Length == 0)
+        if (count == 0)
         {
             LogBizarreReference(xref.CacheKey);
         }
 
-        return possibleTargetEntries;
+        return ImmutableArray.Create(validEntries.AsSpan(0, count));
     }
 
     private IReadOnlyDictionary<ReferenceText, ImmutableArray<EntryData>> GetReferenceTextToEntries()
@@ -261,7 +271,9 @@ internal partial class CrossReferenceService
         return dict;
     }
 
-    private static IEnumerable<ReferenceText> GetReferenceTexts(ImmutableArray<string> readings, ImmutableArray<string> kanjiForms)
+    private static IEnumerable<ReferenceText> GetReferenceTexts(
+        ImmutableArray<string> readings,
+        ImmutableArray<string> kanjiForms)
     {
         foreach (var kanjiForm in kanjiForms)
         {
@@ -282,15 +294,13 @@ internal partial class CrossReferenceService
         }
     }
 
-    private void LogReferenceInconsistencies
-    (
+    private void LogReferenceInconsistencies(
         CrossReferenceData xref,
         ParsedReferenceText parsed,
         EntryData? entry,
         int? readingOrder,
         int? kanjiFormOrder,
-        FrozenDictionary<KanjiFormKey, ImmutableArray<int>> kanjiFormToReadings
-    )
+        FrozenDictionary<KanjiFormKey, ImmutableArray<int>> kanjiFormToReadings)
     {
         if (entry is null)
         {

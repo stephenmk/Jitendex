@@ -155,16 +155,13 @@ internal partial class CrossReferenceService
             .GroupBy(static x => new { x.EntryId, x.KanjiFormOrder })
             .Select(static group => new
             {
-                group.Key,
+                Key = new KanjiFormKey(group.Key.EntryId, group.Key.KanjiFormOrder),
                 Value = group
                     .OrderBy(static bridge => bridge.ReadingOrder)
                     .Select(static bridge => bridge.ReadingOrder)
+                    .ToImmutableArray()
             })
-            .ToFrozenDictionary
-            (
-                keySelector: static g => new KanjiFormKey(g.Key.EntryId, g.Key.KanjiFormOrder),
-                elementSelector: static g => g.Value.ToImmutableArray()
-            );
+            .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 
     private int? FindIdInCache(string key, int[] potentialEntryIds, FrozenDictionary<string, int?> entryIdCache)
     {
@@ -230,7 +227,7 @@ internal partial class CrossReferenceService
             .Select(static e => new EntryData
             (
                 e.Id,
-                SenseCount: e.Senses.Count(),
+                SenseCount: e.Senses.Count,
                 Readings: e.Readings
                     .OrderBy(static r => r.Order)
                     .Select(static r => r.Text)
@@ -313,7 +310,7 @@ internal partial class CrossReferenceService
         }
         else if (kanjiFormOrder.HasValue &&
                 kanjiFormToReadings.TryGetValue(new(entry.Id, kanjiFormOrder.Value), out var readings) &&
-                !readings.Contains(readingOrder.Value))
+                readings.Contains(readingOrder.Value) is not true)
         {
             LogInvalidPair(xref.CacheKey);
         }

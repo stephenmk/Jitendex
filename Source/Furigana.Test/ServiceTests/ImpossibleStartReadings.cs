@@ -62,6 +62,9 @@ public class ImpossibleStartReadings : ServiceTest
         // With kana following the kanji
         ("真さお", "まっさお", "[真|まっ]さお"),
         ("危機に瀕する", "ききにひんする", "[危|き][機|き]に[瀕|ひん]する"),
+
+        // Kanji with utf-16 surrogate pairs
+        ("𰻞𰻞麺", "ビャンビャンめん", "[𰻞|ビャン][𰻞|ビャン][麺|めん]"),
     ];
 
     [TestMethod]

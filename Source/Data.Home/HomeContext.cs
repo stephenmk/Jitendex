@@ -41,6 +41,7 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
     public DbSet<CrossReferenceSequence> CrossReferenceSequences { get; set; } = null!;
     public DbSet<JMdictPatch> JMdictPatches { get; set; } = null!;
     public DbSet<JMdictPatchApproval> JMdictPatchApprovals { get; set; } = null!;
+    public DbSet<JMdictPatchRecall> JMdictPatchRecalls { get; set; } = null!;
     #endregion
 
     #region Tatoeba

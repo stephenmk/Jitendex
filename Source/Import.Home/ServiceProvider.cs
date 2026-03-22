@@ -50,6 +50,7 @@ internal static class ServiceProvider
         .AddTransient<CrossReferenceSequenceTable>()
         .AddTransient<JMdictPatchTable>()
         .AddTransient<JMdictPatchApprovalTable>()
+        .AddTransient<JMdictPatchRecallTable>()
         .AddTransient<ExampleTable>()
         .AddTransient<ExampleFuriganaTable>()
 
@@ -60,6 +61,7 @@ internal static class ServiceProvider
         .AddTransient<UserService>()
         .AddTransient<JMdictPatchService>()
         .AddTransient<JMdictPatchApprovalService>()
+        .AddTransient<JMdictPatchRecallService>()
         .AddTransient<ExampleFuriganaService>()
 
         // Logging

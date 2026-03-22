@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Models;
 using Jitendex.Import.Home.Tables.JMdict;
@@ -59,12 +58,12 @@ internal sealed class JMdictPatchService
             rows.Add(new
             (
                 Id: patchId,
-                SequenceId: metadata.SequenceId,
-                SequenceDate: metadata.SequenceDate,
-                CreatedAt: metadata.CreatedAt,
-                AuthorId: metadata.AuthorId,
-                AuthorComment: metadata.AuthorComment,
-                PreviousPatchId: metadata.PreviousPatchId,
+                metadata.SequenceId,
+                metadata.SequenceDate,
+                metadata.CreatedAt,
+                metadata.AuthorId,
+                metadata.AuthorComment,
+                metadata.PreviousPatchId,
                 Json: patches[patchId]
             ));
         }
@@ -81,21 +80,21 @@ internal sealed class JMdictPatchService
     private async Task ExportMetadataAsync()
     {
         var metadata = context.JMdictPatches
-            .AsNoTracking()
             .OrderBy(static x => x.Id)
-            .ToDictionary
-            (
-                keySelector: static x => x.Id,
-                elementSelector: static x => new PatchMetadata
+            .Select(static x => new
+            {
+                Key = x.Id,
+                Value = new PatchMetadata
                 (
-                    SequenceId: x.SequenceId,
-                    SequenceDate: x.SequenceDate,
-                    CreatedAt: x.CreatedAt,
-                    AuthorId: x.AuthorId,
-                    AuthorComment: x.AuthorComment,
-                    PreviousPatchId: x.PreviousPatchId
+                    x.SequenceId,
+                    x.SequenceDate,
+                    x.CreatedAt,
+                    x.AuthorId,
+                    x.AuthorComment,
+                    x.PreviousPatchId
                 )
-            );
+            })
+            .ToDictionary(static x => x.Key, static x => x.Value);
 
         var metadataPath = GetMetadataFilePath();
         if (File.Exists(metadataPath))
@@ -110,9 +109,9 @@ internal sealed class JMdictPatchService
     private async Task ExportDataAsync()
     {
         var data = context.JMdictPatches
-            .AsNoTracking()
             .OrderBy(static x => x.Id)
-            .ToDictionary(static x => x.Id, static x => x.Json);
+            .Select(static x => new { Key = x.Id, Value = x.Json })
+            .ToDictionary(static x => x.Key, static x => x.Value);
 
         var patchDir = GetPatchDirectory();
         if (patchDir.Exists)

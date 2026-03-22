@@ -24,26 +24,26 @@ using Jitendex.Import.Home.Tables.JMdict;
 
 namespace Jitendex.Import.Home.Services.JMdict;
 
-internal sealed class JMdictPatchApprovalService
+internal sealed class JMdictPatchRecallService
 (
     HomeContext context,
     ServiceOptions options,
-    JMdictPatchApprovalTable table
+    JMdictPatchRecallTable table
 )
 {
     public async Task ImportAsync()
     {
         var filePath = GetFilePath();
         await using var stream = File.OpenRead(filePath);
-        var data = await JsonSerializer.DeserializeAsync<Dictionary<int, PatchApprovalData[]>>(stream) ?? [];
+        var data = await JsonSerializer.DeserializeAsync<Dictionary<int, PatchRecallData[]>>(stream) ?? [];
 
-        var rows = new List<JMdictPatchApprovalRow>();
+        var rows = new List<JMdictPatchRecallRow>();
 
-        foreach (var (patchId, approvals) in data)
+        foreach (var (patchId, recalls) in data)
         {
-            foreach (var approval in approvals)
+            foreach (var recall in recalls)
             {
-                rows.Add(new(patchId, approval.ApproverId, approval.CreatedAt));
+                rows.Add(new(patchId, recall.RecallerId, recall.CreatedAt));
             }
         }
 
@@ -52,7 +52,7 @@ internal sealed class JMdictPatchApprovalService
 
     public async Task ExportAsync()
     {
-        var data = context.JMdictPatchApprovals
+        var data = context.JMdictPatchRecalls
             .OrderBy(static x => x.PatchId)
             .GroupBy(static x => x.PatchId)
             .Select(static group => new
@@ -60,7 +60,7 @@ internal sealed class JMdictPatchApprovalService
                 group.Key,
                 Value = group
                     .OrderBy(static x => x.CreatedAt)
-                    .Select(static x => new PatchApprovalData(x.ApproverId, x.CreatedAt))
+                    .Select(static x => new PatchRecallData(x.RecallerId, x.CreatedAt))
                     .ToArray()
             })
             .ToDictionary(static x => x.Key, static x => x.Value);
@@ -79,7 +79,7 @@ internal sealed class JMdictPatchApprovalService
         => Path.Join
         (
             options.GetJMdictDirectory().FullName,
-            "patch_approvals.json"
+            "patch_recalls.json"
         );
 
     private readonly static JsonSerializerOptions JsonSerializerOptions = new()
@@ -89,9 +89,9 @@ internal sealed class JMdictPatchApprovalService
         Encoder = JavaScriptEncoder.Default,
     };
 
-    private readonly record struct PatchApprovalData
+    private readonly record struct PatchRecallData
     (
-        int ApproverId,
+        int RecallerId,
         DateTime CreatedAt
     );
 }

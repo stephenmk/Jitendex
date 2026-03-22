@@ -42,4 +42,7 @@ public sealed class JMdictPatch
 
     [InverseProperty(nameof(JMdictPatchApproval.Patch))]
     public ICollection<JMdictPatchApproval> Approvals { get; init; } = [];
+
+    [InverseProperty(nameof(JMdictPatchRecall.Patch))]
+    public ICollection<JMdictPatchRecall> Recalls { get; init; } = [];
 }

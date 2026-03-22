@@ -86,13 +86,33 @@ internal partial class PatchService
             })
             .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 
-        var approvedPatchIds = homeContext.JMdictPatchApprovals
-            .OrderByDescending(static a => a.CreatedAt)
-            .Select(static a => a.PatchId);
+        var recalledPatches = homeContext.JMdictPatchRecalls
+            .GroupBy(static r => r.PatchId)
+            .Select(static group => new
+            {
+                group.Key,
+                Value = group
+                    .OrderByDescending(static r => r.CreatedAt)
+                    .Select(static r => r.CreatedAt)
+                    .First()
+            })
+            .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 
-        foreach (var patchId in approvedPatchIds)
+        var patchApprovals = homeContext.JMdictPatchApprovals
+            .OrderByDescending(static a => a.CreatedAt)
+            .Select(static a => new { a.PatchId, a.CreatedAt });
+
+        foreach (var approval in patchApprovals)
         {
-            var patch = patches[patchId];
+            if (recalledPatches.TryGetValue(approval.PatchId, out var recalledAt))
+            {
+                if (approval.CreatedAt < recalledAt)
+                {
+                    continue;
+                }
+            }
+
+            var patch = patches[approval.PatchId];
             var sequenceId = patch.SequenceId;
 
             if (!sequences.ContainsKey(sequenceId))

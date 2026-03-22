@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Models;
 using Jitendex.Import.Home.Tables.JMdict;
@@ -32,6 +31,8 @@ internal sealed class CrossReferenceDataService
     CrossReferenceSequenceTable table
 )
 {
+    private const char Separator = '・';
+
     public async Task ImportAsync()
     {
         var filePath = GetJsonFilePath();
@@ -42,12 +43,12 @@ internal sealed class CrossReferenceDataService
 
         foreach (var (key, value) in data)
         {
-            var split = key.Split('・');
+            var split = key.Split(Separator);
             rows.Add(new
             (
                 EntryId: int.Parse(split[0]),
                 SenseNumber: int.Parse(split[1]),
-                Text: string.Join('・', split[2..]),
+                Text: string.Join(Separator, split[2..]),
                 RefEntryId: value
             ));
         }
@@ -58,15 +59,15 @@ internal sealed class CrossReferenceDataService
     public async Task ExportAsync()
     {
         var dictionary = context.CrossReferenceSequences
-            .AsNoTracking()
             .OrderBy(static x => x.Text)
             .OrderBy(static x => x.SenseNumber)
             .OrderBy(static x => x.EntryId)
-            .ToDictionary
-            (
-                keySelector: static x => x.ToExportKey(),
-                elementSelector: static x => x.RefEntryId
-            );
+            .Select(static x => new
+            {
+                Key = $"{x.EntryId}{Separator}{x.SenseNumber}{Separator}{x.Text}",
+                Value = x.RefEntryId,
+            })
+            .ToDictionary(static x => x.Key, static x => x.Value);
 
         var filePath = GetJsonFilePath();
         if (File.Exists(filePath))

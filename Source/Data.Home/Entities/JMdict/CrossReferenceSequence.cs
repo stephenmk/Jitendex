@@ -29,10 +29,4 @@ public sealed class CrossReferenceSequence
     public required int SenseNumber { get; init; }
     public required string Text { get; init; }
     public required int? RefEntryId { get; set; }
-
-    /// <summary>
-    /// Dictionary key in the JSON file.
-    /// </summary>
-    public string ToExportKey()
-        => $"{EntryId}・{SenseNumber}・{Text}";
 }

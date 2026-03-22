@@ -20,9 +20,7 @@ namespace Jitendex.Data.Home.Entities.Kanwa;
 
 public enum CompoundReadingTypeId
 {
-    Unknown,
     Alphanumeric,
     Ateji,
     Idiom,
-    Partition,
 }

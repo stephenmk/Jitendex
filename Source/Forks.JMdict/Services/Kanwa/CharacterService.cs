@@ -113,11 +113,9 @@ internal sealed class CharacterService
 
     private static ForkTypeId ConvertTypeId(HomeTypeId id) => id switch
     {
-        HomeTypeId.Unknown      => ForkTypeId.Unknown,
         HomeTypeId.Alphanumeric => ForkTypeId.Alphanumeric,
         HomeTypeId.Ateji        => ForkTypeId.Ateji,
         HomeTypeId.Idiom        => ForkTypeId.Idiom,
-        HomeTypeId.Partition    => ForkTypeId.Partition,
         _                       => throw new ArgumentOutOfRangeException(nameof(id))
     };
 }

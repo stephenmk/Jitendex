@@ -23,26 +23,20 @@ namespace Jitendex.Import.Home.Models;
 
 internal sealed record CompoundReadingsObject
 {
-    public ImmutableArray<string> Unknown { get; init; } = [];
     public ImmutableArray<string> Alphanumeric { get; init; } = [];
     public ImmutableArray<string> Ateji { get; init; } = [];
     public ImmutableArray<string> Idiom { get; init; } = [];
-    public ImmutableArray<string> Partition { get; init; } = [];
 
     public List<CompoundReadingRow> ToReadingRows(int compoundId)
     {
         var readingRows = new List<CompoundReadingRow>();
 
-        readingRows.AddRange(Unknown.Select(x =>
-            ToReadingRow(compoundId, x, CompoundReadingTypeId.Unknown)));
         readingRows.AddRange(Alphanumeric.Select(x =>
             ToReadingRow(compoundId, x, CompoundReadingTypeId.Alphanumeric)));
         readingRows.AddRange(Ateji.Select(x =>
             ToReadingRow(compoundId, x, CompoundReadingTypeId.Ateji)));
         readingRows.AddRange(Idiom.Select(x =>
             ToReadingRow(compoundId, x, CompoundReadingTypeId.Idiom)));
-        readingRows.AddRange(Partition.Select(x =>
-            ToReadingRow(compoundId, x, CompoundReadingTypeId.Partition)));
 
         return readingRows;
     }

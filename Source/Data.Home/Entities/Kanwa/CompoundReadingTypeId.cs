@@ -24,5 +24,5 @@ public enum CompoundReadingTypeId
     Alphanumeric,
     Ateji,
     Idiom,
-    Nonstandard,
+    Partition,
 }

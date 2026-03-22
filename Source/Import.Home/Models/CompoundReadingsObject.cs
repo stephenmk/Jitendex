@@ -27,7 +27,7 @@ internal sealed record CompoundReadingsObject
     public ImmutableArray<string> Alphanumeric { get; init; } = [];
     public ImmutableArray<string> Ateji { get; init; } = [];
     public ImmutableArray<string> Idiom { get; init; } = [];
-    public ImmutableArray<string> Nonstandard { get; init; } = [];
+    public ImmutableArray<string> Partition { get; init; } = [];
 
     public List<CompoundReadingRow> ToReadingRows(int compoundId)
     {
@@ -41,8 +41,8 @@ internal sealed record CompoundReadingsObject
             ToReadingRow(compoundId, x, CompoundReadingTypeId.Ateji)));
         readingRows.AddRange(Idiom.Select(x =>
             ToReadingRow(compoundId, x, CompoundReadingTypeId.Idiom)));
-        readingRows.AddRange(Nonstandard.Select(x =>
-            ToReadingRow(compoundId, x, CompoundReadingTypeId.Nonstandard)));
+        readingRows.AddRange(Partition.Select(x =>
+            ToReadingRow(compoundId, x, CompoundReadingTypeId.Partition)));
 
         return readingRows;
     }

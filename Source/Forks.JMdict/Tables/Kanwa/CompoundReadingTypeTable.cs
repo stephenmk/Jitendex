@@ -23,27 +23,24 @@ using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
 namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
-internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
+internal sealed class CompoundReadingTypeTable : Table<CompoundReadingTypeRow>
 {
-    protected override string Name => nameof(CompoundReading);
+    protected override string Name => nameof(CompoundReadingType);
 
     protected override IReadOnlyList<string> ColumnNames =>
     [
-        nameof(CompoundReading.CompoundId),
-        nameof(CompoundReading.Text),
-        nameof(CompoundReading.TypeId),
+        nameof(CompoundReadingType.Id),
+        nameof(CompoundReadingType.Name),
     ];
 
     protected override IReadOnlyList<string> KeyColNames =>
     [
-        nameof(CompoundReading.CompoundId),
-        nameof(CompoundReading.Text),
+        nameof(CompoundReadingType.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(CompoundReadingRow row) =>
+    protected override SqliteParameter[] Parameters(CompoundReadingTypeRow row) =>
     [
-        new("@0", row.CompoundId),
-        new("@1", row.Text),
-        new("@2", row.TypeId),
+        new("@0", row.Id),
+        new("@1", row.Name),
     ];
 }

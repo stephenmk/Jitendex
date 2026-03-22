@@ -20,6 +20,8 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
+using HomeTypeId = Jitendex.Data.Home.Entities.Kanwa.CompoundReadingTypeId;
+using ForkTypeId = Jitendex.Data.JMdict.ForkEntities.Kanwa.CompoundReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 
@@ -29,6 +31,7 @@ internal sealed class CharacterService
     HomeContext homeContext,
     CompoundTable compoundTable,
     CompoundReadingTable readingTable,
+    CompoundReadingTypeTable readingTypeTable,
     CharacterTable characterTable,
     CompoundCharacterTable compoundCharacterTable
 )
@@ -36,6 +39,7 @@ internal sealed class CharacterService
     public void Write()
     {
         WriteCompounds();
+        WriteCompoundReadingTypes();
         WriteCompoundReadings();
         WriteCharacters();
         WriteCompoundCharacters();
@@ -48,10 +52,19 @@ internal sealed class CharacterService
         compoundTable.InsertItems(forkContext, compoundRows);
     }
 
+    private void WriteCompoundReadingTypes()
+    {
+        var typeRows = homeContext.CompoundReadingTypes
+            .Select(static x => ConvertTypeId(x.Id))
+            .Select(static id => new CompoundReadingTypeRow((int)id, id.ToString()));
+
+        readingTypeTable.InsertItems(forkContext, typeRows);
+    }
+
     private void WriteCompoundReadings()
     {
         var readingRows = homeContext.CompoundReadings
-            .Select(static x => new CompoundReadingRow(x.CompoundId, x.Text));
+            .Select(static x => new CompoundReadingRow(x.CompoundId, x.Text, (int)ConvertTypeId(x.TypeId)));
         readingTable.InsertItems(forkContext, readingRows);
     }
 
@@ -97,4 +110,14 @@ internal sealed class CharacterService
 
         compoundCharacterTable.InsertItems(forkContext, rows);
     }
+
+    private static ForkTypeId ConvertTypeId(HomeTypeId id) => id switch
+    {
+        HomeTypeId.Unknown      => ForkTypeId.Unknown,
+        HomeTypeId.Alphanumeric => ForkTypeId.Alphanumeric,
+        HomeTypeId.Ateji        => ForkTypeId.Ateji,
+        HomeTypeId.Idiom        => ForkTypeId.Idiom,
+        HomeTypeId.Partition    => ForkTypeId.Partition,
+        _                       => throw new ArgumentOutOfRangeException(nameof(id))
+    };
 }

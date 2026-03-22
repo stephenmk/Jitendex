@@ -34,6 +34,7 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
     public DbSet<CharacterReadingType> CharacterReadingTypes { get; set; } = null!;
     public DbSet<Compound> Compounds { get; set; } = null!;
     public DbSet<CompoundReading> CompoundReadings { get; set; } = null!;
+    public DbSet<CompoundReadingType> CompoundReadingTypes { get; set; } = null!;
     #endregion
 
     #region JMdict

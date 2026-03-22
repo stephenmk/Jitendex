@@ -78,6 +78,7 @@ internal static class ServiceProvider
 
         .AddTransient<CompoundTable>()
         .AddTransient<CompoundReadingTable>()
+        .AddTransient<CompoundReadingTypeTable>()
         .AddTransient<CompoundCharacterTable>()
         .AddTransient<CharacterTable>()
         .AddTransient<CharacterReadingTable>()

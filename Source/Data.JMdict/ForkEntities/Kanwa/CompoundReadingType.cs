@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -21,17 +21,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
-[Table(nameof(CompoundReading))]
-[PrimaryKey(nameof(CompoundId), nameof(Text))]
-public sealed class CompoundReading
+[Table(nameof(CompoundReadingType))]
+[PrimaryKey(nameof(Id))]
+public sealed class CompoundReadingType
 {
-    public required int CompoundId { get; init; }
-    public required string Text { get; init; }
-    public required CompoundReadingTypeId TypeId { get; init; }
+    public required CompoundReadingTypeId Id { get; init; }
+    public required string Name { get; set; }
 
-    [ForeignKey(nameof(CompoundId))]
-    public Compound Compound { get; init; } = null!;
-
-    [ForeignKey(nameof(TypeId))]
-    public CompoundReadingType Type { get; init; } = null!;
+    [InverseProperty(nameof(CompoundReading.Type))]
+    public ICollection<CompoundReading> CompoundReadings { get; init; } = [];
 }

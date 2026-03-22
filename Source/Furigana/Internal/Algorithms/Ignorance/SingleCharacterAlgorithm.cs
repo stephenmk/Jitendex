@@ -28,7 +28,7 @@ internal sealed class SingleCharacterAlgorithm : CharacterAlgorithm
     {
         var readings = DefaultSingleCharacterReadings(textSlice, readingState);
 
-        if (readings.Length == 0)
+        if (readings.IsEmpty)
         {
             return [];
         }

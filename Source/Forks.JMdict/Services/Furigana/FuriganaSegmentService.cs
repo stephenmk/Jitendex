@@ -155,7 +155,7 @@ internal partial class FuriganaSegmentService
 
     private static ReadingKey? GetKey(Dictionary<int, ReadingKey> idToKey, ImmutableArray<int> ids)
     {
-        if (ids.Length == 0)
+        if (ids.IsEmpty)
         {
             return null;
         }

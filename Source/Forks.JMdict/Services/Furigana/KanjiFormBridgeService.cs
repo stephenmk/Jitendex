@@ -77,7 +77,7 @@ internal partial class KanjiFormBridgeService
             var readingToUsedOrders = new Dictionary<string, HashSet<int>>();
             foreach (var reading in entry.Readings)
             {
-                if (entry.KanjiFormOrders.Length == 0 || reading.NoKanji || reading.IsHidden)
+                if (entry.KanjiFormOrders.IsEmpty || reading.NoKanji || reading.IsHidden)
                 {
                     CheckForRestrictionRedundancies(entry.Id, entry.KanjiFormOrders.Length, reading);
                     continue;

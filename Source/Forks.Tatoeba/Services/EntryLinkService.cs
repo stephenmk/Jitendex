@@ -117,7 +117,7 @@ internal partial class EntryLinkService
             entryIds = ImmutableArray.Create(validList[..i]);
         }
 
-        if (entryIds.Length == 0 && token.IsPriority)
+        if (entryIds.IsEmpty && token.IsPriority)
         {
             LogNoMatches(token.ExampleId, token.SegmentationOrder, token.Order);
         }

@@ -71,86 +71,114 @@ internal partial class CrossReferenceService
         public string CacheKey => $"{EntryId}・{SenseOrder + 1}・{Text}";
     }
 
+    private sealed class Data
+    {
+        public required FrozenDictionary<string, int?> EntryIdCache { get; init; }
+        public required FrozenDictionary<KanjiFormKey, ImmutableArray<int>> KanjiFormToReadings { get; init; }
+        public required IReadOnlyDictionary<ReferenceText, ImmutableArray<EntryData>> ReferenceTextToEntries { get; init; }
+    }
+
+    private sealed class Rows
+    {
+        public List<EntryReferenceRow> EntryRefs { get; init; } = new(50_000);
+        public List<ReadingReferenceRow> ReadingRefs { get; init; } = new(50_000);
+        public List<KanjiFormReferenceRow> KanjiFormRefs { get; init; } = new(50_000);
+        public List<AmbiguousReferenceRow> AmbiguousRefs { get; init; } = new(5_000);
+    }
+
     public void Write()
     {
-        var entryIdCache = cacheService.Load();
-        var referenceTextToEntries = GetReferenceTextToEntries();
-        var kanjiFormToReadings = GetKanjiFormToReadings();
+        var data = new Data
+        {
+            EntryIdCache = cacheService.Load(),
+            ReferenceTextToEntries = GetReferenceTextToEntries(),
+            KanjiFormToReadings = GetKanjiFormToReadings(),
+        };
 
-        var entryRefs = new List<EntryReferenceRow>(50_000);
-        var readingRefs = new List<ReadingReferenceRow>(50_000);
-        var kanjiFormRefs = new List<KanjiFormReferenceRow>(50_000);
-        var ambiguousRefs = new List<AmbiguousReferenceRow>(5_000);
+        var rows = new Rows();
 
         var xrefs = context.CrossReferences
             .Select(static x => new CrossReferenceData(x.EntryId, x.SenseOrder, x.Order, x.Text));
 
         foreach (var xref in xrefs)
         {
-            var parsedRef = parser.Parse(xref.Text);
+            Solve(data, rows, xref);
+        }
 
-            if (parsedRef is null)
-            {
-                continue;
-            }
+        ambiguousReferenceTable.InsertItems(context, rows.AmbiguousRefs);
+        entryReferenceTable.InsertItems(context, rows.EntryRefs);
+        readingReferenceTable.InsertItems(context, rows.ReadingRefs);
+        kanjiFormReferenceTable.InsertItems(context, rows.KanjiFormRefs);
 
-            var potentialEntries = GetPotentialEntries(xref, parsedRef, referenceTextToEntries);
-            var potentialEntryIds = new int[potentialEntries.Length];
+        cacheService.Export();
+    }
+
+    private void Solve(Data data, Rows rows, CrossReferenceData xref)
+    {
+        var parsedRef = parser.Parse(xref.Text);
+
+        if (parsedRef is null)
+        {
+            return;
+        }
+
+        var potentialEntries = GetPotentialEntries(xref, parsedRef, data);
+
+        int? entryId = null;
+
+        if (potentialEntries.Length == 1)
+        {
+            entryId = potentialEntries[0].Id;
+        }
+        else if (!potentialEntries.IsEmpty)
+        {
+            var potentialEntryIds = potentialEntries.Length < 100
+                ? stackalloc int[potentialEntries.Length]
+                : new int[potentialEntries.Length];
 
             for (int i = 0; i < potentialEntries.Length; i++)
                 potentialEntryIds[i] = potentialEntries[i].Id;
 
-            var entryId = potentialEntries.IsEmpty
-                ? null
-                : potentialEntries.Length == 1
-                ? potentialEntries[0].Id
-                : FindIdInCache(xref.CacheKey, potentialEntryIds, entryIdCache);
-
-            var entry = entryId is null ? null
-                : potentialEntries.First(e => e.Id == entryId);
-
-            int? kanjiFormOrder = entry is null ? null
-                : entry.KanjiForms.IndexOf(parsedRef.Text1) is int order and not -1
-                ? order
-                : null;
-
-            int? readingOrder = entry is null ? null
-                : entry.Readings.IndexOf(parsedRef.Text1) is int order1 and not -1
-                ? order1
-                : parsedRef.Text2 is not null && entry.Readings.IndexOf(parsedRef.Text2) is int order2 and not -1
-                ? order2
-                : kanjiFormOrder is null
-                ? null
-                : kanjiFormToReadings.TryGetValue(new(entry.Id, kanjiFormOrder.Value), out var readingOrders)
-                ? readingOrders.First()
-                : null;
-
-            LogReferenceInconsistencies(xref, parsedRef, entry, readingOrder, kanjiFormOrder, kanjiFormToReadings);
-
-            if (potentialEntries.Length > 1)
-            {
-                ambiguousRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order));
-            }
-            if (entryId.HasValue)
-            {
-                entryRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, parsedRef.SenseNumber - 1));
-                if (readingOrder.HasValue)
-                {
-                    readingRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, readingOrder.Value));
-                }
-                if (kanjiFormOrder.HasValue)
-                {
-                    kanjiFormRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, kanjiFormOrder.Value));
-                }
-            }
+            entryId = FindIdInCache(xref.CacheKey, potentialEntryIds, data);
         }
 
-        ambiguousReferenceTable.InsertItems(context, ambiguousRefs);
-        entryReferenceTable.InsertItems(context, entryRefs);
-        readingReferenceTable.InsertItems(context, readingRefs);
-        kanjiFormReferenceTable.InsertItems(context, kanjiFormRefs);
+        var entry = entryId is null ? null
+            : potentialEntries.First(e => e.Id == entryId);
 
-        cacheService.Export();
+        int? kanjiFormOrder = entry is null ? null
+            : entry.KanjiForms.IndexOf(parsedRef.Text1) is int order and not -1
+            ? order
+            : null;
+
+        int? readingOrder = entry is null ? null
+            : entry.Readings.IndexOf(parsedRef.Text1) is int order1 and not -1
+            ? order1
+            : parsedRef.Text2 is not null && entry.Readings.IndexOf(parsedRef.Text2) is int order2 and not -1
+            ? order2
+            : kanjiFormOrder is null
+            ? null
+            : data.KanjiFormToReadings.TryGetValue(new(entry.Id, kanjiFormOrder.Value), out var readingOrders)
+            ? readingOrders.First()
+            : null;
+
+        LogReferenceInconsistencies(xref, parsedRef, entry, readingOrder, kanjiFormOrder, data);
+
+        if (potentialEntries.Length > 1)
+        {
+            rows.AmbiguousRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order));
+        }
+        if (entryId.HasValue)
+        {
+            rows.EntryRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, parsedRef.SenseNumber - 1));
+            if (readingOrder.HasValue)
+            {
+                rows.ReadingRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, readingOrder.Value));
+            }
+            if (kanjiFormOrder.HasValue)
+            {
+                rows.KanjiFormRefs.Add(new(xref.EntryId, xref.SenseOrder, xref.Order, entryId.Value, kanjiFormOrder.Value));
+            }
+        }
     }
 
     private FrozenDictionary<KanjiFormKey, ImmutableArray<int>> GetKanjiFormToReadings()
@@ -166,13 +194,10 @@ internal partial class CrossReferenceService
             })
             .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 
-    private int? FindIdInCache(
-        string key,
-        ReadOnlySpan<int> potentialEntryIds,
-        FrozenDictionary<string, int?> entryIdCache)
+    private int? FindIdInCache(string key, ReadOnlySpan<int> potentialEntryIds, Data data)
     {
         int? entryId;
-        if (!entryIdCache.TryGetValue(key, out var cachedId))
+        if (!data.EntryIdCache.TryGetValue(key, out var cachedId))
         {
             entryId = null;
         }
@@ -197,14 +222,11 @@ internal partial class CrossReferenceService
         return entryId;
     }
 
-    private ImmutableArray<EntryData> GetPotentialEntries(
-        CrossReferenceData xref,
-        ParsedReferenceText parsed,
-        IReadOnlyDictionary<ReferenceText, ImmutableArray<EntryData>> referenceTextToEntries)
+    private ImmutableArray<EntryData> GetPotentialEntries(CrossReferenceData xref, ParsedReferenceText parsed, Data data)
     {
         var key = new ReferenceText(parsed.Text1, parsed.Text2);
 
-        if (!referenceTextToEntries.TryGetValue(key, out var entryInfos))
+        if (!data.ReferenceTextToEntries.TryGetValue(key, out var entryInfos))
         {
             LogImpossibleReference(xref.CacheKey);
             return [];
@@ -300,7 +322,7 @@ internal partial class CrossReferenceService
         EntryData? entry,
         int? readingOrder,
         int? kanjiFormOrder,
-        FrozenDictionary<KanjiFormKey, ImmutableArray<int>> kanjiFormToReadings)
+        Data data)
     {
         if (entry is null)
         {
@@ -319,7 +341,7 @@ internal partial class CrossReferenceService
             LogMissingKanjiForm(xref.CacheKey);
         }
         else if (kanjiFormOrder.HasValue &&
-                kanjiFormToReadings.TryGetValue(new(entry.Id, kanjiFormOrder.Value), out var readings) &&
+                data.KanjiFormToReadings.TryGetValue(new(entry.Id, kanjiFormOrder.Value), out var readings) &&
                 readings.Contains(readingOrder.Value) is not true)
         {
             LogInvalidPair(xref.CacheKey);

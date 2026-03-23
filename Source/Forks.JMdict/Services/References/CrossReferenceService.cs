@@ -342,7 +342,7 @@ internal partial class CrossReferenceService
         }
         else if (kanjiFormOrder.HasValue &&
                 data.KanjiFormToReadings.TryGetValue(new(entry.Id, kanjiFormOrder.Value), out var readings) &&
-                readings.Contains(readingOrder.Value) is not true)
+                readings.Contains(readingOrder.Value) is false)
         {
             LogInvalidPair(xref.CacheKey);
         }

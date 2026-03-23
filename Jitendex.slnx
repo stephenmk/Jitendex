@@ -34,6 +34,7 @@
     <Project Path="Libraries/JapaneseTextUtils/Jitendex.JapaneseTextUtils/Jitendex.JapaneseTextUtils.csproj" />
     <Project Path="Libraries/MinimalJsonDiff/Jitendex.MinimalJsonDiff/Jitendex.MinimalJsonDiff.csproj" />
     <Project Path="Libraries/MinimalPatch/Jitendex.MinimalPatch/Jitendex.MinimalPatch.csproj" />
+    <Project Path="Libraries/YomitanDictionary/Jitendex.Yomitan/Jitendex.Yomitan.csproj" />
   </Folder>
   <Project Path="Source/Dto/Jitendex.Dto.csproj" />
   <Project Path="Source/Furigana/Jitendex.Furigana.csproj" />

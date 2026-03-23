@@ -19,3 +19,6 @@
 [submodule "Libraries/JapaneseTextUtils"]
 	path = Libraries/JapaneseTextUtils
 	url = https://github.com/Jitendex/JapaneseTextUtils
+[submodule "Libraries/YomitanDictionary"]
+	path = Libraries/YomitanDictionary
+	url = https://github.com/Jitendex/YomitanDictionary

@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMnedict.Tables;
 
 internal sealed class RevisionTable : Table<DocumentRevision>
 {
-    protected override string Name => nameof(Revision);
+    protected override string Name { get; } = nameof(Revision);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Revision.SequenceId),
         nameof(Revision.Number),
@@ -34,7 +34,7 @@ internal sealed class RevisionTable : Table<DocumentRevision>
         nameof(Revision.DiffJson),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
+    protected override ImmutableArray<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {nameof(Revision)} is auto-incremented.");
 
     protected override object?[] ParameterValues(DocumentRevision revision) =>

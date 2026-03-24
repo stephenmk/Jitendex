@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.GroupElements;
 
 internal sealed class RadicalNameTable : Table<RadicalNameElement>
 {
-    protected override string Name => nameof(RadicalName);
+    protected override string Name { get; } = nameof(RadicalName);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(RadicalName.UnicodeScalarValue),
         nameof(RadicalName.GroupOrder),
@@ -34,7 +34,7 @@ internal sealed class RadicalNameTable : Table<RadicalNameElement>
         nameof(RadicalName.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(RadicalName.UnicodeScalarValue),
         nameof(RadicalName.GroupOrder),

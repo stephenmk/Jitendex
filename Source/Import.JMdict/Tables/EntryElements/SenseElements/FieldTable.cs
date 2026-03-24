@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class FieldTable : Table<FieldElement>
 {
-    protected override string Name => nameof(Field);
+    protected override string Name { get; } = nameof(Field);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Field.EntryId),
         nameof(Field.SenseOrder),
@@ -34,7 +34,7 @@ internal sealed class FieldTable : Table<FieldElement>
         nameof(Field.TagName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Field.EntryId),
         nameof(Field.SenseOrder),

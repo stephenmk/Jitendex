@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.GroupElements;
 
 internal sealed class StrokeCountTable : Table<StrokeCountElement>
 {
-    protected override string Name => nameof(StrokeCount);
+    protected override string Name { get; } = nameof(StrokeCount);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(StrokeCount.UnicodeScalarValue),
         nameof(StrokeCount.GroupOrder),
@@ -34,7 +34,7 @@ internal sealed class StrokeCountTable : Table<StrokeCountElement>
         nameof(StrokeCount.Value),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(StrokeCount.UnicodeScalarValue),
         nameof(StrokeCount.GroupOrder),

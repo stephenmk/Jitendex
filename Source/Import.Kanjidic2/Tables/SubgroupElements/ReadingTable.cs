@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.SubgroupElements;
 
 internal sealed class ReadingTable : Table<ReadingElement>
 {
-    protected override string Name => nameof(Reading);
+    protected override string Name { get; } = nameof(Reading);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Reading.UnicodeScalarValue),
         nameof(Reading.GroupOrder),
@@ -36,7 +36,7 @@ internal sealed class ReadingTable : Table<ReadingElement>
         nameof(Reading.TypeName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Reading.UnicodeScalarValue),
         nameof(Reading.GroupOrder),

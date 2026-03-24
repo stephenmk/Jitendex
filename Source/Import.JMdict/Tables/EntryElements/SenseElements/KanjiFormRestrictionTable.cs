@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class KanjiFormRestrictionTable : Table<KanjiFormRestrictionElement>
 {
-    protected override string Name => nameof(KanjiFormRestriction);
+    protected override string Name { get; } = nameof(KanjiFormRestriction);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(KanjiFormRestriction.EntryId),
         nameof(KanjiFormRestriction.SenseOrder),
@@ -34,7 +34,7 @@ internal sealed class KanjiFormRestrictionTable : Table<KanjiFormRestrictionElem
         nameof(KanjiFormRestriction.KanjiFormText),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(KanjiFormRestriction.EntryId),
         nameof(KanjiFormRestriction.SenseOrder),

@@ -24,9 +24,9 @@ namespace Jitendex.Forks.JMdict.Tables.Restrictions;
 
 internal sealed class RestrictionLinkTable : Table<RestrictionLinkRow>
 {
-    protected override string Name => nameof(RestrictionLink);
+    protected override string Name { get; } = nameof(RestrictionLink);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(RestrictionLink.EntryId),
         nameof(RestrictionLink.ReadingOrder),
@@ -34,7 +34,7 @@ internal sealed class RestrictionLinkTable : Table<RestrictionLinkRow>
         nameof(RestrictionLink.KanjiFormOrder),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(RestrictionLink.EntryId),
         nameof(RestrictionLink.ReadingOrder),

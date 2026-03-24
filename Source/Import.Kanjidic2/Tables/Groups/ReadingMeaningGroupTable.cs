@@ -24,15 +24,15 @@ namespace Jitendex.Import.Kanjidic2.Tables.Groups;
 
 internal sealed class ReadingMeaningGroupTable : Table<ReadingMeaningGroupElement>
 {
-    protected override string Name => nameof(ReadingMeaningGroup);
+    protected override string Name { get; } = nameof(ReadingMeaningGroup);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ReadingMeaningGroup.UnicodeScalarValue),
         nameof(ReadingMeaningGroup.Order),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ReadingMeaningGroup.UnicodeScalarValue),
         nameof(ReadingMeaningGroup.Order),

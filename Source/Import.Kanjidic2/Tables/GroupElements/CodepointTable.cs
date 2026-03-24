@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.GroupElements;
 
 internal sealed class CodepointTable : Table<CodepointElement>
 {
-    protected override string Name => nameof(Codepoint);
+    protected override string Name { get; } = nameof(Codepoint);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Codepoint.UnicodeScalarValue),
         nameof(Codepoint.GroupOrder),
@@ -35,7 +35,7 @@ internal sealed class CodepointTable : Table<CodepointElement>
         nameof(Codepoint.TypeName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Codepoint.UnicodeScalarValue),
         nameof(Codepoint.GroupOrder),

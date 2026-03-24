@@ -24,16 +24,21 @@ namespace Jitendex.Forks.JMdict.Tables.References;
 
 internal sealed class AmbiguousReferenceTable : Table<AmbiguousReferenceRow>
 {
-    protected override string Name => nameof(AmbiguousReference);
+    protected override string Name { get; } = nameof(AmbiguousReference);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(AmbiguousReference.EntryId),
         nameof(AmbiguousReference.SenseOrder),
         nameof(AmbiguousReference.CrossReferenceOrder),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(AmbiguousReference.EntryId),
+        nameof(AmbiguousReference.SenseOrder),
+        nameof(AmbiguousReference.CrossReferenceOrder),
+    ];
 
     protected override object?[] ParameterValues(AmbiguousReferenceRow row) =>
     [

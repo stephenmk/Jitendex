@@ -24,16 +24,16 @@ namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
 internal sealed class CompoundCharacterTable : Table<CompoundCharacterRow>
 {
-    protected override string Name => nameof(CompoundCharacter);
+    protected override string Name { get; } = nameof(CompoundCharacter);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CompoundCharacter.CompoundId),
         nameof(CompoundCharacter.Order),
         nameof(CompoundCharacter.CharacterValue),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CompoundCharacter.CompoundId),
         nameof(CompoundCharacter.Order),

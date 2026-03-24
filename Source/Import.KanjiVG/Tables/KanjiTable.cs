@@ -24,14 +24,14 @@ namespace Jitendex.Import.KanjiVG.Tables;
 
 internal sealed class KanjiTable : Table<KanjiElement>
 {
-    protected override string Name => nameof(Kanji);
+    protected override string Name { get; } = nameof(Kanji);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Kanji.UnicodeScalarValue)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Kanji.UnicodeScalarValue)
     ];

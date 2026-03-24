@@ -24,16 +24,16 @@ namespace Jitendex.Forks.JMdict.Tables.Furigana;
 
 internal sealed class ReadingKanjiFormBridgeTable : Table<KanjiFormBridgeRow>
 {
-    protected override string Name => nameof(ReadingKanjiFormBridge);
+    protected override string Name { get; } = nameof(ReadingKanjiFormBridge);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ReadingKanjiFormBridge.EntryId),
         nameof(ReadingKanjiFormBridge.ReadingOrder),
         nameof(ReadingKanjiFormBridge.KanjiFormOrder),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ReadingKanjiFormBridge.EntryId),
         nameof(ReadingKanjiFormBridge.ReadingOrder),

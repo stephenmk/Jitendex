@@ -24,14 +24,14 @@ namespace Jitendex.Import.JMnedict.Tables;
 
 internal sealed class FileHeaderTable : Table<DocumentHeader>
 {
-    protected override string Name => nameof(FileHeader);
+    protected override string Name { get; } = nameof(FileHeader);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(FileHeader.Date)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
+    protected override ImmutableArray<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {nameof(FileHeader)} is auto-incremented.");
 
     protected override object?[] ParameterValues(DocumentHeader header) =>

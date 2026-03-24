@@ -24,9 +24,9 @@ namespace Jitendex.Forks.JMdict.Tables.References;
 
 internal sealed class KanjiFormReferenceTable : Table<KanjiFormReferenceRow>
 {
-    protected override string Name => nameof(KanjiFormReference);
+    protected override string Name { get; } = nameof(KanjiFormReference);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(KanjiFormReference.EntryId),
         nameof(KanjiFormReference.SenseOrder),
@@ -35,7 +35,7 @@ internal sealed class KanjiFormReferenceTable : Table<KanjiFormReferenceRow>
         nameof(KanjiFormReference.RefKanjiFormOrder),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(KanjiFormReference.EntryId),
         nameof(KanjiFormReference.SenseOrder),

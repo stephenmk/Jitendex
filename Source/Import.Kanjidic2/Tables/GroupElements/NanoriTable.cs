@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.GroupElements;
 
 internal sealed class NanoriTable : Table<NanoriElement>
 {
-    protected override string Name => nameof(Nanori);
+    protected override string Name { get; } = nameof(Nanori);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Nanori.UnicodeScalarValue),
         nameof(Nanori.GroupOrder),
@@ -34,7 +34,7 @@ internal sealed class NanoriTable : Table<NanoriElement>
         nameof(Nanori.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Nanori.UnicodeScalarValue),
         nameof(Nanori.GroupOrder),

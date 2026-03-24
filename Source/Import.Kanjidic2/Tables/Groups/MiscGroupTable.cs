@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.Groups;
 
 internal sealed class MiscGroupTable : Table<MiscGroupElement>
 {
-    protected override string Name => nameof(MiscGroup);
+    protected override string Name { get; } = nameof(MiscGroup);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(MiscGroup.UnicodeScalarValue),
         nameof(MiscGroup.Order),
@@ -35,7 +35,7 @@ internal sealed class MiscGroupTable : Table<MiscGroupElement>
         nameof(MiscGroup.JlptLevel),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(MiscGroup.UnicodeScalarValue),
         nameof(MiscGroup.Order),

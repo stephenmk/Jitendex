@@ -24,15 +24,15 @@ namespace Jitendex.Import.Home.Tables.Kanwa;
 
 internal sealed class CompoundReadingTypeTable : Table<CompoundReadingTypeRow>
 {
-    protected override string Name => nameof(CompoundReadingType);
+    protected override string Name { get; } = nameof(CompoundReadingType);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CompoundReadingType.Id),
         nameof(CompoundReadingType.Name),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CompoundReadingType.Id)
     ];

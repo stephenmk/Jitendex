@@ -24,9 +24,9 @@ namespace Jitendex.Forks.Tatoeba.Tables;
 
 internal sealed class EntryLinkTable : Table<EntryLinkRow>
 {
-    protected override string Name => nameof(EntryLink);
+    protected override string Name { get; } = nameof(EntryLink);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(EntryLink.ExampleId),
         nameof(EntryLink.SegmentationOrder),
@@ -35,7 +35,7 @@ internal sealed class EntryLinkTable : Table<EntryLinkRow>
         nameof(EntryLink.SenseOrder),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(EntryLink.ExampleId),
         nameof(EntryLink.SegmentationOrder),

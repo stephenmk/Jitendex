@@ -24,9 +24,9 @@ namespace Jitendex.Import.Home.Tables.Kanwa;
 
 internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
 {
-    protected override string Name => nameof(CharacterReading);
+    protected override string Name { get; } = nameof(CharacterReading);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CharacterReading.CharacterValue),
         nameof(CharacterReading.Text),
@@ -36,7 +36,7 @@ internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
         nameof(CharacterReading.TypeId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
+    protected override ImmutableArray<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {nameof(CharacterReading)} is auto-incremented.");
 
     protected override object?[] ParameterValues(CharacterReadingRow row) =>

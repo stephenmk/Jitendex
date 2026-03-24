@@ -24,15 +24,15 @@ namespace Jitendex.Import.Home.Tables.Kanwa;
 
 internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
 {
-    protected override string Name => nameof(CharacterReadingType);
+    protected override string Name { get; } = nameof(CharacterReadingType);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CharacterReadingType.Id),
         nameof(CharacterReadingType.Name),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CharacterReadingType.Id)
     ];

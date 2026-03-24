@@ -24,9 +24,9 @@ namespace Jitendex.Import.KanjiVG.Tables;
 
 internal sealed class StrokeTable : Table<StrokeElement>
 {
-    protected override string Name => nameof(Stroke);
+    protected override string Name { get; } = nameof(Stroke);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Stroke.UnicodeScalarValue),
         nameof(Stroke.VariantTypeId),
@@ -37,7 +37,7 @@ internal sealed class StrokeTable : Table<StrokeElement>
         nameof(Stroke.PathData),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Stroke.UnicodeScalarValue),
         nameof(Stroke.VariantTypeId),

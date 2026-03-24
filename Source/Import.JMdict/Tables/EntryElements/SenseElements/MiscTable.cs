@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class MiscTable : Table<MiscElement>
 {
-    protected override string Name => nameof(Misc);
+    protected override string Name { get; } = nameof(Misc);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Misc.EntryId),
         nameof(Misc.SenseOrder),
@@ -34,7 +34,7 @@ internal sealed class MiscTable : Table<MiscElement>
         nameof(Misc.TagName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Misc.EntryId),
         nameof(Misc.SenseOrder),

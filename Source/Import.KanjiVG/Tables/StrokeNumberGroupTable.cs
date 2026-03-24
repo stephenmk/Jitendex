@@ -24,9 +24,9 @@ namespace Jitendex.Import.KanjiVG.Tables;
 
 internal sealed class StrokeNumberGroupTable : Table<StrokeNumberGroupElement>
 {
-    protected override string Name => nameof(StrokeNumberGroup);
+    protected override string Name { get; } = nameof(StrokeNumberGroup);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(StrokeNumberGroup.UnicodeScalarValue),
         nameof(StrokeNumberGroup.VariantTypeId),
@@ -34,7 +34,7 @@ internal sealed class StrokeNumberGroupTable : Table<StrokeNumberGroupElement>
         nameof(StrokeNumberGroup.IdAttribute),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(StrokeNumberGroup.UnicodeScalarValue),
         nameof(StrokeNumberGroup.VariantTypeId),

@@ -24,16 +24,21 @@ namespace Jitendex.Import.ChiseIds.Tables;
 
 internal sealed class SequenceComponentTable : Table<SequenceComponentElement>
 {
-    protected override string Name => nameof(SequenceComponent);
+    protected override string Name { get; } = nameof(SequenceComponent);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(SequenceComponent.CodepointId),
         nameof(SequenceComponent.PositionId),
         nameof(SequenceComponent.SequenceText),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(SequenceComponent.CodepointId),
+        nameof(SequenceComponent.PositionId),
+        nameof(SequenceComponent.SequenceText),
+    ];
 
     protected override object?[] ParameterValues(SequenceComponentElement sequenceComponent) =>
     [

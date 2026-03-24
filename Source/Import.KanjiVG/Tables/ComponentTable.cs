@@ -24,9 +24,9 @@ namespace Jitendex.Import.KanjiVG.Tables;
 
 internal sealed class ComponentTable : Table<ComponentElement>
 {
-    protected override string Name => nameof(Component);
+    protected override string Name { get; } = nameof(Component);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Component.UnicodeScalarValue),
         nameof(Component.VariantTypeId),
@@ -46,7 +46,7 @@ internal sealed class ComponentTable : Table<ComponentElement>
         nameof(Component.PhonId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Component.UnicodeScalarValue),
         nameof(Component.VariantTypeId),

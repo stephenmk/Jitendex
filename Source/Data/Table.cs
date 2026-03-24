@@ -25,8 +25,8 @@ namespace Jitendex.Data;
 public abstract class Table<T>
 {
     protected abstract string Name { get; }
-    protected abstract IReadOnlyList<string> ColumnNames { get; }
-    protected abstract IReadOnlyList<string> KeyColNames { get; }
+    protected abstract ImmutableArray<string> ColumnNames { get; }
+    protected abstract ImmutableArray<string> KeyColNames { get; }
     protected abstract object?[] ParameterValues(T item);
 
     private static readonly ImmutableArray<string> ParameterNames = Enumerable
@@ -49,14 +49,14 @@ public abstract class Table<T>
         $"""
         INSERT INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ParameterNames[..ColumnNames.Count])});
+        ({string.Join(',', ParameterNames[..ColumnNames.Length])});
         """;
 
     private string InsertOrIgnoreCommandText =>
         $"""
         INSERT OR IGNORE INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ParameterNames[..ColumnNames.Count])});
+        ({string.Join(',', ParameterNames[..ColumnNames.Length])});
         """;
 
     private string UpdateCommandText =>
@@ -72,7 +72,7 @@ public abstract class Table<T>
         : $"""
         INSERT INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ParameterNames[..ColumnNames.Count])})
+        ({string.Join(',', ParameterNames[..ColumnNames.Length])})
         ON CONFLICT({string.Join(",", KeyColNames.Select(static name => $"\"{name}\""))})
         DO UPDATE SET
         {string.Join(',', updateColNames.Select(static name => $"\"{name}\" = excluded.\"{name}\""))};

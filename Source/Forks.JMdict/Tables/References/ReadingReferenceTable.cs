@@ -24,9 +24,9 @@ namespace Jitendex.Forks.JMdict.Tables.References;
 
 internal sealed class ReadingReferenceTable : Table<ReadingReferenceRow>
 {
-    protected override string Name => nameof(ReadingReference);
+    protected override string Name { get; } = nameof(ReadingReference);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ReadingReference.EntryId),
         nameof(ReadingReference.SenseOrder),
@@ -35,7 +35,7 @@ internal sealed class ReadingReferenceTable : Table<ReadingReferenceRow>
         nameof(ReadingReference.RefReadingOrder),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ReadingReference.EntryId),
         nameof(ReadingReference.SenseOrder),

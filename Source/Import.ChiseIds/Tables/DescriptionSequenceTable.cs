@@ -24,14 +24,17 @@ namespace Jitendex.Import.ChiseIds.Tables;
 
 internal sealed class DescriptionSequenceTable : Table<DescriptionSequenceElement>
 {
-    protected override string Name => nameof(DescriptionSequence);
+    protected override string Name { get; } = nameof(DescriptionSequence);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(DescriptionSequence.Text)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(DescriptionSequence.Text)
+    ];
 
     protected override object?[] ParameterValues(DescriptionSequenceElement sequence) =>
     [

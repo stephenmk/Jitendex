@@ -24,9 +24,9 @@ namespace Jitendex.Forks.JMdict.Tables.Furigana;
 
 internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
 {
-    protected override string Name => nameof(FuriganaSegment);
+    protected override string Name { get; } = nameof(FuriganaSegment);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(FuriganaSegment.EntryId),
         nameof(FuriganaSegment.ReadingOrder),
@@ -36,7 +36,7 @@ internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
         nameof(FuriganaSegment.Furigana),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(FuriganaSegment.EntryId),
         nameof(FuriganaSegment.ReadingOrder),

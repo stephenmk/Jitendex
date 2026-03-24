@@ -24,9 +24,9 @@ namespace Jitendex.Import.Home.Tables.JMdict;
 
 internal sealed class CrossReferenceSequenceTable : Table<CrossReferenceSequenceRow>
 {
-    protected override string Name => nameof(CrossReferenceSequence);
+    protected override string Name { get; } = nameof(CrossReferenceSequence);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CrossReferenceSequence.EntryId),
         nameof(CrossReferenceSequence.SenseNumber),
@@ -34,7 +34,7 @@ internal sealed class CrossReferenceSequenceTable : Table<CrossReferenceSequence
         nameof(CrossReferenceSequence.RefEntryId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CrossReferenceSequence.EntryId),
         nameof(CrossReferenceSequence.SenseNumber),

@@ -17,4 +17,7 @@
     <ProjectReference Include="..\..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
     <ProjectReference Include="..\..\Libraries\MinimalJsonDiff\Jitendex.MinimalJsonDiff\Jitendex.MinimalJsonDiff.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Using Include="System.Collections.Immutable"/>
+  </ItemGroup>
 </Project>

@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class CrossReferenceTable : Table<CrossReferenceElement>
 {
-    protected override string Name => nameof(CrossReference);
+    protected override string Name { get; } = nameof(CrossReference);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CrossReference.EntryId),
         nameof(CrossReference.SenseOrder),
@@ -35,7 +35,7 @@ internal sealed class CrossReferenceTable : Table<CrossReferenceElement>
         nameof(CrossReference.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CrossReference.EntryId),
         nameof(CrossReference.SenseOrder),

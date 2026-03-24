@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMnedict.Tables.EntryElements.KanjiFormElements;
 
 internal sealed class KanjiFormPriorityTable : Table<KanjiFormPriorityElement>
 {
-    protected override string Name => nameof(KanjiFormPriority);
+    protected override string Name { get; } = nameof(KanjiFormPriority);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(KanjiFormPriority.EntryId),
         nameof(KanjiFormPriority.KanjiFormOrder),
@@ -34,7 +34,7 @@ internal sealed class KanjiFormPriorityTable : Table<KanjiFormPriorityElement>
         nameof(KanjiFormPriority.TagName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(KanjiFormPriority.EntryId),
         nameof(KanjiFormPriority.KanjiFormOrder),

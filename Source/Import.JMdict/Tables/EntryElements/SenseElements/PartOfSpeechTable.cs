@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class PartOfSpeechTable : Table<PartOfSpeechElement>
 {
-    protected override string Name => nameof(PartOfSpeech);
+    protected override string Name { get; } = nameof(PartOfSpeech);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(PartOfSpeech.EntryId),
         nameof(PartOfSpeech.SenseOrder),
@@ -34,7 +34,7 @@ internal sealed class PartOfSpeechTable : Table<PartOfSpeechElement>
         nameof(PartOfSpeech.TagName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(PartOfSpeech.EntryId),
         nameof(PartOfSpeech.SenseOrder),

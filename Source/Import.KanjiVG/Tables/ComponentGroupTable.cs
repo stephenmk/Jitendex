@@ -24,9 +24,9 @@ namespace Jitendex.Import.KanjiVG.Tables;
 
 internal sealed class ComponentGroupTable : Table<ComponentGroupElement>
 {
-    protected override string Name => nameof(ComponentGroup);
+    protected override string Name { get; } = nameof(ComponentGroup);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ComponentGroup.UnicodeScalarValue),
         nameof(ComponentGroup.VariantTypeId),
@@ -34,7 +34,7 @@ internal sealed class ComponentGroupTable : Table<ComponentGroupElement>
         nameof(ComponentGroup.IdAttribute),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ComponentGroup.UnicodeScalarValue),
         nameof(ComponentGroup.VariantTypeId),

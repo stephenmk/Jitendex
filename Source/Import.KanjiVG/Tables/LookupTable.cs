@@ -24,15 +24,15 @@ namespace Jitendex.Import.KanjiVG.Tables;
 
 internal sealed class LookupTable<T> : Table<T> where T : ILookupElement
 {
-    protected override string Name => ElementNameToEntityName(typeof(T).Name);
+    protected override string Name { get; } = ElementNameToEntityName(typeof(T).Name);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ILookup.Id),
         nameof(ILookup.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ILookup.Id)
     ];

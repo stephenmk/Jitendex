@@ -24,15 +24,15 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements;
 
 internal sealed class SenseTable : Table<SenseElement>
 {
-    protected override string Name => nameof(Sense);
+    protected override string Name { get; } = nameof(Sense);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Sense.EntryId),
         nameof(Sense.Order),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Sense.EntryId),
         nameof(Sense.Order),

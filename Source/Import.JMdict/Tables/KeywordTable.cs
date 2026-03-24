@@ -24,15 +24,15 @@ namespace Jitendex.Import.JMdict.Tables;
 
 internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
 {
-    protected override string Name => ElementNameToEntityName(typeof(T).Name);
+    protected override string Name { get; } = ElementNameToEntityName(typeof(T).Name);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(IKeyword.Name),
         nameof(IKeyword.OriginFileId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(IKeyword.Name)
     ];
@@ -42,6 +42,8 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         keyword.Name,
         keyword.OriginFileId,
     ];
+
+#pragma warning disable format
 
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
@@ -58,4 +60,6 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         nameof(LanguageElement)           => nameof(Language),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
+
+#pragma warning restore format
 }

@@ -24,14 +24,14 @@ namespace Jitendex.Import.Home.Tables.Kanwa;
 
 internal sealed class CompoundTable : Table<CompoundRow>
 {
-    protected override string Name => nameof(Compound);
+    protected override string Name { get; } = nameof(Compound);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Compound.Text)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
+    protected override ImmutableArray<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
 
     protected override object?[] ParameterValues(CompoundRow row) =>

@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class ReadingRestrictionTable : Table<ReadingRestrictionElement>
 {
-    protected override string Name => nameof(ReadingRestriction);
+    protected override string Name { get; } = nameof(ReadingRestriction);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ReadingRestriction.EntryId),
         nameof(ReadingRestriction.SenseOrder),
@@ -34,7 +34,7 @@ internal sealed class ReadingRestrictionTable : Table<ReadingRestrictionElement>
         nameof(ReadingRestriction.ReadingText),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ReadingRestriction.EntryId),
         nameof(ReadingRestriction.SenseOrder),

@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.SubgroupElements;
 
 internal sealed class MeaningTable : Table<MeaningElement>
 {
-    protected override string Name => nameof(Meaning);
+    protected override string Name { get; } = nameof(Meaning);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Meaning.UnicodeScalarValue),
         nameof(Meaning.GroupOrder),
@@ -35,7 +35,7 @@ internal sealed class MeaningTable : Table<MeaningElement>
         nameof(Meaning.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Meaning.UnicodeScalarValue),
         nameof(Meaning.GroupOrder),

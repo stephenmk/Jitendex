@@ -24,16 +24,16 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements;
 
 internal sealed class KanjiFormTable : Table<KanjiFormElement>
 {
-    protected override string Name => nameof(KanjiForm);
+    protected override string Name { get; } = nameof(KanjiForm);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(KanjiForm.EntryId),
         nameof(KanjiForm.Order),
         nameof(KanjiForm.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(KanjiForm.EntryId),
         nameof(KanjiForm.Order),

@@ -24,9 +24,9 @@ namespace Jitendex.Forks.JMdict.Tables.Furigana;
 
 internal sealed class CharacterReadingLinkTable : Table<CharacterReadingLinkRow>
 {
-    protected override string Name => nameof(CharacterReadingLink);
+    protected override string Name { get; } = nameof(CharacterReadingLink);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CharacterReadingLink.EntryId),
         nameof(CharacterReadingLink.ReadingOrder),
@@ -36,7 +36,7 @@ internal sealed class CharacterReadingLinkTable : Table<CharacterReadingLinkRow>
         nameof(CharacterReadingLink.DerivedReadingText),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CharacterReadingLink.EntryId),
         nameof(CharacterReadingLink.ReadingOrder),

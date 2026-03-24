@@ -24,15 +24,15 @@ namespace Jitendex.Import.Kanjidic2.Tables.Groups;
 
 internal sealed class CodepointGroupTable : Table<CodepointGroupElement>
 {
-    protected override string Name => nameof(CodepointGroup);
+    protected override string Name { get; } = nameof(CodepointGroup);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CodepointGroup.UnicodeScalarValue),
         nameof(CodepointGroup.Order),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CodepointGroup.UnicodeScalarValue),
         nameof(CodepointGroup.Order),

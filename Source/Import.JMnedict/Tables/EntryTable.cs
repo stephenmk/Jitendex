@@ -24,14 +24,14 @@ namespace Jitendex.Import.JMnedict.Tables;
 
 internal sealed class EntryTable : Table<EntryElement>
 {
-    protected override string Name => nameof(Entry);
+    protected override string Name { get; } = nameof(Entry);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Entry.Id)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Entry.Id)
     ];

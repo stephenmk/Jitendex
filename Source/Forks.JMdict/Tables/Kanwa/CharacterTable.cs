@@ -24,14 +24,17 @@ namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
 internal sealed class CharacterTable : Table<CharacterRow>
 {
-    protected override string Name => nameof(Character);
+    protected override string Name { get; } = nameof(Character);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Character.Value)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(Character.Value)
+    ];
 
     protected override object?[] ParameterValues(CharacterRow character) =>
     [

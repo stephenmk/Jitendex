@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class DialectTable : Table<DialectElement>
 {
-    protected override string Name => nameof(Dialect);
+    protected override string Name { get; } = nameof(Dialect);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Dialect.EntryId),
         nameof(Dialect.SenseOrder),
@@ -34,7 +34,7 @@ internal sealed class DialectTable : Table<DialectElement>
         nameof(Dialect.TagName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Dialect.EntryId),
         nameof(Dialect.SenseOrder),

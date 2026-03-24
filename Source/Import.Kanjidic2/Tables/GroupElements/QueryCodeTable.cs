@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.GroupElements;
 
 internal sealed class QueryCodeTable : Table<QueryCodeElement>
 {
-    protected override string Name => nameof(QueryCode);
+    protected override string Name { get; } = nameof(QueryCode);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(QueryCode.UnicodeScalarValue),
         nameof(QueryCode.GroupOrder),
@@ -36,7 +36,7 @@ internal sealed class QueryCodeTable : Table<QueryCodeElement>
         nameof(QueryCode.Misclassification),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(QueryCode.UnicodeScalarValue),
         nameof(QueryCode.GroupOrder),

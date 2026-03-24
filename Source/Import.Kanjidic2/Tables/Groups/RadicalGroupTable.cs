@@ -24,15 +24,15 @@ namespace Jitendex.Import.Kanjidic2.Tables.Groups;
 
 internal sealed class RadicalGroupTable : Table<RadicalGroupElement>
 {
-    protected override string Name => nameof(RadicalGroup);
+    protected override string Name { get; } = nameof(RadicalGroup);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(RadicalGroup.UnicodeScalarValue),
         nameof(RadicalGroup.Order),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(RadicalGroup.UnicodeScalarValue),
         nameof(RadicalGroup.Order),

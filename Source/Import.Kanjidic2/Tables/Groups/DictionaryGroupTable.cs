@@ -24,15 +24,15 @@ namespace Jitendex.Import.Kanjidic2.Tables.Groups;
 
 internal sealed class DictionaryGroupTable : Table<DictionaryGroupElement>
 {
-    protected override string Name => nameof(DictionaryGroup);
+    protected override string Name { get; } = nameof(DictionaryGroup);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(DictionaryGroup.UnicodeScalarValue),
         nameof(DictionaryGroup.Order),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(DictionaryGroup.UnicodeScalarValue),
         nameof(DictionaryGroup.Order),

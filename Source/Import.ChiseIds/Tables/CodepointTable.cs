@@ -24,9 +24,9 @@ namespace Jitendex.Import.ChiseIds.Tables;
 
 internal sealed class CodepointTable : Table<CodepointElement>
 {
-    protected override string Name => nameof(Codepoint);
+    protected override string Name { get; } = nameof(Codepoint);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Codepoint.Id),
         nameof(Codepoint.UnicodeScalarValue),
@@ -34,7 +34,7 @@ internal sealed class CodepointTable : Table<CodepointElement>
         nameof(Codepoint.AltSequenceText),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Codepoint.Id)
     ];

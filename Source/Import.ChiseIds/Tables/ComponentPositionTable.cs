@@ -24,15 +24,15 @@ namespace Jitendex.Import.ChiseIds.Tables;
 
 internal sealed class ComponentPositionTable : Table<ComponentPositionElement>
 {
-    protected override string Name => nameof(ComponentPosition);
+    protected override string Name { get; } = nameof(ComponentPosition);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ComponentPosition.Id),
         nameof(ComponentPosition.Name),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ComponentPosition.Id)
     ];

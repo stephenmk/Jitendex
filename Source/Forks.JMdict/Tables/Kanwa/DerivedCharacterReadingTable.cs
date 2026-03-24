@@ -24,9 +24,9 @@ namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
 internal sealed class DerivedCharacterReadingTable : Table<DerivedCharacterReadingRow>
 {
-    protected override string Name => nameof(DerivedCharacterReading);
+    protected override string Name { get; } = nameof(DerivedCharacterReading);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(DerivedCharacterReading.ReadingId),
         nameof(DerivedCharacterReading.Text),
@@ -35,7 +35,7 @@ internal sealed class DerivedCharacterReadingTable : Table<DerivedCharacterReadi
         nameof(DerivedCharacterReading.TypeId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(DerivedCharacterReading.ReadingId),
         nameof(DerivedCharacterReading.Text),

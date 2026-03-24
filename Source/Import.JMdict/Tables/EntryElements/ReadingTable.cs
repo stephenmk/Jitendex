@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements;
 
 internal sealed class ReadingTable : Table<ReadingElement>
 {
-    protected override string Name => nameof(Reading);
+    protected override string Name { get; } = nameof(Reading);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Reading.EntryId),
         nameof(Reading.Order),
@@ -34,7 +34,7 @@ internal sealed class ReadingTable : Table<ReadingElement>
         nameof(Reading.NoKanji),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Reading.EntryId),
         nameof(Reading.Order),

@@ -24,16 +24,16 @@ namespace Jitendex.Import.JMdict.Tables;
 
 internal sealed class RevisionTable : Table<DocumentRevision>
 {
-    protected override string Name => nameof(Revision);
+    protected override string Name { get; } = nameof(Revision);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Revision.SequenceId),
         nameof(Revision.FileHeaderId),
         nameof(Revision.DiffJson),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Revision.SequenceId),
         nameof(Revision.FileHeaderId),

@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.GroupElements;
 
 internal sealed class DictionaryTable : Table<DictionaryElement>
 {
-    protected override string Name => nameof(Dictionary);
+    protected override string Name { get; } = nameof(Dictionary);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Dictionary.UnicodeScalarValue),
         nameof(Dictionary.GroupOrder),
@@ -37,7 +37,7 @@ internal sealed class DictionaryTable : Table<DictionaryElement>
         nameof(Dictionary.Page),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Dictionary.UnicodeScalarValue),
         nameof(Dictionary.GroupOrder),

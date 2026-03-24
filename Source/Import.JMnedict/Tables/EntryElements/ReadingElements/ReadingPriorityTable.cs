@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMnedict.Tables.EntryElements.ReadingElements;
 
 internal sealed class ReadingPriorityTable : Table<ReadingPriorityElement>
 {
-    protected override string Name => nameof(ReadingPriority);
+    protected override string Name { get; } = nameof(ReadingPriority);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ReadingPriority.EntryId),
         nameof(ReadingPriority.ReadingOrder),
@@ -34,7 +34,7 @@ internal sealed class ReadingPriorityTable : Table<ReadingPriorityElement>
         nameof(ReadingPriority.TagName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ReadingPriority.EntryId),
         nameof(ReadingPriority.ReadingOrder),

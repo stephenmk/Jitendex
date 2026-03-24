@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMnedict.Tables.EntryElements.TranslationElements;
 
 internal sealed class DetailTable : Table<DetailElement>
 {
-    protected override string Name => nameof(Detail);
+    protected override string Name { get; } = nameof(Detail);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Detail.EntryId),
         nameof(Detail.TranslationOrder),
@@ -35,7 +35,7 @@ internal sealed class DetailTable : Table<DetailElement>
         nameof(Detail.LanguageName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Detail.EntryId),
         nameof(Detail.TranslationOrder),

@@ -24,9 +24,9 @@ namespace Jitendex.Import.Kanjidic2.Tables.GroupElements;
 
 internal sealed class ReadingMeaningTable : Table<ReadingMeaningElement>
 {
-    protected override string Name => nameof(ReadingMeaning);
+    protected override string Name { get; } = nameof(ReadingMeaning);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ReadingMeaning.UnicodeScalarValue),
         nameof(ReadingMeaning.GroupOrder),
@@ -35,7 +35,7 @@ internal sealed class ReadingMeaningTable : Table<ReadingMeaningElement>
         nameof(ReadingMeaning.IsGhost),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ReadingMeaning.UnicodeScalarValue),
         nameof(ReadingMeaning.GroupOrder),

@@ -24,9 +24,9 @@ namespace Jitendex.Import.Tatoeba.Tables;
 
 internal sealed class TokenTable : Table<TokenElement>
 {
-    protected override string Name => nameof(Token);
+    protected override string Name { get; } = nameof(Token);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Token.ExampleId),
         nameof(Token.SegmentationOrder),
@@ -39,7 +39,7 @@ internal sealed class TokenTable : Table<TokenElement>
         nameof(Token.IsPriority),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Token.ExampleId),
         nameof(Token.SegmentationOrder),

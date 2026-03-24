@@ -24,9 +24,9 @@ namespace Jitendex.Forks.Tatoeba.Tables;
 
 internal sealed class ExampleFuriganaTable : Table<ExampleFuriganaRow>
 {
-    protected override string Name => nameof(ExampleFurigana);
+    protected override string Name { get; } = nameof(ExampleFurigana);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(ExampleFurigana.ExampleId),
         nameof(ExampleFurigana.Order),
@@ -34,7 +34,7 @@ internal sealed class ExampleFuriganaTable : Table<ExampleFuriganaRow>
         nameof(ExampleFurigana.RubyText),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(ExampleFurigana.ExampleId),
         nameof(ExampleFurigana.Order),

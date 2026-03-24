@@ -24,14 +24,17 @@ namespace Jitendex.Import.ChiseIds.Tables;
 
 internal sealed class UnicodeCharacterTable : Table<UnicodeCharacterElement>
 {
-    protected override string Name => nameof(UnicodeCharacter);
+    protected override string Name { get; } = nameof(UnicodeCharacter);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(UnicodeCharacter.ScalarValue)
     ];
 
-    protected override IReadOnlyList<string> KeyColNames => ColumnNames;
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(UnicodeCharacter.ScalarValue)
+    ];
 
     protected override object?[] ParameterValues(UnicodeCharacterElement character) =>
     [

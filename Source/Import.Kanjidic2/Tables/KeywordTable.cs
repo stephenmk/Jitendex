@@ -24,15 +24,15 @@ namespace Jitendex.Import.Kanjidic2.Tables;
 
 internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
 {
-    protected override string Name => ElementNameToEntityName(typeof(T).Name);
+    protected override string Name { get; } = ElementNameToEntityName(typeof(T).Name);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(IKeyword.Name),
         nameof(IKeyword.OriginFileId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(IKeyword.Name)
     ];

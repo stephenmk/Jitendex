@@ -24,16 +24,16 @@ namespace Jitendex.Import.Tatoeba.Tables;
 
 internal sealed class SegmentationTable : Table<SegmentationElement>
 {
-    protected override string Name => nameof(Segmentation);
+    protected override string Name { get; } = nameof(Segmentation);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Segmentation.ExampleId),
         nameof(Segmentation.Order),
         nameof(Segmentation.TranslationId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Segmentation.ExampleId),
         nameof(Segmentation.Order),

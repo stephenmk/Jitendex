@@ -24,16 +24,16 @@ namespace Jitendex.Import.KanjiVG.Tables;
 
 internal sealed class VariantTable : Table<VariantElement>
 {
-    protected override string Name => nameof(Variant);
+    protected override string Name { get; } = nameof(Variant);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Variant.UnicodeScalarValue),
         nameof(Variant.TypeId),
         nameof(Variant.CommentId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Variant.UnicodeScalarValue),
         nameof(Variant.TypeId),

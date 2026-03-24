@@ -24,15 +24,15 @@ namespace Jitendex.Import.Kanjidic2.Tables.Groups;
 
 internal sealed class QueryCodeGroupTable : Table<QueryCodeGroupElement>
 {
-    protected override string Name => nameof(QueryCodeGroup);
+    protected override string Name { get; } = nameof(QueryCodeGroup);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(QueryCodeGroup.UnicodeScalarValue),
         nameof(QueryCodeGroup.Order),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(QueryCodeGroup.UnicodeScalarValue),
         nameof(QueryCodeGroup.Order),

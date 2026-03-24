@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class NoteTable : Table<NoteElement>
 {
-    protected override string Name => nameof(Note);
+    protected override string Name { get; } = nameof(Note);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Note.EntryId),
         nameof(Note.SenseOrder),
@@ -34,7 +34,7 @@ internal sealed class NoteTable : Table<NoteElement>
         nameof(Note.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Note.EntryId),
         nameof(Note.SenseOrder),

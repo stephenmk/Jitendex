@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMnedict.Tables.EntryElements.TranslationElements;
 
 internal sealed class NameTypeTable : Table<NameTypeElement>
 {
-    protected override string Name => nameof(NameType);
+    protected override string Name { get; } = nameof(NameType);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(NameType.EntryId),
         nameof(NameType.TranslationOrder),
@@ -34,7 +34,7 @@ internal sealed class NameTypeTable : Table<NameTypeElement>
         nameof(NameType.TagName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(NameType.EntryId),
         nameof(NameType.TranslationOrder),

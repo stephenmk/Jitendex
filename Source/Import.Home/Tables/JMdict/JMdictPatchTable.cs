@@ -24,9 +24,9 @@ namespace Jitendex.Import.Home.Tables.JMdict;
 
 internal sealed class JMdictPatchTable : Table<JMdictPatchRow>
 {
-    protected override string Name => nameof(JMdictPatch);
+    protected override string Name { get; } = nameof(JMdictPatch);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(JMdictPatch.Id),
         nameof(JMdictPatch.SequenceId),
@@ -38,7 +38,7 @@ internal sealed class JMdictPatchTable : Table<JMdictPatchRow>
         nameof(JMdictPatch.Json),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(JMdictPatch.Id)
     ];

@@ -14,4 +14,7 @@
     <ProjectReference Include="..\Data\Jitendex.Data.csproj" />
     <ProjectReference Include="..\Data.Home\Jitendex.Data.Home.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Using Include="System.Collections.Immutable"/>
+  </ItemGroup>
 </Project>

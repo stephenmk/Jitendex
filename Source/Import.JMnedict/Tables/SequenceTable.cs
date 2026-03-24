@@ -24,15 +24,15 @@ namespace Jitendex.Import.JMnedict.Tables;
 
 internal sealed class SequenceTable : Table<DocumentSequence>
 {
-    protected override string Name => nameof(Sequence);
+    protected override string Name { get; } = nameof(Sequence);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Sequence.Id),
         nameof(Sequence.OriginFileId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Sequence.Id)
     ];

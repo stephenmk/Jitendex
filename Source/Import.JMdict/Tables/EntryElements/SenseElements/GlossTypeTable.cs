@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class GlossTypeTable : Table<GlossTypeElement>
 {
-    protected override string Name => nameof(GlossType);
+    protected override string Name { get; } = nameof(GlossType);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(GlossType.EntryId),
         nameof(GlossType.SenseOrder),
@@ -34,7 +34,7 @@ internal sealed class GlossTypeTable : Table<GlossTypeElement>
         nameof(GlossType.TagName),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(GlossType.EntryId),
         nameof(GlossType.SenseOrder),

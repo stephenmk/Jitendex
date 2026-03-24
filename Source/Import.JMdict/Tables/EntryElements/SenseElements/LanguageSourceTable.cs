@@ -24,9 +24,9 @@ namespace Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
 
 internal sealed class LanguageSourceTable : Table<LanguageSourceElement>
 {
-    protected override string Name => nameof(LanguageSource);
+    protected override string Name { get; } = nameof(LanguageSource);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(LanguageSource.EntryId),
         nameof(LanguageSource.SenseOrder),
@@ -37,7 +37,7 @@ internal sealed class LanguageSourceTable : Table<LanguageSourceElement>
         nameof(LanguageSource.IsWasei),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(LanguageSource.EntryId),
         nameof(LanguageSource.SenseOrder),

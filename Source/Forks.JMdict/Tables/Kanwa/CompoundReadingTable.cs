@@ -24,16 +24,16 @@ namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
 internal sealed class CompoundReadingTable : Table<CompoundReadingRow>
 {
-    protected override string Name => nameof(CompoundReading);
+    protected override string Name { get; } = nameof(CompoundReading);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CompoundReading.CompoundId),
         nameof(CompoundReading.Text),
         nameof(CompoundReading.TypeId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CompoundReading.CompoundId),
         nameof(CompoundReading.Text),

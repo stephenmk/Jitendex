@@ -24,15 +24,15 @@ namespace Jitendex.Forks.JMdict.Tables.Kanwa;
 
 internal sealed class CharacterReadingOkuriganaTable : Table<CharacterReadingOkuriganaRow>
 {
-    protected override string Name => nameof(CharacterReadingOkurigana);
+    protected override string Name { get; } = nameof(CharacterReadingOkurigana);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(CharacterReadingOkurigana.ReadingId),
         nameof(CharacterReadingOkurigana.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(CharacterReadingOkurigana.ReadingId)
     ];

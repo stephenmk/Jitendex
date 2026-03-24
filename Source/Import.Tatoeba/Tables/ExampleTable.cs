@@ -24,15 +24,15 @@ namespace Jitendex.Import.Tatoeba.Tables;
 
 internal sealed class ExampleTable : Table<ExampleElement>
 {
-    protected override string Name => nameof(Example);
+    protected override string Name { get; } = nameof(Example);
 
-    protected override IReadOnlyList<string> ColumnNames =>
+    protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Example.Id),
         nameof(Example.Text),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Example.Id)
     ];

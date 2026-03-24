@@ -34,8 +34,11 @@ internal sealed class RevisionTable : Table<DocumentRevision>
         nameof(Revision.DiffJson),
     ];
 
-    protected override ImmutableArray<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {nameof(Revision)} is auto-incremented.");
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(Revision.SequenceId),
+        nameof(Revision.Number),
+    ];
 
     protected override object?[] ParameterValues(DocumentRevision revision) =>
     [

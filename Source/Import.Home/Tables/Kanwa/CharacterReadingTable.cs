@@ -37,7 +37,7 @@ internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
     ];
 
     protected override ImmutableArray<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {nameof(CharacterReading)} is auto-incremented.");
+        => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
 
     protected override object?[] ParameterValues(CharacterReadingRow row) =>
     [

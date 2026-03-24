@@ -34,17 +34,6 @@ public abstract class Table<T>
         .Select(static i => $"@{i:X}")
         .ToImmutableArray();
 
-    private SqliteParameter[] Parameters(T item)
-    {
-        var values = ParameterValues(item);
-        var parameters = new SqliteParameter[values.Length];
-        for (int i = 0; i < values.Length; i++)
-        {
-            parameters[i] = new(ParameterNames[i], values[i] ?? DBNull.Value);
-        }
-        return parameters;
-    }
-
     private string InsertCommandText =>
         $"""
         INSERT INTO "{Name}"
@@ -106,23 +95,35 @@ public abstract class Table<T>
     {
         using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = commandText;
+
+        var parameters = InitializeParameters();
+        command.Parameters.AddRange(parameters);
+
         foreach (var item in items)
         {
-            // Extremely hot path: millions of loops here for DB initializations.
-            // AddRange() & Clear() have shown to be more efficient than
-            // updating the command.Parameters values on every loop.
-            command.Parameters.AddRange(Parameters(item));
+            var values = ParameterValues(item);
+            for (int i = 0; i < values.Length; i++)
+            {
+                parameters[i].Value = values[i] ?? DBNull.Value;
+            }
             int rowsAffected = command.ExecuteNonQuery();
             if (rowsAffected != 1 && checkRows)
             {
-                Console.Error.WriteLine(commandText);
-                foreach (var parameter in command.Parameters)
-                {
-                    Console.Error.WriteLine($"{parameter}");
-                }
                 throw new InvalidOperationException($"{rowsAffected} rows affected (expected 1)");
             }
-            command.Parameters.Clear();
         }
+    }
+
+    private SqliteParameter[] InitializeParameters()
+    {
+        var parameters = new SqliteParameter[ColumnNames.Length];
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            parameters[i] = new()
+            {
+                ParameterName = ParameterNames[i]
+            };
+        }
+        return parameters;
     }
 }

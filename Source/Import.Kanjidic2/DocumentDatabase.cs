@@ -75,11 +75,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Kanjidi
         => context.Database.EnsureCreated();
 
     public DateOnly? GetLastKey()
-        => context.FileHeaders
-            .OrderByDescending(static x => x.Date)
-            .Take(1)
-            .Select(static x => (DateOnly?)x.Date)
-            .FirstOrDefault();
+        => context.FileHeaders.Max(static x => (DateOnly?)x.Date);
 
     public void Initialize(Document document)
     {

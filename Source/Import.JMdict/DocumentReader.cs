@@ -45,7 +45,7 @@ internal partial class DocumentReader
         };
 
         await docTypeReader.ReadAsync(xmlReader, document);
-        await ReadToEndAsync(xmlReader, document, 0, XmlTagName.Jmdict);
+        await ReadToEndAsync(xmlReader, document, default, XmlTagName.Jmdict);
 
         return document;
     }

@@ -29,8 +29,10 @@ public abstract class Table<T>
     protected abstract IReadOnlyList<string> KeyColNames { get; }
     protected abstract object?[] ParameterValues(T item);
 
-    private static readonly ImmutableArray<string> ParameterNames =
-        Enumerable.Range(0, 128).Select(static idx => $"@{idx:X}").ToImmutableArray();
+    private static readonly ImmutableArray<string> ParameterNames = Enumerable
+        .Range(0, 128)
+        .Select(static i => $"@{i:X}")
+        .ToImmutableArray();
 
     private SqliteParameter[] Parameters(T item)
     {
@@ -47,21 +49,21 @@ public abstract class Table<T>
         $"""
         INSERT INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ColumnNames.Select(static (_, idx) => $"@{idx:X}"))});
+        ({string.Join(',', ParameterNames[..ColumnNames.Count])});
         """;
 
     private string InsertOrIgnoreCommandText =>
         $"""
         INSERT OR IGNORE INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ColumnNames.Select(static (_, idx) => $"@{idx:X}"))});
+        ({string.Join(',', ParameterNames[..ColumnNames.Count])});
         """;
 
     private string UpdateCommandText =>
         $"""
         UPDATE "{Name}"
-        SET   {string.Join(',', ColumnNames.Select(static (name, idx) => $"\"{name}\" = @{idx:X}"))}
-        WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = @{idx:X}"))};
+        SET   {string.Join(',', ColumnNames.Select(static (name, idx) => $"\"{name}\" = {ParameterNames[idx]}"))}
+        WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = {ParameterNames[idx]}"))};
         """;
 
     private string UpsertCommandText =>
@@ -70,7 +72,7 @@ public abstract class Table<T>
         : $"""
         INSERT INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ColumnNames.Select(static (_, idx) => $"@{idx:X}"))})
+        ({string.Join(',', ParameterNames[..ColumnNames.Count])})
         ON CONFLICT({string.Join(",", KeyColNames.Select(static name => $"\"{name}\""))})
         DO UPDATE SET
         {string.Join(',', updateColNames.Select(static name => $"\"{name}\" = excluded.\"{name}\""))};
@@ -79,7 +81,7 @@ public abstract class Table<T>
     private string DeleteCommandText =>
         $"""
         DELETE FROM "{Name}"
-        WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = @{idx:X}"))};
+        WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = {ParameterNames[idx]}"))};
         """;
 
     public void InsertItem(SqliteContext db, T item)

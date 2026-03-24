@@ -25,12 +25,12 @@ namespace Jitendex.Furigana.Test;
 internal static partial class TextSolution
 {
     [GeneratedRegex(@"([^\[]*)\[(.+?)\|(.*?)\]([^\[]*)", RegexOptions.None)]
-    private static partial Regex TextSolutionRegex();
+    private static partial Regex TextSolutionRegex { get; }
 
     public static Solution Parse(string text, Entry entry)
     {
         var parts = new List<Solution.Part>();
-        var matches = TextSolutionRegex().Matches(text);
+        var matches = TextSolutionRegex.Matches(text);
 
         if (matches.Count == 0)
         {

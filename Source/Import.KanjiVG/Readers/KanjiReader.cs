@@ -78,7 +78,7 @@ internal partial class KanjiReader
 
     private (int, string)? Parse(string fileName)
     {
-        Match match = FileNameRegex().Match(fileName);
+        Match match = FileNameRegex.Match(fileName);
         if (!match.Success)
         {
             logger.LogError("Cannot parse filename {FileName}", fileName);
@@ -188,7 +188,7 @@ internal partial class KanjiReader
     }
 
     [GeneratedRegex(pattern: @"^(.+?)(?:-(.+?))?\.svg$", RegexOptions.None)]
-    private static partial Regex FileNameRegex();
+    private static partial Regex FileNameRegex { get; }
 
     [LoggerMessage(LogLevel.Warning,
     "{File}: Unexpected XML text node `{Text}`")]

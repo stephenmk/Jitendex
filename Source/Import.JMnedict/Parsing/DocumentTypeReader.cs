@@ -50,7 +50,7 @@ internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : 
 
     private void ParseEntities(Document document, string dtd)
     {
-        foreach (Match match in DtdEntityRegex().Matches(dtd))
+        foreach (Match match in DtdEntityRegex.Matches(dtd))
         {
             var name = match.Groups[1].Value;
             var description = match.Groups[2].Value;
@@ -67,7 +67,7 @@ internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : 
     }
 
     [GeneratedRegex(@"<!ENTITY\s+(.*?)\s+""(.*?)"">", RegexOptions.None)]
-    private static partial Regex DtdEntityRegex();
+    private static partial Regex DtdEntityRegex { get; }
 
     [LoggerMessage(LogLevel.Warning,
     "Keyword description `{Description}` corresponds to multiple keyword names in the JMnedict DTD")]

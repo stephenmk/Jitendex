@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Immutable;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;

@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Frozen;
-using System.Collections.Immutable;
 
 namespace Jitendex.Forks.Tatoeba.Models;
 

@@ -16,10 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Frozen;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.Tatoeba.Models;
-using System.Collections.Immutable;
-using System.Collections.Frozen;
 
 namespace Jitendex.Forks.Tatoeba.Services;
 

@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities.Groups;
 using Jitendex.Import.Kanjidic2.Models;
@@ -42,12 +41,12 @@ internal sealed class MiscGroupTable : Table<MiscGroupElement>
         nameof(MiscGroup.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(MiscGroupElement group) =>
+    protected override object?[] ParameterValues(MiscGroupElement group) =>
     [
-        new("@0", group.EntryId),
-        new("@1", group.Order),
-        new("@2", group.Grade.Nullable()),
-        new("@3", group.Frequency.Nullable()),
-        new("@4", group.JlptLevel.Nullable()),
+        group.EntryId,
+        group.Order,
+        group.Grade,
+        group.Frequency,
+        group.JlptLevel,
     ];
 }

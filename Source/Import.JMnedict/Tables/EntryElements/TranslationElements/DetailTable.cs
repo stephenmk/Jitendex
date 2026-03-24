@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities.EntryItems.TranslationItems;
 using Jitendex.Import.JMnedict.Models;
@@ -43,12 +42,12 @@ internal sealed class DetailTable : Table<DetailElement>
         nameof(Detail.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(DetailElement detail) =>
+    protected override object?[] ParameterValues(DetailElement detail) =>
     [
-        new("@0", detail.EntryId),
-        new("@1", detail.ParentOrder),
-        new("@2", detail.Order),
-        new("@3", detail.Text),
-        new("@4", detail.LanguageName.Nullable()),
+        detail.EntryId,
+        detail.ParentOrder,
+        detail.Order,
+        detail.Text,
+        detail.LanguageName,
     ];
 }

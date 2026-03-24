@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities.SubgroupItems;
 using Jitendex.Import.Kanjidic2.Models;
@@ -44,12 +43,12 @@ internal sealed class MeaningTable : Table<MeaningElement>
         nameof(Meaning.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(MeaningElement meaning) =>
+    protected override object?[] ParameterValues(MeaningElement meaning) =>
     [
-        new("@0", meaning.EntryId),
-        new("@1", meaning.GroupOrder),
-        new("@2", meaning.ReadingMeaningOrder),
-        new("@3", meaning.Order),
-        new("@4", meaning.Text),
+        meaning.EntryId,
+        meaning.GroupOrder,
+        meaning.ReadingMeaningOrder,
+        meaning.Order,
+        meaning.Text,
     ];
 }

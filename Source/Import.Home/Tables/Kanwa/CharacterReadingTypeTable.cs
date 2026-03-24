@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.Models;
@@ -38,9 +37,9 @@ internal sealed class CharacterReadingTypeTable : Table<CharacterReadingTypeRow>
         nameof(CharacterReadingType.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(CharacterReadingTypeRow row) =>
+    protected override object?[] ParameterValues(CharacterReadingTypeRow row) =>
     [
-        new("@0", row.Id),
-        new("@1", row.Name),
+        row.Id,
+        row.Name,
     ];
 }

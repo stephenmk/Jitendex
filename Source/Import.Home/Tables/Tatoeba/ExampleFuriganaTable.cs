@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.Tatoeba;
 using Jitendex.Import.Home.Models;
@@ -41,11 +40,11 @@ internal sealed class ExampleFuriganaTable : Table<ExampleFuriganaRow>
         nameof(ExampleFurigana.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(ExampleFuriganaRow row) =>
+    protected override object?[] ParameterValues(ExampleFuriganaRow row) =>
     [
-        new("@0", row.ExampleId),
-        new("@1", row.Order),
-        new("@2", row.BaseText),
-        new("@3", row.RubyText.Nullable()),
+        row.ExampleId,
+        row.Order,
+        row.BaseText,
+        row.RubyText,
     ];
 }

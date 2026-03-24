@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.JMdict;
 using Jitendex.Import.Home.Models;
@@ -36,10 +35,10 @@ internal sealed class JMdictPatchRecallTable : Table<JMdictPatchRecallRow>
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(JMdictPatchRecallRow row) =>
+    protected override object?[] ParameterValues(JMdictPatchRecallRow row) =>
     [
-        new("@0", row.PatchId),
-        new("@1", row.RecallerId),
-        new("@2", row.CreatedAt),
+        row.PatchId,
+        row.RecallerId,
+        row.CreatedAt,
     ];
 }

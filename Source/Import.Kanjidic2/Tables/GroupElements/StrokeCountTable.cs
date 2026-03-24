@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 using Jitendex.Import.Kanjidic2.Models;
@@ -42,11 +41,11 @@ internal sealed class StrokeCountTable : Table<StrokeCountElement>
         nameof(StrokeCount.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(StrokeCountElement strokeCount) =>
+    protected override object?[] ParameterValues(StrokeCountElement strokeCount) =>
     [
-        new("@0", strokeCount.EntryId),
-        new("@1", strokeCount.GroupOrder),
-        new("@2", strokeCount.Order),
-        new("@3", strokeCount.Value),
+        strokeCount.EntryId,
+        strokeCount.GroupOrder,
+        strokeCount.Order,
+        strokeCount.Value,
     ];
 }

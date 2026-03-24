@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.Models;
@@ -35,8 +34,8 @@ internal sealed class CompoundTable : Table<CompoundRow>
     protected override IReadOnlyList<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
 
-    protected override SqliteParameter[] Parameters(CompoundRow row) =>
+    protected override object?[] ParameterValues(CompoundRow row) =>
     [
-        new("@0", row.Text),
+        row.Text
     ];
 }

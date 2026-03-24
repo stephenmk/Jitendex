@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities;
 using Jitendex.Import.JMnedict.Models;
@@ -38,19 +37,23 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         nameof(IKeyword.Name)
     ];
 
-    protected override SqliteParameter[] Parameters(T keyword) =>
+    protected override object?[] ParameterValues(T keyword) =>
     [
-        new("@0", keyword.Name),
-        new("@1", keyword.FileHeaderId),
+        keyword.Name,
+        keyword.FileHeaderId,
     ];
+
+#pragma warning disable format
 
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
-        nameof(ReadingInfoTagElement) => nameof(ReadingInfoTag),
+        nameof(ReadingInfoTagElement)   => nameof(ReadingInfoTag),
         nameof(KanjiFormInfoTagElement) => nameof(KanjiFormInfoTag),
-        nameof(NameTypeTagElement) => nameof(NameTypeTag),
-        nameof(PriorityTagElement) => nameof(PriorityTag),
-        nameof(DetailLanguageElement) => nameof(DetailLanguage),
+        nameof(NameTypeTagElement)      => nameof(NameTypeTag),
+        nameof(PriorityTagElement)      => nameof(PriorityTag),
+        nameof(DetailLanguageElement)   => nameof(DetailLanguage),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
+
+#pragma warning restore format
 }

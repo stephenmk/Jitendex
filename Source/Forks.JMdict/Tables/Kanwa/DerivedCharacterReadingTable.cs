@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;
@@ -42,12 +41,12 @@ internal sealed class DerivedCharacterReadingTable : Table<DerivedCharacterReadi
         nameof(DerivedCharacterReading.Text),
     ];
 
-    protected override SqliteParameter[] Parameters(DerivedCharacterReadingRow row) =>
+    protected override object?[] ParameterValues(DerivedCharacterReadingRow row) =>
     [
-        new("@0", row.ReadingId),
-        new("@1", row.Text),
-        new("@2", row.IsPrefix),
-        new("@3", row.IsSuffix),
-        new("@4", row.TypeId),
+        row.ReadingId,
+        row.Text,
+        row.IsPrefix,
+        row.IsSuffix,
+        row.TypeId,
     ];
 }

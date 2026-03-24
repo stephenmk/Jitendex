@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Forks.Tatoeba.Models;
 using Jitendex.Data.Tatoeba.ForkEntities;
@@ -44,12 +43,12 @@ internal sealed class EntryLinkTable : Table<EntryLinkRow>
         nameof(EntryLink.EntryId),
     ];
 
-    protected override SqliteParameter[] Parameters(EntryLinkRow row) =>
+    protected override object?[] ParameterValues(EntryLinkRow row) =>
     [
-        new("@0", row.ExampleId),
-        new("@1", row.SegmentationOrder),
-        new("@2", row.TokenOrder),
-        new("@3", row.EntryId),
-        new("@4", row.SenseOrder.Nullable()),
+        row.ExampleId,
+        row.SegmentationOrder,
+        row.TokenOrder,
+        row.EntryId,
+        row.SenseOrder,
     ];
 }

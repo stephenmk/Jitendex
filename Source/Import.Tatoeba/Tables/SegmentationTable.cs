@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.Entities;
 using Jitendex.Import.Tatoeba.Models;
@@ -40,10 +39,10 @@ internal sealed class SegmentationTable : Table<SegmentationElement>
         nameof(Segmentation.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(SegmentationElement sentence) =>
+    protected override object?[] ParameterValues(SegmentationElement sentence) =>
     [
-        new("@0", sentence.ExampleId),
-        new("@1", sentence.Order),
-        new("@2", sentence.TranslationId),
+        sentence.ExampleId,
+        sentence.Order,
+        sentence.TranslationId,
     ];
 }

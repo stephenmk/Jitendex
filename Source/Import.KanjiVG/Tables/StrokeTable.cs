@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.KanjiVG.Entities;
 using Jitendex.Import.KanjiVG.Models;
@@ -45,14 +44,14 @@ internal sealed class StrokeTable : Table<StrokeElement>
         nameof(Stroke.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(StrokeElement stroke) =>
+    protected override object?[] ParameterValues(StrokeElement stroke) =>
     [
-        new("@0", stroke.UnicodeScalarValue),
-        new("@1", stroke.VariantTypeId),
-        new("@2", stroke.Order),
-        new("@3", stroke.IdAttribute),
-        new("@4", stroke.ComponentOrder),
-        new("@5", stroke.TypeId.Nullable()),
-        new("@6", stroke.PathData),
+        stroke.UnicodeScalarValue,
+        stroke.VariantTypeId,
+        stroke.Order,
+        stroke.IdAttribute,
+        stroke.ComponentOrder,
+        stroke.TypeId,
+        stroke.PathData,
     ];
 }

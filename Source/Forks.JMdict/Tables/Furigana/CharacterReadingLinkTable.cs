@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Data.JMdict.ForkEntities.Furigana;
@@ -45,13 +44,13 @@ internal sealed class CharacterReadingLinkTable : Table<CharacterReadingLinkRow>
         nameof(CharacterReadingLink.FuriganaSegmentOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(CharacterReadingLinkRow row) =>
+    protected override object?[] ParameterValues(CharacterReadingLinkRow row) =>
     [
-        new("@0", row.EntryId),
-        new("@1", row.ReadingOrder),
-        new("@2", row.KanjiFormOrder),
-        new("@3", row.FuriganaSegmentOrder),
-        new("@4", row.CharacterReadingId),
-        new("@5", row.DerivedReadingText),
+        row.EntryId,
+        row.ReadingOrder,
+        row.KanjiFormOrder,
+        row.FuriganaSegmentOrder,
+        row.CharacterReadingId,
+        row.DerivedReadingText,
     ];
 }

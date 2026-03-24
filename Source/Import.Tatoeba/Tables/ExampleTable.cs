@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.Entities;
 using Jitendex.Import.Tatoeba.Models;
@@ -38,9 +37,9 @@ internal sealed class ExampleTable : Table<ExampleElement>
         nameof(Example.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(ExampleElement example) =>
+    protected override object?[] ParameterValues(ExampleElement example) =>
     [
-        new("@0", example.Id),
-        new("@1", example.Text),
+        example.Id,
+        example.Text,
     ];
 }

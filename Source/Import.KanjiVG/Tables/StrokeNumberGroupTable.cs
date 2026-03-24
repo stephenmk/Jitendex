@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.KanjiVG.Entities;
 using Jitendex.Import.KanjiVG.Models;
@@ -41,11 +40,11 @@ internal sealed class StrokeNumberGroupTable : Table<StrokeNumberGroupElement>
         nameof(StrokeNumberGroup.VariantTypeId),
     ];
 
-    protected override SqliteParameter[] Parameters(StrokeNumberGroupElement group) =>
+    protected override object?[] ParameterValues(StrokeNumberGroupElement group) =>
     [
-        new("@0", group.UnicodeScalarValue),
-        new("@1", group.VariantTypeId),
-        new("@2", group.StyleId),
-        new("@3", group.IdAttribute),
+        group.UnicodeScalarValue,
+        group.VariantTypeId,
+        group.StyleId,
+        group.IdAttribute,
     ];
 }

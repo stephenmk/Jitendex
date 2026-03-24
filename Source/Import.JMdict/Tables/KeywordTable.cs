@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Import.JMdict.Models;
@@ -38,10 +37,10 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         nameof(IKeyword.Name)
     ];
 
-    protected override SqliteParameter[] Parameters(T keyword) =>
+    protected override object?[] ParameterValues(T keyword) =>
     [
-        new("@0", keyword.Name),
-        new("@1", keyword.OriginFileId),
+        keyword.Name,
+        keyword.OriginFileId,
     ];
 
     private static string ElementNameToEntityName(string elementName) => elementName switch

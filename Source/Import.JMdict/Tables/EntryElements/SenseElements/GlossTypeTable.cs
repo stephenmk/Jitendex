@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.Models;
@@ -42,11 +41,11 @@ internal sealed class GlossTypeTable : Table<GlossTypeElement>
         nameof(GlossType.GlossOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(GlossTypeElement name) =>
+    protected override object?[] ParameterValues(GlossTypeElement name) =>
     [
-        new("@0", name.EntryId),
-        new("@1", name.ParentOrder),
-        new("@2", name.Order),
-        new("@3", name.TagName),
+        name.EntryId,
+        name.ParentOrder,
+        name.Order,
+        name.TagName,
     ];
 }

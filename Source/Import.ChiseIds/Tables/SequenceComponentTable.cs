@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.ChiseIds.Entities;
 using Jitendex.Import.ChiseIds.Models;
@@ -36,10 +35,10 @@ internal sealed class SequenceComponentTable : Table<SequenceComponentElement>
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(SequenceComponentElement sequenceComponent) =>
+    protected override object?[] ParameterValues(SequenceComponentElement sequenceComponent) =>
     [
-        new("@0", sequenceComponent.CodepointId),
-        new("@1", sequenceComponent.PositionId),
-        new("@2", sequenceComponent.SequenceText),
+        sequenceComponent.CodepointId,
+        sequenceComponent.PositionId,
+        sequenceComponent.SequenceText,
     ];
 }

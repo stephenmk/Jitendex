@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities;
 using Jitendex.Import.Kanjidic2.Models;
@@ -38,11 +37,11 @@ internal sealed class RevisionTable : Table<DocumentRevision>
     protected override IReadOnlyList<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {nameof(Revision)} is auto-incremented.");
 
-    protected override SqliteParameter[] Parameters(DocumentRevision revision) =>
+    protected override object?[] ParameterValues(DocumentRevision revision) =>
     [
-        new("@0", revision.SequenceId),
-        new("@1", revision.Number),
-        new("@2", revision.FileHeaderId),
-        new("@3", revision.DiffJson),
+        revision.SequenceId,
+        revision.Number,
+        revision.FileHeaderId,
+        revision.DiffJson,
     ];
 }

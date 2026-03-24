@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.Entities;
 using Jitendex.Import.Tatoeba.Models;
@@ -33,12 +32,14 @@ internal sealed class SequenceTable : Table<SequenceElement>
         nameof(Sequence.OriginFileId),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException();
-
-    protected override SqliteParameter[] Parameters(SequenceElement sequence) =>
+    protected override IReadOnlyList<string> KeyColNames =>
     [
-        new("@0", sequence.Id),
-        new("@1", sequence.FileHeaderId),
+        nameof(Sequence.Id)
+    ];
+
+    protected override object?[] ParameterValues(SequenceElement sequence) =>
+    [
+        sequence.Id,
+        sequence.FileHeaderId,
     ];
 }

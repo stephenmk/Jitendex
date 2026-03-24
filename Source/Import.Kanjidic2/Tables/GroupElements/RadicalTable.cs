@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 using Jitendex.Import.Kanjidic2.Models;
@@ -43,12 +42,12 @@ internal sealed class RadicalTable : Table<RadicalElement>
         nameof(Radical.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(RadicalElement radical) =>
+    protected override object?[] ParameterValues(RadicalElement radical) =>
     [
-        new("@0", radical.EntryId),
-        new("@1", radical.GroupOrder),
-        new("@2", radical.Order),
-        new("@3", radical.Number),
-        new("@4", radical.TypeName),
+        radical.EntryId,
+        radical.GroupOrder,
+        radical.Order,
+        radical.Number,
+        radical.TypeName,
     ];
 }

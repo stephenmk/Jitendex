@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.Models;
@@ -42,11 +41,11 @@ internal sealed class KanjiFormRestrictionTable : Table<KanjiFormRestrictionElem
         nameof(KanjiFormRestriction.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormRestrictionElement restriction) =>
+    protected override object?[] ParameterValues(KanjiFormRestrictionElement restriction) =>
     [
-        new("@0", restriction.EntryId),
-        new("@1", restriction.ParentOrder),
-        new("@2", restriction.Order),
-        new("@3", restriction.KanjiFormText),
+        restriction.EntryId,
+        restriction.ParentOrder,
+        restriction.Order,
+        restriction.KanjiFormText,
     ];
 }

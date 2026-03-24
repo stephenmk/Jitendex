@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.Models;
@@ -42,11 +41,11 @@ internal sealed class MiscTable : Table<MiscElement>
         nameof(Misc.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(MiscElement misc) =>
+    protected override object?[] ParameterValues(MiscElement misc) =>
     [
-        new("@0", misc.EntryId),
-        new("@1", misc.ParentOrder),
-        new("@2", misc.Order),
-        new("@3", misc.TagName),
+        misc.EntryId,
+        misc.ParentOrder,
+        misc.Order,
+        misc.TagName,
     ];
 }

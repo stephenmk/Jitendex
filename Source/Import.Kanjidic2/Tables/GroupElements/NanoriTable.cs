@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 using Jitendex.Import.Kanjidic2.Models;
@@ -42,11 +41,11 @@ internal sealed class NanoriTable : Table<NanoriElement>
         nameof(Nanori.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(NanoriElement nanori) =>
+    protected override object?[] ParameterValues(NanoriElement nanori) =>
     [
-        new("@0", nanori.EntryId),
-        new("@1", nanori.GroupOrder),
-        new("@2", nanori.Order),
-        new("@3", nanori.Text),
+        nanori.EntryId,
+        nanori.GroupOrder,
+        nanori.Order,
+        nanori.Text,
     ];
 }

@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.Models;
@@ -45,14 +44,14 @@ internal sealed class LanguageSourceTable : Table<LanguageSourceElement>
         nameof(LanguageSource.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(LanguageSourceElement ls) =>
+    protected override object?[] ParameterValues(LanguageSourceElement ls) =>
     [
-        new("@0", ls.EntryId),
-        new("@1", ls.ParentOrder),
-        new("@2", ls.Order),
-        new("@3", ls.Text.Nullable()),
-        new("@4", ls.LanguageCode),
-        new("@5", ls.TypeName),
-        new("@6", ls.IsWasei),
+        ls.EntryId,
+        ls.ParentOrder,
+        ls.Order,
+        ls.Text,
+        ls.LanguageCode,
+        ls.TypeName,
+        ls.IsWasei,
     ];
 }

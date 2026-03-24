@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities;
 using Jitendex.Import.JMnedict.Models;
@@ -35,8 +34,8 @@ internal sealed class FileHeaderTable : Table<DocumentHeader>
     protected override IReadOnlyList<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {nameof(FileHeader)} is auto-incremented.");
 
-    protected override SqliteParameter[] Parameters(DocumentHeader header) =>
+    protected override object?[] ParameterValues(DocumentHeader header) =>
     [
-        new("@0", header.Date)
+        header.Date
     ];
 }

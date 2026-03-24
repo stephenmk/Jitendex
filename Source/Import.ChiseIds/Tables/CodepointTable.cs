@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.ChiseIds.Entities;
 using Jitendex.Import.ChiseIds.Models;
@@ -40,11 +39,11 @@ internal sealed class CodepointTable : Table<CodepointElement>
         nameof(Codepoint.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(CodepointElement codepoint) =>
+    protected override object?[] ParameterValues(CodepointElement codepoint) =>
     [
-        new("@0", codepoint.Id),
-        new("@1", codepoint.UnicodeScalarValue.Nullable()),
-        new("@2", codepoint.SequenceText.Nullable()),
-        new("@3", codepoint.AltSequenceText.Nullable()),
+        codepoint.Id,
+        codepoint.UnicodeScalarValue,
+        codepoint.SequenceText,
+        codepoint.AltSequenceText,
     ];
 }

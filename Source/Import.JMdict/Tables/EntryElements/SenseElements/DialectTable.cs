@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.Models;
@@ -42,11 +41,11 @@ internal sealed class DialectTable : Table<DialectElement>
         nameof(Dialect.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(DialectElement dialect) =>
+    protected override object?[] ParameterValues(DialectElement dialect) =>
     [
-        new("@0", dialect.EntryId),
-        new("@1", dialect.ParentOrder),
-        new("@2", dialect.Order),
-        new("@3", dialect.TagName),
+        dialect.EntryId,
+        dialect.ParentOrder,
+        dialect.Order,
+        dialect.TagName,
     ];
 }

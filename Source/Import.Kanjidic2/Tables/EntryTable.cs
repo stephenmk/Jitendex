@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities;
 using Jitendex.Import.Kanjidic2.Models;
@@ -37,8 +36,8 @@ internal sealed class EntryTable : Table<EntryElement>
         nameof(Entry.UnicodeScalarValue)
     ];
 
-    protected override SqliteParameter[] Parameters(EntryElement entry) =>
+    protected override object?[] ParameterValues(EntryElement entry) =>
     [
-        new("@0", entry.Id)
+        entry.Id
     ];
 }

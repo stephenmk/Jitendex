@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.Models;
@@ -43,12 +42,12 @@ internal sealed class CrossReferenceTable : Table<CrossReferenceElement>
         nameof(CrossReference.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(CrossReferenceElement xref) =>
+    protected override object?[] ParameterValues(CrossReferenceElement xref) =>
     [
-        new("@0", xref.EntryId),
-        new("@1", xref.ParentOrder),
-        new("@2", xref.Order),
-        new("@3", xref.TypeName),
-        new("@4", xref.Text),
+        xref.EntryId,
+        xref.ParentOrder,
+        xref.Order,
+        xref.TypeName,
+        xref.Text,
     ];
 }

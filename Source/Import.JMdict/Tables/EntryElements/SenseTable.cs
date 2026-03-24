@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems;
 using Jitendex.Import.JMdict.Models;
@@ -39,9 +38,9 @@ internal sealed class SenseTable : Table<SenseElement>
         nameof(Sense.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(SenseElement sense) =>
+    protected override object?[] ParameterValues(SenseElement sense) =>
     [
-        new("@0", sense.EntryId),
-        new("@1", sense.Order),
+        sense.EntryId,
+        sense.Order,
     ];
 }

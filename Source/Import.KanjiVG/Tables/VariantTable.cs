@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.KanjiVG.Entities;
 using Jitendex.Import.KanjiVG.Models;
@@ -40,10 +39,10 @@ internal sealed class VariantTable : Table<VariantElement>
         nameof(Variant.TypeId),
     ];
 
-    protected override SqliteParameter[] Parameters(VariantElement variant) =>
+    protected override object?[] ParameterValues(VariantElement variant) =>
     [
-        new("@0", variant.UnicodeScalarValue),
-        new("@1", variant.TypeId),
-        new("@2", variant.CommentId),
+        variant.UnicodeScalarValue,
+        variant.TypeId,
+        variant.CommentId,
     ];
 }

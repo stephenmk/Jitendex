@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 using Jitendex.Import.Kanjidic2.Models;
@@ -45,14 +44,14 @@ internal sealed class DictionaryTable : Table<DictionaryElement>
         nameof(Dictionary.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(DictionaryElement dictionary) =>
+    protected override object?[] ParameterValues(DictionaryElement dictionary) =>
     [
-        new("@0", dictionary.EntryId),
-        new("@1", dictionary.GroupOrder),
-        new("@2", dictionary.Order),
-        new("@3", dictionary.Text),
-        new("@4", dictionary.TypeName),
-        new("@5", dictionary.Volume.Nullable()),
-        new("@6", dictionary.Page.Nullable()),
+        dictionary.EntryId,
+        dictionary.GroupOrder,
+        dictionary.Order,
+        dictionary.Text,
+        dictionary.TypeName,
+        dictionary.Volume,
+        dictionary.Page,
     ];
 }

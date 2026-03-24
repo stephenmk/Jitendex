@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities;
 using Jitendex.Import.Kanjidic2.Models;
@@ -38,21 +37,25 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         nameof(IKeyword.Name)
     ];
 
-    protected override SqliteParameter[] Parameters(T keyword) =>
+    protected override object?[] ParameterValues(T keyword) =>
     [
-        new("@0", keyword.Name),
-        new("@1", keyword.FileHeaderId),
+        keyword.Name,
+        keyword.FileHeaderId,
     ];
+
+#pragma warning disable format
 
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
-        nameof(CodepointTypeElement) => nameof(CodepointType),
-        nameof(DictionaryTypeElement) => nameof(DictionaryType),
-        nameof(QueryCodeTypeElement) => nameof(QueryCodeType),
+        nameof(CodepointTypeElement)         => nameof(CodepointType),
+        nameof(DictionaryTypeElement)        => nameof(DictionaryType),
+        nameof(QueryCodeTypeElement)         => nameof(QueryCodeType),
         nameof(MisclassificationTypeElement) => nameof(MisclassificationType),
-        nameof(RadicalTypeElement) => nameof(RadicalType),
-        nameof(ReadingTypeElement) => nameof(ReadingType),
-        nameof(VariantTypeElement) => nameof(VariantType),
+        nameof(RadicalTypeElement)           => nameof(RadicalType),
+        nameof(ReadingTypeElement)           => nameof(ReadingType),
+        nameof(VariantTypeElement)           => nameof(VariantType),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
+
+#pragma warning restore format
 }

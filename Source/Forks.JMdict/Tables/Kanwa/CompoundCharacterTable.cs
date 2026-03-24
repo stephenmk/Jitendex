@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;
@@ -40,10 +39,10 @@ internal sealed class CompoundCharacterTable : Table<CompoundCharacterRow>
         nameof(CompoundCharacter.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(CompoundCharacterRow row) =>
+    protected override object?[] ParameterValues(CompoundCharacterRow row) =>
     [
-        new("@0", row.CompoundId),
-        new("@1", row.Order),
-        new("@2", row.CharacterValue),
+        row.CompoundId,
+        row.Order,
+        row.CharacterValue,
     ];
 }

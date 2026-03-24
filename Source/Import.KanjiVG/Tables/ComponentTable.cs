@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.KanjiVG.Entities;
 using Jitendex.Import.KanjiVG.Models;
@@ -54,23 +53,23 @@ internal sealed class ComponentTable : Table<ComponentElement>
         nameof(Component.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(ComponentElement component) =>
+    protected override object?[] ParameterValues(ComponentElement component) =>
     [
-        new("@0", component.UnicodeScalarValue),
-        new("@1", component.VariantTypeId),
-        new("@2", component.Order),
-        new("@3", component.IdAttribute),
-        new("@4", component.ParentOrder.Nullable()),
-        new("@5", component.CharacterId.Nullable()),
-        new("@6", component.IsVariant),
-        new("@7", component.IsPartial),
-        new("@8", component.OriginalId.Nullable()),
-        new("@9", component.Part.Nullable()),
-        new("@A", component.Number.Nullable()),
-        new("@B", component.IsTradForm),
-        new("@C", component.IsRadicalForm),
-        new("@D", component.PositionId.Nullable()),
-        new("@E", component.RadicalId.Nullable()),
-        new("@F", component.PhonId.Nullable()),
+        component.UnicodeScalarValue,
+        component.VariantTypeId,
+        component.Order,
+        component.IdAttribute,
+        component.ParentOrder,
+        component.CharacterId,
+        component.IsVariant,
+        component.IsPartial,
+        component.OriginalId,
+        component.Part,
+        component.Number,
+        component.IsTradForm,
+        component.IsRadicalForm,
+        component.PositionId,
+        component.RadicalId,
+        component.PhonId,
     ];
 }

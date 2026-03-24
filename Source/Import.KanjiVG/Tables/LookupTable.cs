@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.KanjiVG.Entities;
 using Jitendex.Import.KanjiVG.Models;
@@ -38,11 +37,13 @@ internal sealed class LookupTable<T> : Table<T> where T : ILookupElement
         nameof(ILookup.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(T lookup) =>
+    protected override object?[] ParameterValues(T lookup) =>
     [
-        new("@0", lookup.Id),
-        new("@1", lookup.Text),
+        lookup.Id,
+        lookup.Text,
     ];
+
+#pragma warning disable format
 
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
@@ -58,4 +59,6 @@ internal sealed class LookupTable<T> : Table<T> where T : ILookupElement
         nameof(StrokeTypeElement)             => nameof(StrokeType),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
+
+#pragma warning restore format
 }

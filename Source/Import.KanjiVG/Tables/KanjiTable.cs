@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.KanjiVG.Entities;
 using Jitendex.Import.KanjiVG.Models;
@@ -37,8 +36,8 @@ internal sealed class KanjiTable : Table<KanjiElement>
         nameof(Kanji.UnicodeScalarValue)
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiElement kanji) =>
+    protected override object?[] ParameterValues(KanjiElement kanji) =>
     [
-        new("@0", kanji.UnicodeScalarValue)
+        kanji.UnicodeScalarValue
     ];
 }

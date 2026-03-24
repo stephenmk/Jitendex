@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Data.JMdict.ForkEntities.Furigana;
@@ -41,10 +40,10 @@ internal sealed class ReadingKanjiFormBridgeTable : Table<KanjiFormBridgeRow>
         nameof(ReadingKanjiFormBridge.KanjiFormOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormBridgeRow bridge) =>
+    protected override object?[] ParameterValues(KanjiFormBridgeRow bridge) =>
     [
-        new("@0", bridge.EntryId),
-        new("@1", bridge.ReadingOrder),
-        new("@2", bridge.KanjiFormOrder),
+        bridge.EntryId,
+        bridge.ReadingOrder,
+        bridge.KanjiFormOrder,
     ];
 }

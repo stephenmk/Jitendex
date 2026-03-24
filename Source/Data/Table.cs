@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Immutable;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +27,21 @@ public abstract class Table<T>
     protected abstract string Name { get; }
     protected abstract IReadOnlyList<string> ColumnNames { get; }
     protected abstract IReadOnlyList<string> KeyColNames { get; }
-    protected abstract SqliteParameter[] Parameters(T item);
+    protected abstract object?[] ParameterValues(T item);
+
+    private static readonly ImmutableArray<string> ParameterNames =
+        Enumerable.Range(0, 128).Select(static idx => $"@{idx:X}").ToImmutableArray();
+
+    private SqliteParameter[] Parameters(T item)
+    {
+        var values = ParameterValues(item);
+        var parameters = new SqliteParameter[values.Length];
+        for (int i = 0; i < values.Length; i++)
+        {
+            parameters[i] = new(ParameterNames[i], values[i] ?? DBNull.Value);
+        }
+        return parameters;
+    }
 
     private string InsertCommandText =>
         $"""
@@ -103,7 +118,7 @@ public abstract class Table<T>
                 {
                     Console.Error.WriteLine($"{parameter}");
                 }
-                throw new Exception($"{rowsAffected} rows affected (expected 1)");
+                throw new InvalidOperationException($"{rowsAffected} rows affected (expected 1)");
             }
             command.Parameters.Clear();
         }

@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Import.JMdict.Models;
@@ -40,10 +39,10 @@ internal sealed class RevisionTable : Table<DocumentRevision>
         nameof(Revision.FileHeaderId),
     ];
 
-    protected override SqliteParameter[] Parameters(DocumentRevision revision) =>
+    protected override object?[] ParameterValues(DocumentRevision revision) =>
     [
-        new("@0", revision.SequenceId),
-        new("@1", revision.FileHeaderId),
-        new("@2", revision.DiffJson),
+        revision.SequenceId,
+        revision.FileHeaderId,
+        revision.DiffJson,
     ];
 }

@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Data.JMdict.ForkEntities.Links;
@@ -42,11 +41,11 @@ internal sealed class KanjiFormRestrictionLinkTable : Table<KanjiFormRestriction
         nameof(KanjiFormRestrictionLink.RestrictionOrder),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormRestrictionLinkRow row) =>
+    protected override object?[] ParameterValues(KanjiFormRestrictionLinkRow row) =>
     [
-        new("@0", row.EntryId),
-        new("@1", row.SenseOrder),
-        new("@2", row.RestrictionOrder),
-        new("@3", row.KanjiFormOrder),
+        row.EntryId,
+        row.SenseOrder,
+        row.RestrictionOrder,
+        row.KanjiFormOrder,
     ];
 }

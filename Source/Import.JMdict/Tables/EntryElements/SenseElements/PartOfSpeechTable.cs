@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.Models;
@@ -42,11 +41,11 @@ internal sealed class PartOfSpeechTable : Table<PartOfSpeechElement>
         nameof(PartOfSpeech.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(PartOfSpeechElement pos) =>
+    protected override object?[] ParameterValues(PartOfSpeechElement pos) =>
     [
-        new("@0", pos.EntryId),
-        new("@1", pos.ParentOrder),
-        new("@2", pos.Order),
-        new("@3", pos.TagName),
+        pos.EntryId,
+        pos.ParentOrder,
+        pos.Order,
+        pos.TagName,
     ];
 }

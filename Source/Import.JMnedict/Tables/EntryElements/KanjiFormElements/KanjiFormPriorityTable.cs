@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.Import.JMnedict.Models;
@@ -42,11 +41,11 @@ internal sealed class KanjiFormPriorityTable : Table<KanjiFormPriorityElement>
         nameof(KanjiFormPriority.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormPriorityElement priority) =>
+    protected override object?[] ParameterValues(KanjiFormPriorityElement priority) =>
     [
-        new("@0", priority.EntryId),
-        new("@1", priority.ParentOrder),
-        new("@2", priority.Order),
-        new("@3", priority.TagName),
+        priority.EntryId,
+        priority.ParentOrder,
+        priority.Order,
+        priority.TagName,
     ];
 }

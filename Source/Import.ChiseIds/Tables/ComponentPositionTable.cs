@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.ChiseIds.Entities;
 using Jitendex.Import.ChiseIds.Models;
@@ -38,9 +37,9 @@ internal sealed class ComponentPositionTable : Table<ComponentPositionElement>
         nameof(ComponentPosition.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(ComponentPositionElement position) =>
+    protected override object?[] ParameterValues(ComponentPositionElement position) =>
     [
-        new("@0", position.Id),
-        new("@1", position.Name),
+        position.Id,
+        position.Name,
     ];
 }

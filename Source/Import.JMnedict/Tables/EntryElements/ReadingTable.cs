@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities.EntryItems;
 using Jitendex.Import.JMnedict.Models;
@@ -40,10 +39,10 @@ internal sealed class ReadingTable : Table<ReadingElement>
         nameof(Reading.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(ReadingElement reading) =>
+    protected override object?[] ParameterValues(ReadingElement reading) =>
     [
-        new("@0", reading.EntryId),
-        new("@1", reading.Order),
-        new("@2", reading.Text),
+        reading.EntryId,
+        reading.Order,
+        reading.Text,
     ];
 }

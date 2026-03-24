@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Import.JMdict.Models;
@@ -38,9 +37,9 @@ internal sealed class SequenceTable : Table<DocumentSequence>
         nameof(Sequence.Id)
     ];
 
-    protected override SqliteParameter[] Parameters(DocumentSequence sequence) =>
+    protected override object?[] ParameterValues(DocumentSequence sequence) =>
     [
-        new("@0", sequence.Id),
-        new("@1", sequence.FileHeaderId),
+        sequence.Id,
+        sequence.FileHeaderId,
     ];
 }

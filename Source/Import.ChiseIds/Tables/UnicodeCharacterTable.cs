@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.ChiseIds.Entities;
 using Jitendex.Import.ChiseIds.Models;
@@ -34,8 +33,8 @@ internal sealed class UnicodeCharacterTable : Table<UnicodeCharacterElement>
 
     protected override IReadOnlyList<string> KeyColNames => ColumnNames;
 
-    protected override SqliteParameter[] Parameters(UnicodeCharacterElement character) =>
+    protected override object?[] ParameterValues(UnicodeCharacterElement character) =>
     [
-        new("@0", character.ScalarValue)
+        character.ScalarValue
     ];
 }

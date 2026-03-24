@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.Models;
@@ -40,13 +39,13 @@ internal sealed class CharacterReadingTable : Table<CharacterReadingRow>
     protected override IReadOnlyList<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {nameof(CharacterReading)} is auto-incremented.");
 
-    protected override SqliteParameter[] Parameters(CharacterReadingRow row) =>
+    protected override object?[] ParameterValues(CharacterReadingRow row) =>
     [
-        new("@0", row.CharacterValue),
-        new("@1", row.Text),
-        new("@2", row.IsPrefix),
-        new("@3", row.IsSuffix),
-        new("@4", row.Okurigana.Nullable()),
-        new("@5", row.ReadingTypeId),
+        row.CharacterValue,
+        row.Text,
+        row.IsPrefix,
+        row.IsSuffix,
+        row.Okurigana,
+        row.ReadingTypeId,
     ];
 }

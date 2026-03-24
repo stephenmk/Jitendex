@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Forks.JMdict.Models;
 using Jitendex.Data.JMdict.ForkEntities.References;
@@ -44,12 +43,12 @@ internal sealed class KanjiFormReferenceTable : Table<KanjiFormReferenceRow>
         nameof(KanjiFormReference.RefEntryId),
     ];
 
-    protected override SqliteParameter[] Parameters(KanjiFormReferenceRow row) =>
+    protected override object?[] ParameterValues(KanjiFormReferenceRow row) =>
     [
-        new("@0", row.EntryId),
-        new("@1", row.SenseOrder),
-        new("@2", row.CrossReferenceOrder),
-        new("@3", row.RefEntryId),
-        new("@4", row.RefKanjiFormOrder),
+        row.EntryId,
+        row.SenseOrder,
+        row.CrossReferenceOrder,
+        row.RefEntryId,
+        row.RefKanjiFormOrder,
     ];
 }

@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities.GroupItems;
 using Jitendex.Import.Kanjidic2.Models;
@@ -43,12 +42,12 @@ internal sealed class VariantTable : Table<VariantElement>
         nameof(Variant.Order),
     ];
 
-    protected override SqliteParameter[] Parameters(VariantElement variant) =>
+    protected override object?[] ParameterValues(VariantElement variant) =>
     [
-        new("@0", variant.EntryId),
-        new("@1", variant.GroupOrder),
-        new("@2", variant.Order),
-        new("@3", variant.Text),
-        new("@4", variant.TypeName),
+        variant.EntryId,
+        variant.GroupOrder,
+        variant.Order,
+        variant.Text,
+        variant.TypeName,
     ];
 }

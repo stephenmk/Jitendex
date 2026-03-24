@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Data.Sqlite;
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.Entities;
 using Jitendex.Import.Tatoeba.Models;
@@ -36,15 +35,18 @@ internal sealed class RevisionTable : Table<DocumentRevision>
         nameof(Revision.DiffJson),
     ];
 
-    protected override IReadOnlyList<string> KeyColNames
-        => throw new NotImplementedException($"The primary key for table {nameof(Revision)} is auto-incremented.");
-
-    protected override SqliteParameter[] Parameters(DocumentRevision revision) =>
+    protected override IReadOnlyList<string> KeyColNames =>
     [
-        new("@0", revision.SequenceId),
-        new("@1", revision.Number),
-        new("@2", revision.FileHeaderId),
-        new("@3", revision.IsPriority),
-        new("@4", revision.DiffJson),
+        nameof(Revision.SequenceId),
+        nameof(Revision.Number),
+    ];
+
+    protected override object?[] ParameterValues(DocumentRevision revision) =>
+    [
+        revision.SequenceId,
+        revision.Number,
+        revision.FileHeaderId,
+        revision.IsPriority,
+        revision.DiffJson,
     ];
 }

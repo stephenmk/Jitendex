@@ -73,7 +73,7 @@ internal partial class PatchService
 
     private Dictionary<int, Stack<PatchData>> GetPatchStacks()
     {
-        var sequences = new Dictionary<int, Stack<PatchData>>();
+        var sequenceIdToStack = new Dictionary<int, Stack<PatchData>>();
 
         var validDates = forkContext.FileHeaders
             .Select(static f => f.Date)
@@ -109,31 +109,30 @@ internal partial class PatchService
                     continue;
                 }
             }
-
             var patch = patches[approval.PatchId];
             var sequenceId = patch.SequenceId;
-
-            if (!sequences.ContainsKey(sequenceId))
+            if (sequenceIdToStack.ContainsKey(sequenceId))
             {
-                var stack = new Stack<PatchData>();
-                while (patch is not null)
-                {
-                    if (!validDates.Contains(patch.SequenceDate))
-                    {
-                        LogInvalidFileDate(patch.Id, patch.SequenceDate);
-                        return [];
-                    }
-                    var patchData = new PatchData(patch.Id, patch.SequenceDate, patch.Json);
-                    stack.Push(patchData);
-                    patch = patch.PreviousPatchId.HasValue
-                        ? patches[patch.PreviousPatchId.Value]
-                        : null;
-                }
-                sequences[sequenceId] = stack;
+                continue;
             }
+            var stack = new Stack<PatchData>();
+            while (patch is not null)
+            {
+                if (validDates.Contains(patch.SequenceDate) is false)
+                {
+                    LogInvalidFileDate(patch.Id, patch.SequenceDate);
+                    return [];
+                }
+                var patchData = new PatchData(patch.Id, patch.SequenceDate, patch.Json);
+                stack.Push(patchData);
+                patch = patch.PreviousPatchId.HasValue
+                    ? patches[patch.PreviousPatchId.Value]
+                    : null;
+            }
+            sequenceIdToStack[sequenceId] = stack;
         }
 
-        return sequences;
+        return sequenceIdToStack;
     }
 
     private FrozenDictionary<int, DateOnly> GetSequenceIdToLatestRevisionDate(IEnumerable<int> sequenceIds)

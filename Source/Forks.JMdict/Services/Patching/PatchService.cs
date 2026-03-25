@@ -54,9 +54,9 @@ internal partial class PatchService
         {
             var sequence = sequences[seqId];
             var date = seqToLatestRevisionDate[seqId];
-            if (ApplyPatchStack(stack, sequence, date) is SequenceDto patchedSequence)
+            if (ApplyPatchStack(ref sequence, date, stack) is int patchId)
             {
-                var patchedEntry = patchedSequence.Entry?.ToEntry(seqId);
+                var patchedEntry = sequence.Entry?.ToEntry(seqId);
                 forkContext.Entries
                     .Where(e => e.Id == seqId)
                     .ExecuteDelete();
@@ -64,6 +64,7 @@ internal partial class PatchService
                     .Where(s => s.Id == seqId)
                     .First();
                 seq.Entry = patchedEntry;
+                seq.Patch = new() { SequenceId = seqId, PatchId = patchId };
             }
         }
 
@@ -91,10 +92,7 @@ internal partial class PatchService
             .Select(static group => new
             {
                 group.Key,
-                Value = group
-                    .OrderByDescending(static r => r.CreatedAt)
-                    .Select(static r => r.CreatedAt)
-                    .First()
+                Value = group.Max(static r => r.CreatedAt),
             })
             .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 
@@ -145,19 +143,18 @@ internal partial class PatchService
             {
                 Key = s.Id,
                 DefaultValue = s.OriginFile.Date,
-                Value = s.Revisions
-                    .OrderByDescending(static r => r.FileHeader.Date)
-                    .Select(static r => (DateOnly?)r.FileHeader.Date)
-                    .FirstOrDefault()
+                Value = s.Revisions.Max(static r => (DateOnly?)r.FileHeader.Date)
             })
             .ToFrozenDictionary(static x => x.Key, static x => x.Value ?? x.DefaultValue);
 
-    private SequenceDto? ApplyPatchStack(Stack<PatchData> stack, SequenceDto sequence, DateOnly sequenceDate)
+    private int? ApplyPatchStack(ref SequenceDto sequence, DateOnly sequenceDate, Stack<PatchData> stack)
     {
         bool outdated = false;
+        int finalPatchId = stack.Peek().Id;
         while (stack.Count > 0)
         {
             var patch = stack.Pop();
+            finalPatchId = patch.Id;
 
             if (!sequenceDate.Equals(patch.Date))
             {
@@ -186,11 +183,9 @@ internal partial class PatchService
         }
         if (outdated)
         {
-            var oldSequences = SequenceDictionaryLoader.Load(jmdictContext, [sequence.Id]);
-            var oldSequence = oldSequences[sequence.Id];
-            rebaser.Write(oldSequence, sequence, sequenceDate);
+            rebaser.Write(sequence, sequenceDate);
         }
-        return sequence;
+        return finalPatchId;
     }
 
     [LoggerMessage(LogLevel.Error, "Invalid sequence date {Date} in patch ID #{Id}")]

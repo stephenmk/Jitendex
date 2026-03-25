@@ -18,30 +18,18 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.ForkEntities;
+using Jitendex.Data.JMdict.Entities;
 
-namespace Jitendex.Data.JMdict.Entities;
+namespace Jitendex.Data.JMdict.ForkEntities;
 
-[Table(nameof(Sequence))]
-[PrimaryKey(nameof(Id))]
-public sealed class Sequence
+[Table(nameof(Patch))]
+[PrimaryKey(nameof(SequenceId))]
+[Index(nameof(PatchId), IsUnique = true)]
+public sealed class Patch
 {
-    public required int Id { get; init; }
-    public required int OriginFileId { get; init; }
+    public required int SequenceId { get; init; }
+    public required int PatchId { get; init; }
 
-    [ForeignKey(nameof(OriginFileId))]
-    public FileHeader OriginFile { get; init; } = null!;
-
-    [InverseProperty(nameof(Revision.Sequence))]
-    public List<Revision> Revisions { get; init; } = [];
-
-    [InverseProperty(nameof(Entry.Sequence))]
-    public Entry? Entry { get; set; }
-
-    #region Fork Properties
-
-    [InverseProperty(nameof(Patch.Sequence))]
-    public Patch? Patch { get; set; }
-
-    #endregion
+    [ForeignKey(nameof(SequenceId))]
+    public Sequence Sequence { get; init; } = null!;
 }

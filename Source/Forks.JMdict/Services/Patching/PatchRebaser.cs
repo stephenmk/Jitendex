@@ -19,21 +19,26 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.Json;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities;
+using Jitendex.Data.JMdict;
+using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Dto.JMdict;
 using Jitendex.MinimalJsonDiff;
 
 namespace Jitendex.Forks.JMdict.Services.Patching;
 
-internal sealed class PatchRebaser(HomeContext context)
+internal sealed class PatchRebaser(HomeContext context, JMdictContext jmdictContext)
 {
-    public void Write(SequenceDto oldSequence, SequenceDto newSequence, DateOnly sequenceDate)
+    public void Write(SequenceDto newSequence, DateOnly sequenceDate)
     {
         var author = GetAutomatedUser();
 
-        if (ExistingPatchesCount(newSequence.Id, sequenceDate, author.Id) > 0)
+        if (AnyExistingPatches(newSequence.Id, sequenceDate, author.Id))
         {
             return;
         }
+
+        var oldSequences = SequenceDictionaryLoader.Load(jmdictContext, [newSequence.Id]);
+        var oldSequence = oldSequences[newSequence.Id];
 
         var json = JsonDiffer.Diff(oldSequence, newSequence, JsonSerializerOptions);
         var comment = $"Rebasing and squashing patches onto new sequence version from date {sequenceDate}";
@@ -83,10 +88,10 @@ internal sealed class PatchRebaser(HomeContext context)
         IndentSize = 4,
     };
 
-    private int ExistingPatchesCount(int sequenceId, DateOnly sequenceDate, int authorId)
+    private bool AnyExistingPatches(int sequenceId, DateOnly sequenceDate, int authorId)
         => context.JMdictPatches
             .Where(p => p.SequenceId == sequenceId)
             .Where(p => p.SequenceDate == sequenceDate)
             .Where(p => p.AuthorId == authorId)
-            .Count();
+            .Any();
 }

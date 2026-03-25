@@ -43,6 +43,7 @@ internal sealed class Service
         logger.LogInformation("Linking examples to JMdict entries.");
         entryLinkService.Write();
 
+        logger.LogInformation("Adding example sentence furigana.");
         furiganaService.Write();
 
         forkTransaction.Commit();

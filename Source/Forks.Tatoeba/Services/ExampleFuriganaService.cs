@@ -78,7 +78,7 @@ internal partial class ExampleFuriganaService
     private void CheckSentences()
     {
         var texts = tatoebaContext.Examples
-            .Where(e => e.Furigana.Count > 0)
+            .Where(e => e.Furigana.Any())
             .Select(static e => new
             {
                 e.Id,

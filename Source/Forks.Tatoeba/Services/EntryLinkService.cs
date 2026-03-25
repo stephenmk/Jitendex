@@ -67,7 +67,7 @@ internal partial class EntryLinkService
         {
             if (token.EntryId is null)
             {
-                rows.AddRange(GetImplicitLinks(token, data));
+                AddImplicitLinks(token, data, rows);
             }
             else if (GetExplicitLink(token, data) is EntryLinkRow row)
             {
@@ -78,7 +78,7 @@ internal partial class EntryLinkService
         table.InsertItems(tatoebaContext, rows);
     }
 
-    private IEnumerable<EntryLinkRow> GetImplicitLinks(TokenData token, JMdictData data)
+    private void AddImplicitLinks(TokenData token, JMdictData data, List<EntryLinkRow> rows)
     {
         ImmutableArray<int> entryIds;
         if (token.Reading is not null)
@@ -128,7 +128,8 @@ internal partial class EntryLinkService
                 : data.EntryIdToSenseCount.TryGetValue(entryId, out int count) && count is 1
                 ? 0
                 : null;
-            yield return new EntryLinkRow(token.ExampleId, token.SegmentationOrder, token.Order, entryId, senseOrder);
+            var row = new EntryLinkRow(token.ExampleId, token.SegmentationOrder, token.Order, entryId, senseOrder);
+            rows.Add(row);
         }
     }
 

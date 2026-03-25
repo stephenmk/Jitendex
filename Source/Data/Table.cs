@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Immutable;
-using Microsoft.Data.Sqlite;
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data;
@@ -29,8 +29,9 @@ public abstract class Table<T>
     protected abstract ImmutableArray<string> KeyColNames { get; }
     protected abstract object?[] ParameterValues(T item);
 
+    private const int SqliteMaximumColumnCount = 2_000;
     private static readonly ImmutableArray<string> ParameterNames = Enumerable
-        .Range(0, 128)
+        .Range(0, SqliteMaximumColumnCount)
         .Select(static i => $"@{i:X}")
         .ToImmutableArray();
 
@@ -38,21 +39,14 @@ public abstract class Table<T>
         $"""
         INSERT INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ParameterNames[..ColumnNames.Length])});
+        ({string.Join(',', ParameterNames.AsSpan(..ColumnNames.Length))});
         """;
 
     private string InsertOrIgnoreCommandText =>
         $"""
         INSERT OR IGNORE INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ParameterNames[..ColumnNames.Length])});
-        """;
-
-    private string UpdateCommandText =>
-        $"""
-        UPDATE "{Name}"
-        SET   {string.Join(',', ColumnNames.Select(static (name, idx) => $"\"{name}\" = {ParameterNames[idx]}"))}
-        WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = {ParameterNames[idx]}"))};
+        ({string.Join(',', ParameterNames.AsSpan(..ColumnNames.Length))});
         """;
 
     private string UpsertCommandText =>
@@ -61,7 +55,7 @@ public abstract class Table<T>
         : $"""
         INSERT INTO "{Name}"
         ({string.Join(',', ColumnNames.Select(static name => $"\"{name}\""))}) VALUES
-        ({string.Join(',', ParameterNames[..ColumnNames.Length])})
+        ({string.Join(',', ParameterNames.AsSpan(..ColumnNames.Length))})
         ON CONFLICT({string.Join(",", KeyColNames.Select(static name => $"\"{name}\""))})
         DO UPDATE SET
         {string.Join(',', updateColNames.Select(static name => $"\"{name}\" = excluded.\"{name}\""))};
@@ -70,7 +64,7 @@ public abstract class Table<T>
     private string DeleteCommandText =>
         $"""
         DELETE FROM "{Name}"
-        WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = {ParameterNames[idx]}"))};
+        WHERE {string.Join(" AND ", ColumnNames.Select(static (name, idx) => $"\"{name}\" = {ParameterNames[idx]}"))};
         """;
 
     public void InsertItem(SqliteContext db, T item)
@@ -81,9 +75,6 @@ public abstract class Table<T>
 
     public void InsertOrIgnoreItems(SqliteContext db, IEnumerable<T> items)
         => ExecuteNonQuery(db, items, InsertOrIgnoreCommandText, checkRows: false);
-
-    public void UpdateItems(SqliteContext db, IEnumerable<T> items)
-        => ExecuteNonQuery(db, items, UpdateCommandText);
 
     public void UpsertItems(SqliteContext db, IEnumerable<T> items)
         => ExecuteNonQuery(db, items, UpsertCommandText);
@@ -96,8 +87,13 @@ public abstract class Table<T>
         using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = commandText;
 
-        var parameters = InitializeParameters();
-        command.Parameters.AddRange(parameters);
+        var parameters = new DbParameter[ColumnNames.Length];
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            parameters[i] = command.CreateParameter();
+            parameters[i].ParameterName = ParameterNames[i];
+            command.Parameters.Add(parameters[i]);
+        }
 
         foreach (var item in items)
         {
@@ -112,18 +108,5 @@ public abstract class Table<T>
                 throw new InvalidOperationException($"{rowsAffected} rows affected (expected 1)");
             }
         }
-    }
-
-    private SqliteParameter[] InitializeParameters()
-    {
-        var parameters = new SqliteParameter[ColumnNames.Length];
-        for (int i = 0; i < parameters.Length; i++)
-        {
-            parameters[i] = new()
-            {
-                ParameterName = ParameterNames[i]
-            };
-        }
-        return parameters;
     }
 }

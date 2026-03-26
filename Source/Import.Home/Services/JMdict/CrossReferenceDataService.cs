@@ -59,9 +59,9 @@ internal sealed class CrossReferenceDataService
     public async Task ExportAsync()
     {
         var dictionary = context.CrossReferenceSequences
-            .OrderBy(static x => x.Text)
-            .OrderBy(static x => x.SenseNumber)
             .OrderBy(static x => x.EntryId)
+            .ThenBy(static x => x.SenseNumber)
+            .ThenBy(static x => x.Text)
             .Select(static x => new
             {
                 Key = $"{x.EntryId}{Separator}{x.SenseNumber}{Separator}{x.Text}",

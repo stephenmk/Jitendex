@@ -28,10 +28,12 @@ internal sealed class InformedAlgorithm
     KnownCompoundAlgorithm compound
 ) : IAlgorithm
 {
+    #pragma warning disable format
     public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
         => textSlice.Runes switch
         {
             { Length: 1 } => character.Solve(entryType, textSlice, readingState),
             _             => compound.Solve(textSlice, readingState),
         };
+    #pragma warning restore format
 }

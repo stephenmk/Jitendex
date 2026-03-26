@@ -30,13 +30,15 @@ internal sealed class IgnorantAlgorithm
     ConsecutiveKanjiAlgorithm? consecutiveSolver = null
 ) : IAlgorithm
 {
+    #pragma warning disable format
     public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType _, in TextSlice textSlice, in ReadingState readingState)
         => textSlice.Runes switch
         {
             { Length: 1 } => SolveOneRuneLengthText(textSlice, readingState),
             { Length: 2 } => SolveTwoRuneLengthText(textSlice, readingState),
-                        _ => SolveAnyRuneLengthText(textSlice, readingState),
+            _             => SolveAnyRuneLengthText(textSlice, readingState),
         };
+    #pragma warning restore format
 
     private ImmutableArray<ImmutableArray<Solution.Part>> SolveOneRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
         => singleSolver.Solve(textSlice, readingState);

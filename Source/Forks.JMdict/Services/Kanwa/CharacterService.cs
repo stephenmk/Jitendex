@@ -111,6 +111,7 @@ internal sealed class CharacterService
         compoundCharacterTable.InsertItems(forkContext, rows);
     }
 
+    #pragma warning disable format
     private static ForkTypeId ConvertTypeId(HomeTypeId id) => id switch
     {
         HomeTypeId.Alphanumeric => ForkTypeId.Alphanumeric,
@@ -118,4 +119,5 @@ internal sealed class CharacterService
         HomeTypeId.Idiom        => ForkTypeId.Idiom,
         _                       => throw new ArgumentOutOfRangeException(nameof(id))
     };
+    #pragma warning restore format
 }

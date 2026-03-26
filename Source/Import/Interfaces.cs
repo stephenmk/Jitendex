@@ -53,7 +53,7 @@ public interface IDocumentDiffer<TKey, TDocument, TDiff>
 }
 
 public interface IDocumentDatabase<TKey, TDocument, TDiff>
-    where TKey: struct
+    where TKey : struct
     where TDocument : IDocument<TKey>
     where TDiff : IDocumentDiff<TKey, TDocument>
 {

@@ -29,6 +29,7 @@ public static class CacheDirectory
     private static DirectoryInfo JitendexCacheDirectory
         => JitendexDirectory.Get(EnvironmentPaths.LocalCachePath);
 
+    #pragma warning disable format
     private static string Name(this CacheSubdirectory subdir)
         => subdir switch
         {
@@ -37,6 +38,7 @@ public static class CacheDirectory
             ChiseIdsErrors        => "chise-ids-errors",
             _                     => throw new ArgumentOutOfRangeException(nameof(subdir))
         };
+    #pragma warning restore format
 }
 
 public enum CacheSubdirectory : byte

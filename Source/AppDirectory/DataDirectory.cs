@@ -33,6 +33,7 @@ public static class DataDirectory
     private static DirectoryInfo JitendexDataDirectory
         => JitendexDirectory.Get(EnvironmentPaths.LocalDataPath);
 
+    #pragma warning disable format
     private static string Name(this DataSubdirectory subdir)
         => subdir switch
         {
@@ -42,6 +43,7 @@ public static class DataDirectory
             KanjiVGDirectory      => "kanjivg",
             _                     => throw new ArgumentOutOfRangeException(nameof(subdir))
         };
+    #pragma warning restore format
 }
 
 public enum DataSubdirectory : byte

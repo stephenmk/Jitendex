@@ -43,8 +43,7 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         keyword.FileHeaderId,
     ];
 
-#pragma warning disable format
-
+    #pragma warning disable format
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
         nameof(CodepointTypeElement)         => nameof(CodepointType),
@@ -56,6 +55,5 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         nameof(VariantTypeElement)           => nameof(VariantType),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
-
-#pragma warning restore format
+    #pragma warning restore format
 }

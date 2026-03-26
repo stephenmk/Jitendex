@@ -162,7 +162,7 @@ internal class DocumentReader(Logger logger)
 
         try
         {
-             state = SequenceTextParser.Parse(lineElements.AltSequence);
+            state = SequenceTextParser.Parse(lineElements.AltSequence);
         }
         catch (InvalidOperationException)
         {

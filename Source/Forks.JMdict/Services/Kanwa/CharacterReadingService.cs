@@ -96,7 +96,7 @@ internal sealed class CharacterReadingService
         foreach (var reading in readings)
         {
             var readingId = readingIds[(reading.CharacterValue, ConvertTypeId(reading.TypeId), reading.Text)];
-            foreach(var okurigana in reading.Okuriganas)
+            foreach (var okurigana in reading.Okuriganas)
             {
                 rows.Add(new(readingId, okurigana));
             }
@@ -105,6 +105,7 @@ internal sealed class CharacterReadingService
         okuriganaTable.InsertItems(forkContext, rows);
     }
 
+    #pragma warning disable format
     private static ForkTypeId ConvertTypeId(HomeTypeId id) => id switch
     {
         HomeTypeId.Onyomi       => ForkTypeId.Onyomi,
@@ -117,4 +118,5 @@ internal sealed class CharacterReadingService
         HomeTypeId.Unknown      => ForkTypeId.Unknown,
         _                       => throw new ArgumentOutOfRangeException(nameof(id))
     };
+    #pragma warning restore format
 }

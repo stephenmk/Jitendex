@@ -65,12 +65,14 @@ internal sealed class DerivedReadingService
 
         foreach (var entry in entries)
         {
+            #pragma warning disable format
             var newRows = entry.TypeId switch
             {
                 Onyomi  => entry.Readings.SelectMany(GetDerivedOnReadings),
                 Kunyomi => entry.Readings.SelectMany(GetDerivedKunReadings),
                 _       => entry.Readings.SelectMany(GetDerivedReadings),
             };
+            #pragma warning restore format
             rows.AddRange(newRows);
         }
 
@@ -247,6 +249,7 @@ internal sealed class DerivedReadingService
         );
     }
 
+    #pragma warning disable format
     private static DerivedCharacterReadingTypeId GetDerivedReadingTypeId(CharacterReadingTypeId id) => id switch
     {
         Chinese      => DerivedCharacterReadingTypeId.Chinese,
@@ -257,4 +260,5 @@ internal sealed class DerivedReadingService
         Unknown      => DerivedCharacterReadingTypeId.Unknown,
         _            => throw new ArgumentOutOfRangeException(nameof(id)),
     };
+    #pragma warning restore format
 }

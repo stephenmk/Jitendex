@@ -33,9 +33,9 @@ public enum DatabaseFile
     Home,
 }
 
-#pragma warning disable format
 internal static class DatabaseFileExtensions
 {
+    #pragma warning disable format
     public static string ToFilename(this DatabaseFile databaseFile)
         => databaseFile switch
         {
@@ -50,5 +50,5 @@ internal static class DatabaseFileExtensions
             Home        => "home.db",
             _           => throw new ArgumentOutOfRangeException(nameof(databaseFile))
         };
+    #pragma warning restore format
 }
-#pragma warning restore format

@@ -30,6 +30,7 @@ internal readonly ref struct LogFilePaths
         Directory = InitDirectory();
     }
 
+    #pragma warning disable format
     public ReadOnlySpan<char> GetLogFilePath(ChiseError error) => error switch
     {
         InvalidUnicodeCodepoint    => MakePath("invalid_unicode_codepoint.tsv"),
@@ -41,8 +42,9 @@ internal readonly ref struct LogFilePaths
         InsufficientIdsOps         => MakePath("insufficient_line_elements.tsv"),
         InsufficientAltIdsArgs     => MakePath("excessive_line_elements.tsv"),
         InsufficientAltIdsOps      => MakePath("alt_sequence_format_error.tsv"),
-        _ => throw new ArgumentOutOfRangeException(nameof(error))
+        _                          => throw new ArgumentOutOfRangeException(nameof(error))
     };
+    #pragma warning restore format
 
     private ReadOnlySpan<char> MakePath(ReadOnlySpan<char> filename)
         => Path.Join(Directory, filename);

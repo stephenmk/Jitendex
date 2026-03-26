@@ -43,8 +43,7 @@ internal sealed class LookupTable<T> : Table<T> where T : ILookupElement
         lookup.Text,
     ];
 
-#pragma warning disable format
-
+    #pragma warning disable format
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
         nameof(VariantTypeElement)            => nameof(VariantType),
@@ -59,6 +58,5 @@ internal sealed class LookupTable<T> : Table<T> where T : ILookupElement
         nameof(StrokeTypeElement)             => nameof(StrokeType),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
-
-#pragma warning restore format
+    #pragma warning restore format
 }

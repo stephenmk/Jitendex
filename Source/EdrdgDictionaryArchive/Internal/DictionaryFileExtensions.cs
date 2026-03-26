@@ -22,6 +22,7 @@ namespace Jitendex.EdrdgDictionaryArchive.Internal;
 
 internal static class DictionaryFileExtensions
 {
+    #pragma warning disable format
     public static string ToFileName(this DictionaryFile file)
         => file switch
         {
@@ -33,6 +34,7 @@ internal static class DictionaryFileExtensions
             examples       => "examples.utf",
             _              => throw new ArgumentOutOfRangeException(nameof(file))
         };
+    #pragma warning restore format
 
     public static string ToDirectoryName(this DictionaryFile file)
         => file.ToFileName().Replace('.', '_');

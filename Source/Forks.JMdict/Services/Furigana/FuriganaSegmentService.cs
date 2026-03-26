@@ -116,12 +116,14 @@ internal partial class FuriganaSegmentService
         {
             foreach (var r in character.DerivedReadings)
             {
+                #pragma warning disable format
                 var id = r.TypeId switch
                 {
                     Chinese => service.AddHanziReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
                     Korean  => service.AddHanjaReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
                     _   => service.AddCharacterReading(character.Rune, r.Text, r.IsPrefix, r.IsSuffix),
                 };
+                #pragma warning restore format
                 idToKey[id] = new CharacterReadingKey(r.ReadingId, r.Text, r.TypeId);
             }
         }

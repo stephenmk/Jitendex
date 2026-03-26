@@ -78,8 +78,9 @@ internal sealed class KnownCharacterAlgorithm(IReadOnlyKnowledge knowledge)
     private Dictionary<string, int[]> GetReadingTexts(EntryType entryType, in TextSlice textSlice)
     {
         var rune = textSlice.Runes[0];
-
         var characterReadings = knowledge.GetCharacterReadings(rune);
+
+        #pragma warning disable format
         var specialReadings = entryType switch
         {
             EntryType.Regular => [],
@@ -88,6 +89,7 @@ internal sealed class KnownCharacterAlgorithm(IReadOnlyKnowledge knowledge)
             EntryType.Korean  => knowledge.GetHanjaReadings(rune),
             _                 => throw new ArgumentOutOfRangeException()
         };
+        #pragma warning restore format
 
         int readingCount = characterReadings.Count + specialReadings.Count;
 

@@ -55,14 +55,11 @@ public abstract class SqliteContext : DbContext
     {
         using var command = Database.GetDbConnection().CreateCommand();
         command.CommandText = "SELECT last_insert_rowid();";
-        if (command.ExecuteScalar() is long rowId)
-        {
-            return rowId;
-        }
-        else
+        if (command.ExecuteScalar() is not long rowId)
         {
             throw new InvalidOperationException();
         }
+        return rowId;
     }
 
     /// <summary>

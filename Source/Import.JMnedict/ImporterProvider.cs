@@ -34,11 +34,24 @@ internal static class ImporterProvider
     public static Importer<DateOnly, Document, DocumentDiff> GetImporter(DirectoryInfo? archiveDirectory)
         => new ServiceCollection()
 
+        // Logging
+        .AddLogging(static builder =>
+            builder.AddSimpleConsole(static options =>
+            {
+                options.IncludeScopes = true;
+                options.SingleLine = false;
+                options.TimestampFormat = "HH:mm:ss ";
+            }))
+
         // Database context.
         .AddDbContext<JMnedictContext>()
 
         // Import interfaces
-        .AddEdrdgArchiveService(DictionaryFile.JMnedict, archiveDirectory)
+        .AddEdrdgArchiveService(options =>
+        {
+            options.File = DictionaryFile.JMnedict;
+            options.ArchiveDirectory = archiveDirectory;
+        })
         .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
         .AddTransient<IDocumentDiffer<DateOnly, Document, DocumentDiff>, DocumentDiffer>()
         .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, DocumentDatabase>()
@@ -65,15 +78,6 @@ internal static class ImporterProvider
         .AddTransient<CrossReferenceReader>()
         .AddTransient<DetailReader>()
         .AddTransient<NameTypeReader>()
-
-        // Logging
-        .AddLogging(static builder =>
-            builder.AddSimpleConsole(static options =>
-            {
-                options.IncludeScopes = true;
-                options.SingleLine = false;
-                options.TimestampFormat = "HH:mm:ss ";
-            }))
 
         // Build and return the importer service.
         .AddTransient<Importer<DateOnly, Document, DocumentDiff>>()

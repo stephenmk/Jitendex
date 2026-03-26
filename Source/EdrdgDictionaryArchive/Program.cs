@@ -90,7 +90,6 @@ public static class Program
 
     private static IFileArchive<DateOnly> GetService(DictionaryFile filename, DirectoryInfo? archiveDirectory)
         => new ServiceCollection()
-            .AddEdrdgArchiveService(filename, archiveDirectory)
             .AddLogging(static builder =>
                 builder.AddSimpleConsole(static options =>
                 {
@@ -98,6 +97,11 @@ public static class Program
                     options.SingleLine = true;
                     options.TimestampFormat = "HH:mm:ss ";
                 }))
+            .AddEdrdgArchiveService(options =>
+            {
+                options.File = filename;
+                options.ArchiveDirectory = archiveDirectory;
+            })
             .BuildServiceProvider()
             .GetRequiredService<IFileArchive<DateOnly>>();
 }

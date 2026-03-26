@@ -29,15 +29,6 @@ internal static class ImporterProvider
     public static Importer<DateOnly, Document, DocumentDiff> GetImporter(DirectoryInfo? archiveDirectory)
         => new ServiceCollection()
 
-        // Database context.
-        .AddDbContext<TatoebaContext>()
-
-        // Import interfaces.
-        .AddEdrdgArchiveService(DictionaryFile.examples, archiveDirectory)
-        .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
-        .AddTransient<IDocumentDiffer<DateOnly, Document, DocumentDiff>, DocumentDiffer>()
-        .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, DocumentDatabase>()
-
         .AddLogging(static builder =>
             builder.AddSimpleConsole(options =>
             {
@@ -45,6 +36,19 @@ internal static class ImporterProvider
                 options.SingleLine = false;
                 options.TimestampFormat = "HH:mm:ss ";
             }))
+
+        // Database context.
+        .AddDbContext<TatoebaContext>()
+
+        // Import interfaces.
+        .AddEdrdgArchiveService(options =>
+        {
+            options.File = DictionaryFile.examples;
+            options.ArchiveDirectory = archiveDirectory;
+        })
+        .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
+        .AddTransient<IDocumentDiffer<DateOnly, Document, DocumentDiff>, DocumentDiffer>()
+        .AddTransient<IDocumentDatabase<DateOnly, Document, DocumentDiff>, DocumentDatabase>()
 
         .AddTransient<Importer<DateOnly, Document, DocumentDiff>>()
         .BuildServiceProvider()

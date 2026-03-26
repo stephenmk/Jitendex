@@ -27,10 +27,10 @@ internal sealed record FileRequest
     public DictionaryFile File { get; init; }
     public DirectoryInfo ArchiveDirectory { get; init; }
 
-    public FileRequest(DateOnly date, EdrdgArchiveServiceOptions options)
+    public FileRequest(DateOnly date, DictionaryFile file, DirectoryInfo? archiveDirectory)
     {
         Date = date;
-        File = options.File;
-        ArchiveDirectory = options.ArchiveDirectory ?? DataDirectory.Get(EdrdgArchiveDirectory);
+        File = file;
+        ArchiveDirectory = archiveDirectory ?? DataDirectory.Get(EdrdgArchiveDirectory);
     }
 }

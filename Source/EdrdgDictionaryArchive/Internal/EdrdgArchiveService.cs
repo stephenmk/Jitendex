@@ -20,17 +20,22 @@ using Jitendex.Import;
 
 namespace Jitendex.EdrdgDictionaryArchive.Internal;
 
-internal sealed class EdrdgArchiveService(EdrdgArchiveServiceOptions options, FileBuilder builder) : IFileArchive<DateOnly>
+internal sealed class EdrdgArchiveService
+(
+    DictionaryFile file,
+    DirectoryInfo? archiveDirectory,
+    FileBuilder builder
+) : IFileArchive<DateOnly>
 {
     public FileInfo? GetFile(DateOnly date)
-        => builder.GetFile(new(date, options));
+        => builder.GetFile(new(date, file, archiveDirectory));
 
     public (FileInfo, DateOnly)? GetNextFile(DateOnly previousDate)
-        => builder.GetNextFile(new(previousDate, options));
+        => builder.GetNextFile(new(previousDate, file, archiveDirectory));
 
     public (FileInfo, DateOnly)? GetEarliestFile()
-        => builder.GetEarliestFile(new(default, options));
+        => builder.GetEarliestFile(new(default, file, archiveDirectory));
 
     public (FileInfo, DateOnly)? GetLatestFile()
-        => builder.GetLatestFile(new(default, options));
+        => builder.GetLatestFile(new(default, file, archiveDirectory));
 }

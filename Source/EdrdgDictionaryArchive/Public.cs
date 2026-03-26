@@ -22,15 +22,36 @@ using Jitendex.EdrdgDictionaryArchive.Internal;
 
 namespace Jitendex.EdrdgDictionaryArchive;
 
+public sealed class EdrdgArchiveServiceOptions
+{
+    public DictionaryFile File { get; set; }
+    public DirectoryInfo? ArchiveDirectory { get; set; }
+}
+
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddEdrdgArchiveService(this IServiceCollection services, DictionaryFile file, DirectoryInfo? archiveDirectory)
-        => services
-            .AddTransient<EdrdgArchiveServiceOptions>(_ => new(file, archiveDirectory))
-            .AddTransient<IFileArchive<DateOnly>, EdrdgArchiveService>()
-            .AddTransient<FileBuilder>()
-            .AddTransient<FileArchive>()
-            .AddTransient<FileCache>();
+    public static IServiceCollection AddEdrdgArchiveService(this IServiceCollection services, Action<EdrdgArchiveServiceOptions> configure)
+    {
+        var options = new EdrdgArchiveServiceOptions();
+        configure(options);
+
+        services.AddTransient<FileBuilder>();
+        services.AddTransient<FileArchive>();
+        services.AddTransient<FileCache>();
+
+        services.AddTransient<IFileArchive<DateOnly>>(provider =>
+        {
+            var builder = provider.GetRequiredService<FileBuilder>();
+            return new EdrdgArchiveService
+            (
+                file: options.File,
+                archiveDirectory: options.ArchiveDirectory,
+                builder: builder
+            );
+        });
+
+        return services;
+    }
 }
 
 public enum DictionaryFile : byte

@@ -52,20 +52,26 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
             : null;
     }
 
-    private sealed record BuildBase(FileInfo File, DateOnly Date, IReadOnlyList<Patch> Patches);
+    private readonly ref struct BuildBase
+    {
+        public readonly FileInfo File { get; init; }
+        public readonly DateOnly Date { get; init; }
+        public readonly ReadOnlySpan<Patch> Patches { get; init; }
+    }
 
     private FileInfo? BuildFile(FileRequest request)
     {
-        if (GetBuildBase(request) is not BuildBase buildBase)
+        var buildBase = GetBuildBase(request);
+        if (buildBase.File is null)
         {
             return null;
         }
-        else if (buildBase.Patches is [])
+        else if (buildBase.Patches.IsEmpty)
         {
             return buildBase.File;
         }
 
-        int length = buildBase.File.Length();
+        var length = buildBase.File.Length();
         Span<char> @patchBuffer = new char[length / 10];
         Span<char> originBuffer = new char[length * 3 / 2];
         Span<char> outputBuffer = new char[length * 3 / 2];
@@ -95,7 +101,7 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
         return builtFile;
     }
 
-    private BuildBase? GetBuildBase(FileRequest request)
+    private BuildBase GetBuildBase(FileRequest request)
     {
         FileInfo? baseFile = null;
         DateOnly? baseDate = null;
@@ -109,17 +115,18 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
         if (baseDate.HasValue && baseDate.Value.Equals(request.Date))
         {
             return baseFile is not null
-                ? new(baseFile, baseDate.Value, [])
-                : null;
+                ? new() { File = baseFile, Date = baseDate.Value, Patches = [] }
+                : default;
         }
 
         var allPatches = archive.GetPatches(request);
         if (allPatches.Count == 0)
         {
-            return null;
+            return default;
         }
 
-        List<Patch> patches = new(allPatches.Count);
+        var patches = new Patch[allPatches.Count];
+        int i = 0;
 
         foreach (var patch in allPatches)
         {
@@ -128,16 +135,16 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
             {
                 baseFile = cachedFile;
                 baseDate = patch.Date;
-                patches.Clear();
+                i = 0;
             }
             else
             {
-                patches.Add(patch);
+                patches[i++] = patch;
             }
         }
 
         return baseFile is not null && baseDate.HasValue
-            ? new(baseFile, baseDate.Value, patches)
-            : null;
+            ? new() { File = baseFile, Date = baseDate.Value, Patches = patches.AsSpan(..i) }
+            : default;
     }
 }

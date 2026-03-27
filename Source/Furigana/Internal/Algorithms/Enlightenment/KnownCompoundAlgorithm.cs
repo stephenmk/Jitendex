@@ -92,6 +92,6 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
             partsLists[i++] = ImmutableArray.Create(partsList);
         }
 
-        return ImmutableArray.Create(partsLists.AsSpan(0, i));
+        return ImmutableArray.Create(partsLists.AsSpan(..i));
     }
 }

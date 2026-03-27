@@ -38,7 +38,7 @@ internal sealed class IterationSolver(ImmutableArray<IAlgorithm> algorithms)
             }
         }
 
-        return validSolutions.AsSpan(0, i);
+        return validSolutions.AsSpan(..i);
     }
 
     private List<SolutionBuilder> FindPossibleSolutions(in Entry entry)

@@ -39,7 +39,7 @@ internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
         }
 
         int halfLength = reading.Length / 2;
-        var reading1 = reading.AsSpan(0, halfLength);
+        var reading1 = reading.AsSpan(..halfLength);
         var reading2 = reading.AsSpan(halfLength, halfLength);
 
         if (!IsValidReadingPair(reading1, reading2))

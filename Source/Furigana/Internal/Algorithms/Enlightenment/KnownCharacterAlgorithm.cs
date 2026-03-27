@@ -68,7 +68,7 @@ internal sealed class KnownCharacterAlgorithm(IReadOnlyKnowledge knowledge)
                 invalidKeys[i++] = key;
             }
         }
-        foreach (var key in invalidKeys.AsSpan(0, i))
+        foreach (var key in invalidKeys.AsSpan(..i))
         {
             texts.Remove(key);
         }

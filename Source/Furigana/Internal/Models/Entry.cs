@@ -73,6 +73,6 @@ internal readonly ref struct Entry
         {
             runes[runeCount++] = rune;
         }
-        return runes.AsSpan(0, runeCount);
+        return runes.AsSpan(..runeCount);
     }
 }

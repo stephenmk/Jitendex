@@ -53,7 +53,7 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
         (
             year: int.Parse(yearDir.Name),
             month: int.Parse(monthDir.Name),
-            day: int.Parse(patchFile.Name.AsSpan(0, 2))
+            day: int.Parse(patchFile.Name.AsSpan(..2))
         );
     }
 
@@ -76,7 +76,7 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
                 }
                 foreach (var patchFile in monthDir.GetSortedFiles())
                 {
-                    int day = int.Parse(patchFile.Name.AsSpan(0, 2));
+                    int day = int.Parse(patchFile.Name.AsSpan(..2));
                     var date = new DateOnly(year, month, day);
                     if (request.Date < date)
                     {
@@ -100,7 +100,7 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
                 int month = int.Parse(monthDir.Name);
                 foreach (var patchFile in monthDir.GetSortedFiles())
                 {
-                    int day = int.Parse(patchFile.Name.AsSpan(0, 2));
+                    int day = int.Parse(patchFile.Name.AsSpan(..2));
                     var patchDate = new DateOnly(year, month, day);
                     var patchPath = GetPatchPath(patchesDirectory, patchDate);
                     patches.Add(new(patchDate, patchPath));

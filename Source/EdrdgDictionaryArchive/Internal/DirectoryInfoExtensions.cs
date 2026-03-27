@@ -24,5 +24,5 @@ internal static class DirectoryInfoExtensions
         => dInfo.GetDirectories().OrderBy(static d => int.Parse(d.Name));
 
     public static IOrderedEnumerable<FileInfo> GetSortedFiles(this DirectoryInfo dInfo)
-        => dInfo.GetFiles().OrderBy(static d => int.Parse(d.Name.AsSpan(0, 2)));
+        => dInfo.GetFiles().OrderBy(static d => int.Parse(d.Name.AsSpan(..2)));
 }

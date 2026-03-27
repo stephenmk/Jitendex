@@ -42,7 +42,7 @@ internal sealed class ExampleFuriganaService
         while (await reader.ReadLineAsync() is string line)
         {
             int i = line.IndexOf(',');
-            int exampleId = int.Parse(line.AsSpan(0, i));
+            int exampleId = int.Parse(line.AsSpan(..i));
             exampleRows.Add(new(exampleId));
             furiganaRows.AddRange(ParseLine(exampleId, line.AsSpan(i + 1)));
         }

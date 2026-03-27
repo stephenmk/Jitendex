@@ -246,7 +246,7 @@ internal partial class CrossReferenceService
             LogBizarreReference(xref.CacheKey);
         }
 
-        return ImmutableArray.Create(validEntries.AsSpan(0, count));
+        return ImmutableArray.Create(validEntries.AsSpan(..count));
     }
 
     private IReadOnlyDictionary<ReferenceText, ImmutableArray<EntryData>> GetReferenceTextToEntries()

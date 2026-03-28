@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
+using Jitendex.Dto.JMdict;
 using Jitendex.Import.JMdict.Models;
 using Jitendex.Import.JMdict.Tables;
 using Jitendex.Import.JMdict.Tables.EntryElements;
@@ -221,9 +222,11 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         {
             if (aSequences.TryGetValue(seq.Id, out var aSeq))
             {
-                var bSeq = bSequences[seq.Id];
-                var baDiff = JsonDiffer.Diff(a: bSeq, b: aSeq);
-                revisions.Add(new(
+                var nodeA = aSeq.ToJsonNode();
+                var nodeB = bSequences[seq.Id].ToJsonNode();
+                var baDiff = JsonDiffer.Diff(a: nodeB, b: nodeA);
+                revisions.Add(new
+                (
                     SequenceId: seq.Id,
                     FileHeaderId: fileHeaderId,
                     DiffJson: baDiff

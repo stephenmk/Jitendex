@@ -25,7 +25,7 @@ using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 
 namespace Jitendex.Data.JMdict.Mappers;
 
-public static class DtoExtensions
+public static class DtoEntityExtensions
 {
     public static Entry ToEntry(this EntryDto entry, int id)
         => new()

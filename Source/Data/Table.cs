@@ -64,17 +64,13 @@ public abstract class Table<T>
         ({string.Join(',', ParameterNames.AsSpan(..ColumnNames.Length))})
         ON CONFLICT({string.Join(",", KeyColNames.Select(static name => $"\"{name}\""))})
         DO UPDATE SET
-        {string.Join(',', updateColNames.Select(static name => $"\"{name}\" = excluded.\"{name}\""))};
+        {string.Join(",\n", updateColNames.Select(static name => $"\"{name}\" = excluded.\"{name}\""))};
         """;
 
-    /// <remarks>
-    /// The key columns must necessarily be the first columns in the table for this to work.
-    /// Cannot add all columns to the WHERE clause here because some non-key values may be NULL.
-    /// </remarks>
     private string DeleteCommandText =>
         $"""
         DELETE FROM "{Name}"
-        WHERE {string.Join(" AND ", KeyColNames.Select(static (name, idx) => $"\"{name}\" = {ParameterNames[idx]}"))};
+        WHERE {string.Join("\nAND ", ColumnNames.Select(static (name, idx) => $"\"{name}\" IS {ParameterNames[idx]}"))};
         """;
 
     public void InsertItem(SqliteContext db, T item)

@@ -32,8 +32,6 @@ internal sealed class Service
     CrossReferenceDataService crossReferenceDataService,
     UserService userService,
     JMdictPatchService jmdictPatchService,
-    JMdictPatchApprovalService jmdictPatchApprovalService,
-    JMdictPatchRecallService jMdictPatchRecallService,
     ExampleFuriganaService exampleFuriganaService,
     GraphicService graphicService
 )
@@ -50,9 +48,6 @@ internal sealed class Service
 
         await userService.ImportAsync();
         await jmdictPatchService.ImportAsync();
-        await jmdictPatchApprovalService.ImportAsync();
-        await jMdictPatchRecallService.ImportAsync();
-
         await exampleFuriganaService.ImportAsync();
         await graphicService.ImportAsync();
 
@@ -68,9 +63,6 @@ internal sealed class Service
 
         await userService.ExportAsync();
         await jmdictPatchService.ExportAsync();
-        await jmdictPatchApprovalService.ExportAsync();
-        await jMdictPatchRecallService.ExportAsync();
-
         await exampleFuriganaService.ExportAsync();
         await graphicService.ExportAsync();
     }

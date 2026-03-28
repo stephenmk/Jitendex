@@ -28,7 +28,9 @@ internal sealed class JMdictPatchService
 (
     HomeContext context,
     ServiceOptions options,
-    JMdictPatchTable table
+    JMdictPatchTable patchTable,
+    JMdictPatchApprovalTable approvalTable,
+    JMdictPatchRecallTable recallTable
 )
 {
     public async Task ImportAsync()
@@ -51,11 +53,13 @@ internal sealed class JMdictPatchService
         await using var stream = File.OpenRead(metadataPath);
         var metadataDictionary = await JsonSerializer.DeserializeAsync<Dictionary<int, PatchMetadata>>(stream) ?? [];
 
-        var rows = new List<JMdictPatchRow>();
+        var patchRows = new List<JMdictPatchRow>();
+        var approvalRows = new List<JMdictPatchApprovalRow>();
+        var recallRows = new List<JMdictPatchRecallRow>();
 
         foreach (var (patchId, metadata) in metadataDictionary)
         {
-            rows.Add(new
+            patchRows.Add(new
             (
                 Id: patchId,
                 metadata.SequenceId,
@@ -66,9 +70,19 @@ internal sealed class JMdictPatchService
                 metadata.PreviousPatchId,
                 Json: patches[patchId]
             ));
+            foreach (var approval in metadata.Approvals)
+            {
+                approvalRows.Add(new(patchId, approval.ApproverId, approval.CreatedAt));
+            }
+            foreach (var recall in metadata.Recalls)
+            {
+                recallRows.Add(new(patchId, recall.RecallerId, recall.CreatedAt));
+            }
         }
 
-        table.InsertItems(context, rows);
+        patchTable.InsertItems(context, patchRows);
+        approvalTable.InsertItems(context, approvalRows);
+        recallTable.InsertItems(context, recallRows);
     }
 
     public async Task ExportAsync()
@@ -91,7 +105,15 @@ internal sealed class JMdictPatchService
                     x.CreatedAt,
                     x.AuthorId,
                     x.AuthorComment,
-                    x.PreviousPatchId
+                    x.PreviousPatchId,
+                    Approvals: x.Approvals
+                        .OrderBy(static a => a.CreatedAt)
+                        .Select(static a => new ApprovalData(a.ApproverId, a.CreatedAt))
+                        .ToArray(),
+                    Recalls: x.Recalls
+                        .OrderBy(static r => r.CreatedAt)
+                        .Select(static r => new RecallData(r.RecallerId, r.CreatedAt))
+                        .ToArray()
                 )
             })
             .ToDictionary(static x => x.Key, static x => x.Value);
@@ -156,6 +178,20 @@ internal sealed class JMdictPatchService
         DateTime CreatedAt,
         int AuthorId,
         string AuthorComment,
-        int? PreviousPatchId
+        int? PreviousPatchId,
+        ApprovalData[] Approvals,
+        RecallData[] Recalls
+    );
+
+    private readonly record struct ApprovalData
+    (
+        int ApproverId,
+        DateTime CreatedAt
+    );
+
+    private readonly record struct RecallData
+    (
+        int RecallerId,
+        DateTime CreatedAt
     );
 }

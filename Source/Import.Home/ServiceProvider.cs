@@ -65,8 +65,6 @@ internal static class ServiceProvider
         .AddTransient<CrossReferenceDataService>()
         .AddTransient<UserService>()
         .AddTransient<JMdictPatchService>()
-        .AddTransient<JMdictPatchApprovalService>()
-        .AddTransient<JMdictPatchRecallService>()
         .AddTransient<ExampleFuriganaService>()
         .AddTransient<GraphicService>()
 

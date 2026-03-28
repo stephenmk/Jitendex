@@ -97,12 +97,7 @@ internal sealed class JMdictPatchService
             .ToDictionary(static x => x.Key, static x => x.Value);
 
         var metadataPath = GetMetadataFilePath();
-        if (File.Exists(metadataPath))
-        {
-            File.Delete(metadataPath);
-        }
-
-        await using var stream = File.OpenWrite(metadataPath);
+        await using var stream = new FileStream(metadataPath, FileMode.Create, FileAccess.Write);
         await JsonSerializer.SerializeAsync(stream, metadata, JsonSerializerOptions);
     }
 

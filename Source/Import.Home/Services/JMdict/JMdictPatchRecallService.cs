@@ -66,12 +66,7 @@ internal sealed class JMdictPatchRecallService
             .ToDictionary(static x => x.Key, static x => x.Value);
 
         var filepath = GetFilePath();
-        if (File.Exists(filepath))
-        {
-            File.Delete(filepath);
-        }
-
-        await using var stream = File.OpenWrite(filepath);
+        await using var stream = new FileStream(filepath, FileMode.Create, FileAccess.Write);
         await JsonSerializer.SerializeAsync(stream, data, JsonSerializerOptions);
     }
 

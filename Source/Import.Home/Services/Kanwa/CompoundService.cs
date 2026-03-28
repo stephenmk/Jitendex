@@ -84,12 +84,7 @@ internal sealed class CompoundService
             );
 
         var filePath = GetJsonFilePath();
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-
-        await using var stream = File.OpenWrite(filePath);
+        await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
         await JsonSerializer.SerializeAsync(stream, dictionary, WriteOptions);
     }
 

@@ -109,16 +109,6 @@ internal sealed class ExampleFuriganaService
 
     public async Task ExportAsync()
     {
-        var filePath = GetCsvFilePath();
-
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-
-        await using var stream = File.OpenWrite(filePath);
-        using var writer = new StreamWriter(stream);
-
         var query = context.Examples
             .OrderBy(static e => e.Id)
             .Select(static e => new
@@ -128,6 +118,10 @@ internal sealed class ExampleFuriganaService
                     .OrderBy(static f => f.Order)
                     .Select(static f => new { f.BaseText, f.RubyText })
             });
+
+        var filePath = GetCsvFilePath();
+        await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+        using var writer = new StreamWriter(stream);
 
         foreach (var line in query)
         {

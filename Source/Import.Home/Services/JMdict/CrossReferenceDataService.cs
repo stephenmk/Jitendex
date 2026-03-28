@@ -70,12 +70,7 @@ internal sealed class CrossReferenceDataService
             .ToDictionary(static x => x.Key, static x => x.Value);
 
         var filePath = GetJsonFilePath();
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-
-        await using var stream = File.OpenWrite(filePath);
+        await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
         await JsonSerializer.SerializeAsync(stream, dictionary, JsonSerializerOptions);
     }
 

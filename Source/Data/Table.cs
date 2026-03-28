@@ -109,7 +109,7 @@ public abstract class Table<T>
                 parameters[i].Value = values[i] ?? DBNull.Value;
             }
             int rowsAffected = command.ExecuteNonQuery();
-            if (rowsAffected != 1 && checkRows)
+            if (rowsAffected is not 1 && checkRows)
             {
                 throw new InvalidOperationException($"{rowsAffected} rows affected (expected 1)");
             }

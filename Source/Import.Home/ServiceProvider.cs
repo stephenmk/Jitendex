@@ -20,9 +20,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Services;
+using Jitendex.Import.Home.Services.Graphics;
 using Jitendex.Import.Home.Services.Kanwa;
 using Jitendex.Import.Home.Services.JMdict;
 using Jitendex.Import.Home.Services.Tatoeba;
+using Jitendex.Import.Home.Tables.Graphics;
 using Jitendex.Import.Home.Tables.Kanwa;
 using Jitendex.Import.Home.Tables.JMdict;
 using Jitendex.Import.Home.Tables.Tatoeba;
@@ -53,6 +55,9 @@ internal static class ServiceProvider
         .AddTransient<JMdictPatchRecallTable>()
         .AddTransient<ExampleTable>()
         .AddTransient<ExampleFuriganaTable>()
+        .AddTransient<GraphicTable>()
+        .AddTransient<SenseGraphicTable>()
+        .AddTransient<GraphicLicenseTable>()
 
         // Import services.
         .AddTransient<CharacterService>()
@@ -63,6 +68,7 @@ internal static class ServiceProvider
         .AddTransient<JMdictPatchApprovalService>()
         .AddTransient<JMdictPatchRecallService>()
         .AddTransient<ExampleFuriganaService>()
+        .AddTransient<GraphicService>()
 
         // Logging
         .AddLogging(static builder =>

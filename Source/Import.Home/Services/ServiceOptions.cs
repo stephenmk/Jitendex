@@ -43,4 +43,7 @@ internal sealed record ServiceOptions
 
     public DirectoryInfo GetTatoebaDirectory()
         => DataDirectory.CreateSubdirectory("tatoeba");
+
+    public DirectoryInfo GetGraphicDirectory()
+        => DataDirectory.CreateSubdirectory("graphics");
 }

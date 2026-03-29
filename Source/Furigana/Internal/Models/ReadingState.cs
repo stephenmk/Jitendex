@@ -35,11 +35,11 @@ internal readonly ref struct ReadingState
         FullText = entry.Reading;
         PriorText = FullText[..readingIndex];
         RemainingText = FullText[readingIndex..];
-        FirstRemainingChar = RemainingText.Length > 0 ? RemainingText[0] : default;
+        FirstRemainingChar = RemainingText.IsEmpty ? default : RemainingText[0];
 
         FullTextNormalized = entry.NormalizedReading;
         PriorTextNormalized = FullTextNormalized[..readingIndex];
         RemainingTextNormalized = FullTextNormalized[readingIndex..];
-        FirstRemainingNormalizedChar = RemainingTextNormalized.Length > 0 ? RemainingTextNormalized[0] : default;
+        FirstRemainingNormalizedChar = RemainingTextNormalized.IsEmpty ? default : RemainingTextNormalized[0];
     }
 }

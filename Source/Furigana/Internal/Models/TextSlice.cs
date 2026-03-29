@@ -42,8 +42,8 @@ internal readonly ref struct TextSlice
 
         RawRunes = entry.TextRunes[sliceStart..sliceEnd];
 
-        PreviousRune = PriorRunes.Length > 0 ? PriorRunes[^1] : default;
-        NextRune = RemainingRunes.Length > 0 ? RemainingRunes[0] : default;
+        PreviousRune = PriorRunes.IsEmpty ? default : PriorRunes[^1];
+        NextRune = RemainingRunes.IsEmpty ? default : RemainingRunes[0];
 
         ContainsFirstRune = sliceStart == 0;
         ContainsFinalRune = sliceEnd == entry.TextRunes.Length;

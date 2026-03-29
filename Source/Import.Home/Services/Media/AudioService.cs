@@ -16,10 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.Collections.Frozen;
-using System.Text.Json;
 using Jitendex.Data.Home;
-using Jitendex.Data.Home.Entities.Media;
 using Jitendex.Import.Home.Models;
 using Jitendex.Import.Home.Tables.Media;
 

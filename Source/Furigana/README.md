@@ -88,6 +88,18 @@ That project served as an invaluable source of ideas, but all of the code borrow
     </td>
   </tr>
   <tr>
+    <th>Analysis Features</th>
+    <td>
+      Outputs only the furigana segmentation data for a given problem.
+    </td>
+    <td>
+      Provided that しょう is a reading for the character 象 in the word <ruby>具<rt>ぐ</rt></ruby><ruby>象<rt>しょう</rt></ruby>,
+      we might be interested to know which other vocabulary words contain this reading of this character.
+      For tracking purposes, <b>Jitendex.Furigana</b> assigns an ID to every input character reading. The relevant
+      tracking IDs are returned with the solutions.
+    </td>
+  </tr>
+  <tr>
     <th>Unicode Support</th>
     <td>
       Some Japanese characters are represented in Unicode using two
@@ -127,6 +139,9 @@ That project served as an invaluable source of ideas, but all of the code borrow
       <a href="https://github.com/stephenmk/Jitendex/tree/dotnet/Jitendex.Furigana.Test/ServiceTests">
         extensive set of tests</a>
       to ensure the algorithm is working as intended.
+      <br/><br/>
+      Because every known reading is assigned a tracking ID (see <i>Analysis Features</i> above),
+      potentially misparsed solutions are easily identifiable.
     </td>
   </tr>
 </table>

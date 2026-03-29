@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
 internal sealed class SingleCharacterAlgorithm : CharacterAlgorithm
 {
-    public override ImmutableArray<ImmutableArray<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
+    public override ImmutableArray<ImmutableArray<SolutionPart>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         var readings = DefaultSingleCharacterReadings(textSlice, readingState);
 
@@ -34,7 +34,7 @@ internal sealed class SingleCharacterAlgorithm : CharacterAlgorithm
         }
 
         var baseText = textSlice.RawRunes.FastToString();
-        var partsBuilder = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(readings.Length);
+        var partsBuilder = ImmutableArray.CreateBuilder<ImmutableArray<SolutionPart>>(readings.Length);
         foreach (var reading in readings)
         {
             var rubyText = baseText.IsKanaEquivalent(reading)

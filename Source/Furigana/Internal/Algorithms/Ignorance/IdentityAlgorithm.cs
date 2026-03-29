@@ -31,7 +31,7 @@ namespace Jitendex.Furigana.Internal.Algorithms.Ignorance;
 /// </remarks>
 internal sealed class IdentityAlgorithm : CharacterAlgorithm
 {
-    public override ImmutableArray<ImmutableArray<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
+    public override ImmutableArray<ImmutableArray<SolutionPart>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         if (!textSlice.RawRunes.AreAllKana())
         {
@@ -53,7 +53,7 @@ internal sealed class IdentityAlgorithm : CharacterAlgorithm
         if (readingState.RemainingTextNormalized.StartsWith(normalizedText, StringComparison.Ordinal))
         {
             var baseText = textSlice.RawRunes.FastToString();
-            return [[new Solution.Part(baseText, null)]];
+            return [[new SolutionPart(baseText, null)]];
         }
 
         return [];

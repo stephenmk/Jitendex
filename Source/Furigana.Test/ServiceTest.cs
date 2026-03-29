@@ -84,12 +84,29 @@ public class ServiceTest
 
         var entry = new Entry(text, reading, EntryType.Regular);
         var expectedSolution = TextSolution.Parse(expectedSolutionText, entry);
-        Assert.AreEqual(expectedSolution, solution);
+
+        AssertSolutionsAreEqual(expectedSolution, solution);
     }
 
     private void TestSingleUnsolvable(string text, string reading)
     {
         var solution = Service.Solve(text, reading);
         Assert.IsNull(solution, $"\n\n{text}【{reading}】\n");
+    }
+
+    protected static void AssertSolutionsAreEqual(Solution expected, Solution actual)
+    {
+        Assert.AreEqual(expected.Text, actual.Text);
+        Assert.AreEqual(expected.Reading, actual.Reading);
+        CollectionAssert.AreEqual
+        (
+            expected.Parts.Select(static p => p.BaseText).ToArray(),
+            actual.Parts.Select(static p => p.BaseText).ToArray()
+        );
+        CollectionAssert.AreEqual
+        (
+            expected.Parts.Select(static p => p.RubyText).ToArray(),
+            actual.Parts.Select(static p => p.RubyText).ToArray()
+        );
     }
 }

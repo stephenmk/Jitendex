@@ -20,28 +20,14 @@ using System.Collections.Immutable;
 
 namespace Jitendex.Furigana;
 
-public sealed class Solution
+public sealed record Solution
+(
+    string Text,
+    string Reading,
+    ImmutableArray<SolutionPart> Parts
+);
+
+public sealed record SolutionPart(string BaseText, string? RubyText)
 {
-    public required string Text { get; init; }
-    public required string Reading { get; init; }
-    public required ImmutableArray<Part> Parts { get; init; }
-
-    public override bool Equals(object? obj)
-        => obj is Solution sln
-        && string.Equals(Text, sln.Text, StringComparison.Ordinal)
-        && string.Equals(Reading, sln.Reading, StringComparison.Ordinal)
-        && Parts.Length == sln.Parts.Length
-        && Parts.Select(static p => p.BaseText).SequenceEqual(sln.Parts.Select(static p => p.BaseText))
-        && Parts.Select(static p => p.RubyText).SequenceEqual(sln.Parts.Select(static p => p.RubyText));
-
-    public override int GetHashCode() => Parts.Aggregate
-    (
-        seed: HashCode.Combine(Text, Reading),
-        func: static (hashcode, part) => HashCode.Combine(hashcode, part.BaseText, part.RubyText)
-    );
-
-    public sealed record Part(string BaseText, string? RubyText)
-    {
-        public ImmutableArray<int> ReadingIds { get; init; } = [];
-    }
+    public ImmutableArray<int> ReadingIds { get; init; } = [];
 }

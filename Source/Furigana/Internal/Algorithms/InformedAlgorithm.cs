@@ -29,7 +29,7 @@ internal sealed class InformedAlgorithm
 ) : IAlgorithm
 {
     #pragma warning disable format
-    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<SolutionPart>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
         => textSlice.Runes switch
         {
             { Length: 1 } => character.Solve(entryType, textSlice, readingState),

@@ -31,7 +31,7 @@ internal sealed class IgnorantAlgorithm
 ) : IAlgorithm
 {
     #pragma warning disable format
-    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType _, in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<SolutionPart>> Solve(EntryType _, in TextSlice textSlice, in ReadingState readingState)
         => textSlice.Runes switch
         {
             { Length: 1 } => SolveOneRuneLengthText(textSlice, readingState),
@@ -40,15 +40,15 @@ internal sealed class IgnorantAlgorithm
         };
     #pragma warning restore format
 
-    private ImmutableArray<ImmutableArray<Solution.Part>> SolveOneRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+    private ImmutableArray<ImmutableArray<SolutionPart>> SolveOneRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
         => singleSolver.Solve(textSlice, readingState);
 
-    private ImmutableArray<ImmutableArray<Solution.Part>> SolveTwoRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+    private ImmutableArray<ImmutableArray<SolutionPart>> SolveTwoRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
         => repeatedSolver.Solve(textSlice, readingState) is var parts and not []
             ? parts
             : SolveAnyRuneLengthText(textSlice, readingState);
 
-    private ImmutableArray<ImmutableArray<Solution.Part>> SolveAnyRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
+    private ImmutableArray<ImmutableArray<SolutionPart>> SolveAnyRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
         => identityAlgorithm.Solve(textSlice, readingState) is var parts and not []
             ? parts
             : consecutiveSolver?.Solve(textSlice, readingState) ?? [];

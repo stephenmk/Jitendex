@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
 internal sealed class ConsecutiveKanjiAlgorithm : CharacterAlgorithm
 {
-    public override ImmutableArray<ImmutableArray<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
+    public override ImmutableArray<ImmutableArray<SolutionPart>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         if (IsImpossibleKanjiReadingFirst(readingState.FirstRemainingNormalizedChar))
         {
@@ -53,11 +53,11 @@ internal sealed class ConsecutiveKanjiAlgorithm : CharacterAlgorithm
 
         if (string.Equals(baseText, regexReading, StringComparison.Ordinal))
         {
-            return [[new Solution.Part(baseText, null)]];
+            return [[new SolutionPart(baseText, null)]];
         }
         else
         {
-            return [[new Solution.Part(baseText, regexReading)]];
+            return [[new SolutionPart(baseText, regexReading)]];
         }
     }
 }

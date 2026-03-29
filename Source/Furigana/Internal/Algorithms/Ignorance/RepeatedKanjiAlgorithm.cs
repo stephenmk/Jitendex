@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal.Algorithms.Ignorance;
 
 internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
 {
-    public override ImmutableArray<ImmutableArray<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
+    public override ImmutableArray<ImmutableArray<SolutionPart>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         if (!IsValidTextSlice(textSlice))
         {
@@ -49,8 +49,8 @@ internal sealed class RepeatedKanjiAlgorithm : CharacterAlgorithm
 
         return
         [[
-            new Solution.Part(textSlice.RawRunes[0].ToString(), new(reading1)),
-            new Solution.Part(textSlice.RawRunes[1].ToString(), new(reading2)),
+            new SolutionPart(textSlice.RawRunes[0].ToString(), new(reading1)),
+            new SolutionPart(textSlice.RawRunes[1].ToString(), new(reading2)),
         ]];
     }
 

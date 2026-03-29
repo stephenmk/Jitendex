@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal.Algorithms.Enlightenment;
 
 internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
 {
-    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<SolutionPart>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         var readings = knowledge.GetCompoundReadings(textSlice.Runes);
         if (readings.Count == 0)
@@ -33,7 +33,7 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
         }
 
         // Note: this is an array (mutable) of immutable arrays.
-        var partsLists = new ImmutableArray<Solution.Part>[readings.Count];
+        var partsLists = new ImmutableArray<SolutionPart>[readings.Count];
         int i = 0;
 
         foreach (var readingArray in readings)
@@ -63,7 +63,7 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
                     ? null
                     : new string(readingState.RemainingText[..text.Length]);
 
-                var part = new Solution.Part(baseText, furigana)
+                var part = new SolutionPart(baseText, furigana)
                 {
                     ReadingIds = [readingArray[0].Id]
                 };
@@ -73,7 +73,7 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
 
             // If the array contains multiple readings, then
             // there is one reading per surface rune.
-            var partsList = new Solution.Part[readingArray.Length];
+            var partsList = new SolutionPart[readingArray.Length];
             int start = 0;
             for (int j = 0; j < readingArray.Length; j++)
             {
@@ -84,7 +84,7 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
                 var partFurigana = partBaseText.IsKanaEquivalent(partReading)
                     ? null
                     : new string(partReading);
-                partsList[j] = new Solution.Part(partBaseText, partFurigana)
+                partsList[j] = new SolutionPart(partBaseText, partFurigana)
                 {
                     ReadingIds = [readingArray[j].Id]
                 };

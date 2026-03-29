@@ -24,7 +24,7 @@ namespace Jitendex.Furigana.Internal.Algorithms.Enlightenment;
 
 internal sealed class KnownCharacterAlgorithm(IReadOnlyKnowledge knowledge)
 {
-    public ImmutableArray<ImmutableArray<Solution.Part>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<SolutionPart>> Solve(EntryType entryType, in TextSlice textSlice, in ReadingState readingState)
     {
         var texts = GetValidReadingTexts(entryType, textSlice, readingState);
 
@@ -34,7 +34,7 @@ internal sealed class KnownCharacterAlgorithm(IReadOnlyKnowledge knowledge)
         }
 
         var baseText = textSlice.RawRunes.FastToString();
-        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<Solution.Part>>(texts.Count);
+        var partsLists = ImmutableArray.CreateBuilder<ImmutableArray<SolutionPart>>(texts.Count);
 
         foreach (var (text, readingIds) in texts)
         {
@@ -42,7 +42,7 @@ internal sealed class KnownCharacterAlgorithm(IReadOnlyKnowledge knowledge)
                 ? null
                 : new string(readingState.RemainingText[..text.Length]);
 
-            var part = new Solution.Part(baseText, furigana)
+            var part = new SolutionPart(baseText, furigana)
             {
                 ReadingIds = ImmutableArray.Create(readingIds)
             };

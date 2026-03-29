@@ -23,18 +23,18 @@ using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal;
 
-internal sealed record SolutionBuilder(ImmutableList<Solution.Part> Parts)
+internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
 {
     public int ReadingLength()
         => Parts.Sum(static part => (part.RubyText ?? part.BaseText).Length);
 
     public Solution? ToSolution(in Entry entry)
         => !IsValid(entry) ? null : new Solution
-        {
-            Text = new(entry.Text),
-            Reading = new(entry.Reading),
-            Parts = GetNormalizedParts(),
-        };
+        (
+            Text: new(entry.Text),
+            Reading: new(entry.Reading),
+            Parts: GetNormalizedParts()
+        );
 
     /// <summary>
     /// Determine if the parts contained within this builder are valid for the given entry.
@@ -59,9 +59,9 @@ internal sealed record SolutionBuilder(ImmutableList<Solution.Part> Parts)
     /// <summary>
     /// Merge consecutive parts together if they have null furigana.
     /// </summary>
-    private ImmutableArray<Solution.Part> GetNormalizedParts()
+    private ImmutableArray<SolutionPart> GetNormalizedParts()
     {
-        var parts = new List<Solution.Part>(Parts.Count);
+        var parts = new List<SolutionPart>(Parts.Count);
         var mergedTexts = new StringBuilder();
         foreach (var part in Parts)
         {

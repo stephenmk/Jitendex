@@ -50,7 +50,7 @@ public class NameKanji : ServiceTest
         var expected = GetExpectedSolution();
 
         Assert.IsNotNull(solution);
-        Assert.AreEqual(expected, solution);
+        AssertSolutionsAreEqual(expected, solution);
     }
 
     [TestMethod]
@@ -60,7 +60,7 @@ public class NameKanji : ServiceTest
         var expected = GetExpectedLazyIgnorantSolution();
 
         Assert.IsNotNull(solution);
-        Assert.AreEqual(expected, solution);
+        AssertSolutionsAreEqual(expected, solution);
     }
 
     private static Solution GetExpectedSolution()
@@ -69,7 +69,7 @@ public class NameKanji : ServiceTest
         return TextSolution.Parse(_solution, nameEntry);
     }
 
-    private static Solution? GetExpectedLazyIgnorantSolution()
+    private static Solution GetExpectedLazyIgnorantSolution()
     {
         var nameEntry = new Entry(_text, _reading, EntryType.Name);
         return TextSolution.Parse(_lazyIgnorantSolution, nameEntry);

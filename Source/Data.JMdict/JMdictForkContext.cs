@@ -22,7 +22,9 @@ using Jitendex.Data.JMdict.Entities.EntryItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.ForkEntities;
 using Jitendex.Data.JMdict.ForkEntities.Furigana;
+using Jitendex.Data.JMdict.ForkEntities.Graphics;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Jitendex.Data.JMdict.ForkEntities.Links;
 using Jitendex.Data.JMdict.ForkEntities.References;
@@ -97,6 +99,12 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<DerivedCharacterReadingType> DerivedCharacterReadingTypes { get; set; } = null!;
     #endregion
 
+    #region Graphics
+    public DbSet<Graphic> Graphics { get; set; } = null!;
+    public DbSet<GraphicLicense> GraphicLicenses { get; set; } = null!;
+    public DbSet<SenseGraphic> SenseGraphics { get; set; } = null!;
+    #endregion
+
     #region Keywords
     public DbSet<PriorityTag> PriorityTags { get; set; } = null!;
     public DbSet<ReadingInfoTag> ReadingInfoTags { get; set; } = null!;
@@ -112,4 +120,6 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<LanguageSourceType> LanguageSourceTypes { get; set; } = null!;
     public DbSet<Language> Languages { get; set; } = null!;
     #endregion
+
+    public DbSet<Patch> Patches { get; set; } = null!;
 }

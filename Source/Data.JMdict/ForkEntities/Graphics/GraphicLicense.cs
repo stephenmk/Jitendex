@@ -25,7 +25,7 @@ namespace Jitendex.Data.JMdict.ForkEntities.Graphics;
 public sealed class GraphicLicense
 {
     [Key]
-    public required GraphicLicenceId Id { get; init; }
+    public required int Id { get; init; }
     public required string Name { get; set; }
     public required string InfoUrl { get; set; }
 

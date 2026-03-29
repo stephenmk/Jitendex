@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,19 +16,31 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Data.JMdict.ForkEntities.Graphics;
+namespace Jitendex.Forks.JMdict.Models;
 
-public enum GraphicLicenceId
-{
-    PublicDomain,
-    CreativeCommonsZero1_0,
-    CreativeCommonsBy1_0,
-    CreativeCommonsBy2_0,
-    CreativeCommonsBy3_0,
-    CreativeCommonsBy4_0,
-    CreativeCommonsByShareAlike1_0,
-    CreativeCommonsByShareAlike2_0,
-    CreativeCommonsByShareAlike2_5,
-    CreativeCommonsByShareAlike3_0,
-    CreativeCommonsByShareAlike4_0,
-}
+internal sealed record GraphicLicenseRow
+(
+    int Id,
+    string Name,
+    string InfoUrl
+);
+
+internal sealed record GraphicRow
+(
+    int Id,
+    int LicenseId,
+    bool Cropped,
+    string PageUrl,
+    string FileUrl,
+    string Author,
+    string? AuthorUrl,
+    string? Title
+);
+
+internal sealed record SenseGraphicRow
+(
+    int EntryId,
+    int SenseOrder,
+    int Order,
+    int GraphicId
+);

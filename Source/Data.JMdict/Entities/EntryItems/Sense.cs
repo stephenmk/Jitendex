@@ -48,7 +48,12 @@ public sealed class Sense
     public List<CrossReference> CrossReferences { get; init; } = [];
 
     #region Fork Properties
+
+    [InverseProperty(nameof(EntryReference.Sense))]
     public List<EntryReference> ReverseReferences { get; init; } = [];
-    public List<Graphic> Graphics { get; init; } = [];
+
+    [InverseProperty(nameof(SenseGraphic.Sense))]
+    public List<SenseGraphic> Graphics { get; init; } = [];
+
     #endregion
 }

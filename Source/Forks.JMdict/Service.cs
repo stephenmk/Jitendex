@@ -21,6 +21,7 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Services;
 using Jitendex.Forks.JMdict.Services.Furigana;
+using Jitendex.Forks.JMdict.Services.Graphics;
 using Jitendex.Forks.JMdict.Services.Kanwa;
 using Jitendex.Forks.JMdict.Services.Patching;
 using Jitendex.Forks.JMdict.Services.References;
@@ -39,6 +40,7 @@ internal sealed class Service
     ReadingRestrictionService readingRestrictions,
     KanjiFormRestrictionService kanjiFormRestrictions,
     CrossReferenceService crossReferences,
+    GraphicService graphicService,
     CharacterService characters,
     CharacterReadingService characterReadings,
     DerivedReadingService derivedReadings,
@@ -62,6 +64,7 @@ internal sealed class Service
         RunKanwaServices();
         RunFuriganaServices();
         RunReferenceServices();
+        RunGraphicServices();
 
         RunPostprocessing();
 
@@ -115,6 +118,12 @@ internal sealed class Service
     {
         logger.LogInformation("Deducing cross reference relationships.");
         crossReferences.Write();
+    }
+
+    private void RunGraphicServices()
+    {
+        logger.LogInformation("Transferring graphics data.");
+        graphicService.Write();
     }
 
     private void RunPostprocessing()

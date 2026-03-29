@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,43 +16,19 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-internal sealed record GraphicLicenseRow
-(
-    int Id,
-    string Name,
-    string InfoUrl
-);
+namespace Jitendex.Data.Home.Entities.Media;
 
-internal sealed record GraphicRow
-(
-    int Id,
-    int LicenseId,
-    bool Cropped,
-    string PageUrl,
-    string FileUrl,
-    string Author,
-    string? AuthorUrl,
-    string? Title
-);
-
-internal sealed record SenseGraphicRow
-(
-    int SequenceId,
-    int SenseOrder,
-    int Order,
-    DateOnly SequenceDate,
-    int? PatchId,
-    int GraphicId
-);
-
-internal sealed record KanjiAliveAudioRow
-(
-    string Filename,
-    int EntryId,
-    string ReadingText,
-    string KanjiFormText,
-    string? Suffix,
-    int? PitchAccent
-);
+[Table(nameof(KanjiAliveAudio))]
+public sealed class KanjiAliveAudio
+{
+    [Key]
+    public required string Filename { get; init; }
+    public required int EntryId { get; set; }
+    public required string ReadingText { get; set; }
+    public required string KanjiFormText { get; set; }
+    public required string? Suffix { get; set; }
+    public required int? PitchAccent { get; set; }
+}

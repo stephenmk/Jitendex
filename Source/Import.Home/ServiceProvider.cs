@@ -58,6 +58,7 @@ internal static class ServiceProvider
         .AddTransient<GraphicTable>()
         .AddTransient<SenseGraphicTable>()
         .AddTransient<GraphicLicenseTable>()
+        .AddTransient<KanjiAliveAudioTable>()
 
         // Import services.
         .AddTransient<CharacterService>()
@@ -67,6 +68,7 @@ internal static class ServiceProvider
         .AddTransient<JMdictPatchService>()
         .AddTransient<ExampleFuriganaService>()
         .AddTransient<GraphicService>()
+        .AddTransient<AudioService>()
 
         // Logging
         .AddLogging(static builder =>

@@ -54,5 +54,6 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
     public DbSet<Graphic> Graphics { get; set; } = null!;
     public DbSet<GraphicLicense> GraphicLicenses { get; set; } = null!;
     public DbSet<SenseGraphic> SenseGraphics { get; set; } = null!;
+    public DbSet<KanjiAliveAudio> KanjiAliveAudios { get; set; } = null!;
     #endregion
 }

@@ -33,7 +33,8 @@ internal sealed class Service
     UserService userService,
     JMdictPatchService jmdictPatchService,
     ExampleFuriganaService exampleFuriganaService,
-    GraphicService graphicService
+    GraphicService graphicService,
+    AudioService audioService
 )
 {
     public async Task ImportAsync()
@@ -50,6 +51,7 @@ internal sealed class Service
         await jmdictPatchService.ImportAsync();
         await exampleFuriganaService.ImportAsync();
         await graphicService.ImportAsync();
+        await audioService.ImportAsync();
 
         transaction.Commit();
         context.ExecuteVacuum();
@@ -65,5 +67,6 @@ internal sealed class Service
         await jmdictPatchService.ExportAsync();
         await exampleFuriganaService.ExportAsync();
         await graphicService.ExportAsync();
+        await audioService.ExportAsync();
     }
 }

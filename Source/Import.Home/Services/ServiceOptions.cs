@@ -46,4 +46,7 @@ internal sealed record ServiceOptions
 
     public DirectoryInfo GetGraphicDirectory()
         => DataDirectory.CreateSubdirectory("graphics");
+
+    public DirectoryInfo GetAudioDirectory()
+        => DataDirectory.CreateSubdirectory("audio");
 }

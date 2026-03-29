@@ -118,7 +118,7 @@ That project served as an invaluable source of ideas, but all of the code borrow
       <a href="https://learn.microsoft.com/en-us/dotnet/api/system.text.rune">
         made it easier to work with</a>
       surrogate pairs, and <b>Jitendex.Furigana</b>
-      <a href="https://github.com/stephenmk/Jitendex/blob/dotnet/Jitendex.Furigana.Test/ServiceTests/SurrogatePairs.cs">
+      <a href="https://github.com/Jitendex/Jitendex/blob/dotnet/Source/Furigana.Test/ServiceTests/SurrogatePairs.cs">
         can handle</a>
       these problems.
     </td>
@@ -136,7 +136,7 @@ That project served as an invaluable source of ideas, but all of the code borrow
     </td>
     <td>
       Contains an
-      <a href="https://github.com/stephenmk/Jitendex/tree/dotnet/Jitendex.Furigana.Test/ServiceTests">
+      <a href="https://github.com/Jitendex/Jitendex/tree/dotnet/Source/Furigana.Test/ServiceTests">
         extensive set of tests</a>
       to ensure the algorithm is working as intended.
       <br/><br/>

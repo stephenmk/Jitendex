@@ -32,6 +32,7 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
             return [];
         }
 
+        // Note: this is an array (mutable) of immutable arrays.
         var partsLists = new ImmutableArray<Solution.Part>[readings.Count];
         int i = 0;
 

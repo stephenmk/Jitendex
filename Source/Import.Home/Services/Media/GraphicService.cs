@@ -19,12 +19,12 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Collections.Frozen;
 using System.Text.Json;
 using Jitendex.Data.Home;
-using Jitendex.Data.Home.Entities.Graphics;
+using Jitendex.Data.Home.Entities.Media;
 using Jitendex.Import.Home.Models;
-using Jitendex.Import.Home.Tables.Graphics;
-using static Jitendex.Data.Home.Entities.Graphics.GraphicLicenceId;
+using Jitendex.Import.Home.Tables.Media;
+using static Jitendex.Data.Home.Entities.Media.GraphicLicenceId;
 
-namespace Jitendex.Import.Home.Services.Graphics;
+namespace Jitendex.Import.Home.Services.Media;
 
 internal sealed class GraphicService
 (

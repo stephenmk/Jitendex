@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home.Entities;
-using Jitendex.Data.Home.Entities.Graphics;
-using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Data.Home.Entities.JMdict;
+using Jitendex.Data.Home.Entities.Kanwa;
+using Jitendex.Data.Home.Entities.Media;
 using Jitendex.Data.Home.Entities.Tatoeba;
 
 namespace Jitendex.Data.Home;
@@ -50,7 +50,7 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
     public DbSet<ExampleFurigana> ExampleFurigana { get; set; } = null!;
     #endregion
 
-    #region Graphics
+    #region Media
     public DbSet<Graphic> Graphics { get; set; } = null!;
     public DbSet<GraphicLicense> GraphicLicenses { get; set; } = null!;
     public DbSet<SenseGraphic> SenseGraphics { get; set; } = null!;

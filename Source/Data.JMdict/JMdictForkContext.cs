@@ -24,9 +24,9 @@ using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Data.JMdict.ForkEntities;
 using Jitendex.Data.JMdict.ForkEntities.Furigana;
-using Jitendex.Data.JMdict.ForkEntities.Graphics;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Jitendex.Data.JMdict.ForkEntities.Links;
+using Jitendex.Data.JMdict.ForkEntities.Media;
 using Jitendex.Data.JMdict.ForkEntities.References;
 
 namespace Jitendex.Data.JMdict;
@@ -99,7 +99,7 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<DerivedCharacterReadingType> DerivedCharacterReadingTypes { get; set; } = null!;
     #endregion
 
-    #region Graphics
+    #region Media
     public DbSet<Graphic> Graphics { get; set; } = null!;
     public DbSet<GraphicLicense> GraphicLicenses { get; set; } = null!;
     public DbSet<SenseGraphic> SenseGraphics { get; set; } = null!;

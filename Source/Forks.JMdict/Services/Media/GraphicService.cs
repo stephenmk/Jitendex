@@ -21,9 +21,9 @@ using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Models;
-using Jitendex.Forks.JMdict.Tables.Graphics;
+using Jitendex.Forks.JMdict.Tables.Media;
 
-namespace Jitendex.Forks.JMdict.Services.Graphics;
+namespace Jitendex.Forks.JMdict.Services.Media;
 
 internal partial class GraphicService
 (

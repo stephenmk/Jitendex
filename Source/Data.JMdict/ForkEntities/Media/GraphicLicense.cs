@@ -19,24 +19,16 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jitendex.Data.Home.Entities.Graphics;
+namespace Jitendex.Data.JMdict.ForkEntities.Media;
 
-[Table(nameof(Graphic))]
-public sealed class Graphic
+[Table(nameof(GraphicLicense))]
+public sealed class GraphicLicense
 {
     [Key]
     public required int Id { get; init; }
-    public required GraphicLicenceId LicenceId { get; set; }
-    public required bool Cropped { get; set; }
-    public required string PageUrl { get; set; }
-    public required string FileUrl { get; set; }
-    public required string Author { get; set; }
-    public string? AuthorUrl { get; set; }
-    public string? Title { get; set; }
+    public required string Name { get; set; }
+    public required string InfoUrl { get; set; }
 
-    [ForeignKey(nameof(LicenceId))]
-    public GraphicLicense License { get; set; } = null!;
-
-    [InverseProperty(nameof(SenseGraphic.Graphic))]
-    public ICollection<SenseGraphic> Senses { get; init; } = [];
+    [InverseProperty(nameof(Graphic.License))]
+    public ICollection<Graphic> Graphics { get; init; } = [];
 }

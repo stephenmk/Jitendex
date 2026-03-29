@@ -17,9 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.Home;
-using Jitendex.Import.Home.Services.Graphics;
-using Jitendex.Import.Home.Services.Kanwa;
 using Jitendex.Import.Home.Services.JMdict;
+using Jitendex.Import.Home.Services.Kanwa;
+using Jitendex.Import.Home.Services.Media;
 using Jitendex.Import.Home.Services.Tatoeba;
 
 namespace Jitendex.Import.Home.Services;

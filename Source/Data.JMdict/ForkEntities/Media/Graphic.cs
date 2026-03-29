@@ -16,19 +16,24 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Data.Home.Entities.Graphics;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public enum GraphicLicenceId
+namespace Jitendex.Data.JMdict.ForkEntities.Media;
+
+[Table(nameof(Graphic))]
+public sealed class Graphic
 {
-    PublicDomain,
-    CreativeCommonsZero1_0,
-    CreativeCommonsBy1_0,
-    CreativeCommonsBy2_0,
-    CreativeCommonsBy3_0,
-    CreativeCommonsBy4_0,
-    CreativeCommonsByShareAlike1_0,
-    CreativeCommonsByShareAlike2_0,
-    CreativeCommonsByShareAlike2_5,
-    CreativeCommonsByShareAlike3_0,
-    CreativeCommonsByShareAlike4_0,
+    [Key]
+    public required int Id { get; init; }
+    public required int LicenceId { get; set; }
+    public required bool Cropped { get; set; }
+    public required string PageUrl { get; set; }
+    public required string FileUrl { get; set; }
+    public required string Author { get; set; }
+    public string? AuthorUrl { get; set; }
+    public string? Title { get; set; }
+
+    [ForeignKey(nameof(LicenceId))]
+    public GraphicLicense License { get; set; } = null!;
 }

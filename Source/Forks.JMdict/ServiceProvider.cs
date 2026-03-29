@@ -22,14 +22,14 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Services;
 using Jitendex.Forks.JMdict.Services.Furigana;
-using Jitendex.Forks.JMdict.Services.Graphics;
 using Jitendex.Forks.JMdict.Services.Kanwa;
+using Jitendex.Forks.JMdict.Services.Media;
 using Jitendex.Forks.JMdict.Services.Patching;
 using Jitendex.Forks.JMdict.Services.References;
 using Jitendex.Forks.JMdict.Services.Restrictions;
 using Jitendex.Forks.JMdict.Tables.Furigana;
-using Jitendex.Forks.JMdict.Tables.Graphics;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
+using Jitendex.Forks.JMdict.Tables.Media;
 using Jitendex.Forks.JMdict.Tables.References;
 using Jitendex.Forks.JMdict.Tables.Restrictions;
 

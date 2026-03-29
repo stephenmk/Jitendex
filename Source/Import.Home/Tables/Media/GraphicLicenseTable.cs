@@ -17,41 +17,31 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Graphics;
+using Jitendex.Data.Home.Entities.Media;
 using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Import.Home.Tables.Graphics;
+namespace Jitendex.Import.Home.Tables.Media;
 
-internal sealed class GraphicTable : Table<GraphicRow>
+internal sealed class GraphicLicenseTable : Table<GraphicLicenseRow>
 {
-    protected override string Name { get; } = nameof(Graphic);
+    protected override string Name { get; } = nameof(GraphicLicense);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Graphic.Id),
-        nameof(Graphic.LicenceId),
-        nameof(Graphic.Cropped),
-        nameof(Graphic.PageUrl),
-        nameof(Graphic.FileUrl),
-        nameof(Graphic.Author),
-        nameof(Graphic.AuthorUrl),
-        nameof(Graphic.Title),
+        nameof(GraphicLicense.Id),
+        nameof(GraphicLicense.Name),
+        nameof(GraphicLicense.InfoUrl),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Graphic.Id)
+        nameof(GraphicLicense.Id)
     ];
 
-    protected override object?[] ParameterValues(GraphicRow row) =>
+    protected override object?[] ParameterValues(GraphicLicenseRow row) =>
     [
         row.Id,
-        row.LicenseId,
-        row.Cropped,
-        row.PageUrl,
-        row.FileUrl,
-        row.Author,
-        row.AuthorUrl,
-        row.Title,
+        row.Name,
+        row.InfoUrl,
     ];
 }

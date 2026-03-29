@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
-using Jitendex.Data.JMdict.ForkEntities.Graphics;
+using Jitendex.Data.JMdict.ForkEntities.Media;
 using Jitendex.Data.JMdict.ForkEntities.References;
 
 namespace Jitendex.Data.JMdict.Entities.EntryItems;

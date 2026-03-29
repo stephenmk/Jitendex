@@ -16,19 +16,22 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.ForkEntities.Graphics;
+namespace Jitendex.Data.Home.Entities.Media;
 
-[Table(nameof(GraphicLicense))]
-public sealed class GraphicLicense
+[Table(nameof(SenseGraphic))]
+[PrimaryKey(nameof(SequenceId), nameof(SenseOrder), nameof(Order))]
+public sealed class SenseGraphic
 {
-    [Key]
-    public required int Id { get; init; }
-    public required string Name { get; set; }
-    public required string InfoUrl { get; set; }
+    public required int SequenceId { get; init; }
+    public required int SenseOrder { get; init; }
+    public required int Order { get; init; }
+    public required DateOnly SequenceDate { get; set; }
+    public required int? PatchId { get; set; }
+    public required int GraphicId { get; set; }
 
-    [InverseProperty(nameof(Graphic.License))]
-    public ICollection<Graphic> Graphics { get; init; } = [];
+    [ForeignKey(nameof(GraphicId))]
+    public Graphic Graphic { get; set; } = null!;
 }

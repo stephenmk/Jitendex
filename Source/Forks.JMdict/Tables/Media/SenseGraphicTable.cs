@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Graphics;
-using Jitendex.Import.Home.Models;
+using Jitendex.Data.JMdict.ForkEntities.Media;
+using Jitendex.Forks.JMdict.Models;
 
-namespace Jitendex.Import.Home.Tables.Graphics;
+namespace Jitendex.Forks.JMdict.Tables.Media;
 
 internal sealed class SenseGraphicTable : Table<SenseGraphicRow>
 {
@@ -28,28 +28,24 @@ internal sealed class SenseGraphicTable : Table<SenseGraphicRow>
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(SenseGraphic.SequenceId),
+        nameof(SenseGraphic.EntryId),
         nameof(SenseGraphic.SenseOrder),
         nameof(SenseGraphic.Order),
-        nameof(SenseGraphic.SequenceDate),
-        nameof(SenseGraphic.PatchId),
         nameof(SenseGraphic.GraphicId),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(SenseGraphic.SequenceId),
+        nameof(SenseGraphic.EntryId),
         nameof(SenseGraphic.SenseOrder),
         nameof(SenseGraphic.Order),
     ];
 
     protected override object?[] ParameterValues(SenseGraphicRow row) =>
     [
-        row.SequenceId,
+        row.EntryId,
         row.SenseOrder,
         row.Order,
-        row.SequenceDate,
-        row.PatchId,
         row.GraphicId,
     ];
 }

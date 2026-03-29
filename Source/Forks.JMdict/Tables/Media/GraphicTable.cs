@@ -17,35 +17,41 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.ForkEntities.Graphics;
+using Jitendex.Data.JMdict.ForkEntities.Media;
 using Jitendex.Forks.JMdict.Models;
 
-namespace Jitendex.Forks.JMdict.Tables.Graphics;
+namespace Jitendex.Forks.JMdict.Tables.Media;
 
-internal sealed class SenseGraphicTable : Table<SenseGraphicRow>
+internal sealed class GraphicTable : Table<GraphicRow>
 {
-    protected override string Name { get; } = nameof(SenseGraphic);
+    protected override string Name { get; } = nameof(Graphic);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(SenseGraphic.EntryId),
-        nameof(SenseGraphic.SenseOrder),
-        nameof(SenseGraphic.Order),
-        nameof(SenseGraphic.GraphicId),
+        nameof(Graphic.Id),
+        nameof(Graphic.LicenceId),
+        nameof(Graphic.Cropped),
+        nameof(Graphic.PageUrl),
+        nameof(Graphic.FileUrl),
+        nameof(Graphic.Author),
+        nameof(Graphic.AuthorUrl),
+        nameof(Graphic.Title),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(SenseGraphic.EntryId),
-        nameof(SenseGraphic.SenseOrder),
-        nameof(SenseGraphic.Order),
+        nameof(Graphic.Id)
     ];
 
-    protected override object?[] ParameterValues(SenseGraphicRow row) =>
+    protected override object?[] ParameterValues(GraphicRow row) =>
     [
-        row.EntryId,
-        row.SenseOrder,
-        row.Order,
-        row.GraphicId,
+        row.Id,
+        row.LicenseId,
+        row.Cropped,
+        row.PageUrl,
+        row.FileUrl,
+        row.Author,
+        row.AuthorUrl,
+        row.Title,
     ];
 }

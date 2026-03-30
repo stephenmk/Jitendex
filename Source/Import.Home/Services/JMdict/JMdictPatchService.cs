@@ -157,12 +157,12 @@ internal sealed class JMdictPatchService
     private string GetMetadataFilePath()
         => Path.Join
         (
-            options.GetJMdictDirectory().FullName,
-            "patch_metadata.json"
+            options.GetPatchDirectory().FullName,
+            "jmdict.json"
         );
 
     private DirectoryInfo GetPatchDirectory()
-        => options.GetJMdictDirectory().CreateSubdirectory("patches");
+        => options.GetPatchDirectory().CreateSubdirectory("jmdict");
 
     private readonly static JsonSerializerOptions JsonSerializerOptions = new()
     {

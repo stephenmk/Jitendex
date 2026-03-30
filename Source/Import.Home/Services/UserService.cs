@@ -61,7 +61,11 @@ internal sealed class UserService(HomeContext context, ServiceOptions options)
     }
 
     private string GetJsonFilePath()
-        => Path.Join(options.DataDirectory.FullName, "users.json");
+        => Path.Join
+        (
+            options.GetPatchDirectory().FullName,
+            "users.json"
+        );
 
     private readonly static JsonSerializerOptions JsonSerializerOptions = new()
     {

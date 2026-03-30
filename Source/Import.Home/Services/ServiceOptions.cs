@@ -38,6 +38,9 @@ internal sealed record ServiceOptions
     public DirectoryInfo GetKanwaDirectory()
         => DataDirectory.CreateSubdirectory("kanwa");
 
+    public DirectoryInfo GetPatchDirectory()
+        => DataDirectory.CreateSubdirectory("patches");
+
     public DirectoryInfo GetJMdictDirectory()
         => DataDirectory.CreateSubdirectory("jmdict");
 

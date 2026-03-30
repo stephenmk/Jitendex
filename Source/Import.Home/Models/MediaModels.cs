@@ -54,5 +54,6 @@ internal sealed record KanjiAliveAudioRow
     string ReadingText,
     string KanjiFormText,
     string? Suffix,
-    int? PitchAccent
+    int? PitchAccent,
+    byte[] FileData
 );

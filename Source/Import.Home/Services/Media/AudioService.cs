@@ -31,6 +31,17 @@ internal sealed class AudioService
 {
     public async Task ImportAsync()
     {
+        var dataDirPath = GetDataDirectoryPath();
+        var dataDir = new DirectoryInfo(dataDirPath);
+        var fileData = new Dictionary<string, byte[]>();
+        foreach (var subdir in dataDir.EnumerateDirectories())
+        {
+            foreach (var file in subdir.EnumerateFiles())
+            {
+                fileData[file.Name] = File.ReadAllBytes(file.FullName);
+            }
+        }
+
         var filePath = GetCsvFilePath();
         await using var stream = File.OpenRead(filePath);
         using var reader = new StreamReader(stream);
@@ -47,7 +58,8 @@ internal sealed class AudioService
                 ReadingText: split[2],
                 KanjiFormText: split[3],
                 Suffix: string.IsNullOrEmpty(split[4]) ? null : split[4],
-                PitchAccent: string.IsNullOrEmpty(split[5]) ? null : int.Parse(split[5])
+                PitchAccent: string.IsNullOrEmpty(split[5]) ? null : int.Parse(split[5]),
+                FileData: fileData[split[0]]
             ));
         }
 
@@ -84,4 +96,11 @@ internal sealed class AudioService
             options.GetAudioDirectory().FullName,
             "kanjialive.csv"
         );
+
+    private string GetDataDirectoryPath()
+    => Path.Join
+    (
+        options.GetAudioDirectory().FullName,
+        "kanjialive"
+    );
 }

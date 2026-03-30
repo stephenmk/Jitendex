@@ -31,4 +31,5 @@ public sealed class KanjiAliveAudio
     public required string KanjiFormText { get; set; }
     public required string? Suffix { get; set; }
     public required int? PitchAccent { get; set; }
+    public required byte[] FileData { get; set; }
 }

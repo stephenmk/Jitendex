@@ -34,6 +34,7 @@ internal sealed class KanjiAliveAudioTable : Table<KanjiAliveAudioRow>
         nameof(KanjiAliveAudio.KanjiFormText),
         nameof(KanjiAliveAudio.Suffix),
         nameof(KanjiAliveAudio.PitchAccent),
+        nameof(KanjiAliveAudio.FileData),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
@@ -49,5 +50,6 @@ internal sealed class KanjiAliveAudioTable : Table<KanjiAliveAudioRow>
         row.KanjiFormText,
         row.Suffix,
         row.PitchAccent,
+        row.FileData,
     ];
 }

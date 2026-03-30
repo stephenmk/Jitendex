@@ -28,18 +28,10 @@ public abstract class Table<T>
     protected abstract ImmutableArray<string> ColumnNames { get; }
     protected abstract ImmutableArray<string> KeyColNames { get; }
     protected abstract object?[] ParameterValues(T item);
-    private static readonly ImmutableArray<string> ParameterNames = InitializeParameterNames();
-
-    private static ImmutableArray<string> InitializeParameterNames()
-    {
-        const int sqliteMaximumColumnCount = 2_000;
-        var builder = ImmutableArray.CreateBuilder<string>(sqliteMaximumColumnCount);
-        for (int i = 0; i < sqliteMaximumColumnCount; i++)
-        {
-            builder.Add($"@{i:X}");
-        }
-        return builder.MoveToImmutable();
-    }
+    private static readonly ImmutableArray<string> ParameterNames = Enumerable
+        .Range(0, 2_000) // The maximum default column count in SQLite
+        .Select(static i => $"@{i:X}")
+        .ToImmutableArray();
 
     private string InsertCommandText =>
         $"""

@@ -79,20 +79,17 @@ internal abstract class CharacterAlgorithm
         return new Regex(pattern.ToString());
     }
 
-    protected static bool IsImpossibleKanjiReadingFirst(char c) => c switch
-    {
-        '・' or
-        'ー' or
-        'ぁ' or
-        'ぃ' or
-        'ぅ' or
-        'ぇ' or
-        'ぉ' or
-        'っ' or
-        'ょ' or
-        'ゃ' or
-        'ゅ' or
-        'ん' => true,
-        _ => false
-    };
+    protected static bool IsImpossibleKanjiReadingFirst(char c)
+        => c is '・'
+             or 'ー'
+             or 'ぁ'
+             or 'ぃ'
+             or 'ぅ'
+             or 'ぇ'
+             or 'ぉ'
+             or 'っ'
+             or 'ょ'
+             or 'ゃ'
+             or 'ゅ'
+             or 'ん';
 }

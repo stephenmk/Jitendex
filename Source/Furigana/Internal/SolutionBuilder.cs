@@ -60,7 +60,8 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
     /// </summary>
     private ImmutableArray<SolutionPart> GetNormalizedParts()
     {
-        var parts = new List<SolutionPart>(Parts.Count);
+        var normParts = new SolutionPart[Parts.Count];
+        int i = 0;
         var mergedTexts = new StringBuilder();
         foreach (var part in Parts)
         {
@@ -71,16 +72,16 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
             }
             if (mergedTexts.Length > 0)
             {
-                parts.Add(new(mergedTexts.ToString(), null));
+                normParts[i++] = new(mergedTexts.ToString(), null);
                 mergedTexts.Clear();
             }
-            parts.Add(part);
+            normParts[i++] = part;
         }
         if (mergedTexts.Length > 0)
         {
-            parts.Add(new(mergedTexts.ToString(), null));
+            normParts[i++] = new(mergedTexts.ToString(), null);
         }
-        return [.. parts];
+        return ImmutableArray.Create(normParts.AsSpan(..i));
     }
 
     private ReadOnlySpan<char> Text => string.Create

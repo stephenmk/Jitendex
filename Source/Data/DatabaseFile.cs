@@ -22,15 +22,16 @@ namespace Jitendex.Data;
 
 public enum DatabaseFile
 {
+    ChiseIds,
+    Export,
+    Home,
     JMdict,
     JMdictFork,
     JMnedict,
     Kanjidic2,
+    KanjiVG,
     Tatoeba,
     TatoebaFork,
-    KanjiVG,
-    ChiseIds,
-    Home,
 }
 
 internal static class DatabaseFileExtensions
@@ -39,15 +40,16 @@ internal static class DatabaseFileExtensions
     public static string ToFilename(this DatabaseFile databaseFile)
         => databaseFile switch
         {
+            ChiseIds    => "chise_ids.db",
+            Export      => "export.db",
+            Home        => "home.db",
             JMdict      => "jmdict.db",
             JMdictFork  => "jmdict_fork.db",
             JMnedict    => "jmnedict.db",
             Kanjidic2   => "kanjidic2.db",
+            KanjiVG     => "kanjivg.db",
             Tatoeba     => "tatoeba.db",
             TatoebaFork => "tatoeba_fork.db",
-            KanjiVG     => "kanjivg.db",
-            ChiseIds    => "chise_ids.db",
-            Home        => "home.db",
             _           => throw new ArgumentOutOfRangeException(nameof(databaseFile))
         };
     #pragma warning restore format

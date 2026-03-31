@@ -7,6 +7,7 @@
   <Folder Name="/Data/">
     <Project Path="Source/Data/Jitendex.Data.csproj" />
     <Project Path="Source/Data.ChiseIds/Jitendex.Data.ChiseIds.csproj" />
+    <Project Path="Source/Data.Export/Jitendex.Data.Export.csproj" />
     <Project Path="Source/Data.Home/Jitendex.Data.Home.csproj" />
     <Project Path="Source/Data.JMdict/Jitendex.Data.JMdict.csproj" />
     <Project Path="Source/Data.JMnedict/Jitendex.Data.JMnedict.csproj" />

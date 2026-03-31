@@ -21,15 +21,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Home.Entities.Kanwa;
 
-[Table(nameof(Character))]
-[PrimaryKey(nameof(Value))]
-public sealed class Character
+[Table(nameof(CharacterVariant))]
+[PrimaryKey(nameof(CharacterValue), nameof(VariantValue))]
+public sealed class CharacterVariant
 {
-    public required int Value { get; init; }
+    public required int CharacterValue { get; init; }
+    public required int VariantValue { get; init; }
+    public required VariantTypeId TypeId { get; set; }
 
-    [InverseProperty(nameof(CharacterReading.Character))]
-    public ICollection<CharacterReading> Readings { get; init; } = [];
+    [ForeignKey(nameof(CharacterValue))]
+    public Character Character { get; init; } = null!;
 
-    [InverseProperty(nameof(CharacterVariant.Character))]
-    public ICollection<CharacterVariant> Variants { get; init; } = [];
+    [ForeignKey(nameof(VariantValue))]
+    public Character Variant { get; init; } = null!;
+
+    [ForeignKey(nameof(TypeId))]
+    public VariantType Type { get; set; } = null!;
 }

@@ -28,6 +28,7 @@ internal sealed class Service
 (
     HomeContext context,
     CharacterService characterService,
+    VariantService variantService,
     CompoundService compoundService,
     CrossReferenceDataService crossReferenceDataService,
     UserService userService,
@@ -44,6 +45,7 @@ internal sealed class Service
         using var transaction = context.Database.BeginTransaction();
 
         await characterService.ImportAsync();
+        await variantService.ImportAsync();
         await compoundService.ImportAsync();
         await crossReferenceDataService.ImportAsync();
 
@@ -60,6 +62,7 @@ internal sealed class Service
     public async Task ExportAsync()
     {
         await characterService.ExportAsync();
+        await variantService.ExportAsync();
         await compoundService.ExportAsync();
         await crossReferenceDataService.ExportAsync();
 

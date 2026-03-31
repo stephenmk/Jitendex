@@ -16,67 +16,77 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Frozen;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Nodes;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.Models;
 using Jitendex.Import.Home.Tables.Kanwa;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Import.Home.Services.Kanwa;
 
-internal sealed class CharacterService
+internal sealed class VariantService
 (
     HomeContext context,
     ServiceOptions options,
     CharacterTable characterTable,
-    CharacterReadingTable readingTable,
-    CharacterReadingTypeTable typeTable
+    VariantTable variantTable,
+    VariantTypeTable typeTable
 )
 {
     public async Task ImportAsync()
     {
         var filePath = GetJsonFilePath();
         await using var stream = File.OpenRead(filePath);
-        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, CharacterReadingsObject>>(stream, ReadOptions) ?? [];
+        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonObject>>(stream) ?? [];
 
         var characterRows = new List<CharacterRow>();
-        var readingRows = new List<CharacterReadingRow>();
+        var rows = new List<VariantRow>();
 
-        foreach (var (key, value) in data)
+        foreach (var (key, obj) in data)
         {
-            var characterValue = key.EnumerateRunes().First().Value;
-            characterRows.Add(new(characterValue));
-            readingRows.AddRange(value.ToReadingRows(characterValue));
+            var character = key.EnumerateRunes().First();
+            characterRows.Add(new(character.Value));
+            foreach (var (typeName, value) in obj)
+            {
+                var typeId = TypeNameToId[typeName];
+                foreach (var node in (JsonArray)value!)
+                {
+                    var variant = ((string)node!).EnumerateRunes().First();
+                    rows.Add(new(character.Value, variant.Value, (int)typeId));
+                    characterRows.Add(new(variant.Value));
+                }
+            }
         }
 
+        characterTable.InsertOrIgnoreItems(context, characterRows);
         typeTable.InsertItems(context, GetTypeRows());
-        characterTable.InsertItems(context, characterRows);
-        readingTable.InsertItems(context, readingRows);
+        variantTable.InsertItems(context, rows);
     }
 
     public async Task ExportAsync()
     {
-        var data = context.Characters
+        var data = context.Variants
             .AsNoTracking()
-            .Include(static x => x.Readings)
-            .ThenInclude(static x => x.Type)
-            .Where(static x => x.Readings.Any())
-            .OrderBy(static x => x.Value)
+            .Include(static v => v.Type)
+            .OrderBy(static v => v.CharacterValue)
+            .GroupBy(static v => v.CharacterValue)
             .ToDictionary
             (
-                keySelector: static x => new Rune(x.Value).ToString(),
-                elementSelector: static x => x.Readings
-                    .OrderBy(static x => x.TypeId)
-                    .GroupBy(static x => x.Type.Name.ToLower())
+                static group => new Rune(group.Key).ToString(),
+                static group => group
+                    .OrderBy(static v => v.TypeId)
+                    .GroupBy(static v => v.TypeId)
                     .ToDictionary
                     (
-                        keySelector: static x => x.Key,
-                        elementSelector: static x => x
-                            .Select(static x => x.ToString())
-                            .Order()
+                        static gg => gg.Key.ToString(),
+                        static gg => gg
+                            .OrderBy(static z => z.VariantValue)
+                            .Select(static z => new Rune(z.VariantValue).ToString())
                             .ToArray()
                     )
             );
@@ -90,13 +100,8 @@ internal sealed class CharacterService
         => Path.Join
         (
             options.GetKanwaDirectory().FullName,
-            "characters.json"
+            "variants.json"
         );
-
-    private readonly static JsonSerializerOptions ReadOptions = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
 
     private readonly static JsonSerializerOptions WriteOptions = new()
     {
@@ -105,7 +110,12 @@ internal sealed class CharacterService
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
 
-    private static IEnumerable<CharacterReadingTypeRow> GetTypeRows()
-        => Enum.GetValues<CharacterReadingTypeId>()
-            .Select(static type => new CharacterReadingTypeRow((int)type, type.ToString()));
+    private static IEnumerable<VariantTypeRow> GetTypeRows() => Enum
+        .GetValues<VariantTypeId>()
+        .Select(static id => new VariantTypeRow((int)id, id.ToString()));
+
+    private static readonly FrozenDictionary<string, VariantTypeId> TypeNameToId = Enum
+        .GetValues<VariantTypeId>()
+        .Select(static id => new { Key = id.ToString(), Value = id })
+        .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 }

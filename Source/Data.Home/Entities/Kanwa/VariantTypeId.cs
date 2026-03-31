@@ -16,20 +16,15 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
 namespace Jitendex.Data.Home.Entities.Kanwa;
 
-[Table(nameof(Character))]
-[PrimaryKey(nameof(Value))]
-public sealed class Character
+public enum VariantTypeId
 {
-    public required int Value { get; init; }
-
-    [InverseProperty(nameof(CharacterReading.Character))]
-    public ICollection<CharacterReading> Readings { get; init; } = [];
-
-    [InverseProperty(nameof(CharacterVariant.Character))]
-    public ICollection<CharacterVariant> Variants { get; init; } = [];
+    正字,
+    異体字,
+    新字体,
+    旧字体,
+    常用漢字,
+    印刷標準字体,
+    簡易慣用字体,
 }

@@ -49,6 +49,8 @@ internal static class ServiceProvider
         .AddTransient<CompoundTable>()
         .AddTransient<CompoundReadingTable>()
         .AddTransient<CompoundReadingTypeTable>()
+        .AddTransient<VariantTable>()
+        .AddTransient<VariantTypeTable>()
         .AddTransient<CrossReferenceSequenceTable>()
         .AddTransient<JMdictPatchTable>()
         .AddTransient<JMdictPatchApprovalTable>()
@@ -62,6 +64,7 @@ internal static class ServiceProvider
 
         // Import services.
         .AddTransient<CharacterService>()
+        .AddTransient<VariantService>()
         .AddTransient<CompoundService>()
         .AddTransient<CrossReferenceDataService>()
         .AddTransient<UserService>()

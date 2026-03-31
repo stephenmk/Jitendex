@@ -53,3 +53,16 @@ internal sealed record CompoundReadingTypeRow
     int Id,
     string Name
 );
+
+internal sealed record VariantRow
+(
+    int CharacterValue,
+    int VariantValue,
+    int VariantTypeId
+);
+
+internal sealed record VariantTypeRow
+(
+    int Id,
+    string Name
+);

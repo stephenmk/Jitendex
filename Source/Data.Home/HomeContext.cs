@@ -29,8 +29,10 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
 {
     public DbSet<User> Users { get; set; } = null!;
 
-    #region Furigana
+    #region Kanwa
     public DbSet<Character> Characters { get; set; } = null!;
+    public DbSet<CharacterVariant> Variants { get; set; } = null!;
+    public DbSet<VariantType> VariantTypes { get; set; } = null!;
     public DbSet<CharacterReading> CharacterReadings { get; set; } = null!;
     public DbSet<CharacterReadingType> CharacterReadingTypes { get; set; } = null!;
     public DbSet<Compound> Compounds { get; set; } = null!;

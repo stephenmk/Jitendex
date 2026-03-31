@@ -16,20 +16,30 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.Data;
+using Jitendex.Data.Home.Entities.Kanwa;
+using Jitendex.Import.Home.Models;
 
-namespace Jitendex.Data.Home.Entities.Kanwa;
+namespace Jitendex.Import.Home.Tables.Kanwa;
 
-[Table(nameof(Character))]
-[PrimaryKey(nameof(Value))]
-public sealed class Character
+internal sealed class VariantTypeTable : Table<VariantTypeRow>
 {
-    public required int Value { get; init; }
+    protected override string Name { get; } = nameof(VariantType);
 
-    [InverseProperty(nameof(CharacterReading.Character))]
-    public ICollection<CharacterReading> Readings { get; init; } = [];
+    protected override ImmutableArray<string> ColumnNames { get; } =
+    [
+        nameof(VariantType.Id),
+        nameof(VariantType.Name),
+    ];
 
-    [InverseProperty(nameof(CharacterVariant.Character))]
-    public ICollection<CharacterVariant> Variants { get; init; } = [];
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(VariantType.Id)
+    ];
+
+    protected override object?[] ParameterValues(VariantTypeRow row) =>
+    [
+        row.Id,
+        row.Name,
+    ];
 }

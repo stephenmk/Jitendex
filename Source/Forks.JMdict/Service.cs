@@ -36,6 +36,7 @@ internal sealed class Service
     JMdictForkContext forkContext,
     DatabaseCopyService databaseCopier,
     PatchService patches,
+    TrademarkService trademarkService,
     RestrictionService restrictions,
     ReadingRestrictionService readingRestrictions,
     KanjiFormRestrictionService kanjiFormRestrictions,
@@ -84,6 +85,7 @@ internal sealed class Service
     {
         logger.LogInformation("Applying home-grown data patches.");
         patches.Write();
+        trademarkService.Write();
     }
 
     private void RunRestrictionServices()

@@ -54,6 +54,7 @@ internal static class ServiceProvider
         .AddTransient<PatchService>()
         .AddTransient<PatchRebaser>()
         .AddTransient<IntegrityService>()
+        .AddTransient<TrademarkService>()
 
         .AddTransient<RestrictionService>()
         .AddTransient<ReadingRestrictionService>()

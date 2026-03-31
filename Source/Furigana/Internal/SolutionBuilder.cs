@@ -56,7 +56,7 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
             .All(static part => !string.IsNullOrWhiteSpace(part.RubyText));
 
     /// <summary>
-    /// Merge consecutive parts together if they have null furigana.
+    /// Merge consecutive parts together if they have unnecessary furigana.
     /// </summary>
     private ImmutableArray<SolutionPart> GetNormalizedParts()
     {
@@ -65,7 +65,7 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
         var mergedTexts = new StringBuilder();
         foreach (var part in Parts)
         {
-            if (part.RubyText is null)
+            if (part.RubyText is null || IsChōonpuWithVowelRuby(part))
             {
                 mergedTexts.Append(part.BaseText);
                 continue;
@@ -83,6 +83,10 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
         }
         return ImmutableArray.Create(normParts.AsSpan(..i));
     }
+
+    private static bool IsChōonpuWithVowelRuby(SolutionPart part)
+        => part.BaseText is "ー"
+        && part.RubyText is "あ" or "い" or "う" or "え" or "お";
 
     private ReadOnlySpan<char> Text => string.Create
     (

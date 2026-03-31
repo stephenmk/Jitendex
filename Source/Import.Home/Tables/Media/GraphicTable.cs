@@ -36,6 +36,7 @@ internal sealed class GraphicTable : Table<GraphicRow>
         nameof(Graphic.Author),
         nameof(Graphic.AuthorUrl),
         nameof(Graphic.Title),
+        nameof(Graphic.FileData),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
@@ -53,5 +54,6 @@ internal sealed class GraphicTable : Table<GraphicRow>
         row.Author,
         row.AuthorUrl,
         row.Title,
+        row.FileData,
     ];
 }

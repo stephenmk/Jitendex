@@ -31,8 +31,9 @@ public sealed class Graphic
     public required string PageUrl { get; set; }
     public required string FileUrl { get; set; }
     public required string Author { get; set; }
-    public string? AuthorUrl { get; set; }
-    public string? Title { get; set; }
+    public required string? AuthorUrl { get; set; }
+    public required string? Title { get; set; }
+    public required byte[] FileData { get; set; }
 
     [ForeignKey(nameof(LicenceId))]
     public GraphicLicense License { get; set; } = null!;

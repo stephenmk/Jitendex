@@ -57,6 +57,17 @@ internal sealed class GraphicService
 
     public async Task ImportAsync()
     {
+        var fileData = new Dictionary<int, byte[]>();
+        foreach (var subdir in options.GetGraphicDirectory().EnumerateDirectories())
+        {
+            foreach (var file in subdir.EnumerateFiles())
+            {
+                var index = file.Name.IndexOf('.');
+                var id = int.Parse(file.Name[..index]);
+                fileData[id] = File.ReadAllBytes(file.FullName);
+            }
+        }
+
         var filePath = GetJsonFilePath();
         await using var stream = File.OpenRead(filePath);
         var data = await JsonSerializer.DeserializeAsync<Dictionary<int, GraphicObject>>(stream, ReadOptions) ?? [];
@@ -75,7 +86,8 @@ internal sealed class GraphicService
                 FileUrl: obj.FileUrl,
                 Author: obj.Author,
                 AuthorUrl: obj.AuthorUrl,
-                Title: obj.Title
+                Title: obj.Title,
+                FileData: fileData[id]
             ));
             foreach (var entry in obj.Entries)
             {

@@ -34,7 +34,8 @@ internal sealed record GraphicRow
     string FileUrl,
     string Author,
     string? AuthorUrl,
-    string? Title
+    string? Title,
+    byte[] FileData
 );
 
 internal sealed record SenseGraphicRow

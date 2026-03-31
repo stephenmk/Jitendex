@@ -65,7 +65,7 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
         var mergedTexts = new StringBuilder();
         foreach (var part in Parts)
         {
-            if (part.RubyText is null || IsChōonpuWithVowelRuby(part))
+            if (IsMergeablePart(part))
             {
                 mergedTexts.Append(part.BaseText);
                 continue;
@@ -83,6 +83,10 @@ internal sealed record SolutionBuilder(ImmutableList<SolutionPart> Parts)
         }
         return ImmutableArray.Create(normParts.AsSpan(..i));
     }
+
+    private static bool IsMergeablePart(SolutionPart part)
+        => string.IsNullOrWhiteSpace(part.RubyText)
+        || IsChōonpuWithVowelRuby(part);
 
     private static bool IsChōonpuWithVowelRuby(SolutionPart part)
         => part.BaseText is "ー"

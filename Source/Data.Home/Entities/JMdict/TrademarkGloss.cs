@@ -16,44 +16,15 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-internal sealed record CrossReferenceSequenceRow
-(
-    int EntryId,
-    int SenseNumber,
-    string Text,
-    int? RefEntryId
-);
+namespace Jitendex.Data.Home.Entities.JMdict;
 
-internal sealed record JMdictPatchRow
-(
-    int Id,
-    int SequenceId,
-    DateOnly SequenceDate,
-    DateTime CreatedAt,
-    int AuthorId,
-    string AuthorComment,
-    int? PreviousPatchId,
-    string Json
-);
-
-internal sealed record JMdictPatchApprovalRow
-(
-    int PatchId,
-    int ApproverId,
-    DateTime CreatedAt
-);
-
-internal sealed record JMdictPatchRecallRow
-(
-    int PatchId,
-    int RecallerId,
-    DateTime CreatedAt
-);
-
-internal sealed record TrademarkGlossRow
-(
-    string OriginalText,
-    string ReplacementText
-);
+[Table(nameof(TrademarkGloss))]
+[PrimaryKey(nameof(OriginalText))]
+public sealed class TrademarkGloss
+{
+    public required string OriginalText { get; init; }
+    public required string ReplacementText { get; init; }
+}

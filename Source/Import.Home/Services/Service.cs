@@ -33,6 +33,7 @@ internal sealed class Service
     CrossReferenceDataService crossReferenceDataService,
     UserService userService,
     JMdictPatchService jmdictPatchService,
+    TrademarkService trademarkService,
     ExampleFuriganaService exampleFuriganaService,
     GraphicService graphicService,
     AudioService audioService
@@ -51,6 +52,7 @@ internal sealed class Service
 
         await userService.ImportAsync();
         await jmdictPatchService.ImportAsync();
+        await trademarkService.ImportAsync();
         await exampleFuriganaService.ImportAsync();
         await graphicService.ImportAsync();
         await audioService.ImportAsync();
@@ -68,6 +70,7 @@ internal sealed class Service
 
         await userService.ExportAsync();
         await jmdictPatchService.ExportAsync();
+        await trademarkService.ExportAsync();
         await exampleFuriganaService.ExportAsync();
         await graphicService.ExportAsync();
         await audioService.ExportAsync();

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,41 +16,31 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Forks.JMdict.Models;
+namespace Jitendex.Forks.JMdict.RowModels;
 
-internal sealed record KanjiFormBridgeRow
+internal sealed record GraphicLicenseRow
 (
-    int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder
+    int Id,
+    string Name,
+    string InfoUrl
 );
 
-internal sealed record FuriganaSegmentRow
+internal sealed record GraphicRow
+(
+    int Id,
+    int LicenseId,
+    bool Cropped,
+    string PageUrl,
+    string FileUrl,
+    string Author,
+    string? AuthorUrl,
+    string? Title
+);
+
+internal sealed record SenseGraphicRow
 (
     int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder,
+    int SenseOrder,
     int Order,
-    string BaseText,
-    string? Furigana
-);
-
-internal sealed record CharacterReadingLinkRow
-(
-    int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder,
-    int FuriganaSegmentOrder,
-    int CharacterReadingId,
-    string DerivedReadingText
-);
-
-internal sealed record CompoundReadingLinkRow
-(
-    int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder,
-    int FuriganaSegmentOrder,
-    int CompoundId,
-    string ReadingText
+    int GraphicId
 );

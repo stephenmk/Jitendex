@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMdict.ForkEntities.Media;
-using Jitendex.Forks.JMdict.Models;
+using Jitendex.Forks.JMdict.RowModels;
 
 namespace Jitendex.Forks.JMdict.Tables.Media;
 

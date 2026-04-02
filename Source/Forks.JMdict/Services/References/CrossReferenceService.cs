@@ -20,7 +20,7 @@ using System.Collections.Frozen;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.Models;
+using Jitendex.Forks.JMdict.RowModels;
 using Jitendex.Forks.JMdict.Tables.References;
 
 namespace Jitendex.Forks.JMdict.Services.References;

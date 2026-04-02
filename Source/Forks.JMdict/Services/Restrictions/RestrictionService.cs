@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.Models;
+using Jitendex.Forks.JMdict.RowModels;
 using Jitendex.Forks.JMdict.Tables.Restrictions;
 
 namespace Jitendex.Forks.JMdict.Services.Restrictions;

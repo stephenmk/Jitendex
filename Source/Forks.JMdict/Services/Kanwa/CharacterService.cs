@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.Models;
+using Jitendex.Forks.JMdict.RowModels;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
 using HomeTypeId = Jitendex.Data.Home.Entities.Kanwa.CompoundReadingTypeId;
 using ForkTypeId = Jitendex.Data.JMdict.ForkEntities.Kanwa.CompoundReadingTypeId;

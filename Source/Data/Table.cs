@@ -28,6 +28,7 @@ public abstract class Table<T>
     protected abstract ImmutableArray<string> ColumnNames { get; }
     protected abstract ImmutableArray<string> KeyColNames { get; }
     protected abstract object?[] ParameterValues(T item);
+
     private static readonly ImmutableArray<string> ParameterNames = Enumerable
         .Range(0, 2_000) // The maximum default column count in SQLite
         .Select(static i => $"@{i:X}")

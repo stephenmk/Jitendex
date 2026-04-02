@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.ForkEntities.Headwords;
 using Jitendex.Data.JMdict.ForkEntities.References;
 
 namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
@@ -45,6 +46,9 @@ public sealed class CrossReference
 
     [InverseProperty(nameof(AmbiguousReference.Reference))]
     public AmbiguousReference? IsAmbiguous { get; set; }
+
+    [InverseProperty(nameof(HeadwordReference.CrossReference))]
+    public HeadwordReference? HeadwordReference { get; set; }
 
     #endregion
 }

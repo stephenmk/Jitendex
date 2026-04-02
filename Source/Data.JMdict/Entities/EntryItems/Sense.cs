@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.ForkEntities.Headwords;
 using Jitendex.Data.JMdict.ForkEntities.Media;
 using Jitendex.Data.JMdict.ForkEntities.References;
 
@@ -54,6 +55,9 @@ public sealed class Sense
 
     [InverseProperty(nameof(SenseGraphic.Sense))]
     public List<SenseGraphic> Graphics { get; init; } = [];
+
+    [InverseProperty(nameof(HeadwordSense.Sense))]
+    public List<HeadwordSense> Headwords { get; init; } = [];
 
     #endregion
 }

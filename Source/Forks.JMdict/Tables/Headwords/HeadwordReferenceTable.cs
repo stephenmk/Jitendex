@@ -31,7 +31,8 @@ internal sealed class HeadwordReferenceTable : Table<HeadwordReferenceRow>
         nameof(HeadwordReference.EntryId),
         nameof(HeadwordReference.SenseOrder),
         nameof(HeadwordReference.CrossReferenceOrder),
-        nameof(HeadwordReference.HeadwordId),
+        nameof(HeadwordReference.ReferenceEntryId),
+        nameof(HeadwordReference.HeadwordOrder),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
@@ -46,6 +47,7 @@ internal sealed class HeadwordReferenceTable : Table<HeadwordReferenceRow>
         row.EntryId,
         row.SenseOrder,
         row.CrossReferenceOrder,
-        row.HeadwordId,
+        row.ReferenceEntryId,
+        row.HeadwordOrder,
     ];
 }

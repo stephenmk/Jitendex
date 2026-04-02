@@ -23,17 +23,16 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.Data.JMdict.ForkEntities.Headwords;
 
 [Table(nameof(HeadwordSense))]
-[PrimaryKey(nameof(HeadwordId), nameof(Number))]
+[PrimaryKey(nameof(EntryId), nameof(HeadwordOrder), nameof(SenseOrder))]
 public sealed class HeadwordSense
 {
-    public required int HeadwordId { get; init; }
-    public required int Number { get; init; }
-    public required int EntryId { get; set; }
-    public required int SenseOrder { get; set; }
+    public required int EntryId { get; init; }
+    public required int HeadwordOrder { get; init; }
+    public required int SenseOrder { get; init; }
 
-    [ForeignKey(nameof(HeadwordId))]
+    [ForeignKey($"{nameof(EntryId)}, {nameof(HeadwordOrder)}")]
     public Headword Headword { get; init; } = null!;
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; set; } = null!;
+    public Sense Sense { get; init; } = null!;
 }

@@ -28,23 +28,22 @@ internal sealed class HeadwordSenseTable : Table<HeadwordSenseRow>
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(HeadwordSense.HeadwordId),
-        nameof(HeadwordSense.Number),
         nameof(HeadwordSense.EntryId),
+        nameof(HeadwordSense.HeadwordOrder),
         nameof(HeadwordSense.SenseOrder),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(HeadwordSense.HeadwordId),
-        nameof(HeadwordSense.Number),
+        nameof(HeadwordSense.EntryId),
+        nameof(HeadwordSense.HeadwordOrder),
+        nameof(HeadwordSense.SenseOrder),
     ];
 
     protected override object?[] ParameterValues(HeadwordSenseRow row) =>
     [
-        row.HeadwordId,
-        row.Number,
         row.EntryId,
+        row.HeadwordOrder,
         row.SenseOrder,
     ];
 }

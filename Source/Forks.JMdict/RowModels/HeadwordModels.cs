@@ -20,25 +20,28 @@ namespace Jitendex.Forks.JMdict.RowModels;
 
 internal sealed record HeadwordRow
 (
-    int Id,
+    int EntryId,
+    int Order,
+    int Score,
     string Surface,
     string? Reading,
-    int EntryId,
     int? ReadingOrder,
-    int? KanjiFormOrder,
-    int Score
+    int? KanjiFormOrder
 );
 
 internal sealed record HeadwordNumberRow
 (
-    int HeadwordId,
+    int EntryId,
+    int HeadwordOrder,
     int Number
 );
 
 internal sealed record HeadwordRedirectRow
 (
-    int HeadwordId,
-    int RedirectId
+    int EntryId,
+    int HeadwordOrder,
+    int RedirectEntryId,
+    int RedirectHeadwordOrder
 );
 
 internal sealed record HeadwordReferenceRow
@@ -46,25 +49,27 @@ internal sealed record HeadwordReferenceRow
     int EntryId,
     int SenseOrder,
     int CrossReferenceOrder,
-    int HeadwordId
+    int ReferenceEntryId,
+    int HeadwordOrder
 );
 
 internal sealed record HeadwordRuleRow
 (
-    int HeadwordId,
+    int EntryId,
+    int HeadwordOrder,
     string Name
 );
 
 internal sealed record HeadwordSenseRow
 (
-    int HeadwordId,
-    int Number,
     int EntryId,
+    int HeadwordOrder,
     int SenseOrder
 );
 
 internal sealed record HeadwordTagRow
 (
-    int HeadwordId,
+    int EntryId,
+    int HeadwordOrder,
     string Name
 );

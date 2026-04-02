@@ -28,18 +28,23 @@ internal sealed class HeadwordRedirectTable : Table<HeadwordRedirectRow>
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(HeadwordRedirect.HeadwordId),
-        nameof(HeadwordRedirect.RedirectId),
+        nameof(HeadwordRedirect.EntryId),
+        nameof(HeadwordRedirect.HeadwordOrder),
+        nameof(HeadwordRedirect.RedirectEntryId),
+        nameof(HeadwordRedirect.RedirectHeadwordOrder),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(HeadwordRedirect.HeadwordId)
+        nameof(HeadwordRedirect.EntryId),
+        nameof(HeadwordRedirect.HeadwordOrder),
     ];
 
     protected override object?[] ParameterValues(HeadwordRedirectRow row) =>
     [
-        row.HeadwordId,
-        row.RedirectId,
+        row.EntryId,
+        row.HeadwordOrder,
+        row.RedirectEntryId,
+        row.RedirectHeadwordOrder,
     ];
 }

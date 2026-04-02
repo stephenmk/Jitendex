@@ -22,15 +22,17 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.Data.JMdict.ForkEntities.Headwords;
 
 [Table(nameof(HeadwordRedirect))]
-[PrimaryKey(nameof(HeadwordId))]
+[PrimaryKey(nameof(EntryId), nameof(HeadwordOrder))]
 public sealed class HeadwordRedirect
 {
-    public required int HeadwordId { get; init; }
-    public required int RedirectId { get; init; }
+    public required int EntryId { get; init; }
+    public required int HeadwordOrder { get; init; }
+    public required int RedirectEntryId { get; set; }
+    public required int RedirectHeadwordOrder { get; set; }
 
-    [ForeignKey(nameof(HeadwordId))]
+    [ForeignKey($"{nameof(EntryId)}, {nameof(HeadwordOrder)}")]
     public Headword Headword { get; init; } = null!;
 
-    [ForeignKey(nameof(RedirectId))]
-    public Headword RedirectHeadword { get; init; } = null!;
+    [ForeignKey($"{nameof(RedirectEntryId)}, {nameof(RedirectHeadwordOrder)}")]
+    public Headword RedirectHeadword { get; set; } = null!;
 }

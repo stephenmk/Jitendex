@@ -28,19 +28,22 @@ internal sealed class HeadwordTagTable : Table<HeadwordTagRow>
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(HeadwordTag.HeadwordId),
+        nameof(HeadwordTag.EntryId),
+        nameof(HeadwordTag.HeadwordOrder),
         nameof(HeadwordTag.Name),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(HeadwordTag.HeadwordId),
+        nameof(HeadwordTag.EntryId),
+        nameof(HeadwordTag.HeadwordOrder),
         nameof(HeadwordTag.Name),
     ];
 
     protected override object?[] ParameterValues(HeadwordTagRow row) =>
     [
-        row.HeadwordId,
+        row.EntryId,
+        row.HeadwordOrder,
         row.Name,
     ];
 }

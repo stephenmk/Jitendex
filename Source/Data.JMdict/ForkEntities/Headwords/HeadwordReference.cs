@@ -29,11 +29,12 @@ public sealed class HeadwordReference
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int CrossReferenceOrder { get; init; }
-    public required int HeadwordId { get; set; }
+    public required int ReferenceEntryId { get; set; }
+    public required int HeadwordOrder { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
     public CrossReference CrossReference { get; init; } = null!;
 
-    [ForeignKey(nameof(HeadwordId))]
+    [ForeignKey($"{nameof(ReferenceEntryId)}, {nameof(HeadwordOrder)}")]
     public Headword Headword { get; set; } = null!;
 }

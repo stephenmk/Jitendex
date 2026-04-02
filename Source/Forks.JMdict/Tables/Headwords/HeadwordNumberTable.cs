@@ -28,19 +28,21 @@ internal sealed class HeadwordNumberTable : Table<HeadwordNumberRow>
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(HeadwordNumber.HeadwordId),
+        nameof(HeadwordNumber.EntryId),
+        nameof(HeadwordNumber.HeadwordOrder),
         nameof(HeadwordNumber.Number),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(HeadwordNumber.HeadwordId),
-        nameof(HeadwordNumber.Number),
+        nameof(HeadwordNumber.EntryId),
+        nameof(HeadwordNumber.HeadwordOrder),
     ];
 
     protected override object?[] ParameterValues(HeadwordNumberRow row) =>
     [
-        row.HeadwordId,
+        row.EntryId,
+        row.HeadwordOrder,
         row.Number,
     ];
 }

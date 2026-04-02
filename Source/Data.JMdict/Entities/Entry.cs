@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Jitendex.Data.JMdict.Entities.EntryItems;
+using Jitendex.Data.JMdict.ForkEntities.Headwords;
 
 namespace Jitendex.Data.JMdict.Entities;
 
@@ -31,4 +32,11 @@ public sealed class Entry
 
     [ForeignKey(nameof(Id))]
     public Sequence Sequence { get; init; } = null!;
+
+    #region Fork Properties
+
+    [InverseProperty(nameof(Headword.Entry))]
+    public List<Headword> Headwords { get; init; } = [];
+
+    #endregion
 }

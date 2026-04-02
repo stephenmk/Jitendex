@@ -22,12 +22,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.Data.JMdict.ForkEntities.Headwords;
 
 [Table(nameof(HeadwordNumber))]
-[PrimaryKey(nameof(HeadwordId), nameof(Number))]
+[PrimaryKey(nameof(EntryId), nameof(HeadwordOrder))]
 public sealed class HeadwordNumber
 {
-    public required int HeadwordId { get; init; }
-    public required int Number { get; init; }
+    public required int EntryId { get; init; }
+    public required int HeadwordOrder { get; init; }
+    public required int Number { get; set; }
 
-    [ForeignKey(nameof(HeadwordId))]
+    [ForeignKey($"{nameof(EntryId)}, {nameof(HeadwordOrder)}")]
     public Headword Headword { get; init; } = null!;
 }

@@ -33,7 +33,9 @@ internal sealed class CharacterService
     CompoundReadingTable readingTable,
     CompoundReadingTypeTable readingTypeTable,
     CharacterTable characterTable,
-    CompoundCharacterTable compoundCharacterTable
+    CompoundCharacterTable compoundCharacterTable,
+    VariantTypeTable variantTypeTable,
+    VariantTable variantTable
 )
 {
     public void Write()
@@ -43,29 +45,33 @@ internal sealed class CharacterService
         WriteCompoundReadings();
         WriteCharacters();
         WriteCompoundCharacters();
+        WriteVariantTypes();
+        WriteVariants();
     }
 
     private void WriteCompounds()
     {
-        var compoundRows = homeContext.Compounds
+        var rows = homeContext.Compounds
             .Select(static x => new CompoundRow(x.Id, x.Text));
-        compoundTable.InsertItems(forkContext, compoundRows);
+
+        compoundTable.InsertItems(forkContext, rows);
     }
 
     private void WriteCompoundReadingTypes()
     {
-        var typeRows = homeContext.CompoundReadingTypes
+        var rows = homeContext.CompoundReadingTypes
             .Select(static x => ConvertTypeId(x.Id))
             .Select(static id => new CompoundReadingTypeRow((int)id, id.ToString()));
 
-        readingTypeTable.InsertItems(forkContext, typeRows);
+        readingTypeTable.InsertItems(forkContext, rows);
     }
 
     private void WriteCompoundReadings()
     {
-        var readingRows = homeContext.CompoundReadings
+        var rows = homeContext.CompoundReadings
             .Select(static x => new CompoundReadingRow(x.CompoundId, x.Text, (int)ConvertTypeId(x.TypeId)));
-        readingTable.InsertItems(forkContext, readingRows);
+
+        readingTable.InsertItems(forkContext, rows);
     }
 
     private void WriteCharacters()
@@ -109,6 +115,22 @@ internal sealed class CharacterService
         }
 
         compoundCharacterTable.InsertItems(forkContext, rows);
+    }
+
+    private void WriteVariantTypes()
+    {
+        var rows = homeContext.VariantTypes
+            .Select(static id => new VariantTypeRow((int)id.Id, id.Name));
+
+        variantTypeTable.InsertItems(forkContext, rows);
+    }
+
+    private void WriteVariants()
+    {
+        var rows = homeContext.Variants
+            .Select(static v => new VariantRow(v.CharacterValue, v.VariantValue, (int)v.TypeId));
+
+        variantTable.InsertItems(forkContext, rows);
     }
 
     #pragma warning disable format

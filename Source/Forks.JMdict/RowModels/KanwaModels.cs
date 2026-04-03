@@ -84,3 +84,16 @@ internal sealed record DerivedCharacterReadingTypeRow
     int Id,
     string Name
 );
+
+internal sealed record VariantRow
+(
+    int CharacterValue,
+    int VariantValue,
+    int TypeId
+);
+
+internal sealed record VariantTypeRow
+(
+    int Id,
+    string Name
+);

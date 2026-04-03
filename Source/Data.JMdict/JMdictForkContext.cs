@@ -97,6 +97,8 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<CharacterReadingType> CharacterReadingTypes { get; set; } = null!;
     public DbSet<DerivedCharacterReading> DerivedCharacterReadings { get; set; } = null!;
     public DbSet<DerivedCharacterReadingType> DerivedCharacterReadingTypes { get; set; } = null!;
+    public DbSet<CharacterVariant> CharacterVariants { get; set; } = null!;
+    public DbSet<VariantType> VariantTypes { get; set; } = null!;
     #endregion
 
     #region Media

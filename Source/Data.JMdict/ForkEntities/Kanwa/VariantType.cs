@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -21,18 +21,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Kanwa;
 
-[Table(nameof(Character))]
-[PrimaryKey(nameof(Value))]
-public sealed class Character
+[Table(nameof(VariantType))]
+[PrimaryKey(nameof(Id))]
+public sealed class VariantType
 {
-    public required int Value { get; init; }
+    public required int Id { get; init; }
+    public required string Name { get; init; }
 
-    [InverseProperty(nameof(CharacterReading.Character))]
-    public ICollection<CharacterReading> Readings { get; init; } = [];
-
-    [InverseProperty(nameof(CompoundCharacter.Character))]
-    public ICollection<CompoundCharacter> Compounds { get; init; } = [];
-
-    [InverseProperty(nameof(CharacterVariant.Character))]
+    [InverseProperty(nameof(CharacterVariant.Type))]
     public ICollection<CharacterVariant> Variants { get; init; } = [];
 }

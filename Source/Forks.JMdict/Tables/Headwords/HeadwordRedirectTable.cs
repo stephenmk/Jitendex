@@ -30,7 +30,6 @@ internal sealed class HeadwordRedirectTable : Table<HeadwordRedirectRow>
     [
         nameof(HeadwordRedirect.EntryId),
         nameof(HeadwordRedirect.HeadwordOrder),
-        nameof(HeadwordRedirect.RedirectEntryId),
         nameof(HeadwordRedirect.RedirectHeadwordOrder),
     ];
 
@@ -44,7 +43,6 @@ internal sealed class HeadwordRedirectTable : Table<HeadwordRedirectRow>
     [
         row.EntryId,
         row.HeadwordOrder,
-        row.RedirectEntryId,
         row.RedirectHeadwordOrder,
     ];
 }

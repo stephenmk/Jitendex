@@ -27,8 +27,8 @@ namespace Jitendex.Data.JMdict.ForkEntities.Headwords;
 [Index(nameof(Surface), nameof(Reading), nameof(EntryId), IsUnique = true)]
 public sealed class Headword
 {
-    public required int EntryId { get; set; }
-    public required int Order { get; set; }
+    public required int EntryId { get; init; }
+    public required int Order { get; init; }
     public required int Score { get; set; }
     public required string Surface { get; set; }
     public required string? Reading { get; set; }

@@ -27,12 +27,11 @@ public sealed class HeadwordRedirect
 {
     public required int EntryId { get; init; }
     public required int HeadwordOrder { get; init; }
-    public required int RedirectEntryId { get; set; }
     public required int RedirectHeadwordOrder { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(HeadwordOrder)}")]
     public Headword Headword { get; init; } = null!;
 
-    [ForeignKey($"{nameof(RedirectEntryId)}, {nameof(RedirectHeadwordOrder)}")]
+    [ForeignKey($"{nameof(EntryId)}, {nameof(RedirectHeadwordOrder)}")]
     public Headword RedirectHeadword { get; set; } = null!;
 }

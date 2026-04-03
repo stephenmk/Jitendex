@@ -40,7 +40,6 @@ internal sealed record HeadwordRedirectRow
 (
     int EntryId,
     int HeadwordOrder,
-    int RedirectEntryId,
     int RedirectHeadwordOrder
 );
 

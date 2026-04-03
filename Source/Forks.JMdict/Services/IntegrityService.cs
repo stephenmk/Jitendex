@@ -34,6 +34,7 @@ internal partial class IntegrityService
         CheckForZeroWidthSpaces();
         CheckForUnpairedPriorityTags();
         CheckForPriorityTagsOnRareForms();
+        CheckForTransitivityTagOnSensesGlossedAsAdverbs();
 
         context.SaveChanges();
     }
@@ -113,6 +114,24 @@ internal partial class IntegrityService
         }
     }
 
+    private void CheckForTransitivityTagOnSensesGlossedAsAdverbs()
+    {
+        // Query all senses containing "adv", "vs", and either "vi" or "vt" tags,
+        // and where the "adv" tag is before the "vs" tag.
+        var senses = context.Senses
+            .Where(static s => s.PartsOfSpeech.Any(static p => p.TagName == "adv"))
+            .Where(static s => s.PartsOfSpeech.Any(static p => p.TagName == "vs"))
+            .Where(static s => s.PartsOfSpeech.Any(static p => new[] { "vi", "vt" }.Contains(p.TagName)))
+            .Where(static s => s.PartsOfSpeech.First(static p => p.TagName == "adv").Order <
+                               s.PartsOfSpeech.First(static p => p.TagName == "vs").Order)
+            .Select(static s => new { s.EntryId, s.Order });
+
+        foreach (var sense in senses)
+        {
+            LogTransitivityTagOnAdverb(sense.EntryId, sense.Order + 1);
+        }
+    }
+
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {Id} contains a [uk] misc tag, but no kanji forms.")]
     partial void LogUkTagOnEntryWithoutKanjiForms(int id);
@@ -132,4 +151,8 @@ internal partial class IntegrityService
     [LoggerMessage(LogLevel.Warning,
     "Entry ID `{Id}` contains a priority tag `{TagName}` on a rare form")]
     partial void LogPriorityTagOnRareForm(int id, string tagName);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry ID `{Id}` sense number {SenseNumber} is glossed as an adverb and contains a transitivity tag")]
+    partial void LogTransitivityTagOnAdverb(int id, int senseNumber);
 }

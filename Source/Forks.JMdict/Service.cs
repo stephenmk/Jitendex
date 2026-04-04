@@ -21,6 +21,7 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Services;
 using Jitendex.Forks.JMdict.Services.Furigana;
+using Jitendex.Forks.JMdict.Services.Headwords;
 using Jitendex.Forks.JMdict.Services.Kanwa;
 using Jitendex.Forks.JMdict.Services.Media;
 using Jitendex.Forks.JMdict.Services.Patching;
@@ -48,6 +49,7 @@ internal sealed class Service
     DerivedReadingTypeService derivedReadingTypes,
     KanjiFormBridgeService kanjiFormBridges,
     FuriganaSegmentService furiganaSegments,
+    HeadwordService headwordService,
     IntegrityService integrityChecker
 )
 {
@@ -66,6 +68,7 @@ internal sealed class Service
         RunFuriganaServices();
         RunReferenceServices();
         RunGraphicServices();
+        RunHeadwordServices();
 
         RunPostprocessing();
 
@@ -126,6 +129,12 @@ internal sealed class Service
     {
         logger.LogInformation("Transferring graphics data.");
         graphicService.Write();
+    }
+
+    private void RunHeadwordServices()
+    {
+        logger.LogInformation("Computing dictionary headwords.");
+        headwordService.Write();
     }
 
     private void RunPostprocessing()

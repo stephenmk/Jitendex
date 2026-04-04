@@ -22,12 +22,14 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Services;
 using Jitendex.Forks.JMdict.Services.Furigana;
+using Jitendex.Forks.JMdict.Services.Headwords;
 using Jitendex.Forks.JMdict.Services.Kanwa;
 using Jitendex.Forks.JMdict.Services.Media;
 using Jitendex.Forks.JMdict.Services.Patching;
 using Jitendex.Forks.JMdict.Services.References;
 using Jitendex.Forks.JMdict.Services.Restrictions;
 using Jitendex.Forks.JMdict.Tables.Furigana;
+using Jitendex.Forks.JMdict.Tables.Headwords;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
 using Jitendex.Forks.JMdict.Tables.Media;
 using Jitendex.Forks.JMdict.Tables.References;
@@ -40,50 +42,48 @@ internal static class ServiceProvider
     public static Service GetService() => new ServiceCollection()
         .AddTransient<Service>()
 
-        // Databases
+        #region Databases
         .AddDbContext<JMdictContext>()
         .AddDbContext<JMdictForkContext>()
         .AddDbContext<HomeContext>()
+        #endregion
 
-        // Helpers
+        #region Helpers
         .AddTransient<DatabaseCopyService>()
         .AddTransient<CrossReferenceTextParser>()
         .AddTransient<CrossReferenceCacheService>()
+        #endregion
 
-        // Services
+        #region Services
         .AddTransient<PatchService>()
         .AddTransient<PatchRebaser>()
         .AddTransient<IntegrityService>()
         .AddTransient<TrademarkService>()
-
         .AddTransient<RestrictionService>()
         .AddTransient<ReadingRestrictionService>()
         .AddTransient<KanjiFormRestrictionService>()
-
         .AddTransient<CrossReferenceService>()
         .AddTransient<GraphicService>()
-
         .AddTransient<CharacterService>()
         .AddTransient<CharacterReadingService>()
         .AddTransient<DerivedReadingService>()
         .AddTransient<DerivedReadingTypeService>()
         .AddTransient<KanjiFormBridgeService>()
         .AddTransient<FuriganaSegmentService>()
+        .AddTransient<HeadwordService>()
+        #endregion
 
-        // Tables
+        #region Tables
         .AddTransient<RestrictionLinkTable>()
         .AddTransient<ReadingRestrictionLinkTable>()
         .AddTransient<KanjiFormRestrictionLinkTable>()
-
         .AddTransient<AmbiguousReferenceTable>()
         .AddTransient<EntryReferenceTable>()
         .AddTransient<ReadingReferenceTable>()
         .AddTransient<KanjiFormReferenceTable>()
-
         .AddTransient<GraphicTable>()
         .AddTransient<GraphicLicenseTable>()
         .AddTransient<SenseGraphicTable>()
-
         .AddTransient<CompoundTable>()
         .AddTransient<CompoundReadingTable>()
         .AddTransient<CompoundReadingTypeTable>()
@@ -100,6 +100,9 @@ internal static class ServiceProvider
         .AddTransient<FuriganaSegmentTable>()
         .AddTransient<CharacterReadingLinkTable>()
         .AddTransient<CompoundReadingLinkTable>()
+        .AddTransient<HeadwordTable>()
+        .AddTransient<HeadwordRedirectTable>()
+        #endregion
 
         // Logging
         .AddLogging(static builder =>

@@ -24,6 +24,7 @@ using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Data.JMdict.ForkEntities;
 using Jitendex.Data.JMdict.ForkEntities.Furigana;
+using Jitendex.Data.JMdict.ForkEntities.Headwords;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Jitendex.Data.JMdict.ForkEntities.Links;
 using Jitendex.Data.JMdict.ForkEntities.Media;
@@ -105,6 +106,15 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<Graphic> Graphics { get; set; } = null!;
     public DbSet<GraphicLicense> GraphicLicenses { get; set; } = null!;
     public DbSet<SenseGraphic> SenseGraphics { get; set; } = null!;
+    #endregion
+
+    #region Headwords
+    public DbSet<Headword> Headwords { get; set; } = null!;
+    public DbSet<HeadwordRedirect> HeadwordRedirects { get; set; } = null!;
+    public DbSet<HeadwordReference> HeadwordReferences { get; set; } = null!;
+    public DbSet<HeadwordRule> HeadwordRules { get; set; } = null!;
+    public DbSet<HeadwordSense> HeadwordSenses { get; set; } = null!;
+    public DbSet<HeadwordTag> HeadwordTags { get; set; } = null!;
     #endregion
 
     #region Keywords

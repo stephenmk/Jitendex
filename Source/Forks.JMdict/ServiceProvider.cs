@@ -71,6 +71,7 @@ internal static class ServiceProvider
         .AddTransient<KanjiFormBridgeService>()
         .AddTransient<FuriganaSegmentService>()
         .AddTransient<HeadwordService>()
+        .AddTransient<HeadwordSenseService>()
         #endregion
 
         #region Tables
@@ -102,6 +103,8 @@ internal static class ServiceProvider
         .AddTransient<CompoundReadingLinkTable>()
         .AddTransient<HeadwordTable>()
         .AddTransient<HeadwordRedirectTable>()
+        .AddTransient<HeadwordSenseTable>()
+        .AddTransient<HeadwordRuleTable>()
         #endregion
 
         // Logging

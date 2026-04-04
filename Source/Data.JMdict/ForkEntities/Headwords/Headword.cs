@@ -19,12 +19,13 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities;
+using Jitendex.Data.JMdict.ForkEntities.Furigana;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Headwords;
 
 [Table(nameof(Headword))]
 [PrimaryKey(nameof(EntryId), nameof(Order))]
-[Index(nameof(Surface), nameof(Reading), nameof(EntryId), IsUnique = true)]
+[Index(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder), IsUnique = true)]
 public sealed class Headword
 {
     public required int EntryId { get; init; }
@@ -38,11 +39,14 @@ public sealed class Headword
     [ForeignKey(nameof(EntryId))]
     public Entry Entry { get; init; } = null!;
 
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
+    public ReadingKanjiFormBridge? ReadingKanjiFormBridge { get; set; } = null!;
+
     [InverseProperty(nameof(HeadwordNumber.Headword))]
-    public HeadwordNumber Number { get; set; } = null!;
+    public HeadwordNumber? Number { get; set; } = null!;
 
     [InverseProperty(nameof(HeadwordRedirect.Headword))]
-    public HeadwordRedirect Redirect { get; set; } = null!;
+    public HeadwordRedirect? Redirect { get; set; } = null!;
 
     [InverseProperty(nameof(HeadwordRedirect.RedirectHeadword))]
     public ICollection<HeadwordRedirect> ReverseRedirects { get; init; } = [];

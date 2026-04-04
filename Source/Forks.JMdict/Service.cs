@@ -50,6 +50,7 @@ internal sealed class Service
     KanjiFormBridgeService kanjiFormBridges,
     FuriganaSegmentService furiganaSegments,
     HeadwordService headwordService,
+    HeadwordSenseService headwordSenseService,
     IntegrityService integrityChecker
 )
 {
@@ -135,6 +136,7 @@ internal sealed class Service
     {
         logger.LogInformation("Computing dictionary headwords.");
         headwordService.Write();
+        headwordSenseService.Write();
     }
 
     private void RunPostprocessing()

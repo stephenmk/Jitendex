@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities.EntryItems;
+using Jitendex.Data.JMdict.ForkEntities.Headwords;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Furigana;
 
@@ -38,4 +39,7 @@ public sealed class ReadingKanjiFormBridge
 
     [InverseProperty(nameof(FuriganaSegment.KanjiFormBridge))]
     public List<FuriganaSegment> FuriganaSegments { get; init; } = [];
+
+    [InverseProperty(nameof(Headword.ReadingKanjiFormBridge))]
+    public Headword Headword { get; init; } = null!;
 }

@@ -44,7 +44,7 @@ internal partial class IntegrityService
     {
         var miscs = context.Miscs
             .Where(static misc => misc.TagName == "uk")
-            .Where(static misc => misc.Sense.Entry.KanjiForms.Count == 0);
+            .Where(static misc => misc.Sense.Entry.Readings.All(static r => !r.Bridges.Any()));
 
         foreach (var misc in miscs)
         {

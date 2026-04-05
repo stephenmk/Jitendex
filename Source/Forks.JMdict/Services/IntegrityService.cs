@@ -35,6 +35,7 @@ internal partial class IntegrityService
         CheckForUnpairedPriorityTags();
         CheckForPriorityTagsOnRareForms();
         CheckForTransitivityTagOnSensesGlossedAsAdverbs();
+        CheckForCrossReferencesToSearchOnlyForms();
 
         context.SaveChanges();
     }
@@ -132,6 +133,27 @@ internal partial class IntegrityService
         }
     }
 
+    private void CheckForCrossReferencesToSearchOnlyForms()
+    {
+        var kanjiReferences = context.KanjiFormReferences
+            .Where(static r => r.KanjiForm.Infos.Any(static i => i.TagName == "sK"))
+            .Select(static r => new { r.EntryId, r.SenseOrder, r.KanjiForm.Text });
+
+        foreach (var r in kanjiReferences)
+        {
+            LogReferenceToSearchOnlyForm(r.EntryId, r.SenseOrder + 1, r.Text);
+        }
+
+        var readingReferences = context.ReadingReferences
+            .Where(static r => r.Reading.Infos.Any(static i => i.TagName == "sk"))
+            .Select(static r => new { r.EntryId, r.SenseOrder, r.Reading.Text });
+
+        foreach (var r in readingReferences)
+        {
+            LogReferenceToSearchOnlyForm(r.EntryId, r.SenseOrder + 1, r.Text);
+        }
+    }
+
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {Id} contains a [uk] misc tag, but no kanji forms.")]
     partial void LogUkTagOnEntryWithoutKanjiForms(int id);
@@ -155,4 +177,8 @@ internal partial class IntegrityService
     [LoggerMessage(LogLevel.Warning,
     "Entry ID `{Id}` sense number {SenseNumber} is glossed as an adverb and contains a transitivity tag")]
     partial void LogTransitivityTagOnAdverb(int id, int senseNumber);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry ID `{Id}` sense number {SenseNumber} contains a reference to search-only form `{Text}`")]
+    partial void LogReferenceToSearchOnlyForm(int id, int senseNumber, string text);
 }

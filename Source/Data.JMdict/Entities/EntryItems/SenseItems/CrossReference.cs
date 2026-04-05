@@ -47,8 +47,5 @@ public sealed class CrossReference
     [InverseProperty(nameof(AmbiguousReference.Reference))]
     public AmbiguousReference? IsAmbiguous { get; set; }
 
-    [InverseProperty(nameof(HeadwordReference.CrossReference))]
-    public HeadwordReference? HeadwordReference { get; set; }
-
     #endregion
 }

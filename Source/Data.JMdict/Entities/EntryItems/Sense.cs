@@ -57,7 +57,10 @@ public sealed class Sense
     public List<SenseGraphic> Graphics { get; init; } = [];
 
     [InverseProperty(nameof(HeadwordSense.Sense))]
-    public List<HeadwordSense> Headwords { get; init; } = [];
+    public List<HeadwordSense> HeadwordSenses { get; init; } = [];
+
+    [InverseProperty(nameof(HeadwordReference.Sense))]
+    public List<HeadwordReference> HeadwordReferences { get; init; } = [];
 
     #endregion
 }

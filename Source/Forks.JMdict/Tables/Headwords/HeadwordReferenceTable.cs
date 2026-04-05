@@ -30,24 +30,26 @@ internal sealed class HeadwordReferenceTable : Table<HeadwordReferenceRow>
     [
         nameof(HeadwordReference.EntryId),
         nameof(HeadwordReference.SenseOrder),
-        nameof(HeadwordReference.CrossReferenceOrder),
-        nameof(HeadwordReference.ReferenceEntryId),
-        nameof(HeadwordReference.HeadwordOrder),
+        nameof(HeadwordReference.Order),
+        nameof(HeadwordReference.RefEntryId),
+        nameof(HeadwordReference.RefHeadwordOrder),
+        nameof(HeadwordReference.RefSenseOrder),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(HeadwordReference.EntryId),
         nameof(HeadwordReference.SenseOrder),
-        nameof(HeadwordReference.CrossReferenceOrder),
+        nameof(HeadwordReference.Order),
     ];
 
     protected override object?[] ParameterValues(HeadwordReferenceRow row) =>
     [
         row.EntryId,
         row.SenseOrder,
-        row.CrossReferenceOrder,
-        row.ReferenceEntryId,
-        row.HeadwordOrder,
+        row.Order,
+        row.RefEntryId,
+        row.RefHeadwordOrder,
+        row.RefSenseOrder,
     ];
 }

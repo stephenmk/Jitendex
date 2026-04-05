@@ -18,23 +18,24 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.EntryItems;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Headwords;
 
 [Table(nameof(HeadwordReference))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(CrossReferenceOrder))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
 public sealed class HeadwordReference
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
-    public required int CrossReferenceOrder { get; init; }
-    public required int ReferenceEntryId { get; set; }
-    public required int HeadwordOrder { get; set; }
+    public required int Order { get; init; }
+    public required int RefEntryId { get; set; }
+    public required int RefHeadwordOrder { get; set; }
+    public required int RefSenseOrder { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(CrossReferenceOrder)}")]
-    public CrossReference CrossReference { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
+    public Sense Sense { get; init; } = null!;
 
-    [ForeignKey($"{nameof(ReferenceEntryId)}, {nameof(HeadwordOrder)}")]
-    public Headword Headword { get; set; } = null!;
+    [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefHeadwordOrder)}, {nameof(RefSenseOrder)}")]
+    public HeadwordSense HeadwordSense { get; set; } = null!;
 }

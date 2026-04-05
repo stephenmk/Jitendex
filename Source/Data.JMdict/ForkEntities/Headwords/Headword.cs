@@ -42,21 +42,18 @@ public sealed class Headword
     [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
     public ReadingKanjiFormBridge? ReadingKanjiFormBridge { get; set; } = null!;
 
-    [InverseProperty(nameof(HeadwordNumber.Headword))]
-    public HeadwordNumber? Number { get; set; } = null!;
-
     [InverseProperty(nameof(HeadwordRedirect.Headword))]
     public HeadwordRedirect? Redirect { get; set; } = null!;
-
-    [InverseProperty(nameof(HeadwordRedirect.RedirectHeadword))]
-    public ICollection<HeadwordRedirect> ReverseRedirects { get; init; } = [];
-
-    [InverseProperty(nameof(HeadwordRule.Headword))]
-    public ICollection<HeadwordRule> Rule { get; init; } = [];
 
     [InverseProperty(nameof(HeadwordSense.Headword))]
     public ICollection<HeadwordSense> Senses { get; init; } = [];
 
+    [InverseProperty(nameof(HeadwordRule.Headword))]
+    public ICollection<HeadwordRule> Rules { get; init; } = [];
+
     [InverseProperty(nameof(HeadwordTag.Headword))]
     public ICollection<HeadwordTag> Tags { get; init; } = [];
+
+    [InverseProperty(nameof(HeadwordRedirect.RedirectHeadword))]
+    public ICollection<HeadwordRedirect> ReverseRedirects { get; init; } = [];
 }

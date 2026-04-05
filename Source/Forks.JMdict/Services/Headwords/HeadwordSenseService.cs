@@ -57,9 +57,11 @@ internal partial class HeadwordSenseService
                             .Where(static r => r.Link != null)
                             .All(static r => !r.Link!.Reading.Bridges.Any()),
                         ReadingRestrictions = s.ReadingRestrictions
-                            .Select(static r => r.Order),
+                            .Where(static r => r.Link != null)
+                            .Select(static r => r.Link!.ReadingOrder),
                         KanjiFormRestrictions = s.KanjiFormRestrictions
-                            .Select(static r => r.Order),
+                            .Where(static r => r.Link != null)
+                            .Select(static r => r.Link!.KanjiFormOrder),
                         PartsOfSpeech = s.PartsOfSpeech
                             .Select(static p => p.TagName)
                     })

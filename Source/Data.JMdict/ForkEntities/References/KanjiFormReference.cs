@@ -36,5 +36,5 @@ public sealed class KanjiFormReference
     public EntryReference Source { get; init; } = null!;
 
     [ForeignKey($"{nameof(RefEntryId)}, {nameof(RefKanjiFormOrder)}")]
-    public KanjiForm? KanjiForm { get; set; }
+    public KanjiForm KanjiForm { get; set; } = null!;
 }

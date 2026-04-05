@@ -51,6 +51,7 @@ internal sealed class Service
     FuriganaSegmentService furiganaSegments,
     HeadwordService headwordService,
     HeadwordSenseService headwordSenseService,
+    HeadwordReferenceService headwordReferenceService,
     IntegrityService integrityChecker
 )
 {
@@ -137,6 +138,7 @@ internal sealed class Service
         logger.LogInformation("Computing dictionary headwords.");
         headwordService.Write();
         headwordSenseService.Write();
+        headwordReferenceService.Write();
     }
 
     private void RunPostprocessing()

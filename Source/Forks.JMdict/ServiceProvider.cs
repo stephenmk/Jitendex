@@ -72,6 +72,7 @@ internal static class ServiceProvider
         .AddTransient<FuriganaSegmentService>()
         .AddTransient<HeadwordService>()
         .AddTransient<HeadwordSenseService>()
+        .AddTransient<HeadwordReferenceService>()
         #endregion
 
         #region Tables
@@ -105,6 +106,7 @@ internal static class ServiceProvider
         .AddTransient<HeadwordRedirectTable>()
         .AddTransient<HeadwordSenseTable>()
         .AddTransient<HeadwordRuleTable>()
+        .AddTransient<HeadwordReferenceTable>()
         #endregion
 
         // Logging

@@ -29,13 +29,6 @@ internal sealed record HeadwordRow
     int? KanjiFormOrder
 );
 
-internal sealed record HeadwordNumberRow
-(
-    int EntryId,
-    int HeadwordOrder,
-    int Number
-);
-
 internal sealed record HeadwordRedirectRow
 (
     int EntryId,
@@ -47,9 +40,10 @@ internal sealed record HeadwordReferenceRow
 (
     int EntryId,
     int SenseOrder,
-    int CrossReferenceOrder,
-    int ReferenceEntryId,
-    int HeadwordOrder
+    int Order,
+    int RefEntryId,
+    int RefHeadwordOrder,
+    int RefSenseOrder
 );
 
 internal sealed record HeadwordRuleRow

@@ -33,10 +33,12 @@ internal partial class HeadwordService
     HeadwordRedirectTable redirectTable
 )
 {
-    // Tried using FrozenSet instead of ImmutableArray here, but Entity Framework freaked out.
     private readonly static ImmutableArray<string> HighPriorityTagNames = ["spec1", "news1", "ichi1", "gai1"];
-    private readonly static ImmutableArray<string> IrregularInfoTags = ["sK", "iK", "rK", "sk", "ik", "rk", "io", "ok"];
-    private readonly static ImmutableArray<string> IrregularKanjiTags = ["sK", "iK", "rK"];
+    private readonly static ImmutableArray<string> IrregularKanjiTags = ["sK", "iK", "rK", "io", "ik"];
+    private readonly static ImmutableArray<string> IrregularReadingTags = ["ik", "sk", "rk", "ok"];
+
+    private readonly static FrozenSet<string> HighPriorityTagNameSet = [.. HighPriorityTagNames];
+    private readonly static FrozenSet<string> IrregularInfoTagSet = [.. IrregularKanjiTags, .. IrregularReadingTags];
 
     public void Write()
     {
@@ -213,14 +215,14 @@ internal partial class HeadwordService
     {
         foreach (var prioTag in prioTags)
         {
-            if (HighPriorityTagNames.Contains(prioTag))
+            if (HighPriorityTagNameSet.Contains(prioTag))
             {
                 return 1;
             }
         }
         foreach (var infoTag in infoTags)
         {
-            if (IrregularInfoTags.Contains(infoTag))
+            if (IrregularInfoTagSet.Contains(infoTag))
             {
                 return -1;
             }

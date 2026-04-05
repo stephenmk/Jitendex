@@ -70,7 +70,7 @@ internal partial class IntegrityService
 
     private void CheckForZeroWidthSpaces()
     {
-        const string zeroWidthSpace = "\u200B";
+        const char zeroWidthSpace = '\u200B';
 
         var glosses = context.Glosses
             .Where(static gloss => gloss.Text.Contains(zeroWidthSpace));
@@ -78,7 +78,7 @@ internal partial class IntegrityService
         foreach (var gloss in glosses)
         {
             LogZeroWidthSpace(gloss.EntryId, gloss.Text);
-            gloss.Text = gloss.Text.Replace(zeroWidthSpace, string.Empty);
+            gloss.Text = gloss.Text.Replace(zeroWidthSpace.ToString(), string.Empty);
         }
     }
 

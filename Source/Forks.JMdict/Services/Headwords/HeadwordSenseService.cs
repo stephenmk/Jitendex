@@ -37,6 +37,8 @@ internal partial class HeadwordSenseService
 
         var headwords = context.Headwords
             .AsSplitQuery()
+            .OrderBy(static h => h.EntryId)
+            .ThenBy(static h => h.Order)
             .Select(static h => new
             {
                 h.EntryId,
@@ -47,6 +49,7 @@ internal partial class HeadwordSenseService
                 h.KanjiFormOrder,
                 IsRedirect = h.Redirect != null,
                 Senses = h.Entry.Senses
+                    .OrderBy(static s => s.Order)
                     .Select(static s => new
                     {
                         s.Order,
@@ -117,9 +120,10 @@ internal partial class HeadwordSenseService
                 }
             }
 
+            int i = 0;
             foreach (var order in orders)
             {
-                senseRows.Add(new(headword.EntryId, headword.Order, order));
+                senseRows.Add(new(headword.EntryId, headword.Order, i++, order));
             }
 
             foreach (var pos in partsOfSpeech)

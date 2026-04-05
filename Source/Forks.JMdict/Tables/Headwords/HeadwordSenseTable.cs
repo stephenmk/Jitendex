@@ -30,6 +30,7 @@ internal sealed class HeadwordSenseTable : Table<HeadwordSenseRow>
     [
         nameof(HeadwordSense.EntryId),
         nameof(HeadwordSense.HeadwordOrder),
+        nameof(HeadwordSense.Order),
         nameof(HeadwordSense.SenseOrder),
     ];
 
@@ -37,13 +38,14 @@ internal sealed class HeadwordSenseTable : Table<HeadwordSenseRow>
     [
         nameof(HeadwordSense.EntryId),
         nameof(HeadwordSense.HeadwordOrder),
-        nameof(HeadwordSense.SenseOrder),
+        nameof(HeadwordSense.Order),
     ];
 
     protected override object?[] ParameterValues(HeadwordSenseRow row) =>
     [
         row.EntryId,
         row.HeadwordOrder,
+        row.Order,
         row.SenseOrder,
     ];
 }

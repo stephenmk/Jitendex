@@ -63,6 +63,7 @@ internal sealed record HeadwordSenseRow
 (
     int EntryId,
     int HeadwordOrder,
+    int Order,
     int SenseOrder
 );
 

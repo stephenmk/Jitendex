@@ -18,24 +18,17 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.Export.Entities.AlternativeForms.SenseRestrictions;
 
-namespace Jitendex.Data.Export.Entities.AlternativeForms;
+namespace Jitendex.Data.Export.Entities.AlternativeForms.SenseRestrictions;
 
-[Table(nameof(OtherSurface))]
-[PrimaryKey(nameof(HeadwordId), nameof(Order))]
-public sealed class OtherSurface
+[Table(nameof(OtherReadingRestriction))]
+[PrimaryKey(nameof(HeadwordId), nameof(FormOrder), nameof(SenseNumber))]
+public sealed class OtherReadingRestriction
 {
     public required int HeadwordId { get; init; }
-    public required int Order { get; init; }
-    public required int OtherHeadwordId { get; set; }
+    public required int FormOrder { get; init; }
+    public required int SenseNumber { get; init; }
 
-    [ForeignKey(nameof(HeadwordId))]
-    public Headword Headword { get; init; } = null!;
-
-    [ForeignKey(nameof(OtherHeadwordId))]
-    public Headword OtherHeadword { get; set; } = null!;
-
-    [InverseProperty(nameof(OtherSurfaceRestriction.OtherSurface))]
-    public List<OtherSurfaceRestriction> Restrictions { get; init; } = [];
+    [ForeignKey($"{nameof(HeadwordId)}, {nameof(FormOrder)}")]
+    public OtherReading OtherReading { get; init; } = null!;
 }

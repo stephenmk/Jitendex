@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.Export.Entities.AlternativeForms.SenseRestrictions;
 
 namespace Jitendex.Data.Export.Entities.AlternativeForms;
 
@@ -34,4 +35,7 @@ public sealed class OtherReading
 
     [ForeignKey(nameof(OtherHeadwordId))]
     public Headword OtherHeadword { get; set; } = null!;
+
+    [InverseProperty(nameof(OtherReadingRestriction.OtherReading))]
+    public List<OtherReadingRestriction> Restrictions { get; init; } = [];
 }

@@ -18,24 +18,22 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.Export.Entities.AlternativeForms.SenseRestrictions;
 
-namespace Jitendex.Data.Export.Entities.AlternativeForms;
+namespace Jitendex.Data.Export.Entities.GlossaryItems.SenseGroupItems.SenseItems;
 
-[Table(nameof(OtherSurface))]
-[PrimaryKey(nameof(HeadwordId), nameof(Order))]
-public sealed class OtherSurface
+[Table(nameof(Sense))]
+[PrimaryKey(nameof(HeadwordId), nameof(GroupOrder), nameof(SenseOrder), nameof(Order))]
+public sealed class SenseTag
 {
     public required int HeadwordId { get; init; }
+    public required int GroupOrder { get; init; }
+    public required int SenseOrder { get; init; }
     public required int Order { get; init; }
-    public required int OtherHeadwordId { get; set; }
+    public required string Class { get; set; }
+    public required string Code { get; set; }
+    public required string DisplayText { get; set; }
+    public required string Description { get; set; }
 
-    [ForeignKey(nameof(HeadwordId))]
-    public Headword Headword { get; init; } = null!;
-
-    [ForeignKey(nameof(OtherHeadwordId))]
-    public Headword OtherHeadword { get; set; } = null!;
-
-    [InverseProperty(nameof(OtherSurfaceRestriction.OtherSurface))]
-    public List<OtherSurfaceRestriction> Restrictions { get; init; } = [];
+    [ForeignKey($"{nameof(HeadwordId)}, {nameof(GroupOrder)}, {nameof(SenseOrder)}")]
+    public Sense Sense { get; init; } = null!;
 }

@@ -16,12 +16,23 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.Export.Entities;
 
-namespace Jitendex.Data.Export;
+namespace Jitendex.Data.Export.Entities.GlossaryItems.SenseGroupItems;
 
-public sealed class ExportContext() : SqliteContext(DatabaseFile.Export)
+[Table(nameof(Sense))]
+[PrimaryKey(nameof(HeadwordId), nameof(GroupOrder), nameof(Order))]
+public sealed class SenseGroupTag
 {
-    public DbSet<Headword> Headwords { get; set; } = null!;
+    public required int HeadwordId { get; init; }
+    public required int GroupOrder { get; init; }
+    public required int Order { get; init; }
+    public required string Class { get; set; }
+    public required string Code { get; set; }
+    public required string DisplayText { get; set; }
+    public required string Description { get; set; }
+
+    [ForeignKey($"{nameof(HeadwordId)}, {nameof(GroupOrder)}")]
+    public SenseGroup Group { get; init; } = null!;
 }

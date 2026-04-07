@@ -16,12 +16,21 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.Export.Entities;
 
-namespace Jitendex.Data.Export;
+namespace Jitendex.Data.Export.Entities.HeadwordItems;
 
-public sealed class ExportContext() : SqliteContext(DatabaseFile.Export)
+[Table(nameof(HeadwordRedirect))]
+[PrimaryKey(nameof(HeadwordId))]
+public sealed class HeadwordRedirect
 {
-    public DbSet<Headword> Headwords { get; set; } = null!;
+    public required int HeadwordId { get; init; }
+    public required int RedirectHeadwordId { get; set; }
+
+    [ForeignKey(nameof(HeadwordId))]
+    public Headword Headword { get; init; } = null!;
+
+    [ForeignKey(nameof(RedirectHeadwordId))]
+    public Headword RedirectHeadword { get; set; } = null!;
 }

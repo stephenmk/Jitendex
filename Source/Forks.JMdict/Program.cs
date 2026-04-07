@@ -22,8 +22,8 @@ public static class Program
 {
     public static int Main()
     {
-        var analyzer = ServiceProvider.GetService();
-        analyzer.Run();
+        var service = ServiceProvider.GetService();
+        service.Run();
         return 0;
     }
 }

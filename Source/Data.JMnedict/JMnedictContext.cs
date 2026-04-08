@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMnedict.Entities;
-using Jitendex.Data.JMnedict.Entities.EntryItems;
-using Jitendex.Data.JMnedict.Entities.EntryItems.KanjiFormItems;
-using Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
-using Jitendex.Data.JMnedict.Entities.EntryItems.TranslationItems;
+using Jitendex.Data.JMnedict.Entities.EntryChildren;
+using Jitendex.Data.JMnedict.Entities.EntryChildren.KanjiFormChildren;
+using Jitendex.Data.JMnedict.Entities.EntryChildren.ReadingChildren;
+using Jitendex.Data.JMnedict.Entities.EntryChildren.TranslationChildren;
 
 namespace Jitendex.Data.JMnedict;
 

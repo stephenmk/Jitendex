@@ -20,7 +20,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Dto.JMnedict;
 using Jitendex.Data.JMnedict.Entities;
-using Jitendex.Data.JMnedict.Entities.EntryItems;
+using Jitendex.Data.JMnedict.Entities.EntryChildren;
 
 namespace Jitendex.Data.JMnedict;
 

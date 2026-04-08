@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.JMnedict.Entities.EntryItems.TranslationItems;
+using Jitendex.Data.JMnedict.Entities.EntryChildren.TranslationChildren;
 using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables.EntryElements.TranslationElements;

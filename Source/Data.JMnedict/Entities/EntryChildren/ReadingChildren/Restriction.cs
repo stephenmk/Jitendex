@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
+namespace Jitendex.Data.JMnedict.Entities.EntryChildren.ReadingChildren;
 
 [Table(nameof(Restriction))]
 [PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]

@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMnedict.Entities.EntryItems.KanjiFormItems;
+using Jitendex.Data.JMnedict.Entities.EntryChildren.KanjiFormChildren;
 
-namespace Jitendex.Data.JMnedict.Entities.EntryItems;
+namespace Jitendex.Data.JMnedict.Entities.EntryChildren;
 
 [Table(nameof(KanjiForm))]
 [PrimaryKey(nameof(EntryId), nameof(Order))]

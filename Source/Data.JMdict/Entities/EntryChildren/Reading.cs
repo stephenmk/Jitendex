@@ -18,26 +18,34 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
+using Jitendex.Data.JMdict.ForkEntities.Furigana;
 using Jitendex.Data.JMdict.ForkEntities.Links;
+using Jitendex.Data.JMdict.ForkEntities.References;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren;
 
-[Table(nameof(KanjiFormRestriction))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class KanjiFormRestriction
+[Table(nameof(Reading))]
+[PrimaryKey(nameof(EntryId), nameof(Order))]
+public sealed class Reading
 {
     public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
     public required int Order { get; init; }
-    public required string KanjiFormText { get; set; }
+    public required string Text { get; set; }
+    public required bool NoKanji { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; init; } = null!;
+    [ForeignKey(nameof(EntryId))]
+    public Entry Entry { get; init; } = null!;
+
+    public List<ReadingInfo> Infos { get; init; } = [];
+    public List<ReadingPriority> Priorities { get; init; } = [];
+    public List<Restriction> Restrictions { get; init; } = [];
 
     #region Fork Properties
 
-    [InverseProperty(nameof(KanjiFormRestrictionLink.Restriction))]
-    public KanjiFormRestrictionLink? Link { get; set; }
+    public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
+    public List<ReadingReference> SenseReferences { get; init; } = [];
+    public List<ReadingRestrictionLink> SenseRestrictions { get; init; } = [];
 
     #endregion
 }

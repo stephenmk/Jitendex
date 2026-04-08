@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Dto.JMdict;
 using Jitendex.Data.JMdict.Entities;
-using Jitendex.Data.JMdict.Entities.EntryItems;
-using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
-using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
-using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.EntryChildren;
+using Jitendex.Data.JMdict.Entities.EntryChildren.KanjiFormChildren;
+using Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
+using Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 
 namespace Jitendex.Data.JMdict.Mappers;
 

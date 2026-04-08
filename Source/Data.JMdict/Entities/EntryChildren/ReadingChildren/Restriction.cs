@@ -18,21 +18,26 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.ForkEntities.Links;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
 
-[Table(nameof(ReadingInfo))]
+[Table(nameof(Restriction))]
 [PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]
-public sealed class ReadingInfo
+public sealed class Restriction
 {
     public required int EntryId { get; init; }
     public required int ReadingOrder { get; init; }
     public required int Order { get; init; }
-    public required string TagName { get; set; }
+    public required string KanjiFormText { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
     public Reading Reading { get; init; } = null!;
 
-    [ForeignKey(nameof(TagName))]
-    public ReadingInfoTag Tag { get; set; } = null!;
+    #region Fork Properties
+
+    [InverseProperty(nameof(RestrictionLink.Restriction))]
+    public RestrictionLink? Link { get; set; }
+
+    #endregion
 }

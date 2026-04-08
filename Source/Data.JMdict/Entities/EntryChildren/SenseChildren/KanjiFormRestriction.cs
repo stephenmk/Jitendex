@@ -18,21 +18,26 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.ForkEntities.Links;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 
-[Table(nameof(KanjiFormInfo))]
-[PrimaryKey(nameof(EntryId), nameof(KanjiFormOrder), nameof(Order))]
-public sealed class KanjiFormInfo
+[Table(nameof(KanjiFormRestriction))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
+public sealed class KanjiFormRestriction
 {
     public required int EntryId { get; init; }
-    public required int KanjiFormOrder { get; init; }
+    public required int SenseOrder { get; init; }
     public required int Order { get; init; }
-    public required string TagName { get; set; }
+    public required string KanjiFormText { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(KanjiFormOrder)}")]
-    public KanjiForm KanjiForm { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
+    public Sense Sense { get; init; } = null!;
 
-    [ForeignKey(nameof(TagName))]
-    public KanjiFormInfoTag Tag { get; set; } = null!;
+    #region Fork Properties
+
+    [InverseProperty(nameof(KanjiFormRestrictionLink.Restriction))]
+    public KanjiFormRestrictionLink? Link { get; set; }
+
+    #endregion
 }

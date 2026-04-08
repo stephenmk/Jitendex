@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 using Jitendex.Import.JMdict.RowModels;
 
 namespace Jitendex.Import.JMdict.Tables.EntryChildren.SenseChildren;

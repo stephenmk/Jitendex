@@ -16,31 +16,23 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities.EntryChildren;
-using Jitendex.Import.JMdict.RowModels;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Import.JMdict.Tables.EntryChildren;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
 
-internal sealed class SenseTable : Table<SenseRow>
+[Table(nameof(ReadingPriority))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]
+public sealed class ReadingPriority
 {
-    protected override string Name { get; } = nameof(Sense);
+    public required int EntryId { get; init; }
+    public required int ReadingOrder { get; init; }
+    public required int Order { get; init; }
+    public required string TagName { get; set; }
 
-    protected override ImmutableArray<string> ColumnNames { get; } =
-    [
-        nameof(Sense.EntryId),
-        nameof(Sense.Order),
-    ];
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
+    public Reading Reading { get; init; } = null!;
 
-    protected override ImmutableArray<string> KeyColNames { get; } =
-    [
-        nameof(Sense.EntryId),
-        nameof(Sense.Order),
-    ];
-
-    protected override object?[] ParameterValues(SenseRow row) =>
-    [
-        row.EntryId,
-        row.Order,
-    ];
+    [ForeignKey(nameof(TagName))]
+    public PriorityTag Tag { get; set; } = null!;
 }

@@ -18,18 +18,26 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Jitendex.Data.JMdict.ForkEntities.Links;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 
-[Table(nameof(Note))]
+[Table(nameof(ReadingRestriction))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class Note
+public sealed class ReadingRestriction
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int Order { get; init; }
-    public required string Text { get; set; }
+    public required string ReadingText { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;
+
+    #region Fork Properties
+
+    [InverseProperty(nameof(ReadingRestrictionLink.Restriction))]
+    public ReadingRestrictionLink? Link { get; set; }
+
+    #endregion
 }

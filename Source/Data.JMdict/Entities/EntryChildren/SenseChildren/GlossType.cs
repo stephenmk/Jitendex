@@ -18,34 +18,21 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.ForkEntities.Headwords;
-using Jitendex.Data.JMdict.ForkEntities.References;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 
-[Table(nameof(CrossReference))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class CrossReference
+[Table(nameof(GlossType))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(GlossOrder))]
+public sealed class GlossType
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
-    public required int Order { get; init; }
-    public required string TypeName { get; set; }
-    public required string Text { get; set; }
+    public required int GlossOrder { get; init; }
+    public required string TagName { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
-    public Sense Sense { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(GlossOrder)}")]
+    public Gloss Gloss { get; init; } = null!;
 
-    [ForeignKey(nameof(TypeName))]
-    public CrossReferenceType Type { get; set; } = null!;
-
-    #region Fork Properties
-
-    [InverseProperty(nameof(EntryReference.Source))]
-    public EntryReference? ReferencedEntry { get; set; }
-
-    [InverseProperty(nameof(AmbiguousReference.Reference))]
-    public AmbiguousReference? IsAmbiguous { get; set; }
-
-    #endregion
+    [ForeignKey(nameof(TagName))]
+    public GlossTypeTag Tag { get; set; } = null!;
 }

@@ -18,12 +18,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+using Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 using Jitendex.Data.JMdict.ForkEntities.Headwords;
 using Jitendex.Data.JMdict.ForkEntities.Media;
 using Jitendex.Data.JMdict.ForkEntities.References;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren;
 
 [Table(nameof(Sense))]
 [PrimaryKey(nameof(EntryId), nameof(Order))]

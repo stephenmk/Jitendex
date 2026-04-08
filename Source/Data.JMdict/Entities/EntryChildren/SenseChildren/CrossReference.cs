@@ -18,33 +18,33 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
-using Jitendex.Data.JMdict.ForkEntities.Furigana;
-using Jitendex.Data.JMdict.ForkEntities.Links;
 using Jitendex.Data.JMdict.ForkEntities.References;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 
-[Table(nameof(KanjiForm))]
-[PrimaryKey(nameof(EntryId), nameof(Order))]
-public sealed class KanjiForm
+[Table(nameof(CrossReference))]
+[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
+public sealed class CrossReference
 {
     public required int EntryId { get; init; }
+    public required int SenseOrder { get; init; }
     public required int Order { get; init; }
+    public required string TypeName { get; set; }
     public required string Text { get; set; }
 
-    [ForeignKey(nameof(EntryId))]
-    public Entry Entry { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
+    public Sense Sense { get; init; } = null!;
 
-    public List<KanjiFormInfo> Infos { get; init; } = [];
-    public List<KanjiFormPriority> Priorities { get; init; } = [];
+    [ForeignKey(nameof(TypeName))]
+    public CrossReferenceType Type { get; set; } = null!;
 
     #region Fork Properties
 
-    public List<ReadingKanjiFormBridge> Bridges { get; init; } = [];
-    public List<KanjiFormReference> SenseReferences { get; init; } = [];
-    public List<RestrictionLink> ReadingRestrictions { get; init; } = [];
-    public List<KanjiFormRestrictionLink> SenseRestrictions { get; init; } = [];
+    [InverseProperty(nameof(EntryReference.Source))]
+    public EntryReference? ReferencedEntry { get; set; }
+
+    [InverseProperty(nameof(AmbiguousReference.Reference))]
+    public AmbiguousReference? IsAmbiguous { get; set; }
 
     #endregion
 }

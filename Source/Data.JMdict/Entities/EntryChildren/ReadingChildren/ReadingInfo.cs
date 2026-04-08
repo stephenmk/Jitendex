@@ -19,20 +19,20 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
+namespace Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
 
-[Table(nameof(GlossType))]
-[PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(GlossOrder))]
-public sealed class GlossType
+[Table(nameof(ReadingInfo))]
+[PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(Order))]
+public sealed class ReadingInfo
 {
     public required int EntryId { get; init; }
-    public required int SenseOrder { get; init; }
-    public required int GlossOrder { get; init; }
+    public required int ReadingOrder { get; init; }
+    public required int Order { get; init; }
     public required string TagName { get; set; }
 
-    [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}, {nameof(GlossOrder)}")]
-    public Gloss Gloss { get; init; } = null!;
+    [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}")]
+    public Reading Reading { get; init; } = null!;
 
     [ForeignKey(nameof(TagName))]
-    public GlossTypeTag Tag { get; set; } = null!;
+    public ReadingInfoTag Tag { get; set; } = null!;
 }

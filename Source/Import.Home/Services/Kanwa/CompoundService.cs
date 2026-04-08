@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Kanwa;
@@ -40,7 +41,7 @@ internal sealed class CompoundService
     {
         var filePath = GetJsonFilePath();
         await using var stream = File.OpenRead(filePath);
-        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, CompoundReadingsObject>>(stream, ReadOptions) ?? [];
+        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonObject>>(stream, ReadOptions) ?? [];
 
         var compoundRows = data.Keys.Select(static k => new CompoundRow(k));
         compoundTable.InsertItems(context, compoundRows);
@@ -52,11 +53,21 @@ internal sealed class CompoundService
         typeTable.InsertItems(context, GetTypeRows());
 
         var readingRows = new List<CompoundReadingRow>();
-        foreach (var (key, value) in data)
+
+        foreach (var (compound, obj) in data)
         {
-            var id = compoundToId[key];
-            readingRows.AddRange(value.ToReadingRows(id));
+            var id = compoundToId[compound];
+            foreach (var (typeName, node) in obj)
+            {
+                var readings = (JsonArray)node!;
+                var typeId = TypeNameToId(typeName);
+                foreach (var reading in readings)
+                {
+                    readingRows.Add(new(id, (string)reading!, (int)typeId));
+                }
+            }
         }
+
         readingTable.InsertItems(context, readingRows);
     }
 
@@ -117,4 +128,14 @@ internal sealed class CompoundService
 
     private readonly static StringComparer StringComparer =
         StringComparer.Create(new CultureInfo("ja-JP"), CompareOptions.NumericOrdering);
+
+    #pragma warning disable format
+    private static CompoundReadingTypeId TypeNameToId(string name) => name switch
+    {
+        "alphanumeric" => CompoundReadingTypeId.Alphanumeric,
+        "ateji"        => CompoundReadingTypeId.Ateji,
+        "idiom"        => CompoundReadingTypeId.Idiom,
+        _              => throw new ArgumentOutOfRangeException(nameof(name))
+    };
+    #pragma warning restore format
 }

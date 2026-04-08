@@ -16,70 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Data.Export.Glossaries;
-
-public sealed record JitendexGlossary
-(
-    ImmutableArray<FuriganaSegment> FuriganaSegments,
-    ImmutableArray<GlossaryTag> Tags,
-    LanguageSource? LanguageSource,
-    ImmutableArray<Pronunciation> Pronunciations,
-    ImmutableArray<SenseGroup> SenseGroups,
-    ImmutableArray<AlternativeHeadword> OtherReadings,
-    ImmutableArray<AlternativeHeadword> OtherSurfaces,
-    ImmutableArray<AlternativeHeadword> RelatedForms,
-    ImmutableArray<DataSource> DataSources
-);
-
-public sealed record FuriganaSegment
-(
-    string BaseText,
-    string? RubyText
-);
-
-public sealed record AlternativeHeadword
-(
-    ImmutableArray<FuriganaSegment> FuriganaSegments,
-    int Number,
-    int Total,
-    ImmutableArray<int> RestrictedSenseNumbers,
-    ImmutableArray<GlossaryTag> Tags
-);
-
-public sealed record LanguageSource
-(
-    string LanguageName
-);
-
-public sealed record Pronunciation
-(
-    string Text
-);
-
-public sealed record GlossaryTag
-(
-    string Class,
-    string Code,
-    string DisplayText,
-    string Description
-);
-
-public sealed record DataSource
-(
-    string Prefix,
-    string AnchorText,
-    string Href
-);
-
-public sealed record SenseGroup
-(
-    ImmutableArray<GlossaryTag> SenseTags,
-    ImmutableArray<Sense> Senses
-);
+namespace Jitendex.Data.Export.JitendexGlossary;
 
 public sealed record Sense
 (
-    int DisplayNumber,
+    int? DisplayNumber,
     ImmutableArray<GlossaryTag> Tags,
     ImmutableArray<string> Notes,
     ImmutableArray<string> Glosses,
@@ -100,11 +41,6 @@ public sealed record CrossReference
     ImmutableArray<string> Glosses
 );
 
-public sealed record Graphic
-(
-    string Path
-);
-
 public sealed record Example
 (
     string Translation,
@@ -118,3 +54,7 @@ public sealed record ExampleSegment
     bool IsHighlighted
 );
 
+public sealed record Graphic
+(
+    string Path
+);

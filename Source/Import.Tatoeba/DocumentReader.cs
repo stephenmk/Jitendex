@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.IO.Compression;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.Tatoeba.Parsing;
-using Jitendex.Import.Tatoeba.RowModels;
+using Jitendex.Import.Tatoeba.TableRows;
 
 namespace Jitendex.Import.Tatoeba;
 

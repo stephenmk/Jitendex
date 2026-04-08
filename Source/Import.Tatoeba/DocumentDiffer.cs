@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Import.Tatoeba.RowModels;
+using Jitendex.Import.Tatoeba.TableRows;
 
 namespace Jitendex.Import.Tatoeba;
 

@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.Entities;
-using Jitendex.Import.Tatoeba.RowModels;
+using Jitendex.Import.Tatoeba.TableRows;
 
 namespace Jitendex.Import.Tatoeba.Tables;
 

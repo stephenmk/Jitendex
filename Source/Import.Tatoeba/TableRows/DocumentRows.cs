@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Tatoeba.RowModels;
+namespace Jitendex.Import.Tatoeba.TableRows;
 
 internal sealed record HeaderRow
 (
@@ -43,25 +43,3 @@ internal sealed record ExampleRow
     int Id,
     string Text
 );
-
-internal sealed record SegmentationRow
-{
-    public required int ExampleId { get; init; }
-    public required int Order { get; init; }
-    public required int TranslationId { get; init; }
-    public (int, int) GetKey() => (ExampleId, Order);
-}
-
-internal sealed record TokenRow
-{
-    public required int ExampleId { get; init; }
-    public required int SegmentationOrder { get; init; }
-    public required int Order { get; init; }
-    public required string Headword { get; init; }
-    public required string? Reading { get; init; }
-    public required int? EntryId { get; init; }
-    public required int? SenseNumber { get; init; }
-    public required string? SentenceForm { get; init; }
-    public required bool IsPriority { get; init; }
-    public (int, int, int) GetKey() => (ExampleId, SegmentationOrder, Order);
-}

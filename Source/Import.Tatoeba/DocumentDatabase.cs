@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.Tatoeba;
-using Jitendex.Import.Tatoeba.RowModels;
+using Jitendex.Import.Tatoeba.TableRows;
 using Jitendex.Import.Tatoeba.Tables;
 
 namespace Jitendex.Import.Tatoeba;

@@ -20,9 +20,9 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.SenseChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 
-internal sealed class PartOfSpeechReader(ILogger<PartOfSpeechReader> logger) : XmlBaseReader(logger)
+internal sealed class MiscReader(ILogger<MiscReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
     {
@@ -35,16 +35,16 @@ internal sealed class PartOfSpeechReader(ILogger<PartOfSpeechReader> logger) : X
             LogMissingEntityDefinition(description);
         }
 
-        document.PartOfSpeechTags.Add(tagName);
+        document.MiscTags.Add(tagName);
 
-        var partOfSpeech = new PartOfSpeechRow
+        var misc = new MiscRow
         (
             EntryId: sense.EntryId,
             ParentOrder: sense.Order,
-            Order: document.PartsOfSpeech.NextOrder(sense.Key()),
+            Order: document.Miscs.NextOrder(sense.Key()),
             TagName: tagName
         );
 
-        document.PartsOfSpeech.Add(partOfSpeech.Key(), partOfSpeech);
+        document.Miscs.Add(misc.Key(), misc);
     }
 }

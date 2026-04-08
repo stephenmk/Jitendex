@@ -20,7 +20,7 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.SenseChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 
 internal sealed class CrossReferenceReader(ILogger<CrossReferenceReader> logger) : XmlBaseReader(logger)
 {

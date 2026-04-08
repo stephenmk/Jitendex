@@ -20,22 +20,31 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.ReadingChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.ReadingChildReaders;
 
-internal sealed class RestrictionReader(ILogger<RestrictionReader> logger) : XmlBaseReader(logger)
+internal sealed class RInfoReader(ILogger<RInfoReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingRow reading)
     {
-        var kanjiFormText = await xmlReader.ReadElementContentAsStringAsync();
+        var description = await xmlReader.ReadElementContentAsStringAsync();
 
-        var restriction = new RestrictionRow
+        if (!document.KeywordDescriptionToName.TryGetValue(description, out var tagName))
+        {
+            tagName = description;
+            document.KeywordDescriptionToName[description] = description;
+            LogMissingEntityDefinition(description);
+        }
+
+        document.ReadingInfoTags.Add(tagName);
+
+        var info = new ReadingInfoRow
         (
             EntryId: reading.EntryId,
             ParentOrder: reading.Order,
-            Order: document.Restrictions.NextOrder(reading.Key()),
-            KanjiFormText: kanjiFormText
+            Order: document.ReadingInfos.NextOrder(reading.Key()),
+            TagName: tagName
         );
 
-        document.Restrictions.Add(restriction.Key(), restriction);
+        document.ReadingInfos.Add(info.Key(), info);
     }
 }

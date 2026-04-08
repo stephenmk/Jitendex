@@ -20,11 +20,11 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.SenseChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.KanjiFormChildReaders;
 
-internal sealed class DialectReader(ILogger<DialectReader> logger) : XmlBaseReader(logger)
+internal sealed class KInfoReader(ILogger<KInfoReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormRow kanjiForm)
     {
         var description = await xmlReader.ReadElementContentAsStringAsync();
 
@@ -35,16 +35,16 @@ internal sealed class DialectReader(ILogger<DialectReader> logger) : XmlBaseRead
             LogMissingEntityDefinition(description);
         }
 
-        document.DialectTags.Add(tagName);
+        document.KanjiFormInfoTags.Add(tagName);
 
-        var dialect = new DialectRow
+        var info = new KanjiFormInfoRow
         (
-            EntryId: sense.EntryId,
-            ParentOrder: sense.Order,
-            Order: document.Dialects.NextOrder(sense.Key()),
+            EntryId: kanjiForm.EntryId,
+            ParentOrder: kanjiForm.Order,
+            Order: document.KanjiFormInfos.NextOrder(kanjiForm.Key()),
             TagName: tagName
         );
 
-        document.Dialects.Add(dialect.Key(), dialect);
+        document.KanjiFormInfos.Add(info.Key(), info);
     }
 }

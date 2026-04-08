@@ -20,39 +20,22 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.SenseChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 
-internal sealed class GlossReader(ILogger<GlossReader> logger) : XmlBaseReader(logger)
+internal sealed class KanjiFormRestrictionReader(ILogger<KanjiFormRestrictionReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
     {
-        var typeTag = xmlReader.GetAttribute(XmlAttributeName.GlossType);
+        var text = await xmlReader.ReadElementContentAsStringAsync();
 
-        if (typeTag is not null)
-        {
-            document.GlossTypeTags.Add(typeTag);
-        }
-
-        var gloss = new GlossRow
+        var restriction = new KanjiFormRestrictionRow
         (
             EntryId: sense.EntryId,
             ParentOrder: sense.Order,
-            Order: document.Glosses.NextOrder(sense.Key()),
-            Text: await xmlReader.ReadElementContentAsStringAsync()
+            Order: document.KanjiFormRestrictions.NextOrder(sense.Key()),
+            KanjiFormText: text
         );
 
-        document.Glosses.Add(gloss.Key(), gloss);
-
-        if (typeTag is not null)
-        {
-            var glossType = new GlossTypeRow
-            (
-                sense.EntryId,
-                sense.Order,
-                gloss.Order,
-                typeTag
-            );
-            document.GlossTypes.Add(glossType.Key(), glossType);
-        }
+        document.KanjiFormRestrictions.Add(restriction.Key(), restriction);
     }
 }

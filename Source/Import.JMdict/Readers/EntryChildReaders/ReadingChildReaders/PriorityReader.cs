@@ -20,29 +20,24 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.SenseChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.ReadingChildReaders;
 
-internal partial class NoteReader(ILogger<NoteReader> logger) : XmlBaseReader(logger)
+internal sealed class RPriorityReader(ILogger<RPriorityReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingRow reading)
     {
-        var note = new NoteRow
+        var tagName = await xmlReader.ReadElementContentAsStringAsync();
+
+        document.PriorityTags.Add(tagName);
+
+        var priority = new ReadingPriorityRow
         (
-            EntryId: sense.EntryId,
-            ParentOrder: sense.Order,
-            Order: document.Notes.NextOrder(sense.Key()),
-            Text: await xmlReader.ReadElementContentAsStringAsync()
+            EntryId: reading.EntryId,
+            ParentOrder: reading.Order,
+            Order: document.ReadingPriorities.NextOrder(reading.Key()),
+            TagName: tagName
         );
 
-        if (note.Order > 0)
-        {
-            LogTooManySenseNotes(sense.EntryId, sense.Order);
-        }
-
-        document.Notes.Add(note.Key(), note);
+        document.ReadingPriorities.Add(priority.Key(), priority);
     }
-
-    [LoggerMessage(LogLevel.Warning,
-    "Entry ID `{entryId}` sense #{SenseOrder} contains multiple sense notes")]
-    partial void LogTooManySenseNotes(int entryId, int senseOrder);
 }

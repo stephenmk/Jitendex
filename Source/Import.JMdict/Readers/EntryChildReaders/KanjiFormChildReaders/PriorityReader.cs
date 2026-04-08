@@ -20,31 +20,24 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.ReadingChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.KanjiFormChildReaders;
 
-internal sealed class RInfoReader(ILogger<RInfoReader> logger) : XmlBaseReader(logger)
+internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingRow reading)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormRow kanjiForm)
     {
-        var description = await xmlReader.ReadElementContentAsStringAsync();
+        var tagName = await xmlReader.ReadElementContentAsStringAsync();
 
-        if (!document.KeywordDescriptionToName.TryGetValue(description, out var tagName))
-        {
-            tagName = description;
-            document.KeywordDescriptionToName[description] = description;
-            LogMissingEntityDefinition(description);
-        }
+        document.PriorityTags.Add(tagName);
 
-        document.ReadingInfoTags.Add(tagName);
-
-        var info = new ReadingInfoRow
+        var priority = new KanjiFormPriorityRow
         (
-            EntryId: reading.EntryId,
-            ParentOrder: reading.Order,
-            Order: document.ReadingInfos.NextOrder(reading.Key()),
+            EntryId: kanjiForm.EntryId,
+            ParentOrder: kanjiForm.Order,
+            Order: document.KanjiFormPriorities.NextOrder(kanjiForm.Key()),
             TagName: tagName
         );
 
-        document.ReadingInfos.Add(info.Key(), info);
+        document.KanjiFormPriorities.Add(priority.Key(), priority);
     }
 }

@@ -20,11 +20,11 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.KanjiFormChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 
-internal sealed class KInfoReader(ILogger<KInfoReader> logger) : XmlBaseReader(logger)
+internal sealed class PartOfSpeechReader(ILogger<PartOfSpeechReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormRow kanjiForm)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
     {
         var description = await xmlReader.ReadElementContentAsStringAsync();
 
@@ -35,16 +35,16 @@ internal sealed class KInfoReader(ILogger<KInfoReader> logger) : XmlBaseReader(l
             LogMissingEntityDefinition(description);
         }
 
-        document.KanjiFormInfoTags.Add(tagName);
+        document.PartOfSpeechTags.Add(tagName);
 
-        var info = new KanjiFormInfoRow
+        var partOfSpeech = new PartOfSpeechRow
         (
-            EntryId: kanjiForm.EntryId,
-            ParentOrder: kanjiForm.Order,
-            Order: document.KanjiFormInfos.NextOrder(kanjiForm.Key()),
+            EntryId: sense.EntryId,
+            ParentOrder: sense.Order,
+            Order: document.PartsOfSpeech.NextOrder(sense.Key()),
             TagName: tagName
         );
 
-        document.KanjiFormInfos.Add(info.Key(), info);
+        document.PartsOfSpeech.Add(partOfSpeech.Key(), partOfSpeech);
     }
 }

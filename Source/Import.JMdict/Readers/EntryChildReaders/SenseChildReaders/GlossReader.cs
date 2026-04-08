@@ -20,31 +20,39 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.SenseChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 
-internal sealed class FieldReader(ILogger<FieldReader> logger) : XmlBaseReader(logger)
+internal sealed class GlossReader(ILogger<GlossReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
     {
-        var description = await xmlReader.ReadElementContentAsStringAsync();
+        var typeTag = xmlReader.GetAttribute(XmlAttributeName.GlossType);
 
-        if (!document.KeywordDescriptionToName.TryGetValue(description, out var tagName))
+        if (typeTag is not null)
         {
-            tagName = description;
-            document.KeywordDescriptionToName[description] = description;
-            LogMissingEntityDefinition(description);
+            document.GlossTypeTags.Add(typeTag);
         }
 
-        document.FieldTags.Add(tagName);
-
-        var field = new FieldRow
+        var gloss = new GlossRow
         (
             EntryId: sense.EntryId,
             ParentOrder: sense.Order,
-            Order: document.Fields.NextOrder(sense.Key()),
-            TagName: tagName
+            Order: document.Glosses.NextOrder(sense.Key()),
+            Text: await xmlReader.ReadElementContentAsStringAsync()
         );
 
-        document.Fields.Add(field.Key(), field);
+        document.Glosses.Add(gloss.Key(), gloss);
+
+        if (typeTag is not null)
+        {
+            var glossType = new GlossTypeRow
+            (
+                sense.EntryId,
+                sense.Order,
+                gloss.Order,
+                typeTag
+            );
+            document.GlossTypes.Add(glossType.Key(), glossType);
+        }
     }
 }

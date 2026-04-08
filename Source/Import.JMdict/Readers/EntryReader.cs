@@ -19,9 +19,9 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
-using Jitendex.Import.JMdict.Parsing.EntryChildReaders;
+using Jitendex.Import.JMdict.Readers.EntryChildReaders;
 
-namespace Jitendex.Import.JMdict.Parsing;
+namespace Jitendex.Import.JMdict.Readers;
 
 internal partial class EntryReader
 (

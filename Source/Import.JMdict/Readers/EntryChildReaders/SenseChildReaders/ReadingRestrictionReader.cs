@@ -20,24 +20,22 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.KanjiFormChildReaders;
+namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 
-internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : XmlBaseReader(logger)
+internal sealed class ReadingRestrictionReader(ILogger<ReadingRestrictionReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormRow kanjiForm)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
     {
-        var tagName = await xmlReader.ReadElementContentAsStringAsync();
+        var text = await xmlReader.ReadElementContentAsStringAsync();
 
-        document.PriorityTags.Add(tagName);
-
-        var priority = new KanjiFormPriorityRow
+        var restriction = new ReadingRestrictionRow
         (
-            EntryId: kanjiForm.EntryId,
-            ParentOrder: kanjiForm.Order,
-            Order: document.KanjiFormPriorities.NextOrder(kanjiForm.Key()),
-            TagName: tagName
+            EntryId: sense.EntryId,
+            ParentOrder: sense.Order,
+            Order: document.ReadingRestrictions.NextOrder(sense.Key()),
+            ReadingText: text
         );
 
-        document.KanjiFormPriorities.Add(priority.Key(), priority);
+        document.ReadingRestrictions.Add(restriction.Key(), restriction);
     }
 }

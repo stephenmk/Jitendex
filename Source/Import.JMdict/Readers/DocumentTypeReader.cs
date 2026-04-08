@@ -20,7 +20,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Import.JMdict.Parsing;
+namespace Jitendex.Import.JMdict.Readers;
 
 internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : XmlBaseReader(logger)
 {

@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.IO.Compression;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMdict.Parsing;
+using Jitendex.Import.JMdict.Readers;
 
 namespace Jitendex.Import.JMdict;
 

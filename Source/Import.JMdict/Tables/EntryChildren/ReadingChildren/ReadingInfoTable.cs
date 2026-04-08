@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
-using Jitendex.Import.JMdict.RowModels;
+using Jitendex.Import.JMdict.TableRows;
 
 namespace Jitendex.Import.JMdict.Tables.EntryChildren.ReadingChildren;
 

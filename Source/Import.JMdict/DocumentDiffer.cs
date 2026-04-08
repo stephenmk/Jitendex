@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Import.JMdict.RowModels;
+using Jitendex.Import.JMdict.TableRows;
 
 namespace Jitendex.Import.JMdict;
 

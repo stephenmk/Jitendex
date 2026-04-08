@@ -20,7 +20,7 @@ using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
-using Jitendex.Import.JMdict.RowModels;
+using Jitendex.Import.JMdict.TableRows;
 using Jitendex.Import.JMdict.Tables;
 using Jitendex.Import.JMdict.Tables.EntryChildren;
 using Jitendex.Import.JMdict.Tables.EntryChildren.KanjiFormChildren;

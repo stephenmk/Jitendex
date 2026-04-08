@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.JMdict.RowModels;
+namespace Jitendex.Import.JMdict.TableRows;
 
 internal interface IEntryGrandchildRow
 {

@@ -32,7 +32,7 @@ public sealed class JMdictPatch
     public required int AuthorId { get; init; }
     public required string AuthorComment { get; init; }
     public required int? PreviousPatchId { get; init; }
-    public required string Json { get; init; }
+    public required byte[] Json { get; init; }
 
     [ForeignKey(nameof(AuthorId))]
     public User Author { get; init; } = null!;

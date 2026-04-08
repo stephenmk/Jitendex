@@ -35,7 +35,7 @@ internal sealed class JMdictPatchService
 {
     public async Task ImportAsync()
     {
-        var patches = new Dictionary<int, string>();
+        var patches = new Dictionary<int, byte[]>();
 
         foreach (var directory in GetPatchDirectory().EnumerateDirectories())
         {
@@ -44,8 +44,7 @@ internal sealed class JMdictPatchService
             {
                 var extIndex = file.Name.IndexOf('.');
                 var id = idRange + int.Parse(file.Name[..extIndex]);
-                using var text = file.OpenText();
-                patches[id] = await text.ReadToEndAsync();
+                patches[id] = await File.ReadAllBytesAsync(file.FullName);
             }
         }
 
@@ -149,8 +148,7 @@ internal sealed class JMdictPatchService
             var filename = $"{id % 1000:D3}.json";
             var filepath = Path.Join(patchDir.FullName, subdir, filename);
             await using var stream = File.OpenWrite(filepath);
-            await using var writer = new StreamWriter(stream);
-            await writer.WriteAsync(json);
+            await stream.WriteAsync(json);
         }
     }
 

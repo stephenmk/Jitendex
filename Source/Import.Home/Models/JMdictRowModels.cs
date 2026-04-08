@@ -35,7 +35,7 @@ internal sealed record JMdictPatchRow
     int AuthorId,
     string AuthorComment,
     int? PreviousPatchId,
-    string Json
+    byte[] Json
 );
 
 internal sealed record JMdictPatchApprovalRow

@@ -41,7 +41,7 @@ internal partial class PatchService
     (
         int Id,
         DateOnly Date,
-        string Json
+        byte[] Json
     );
 
     public void Write()

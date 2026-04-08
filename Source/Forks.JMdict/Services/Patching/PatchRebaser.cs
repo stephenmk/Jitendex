@@ -40,7 +40,7 @@ internal sealed class PatchRebaser(HomeContext context, JMdictContext jmdictCont
         var oldSequences = SequenceDictionaryLoader.Load(jmdictContext, [newSequence.Id]);
         var oldSequence = oldSequences[newSequence.Id];
 
-        var json = JsonDiffer.Diff(oldSequence, newSequence, JsonSerializerOptions);
+        var json = JsonDiffer.DiffToUtf8Bytes(oldSequence, newSequence, JsonSerializerOptions);
         var comment = $"Rebasing and squashing patches onto new sequence version from date {sequenceDate}";
 
         context.JMdictPatches.Add(new()

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2026 Stephen Kraus
+Copyright (c) 2025-2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,20 +16,33 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Jitendex.Data.Export;
+using Jitendex.Export.Base.Services;
 
-namespace Jitendex.Data.Export.Entities;
+namespace Jitendex.Export.Base;
 
-[Table(nameof(HeadwordFurigana))]
-[PrimaryKey(nameof(HeadwordId), nameof(Order))]
-public sealed class HeadwordFurigana
+internal sealed class Service
+(
+    ILogger<Service> logger,
+    ExportContext context,
+    HeadwordService headwordService
+)
 {
-    public required int HeadwordId { get; init; }
-    public required int Order { get; init; }
-    public required string BaseText { get; set; }
-    public required string? RubyText { get; set; }
+    public void Run()
+    {
+        context.RecreateDatabase();
 
-    [ForeignKey(nameof(HeadwordId))]
-    public Headword Headword { get; init; } = null!;
+        using var exportTransaction = context.Database.BeginTransaction();
+
+        RunHeadwordServices();
+
+        exportTransaction.Commit();
+    }
+
+    private void RunHeadwordServices()
+    {
+        logger.LogInformation("Importing headwords.");
+        headwordService.Write();
+    }
 }

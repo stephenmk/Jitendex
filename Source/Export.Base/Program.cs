@@ -16,18 +16,14 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Data.Export;
-
 namespace Jitendex.Export.Base;
 
 public static class Program
 {
     public static int Main()
     {
-        using var context = new ExportContext();
-
-        context.RecreateDatabase();
-
+        var service = ServiceProvider.GetService();
+        service.Run();
         return 0;
     }
 }

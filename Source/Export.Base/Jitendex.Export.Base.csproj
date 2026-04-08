@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Data.Tatoeba\Jitendex.Data.Tatoeba.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Using Include="System.Collections.Frozen"/>
     <Using Include="System.Collections.Immutable"/>
   </ItemGroup>
 </Project>

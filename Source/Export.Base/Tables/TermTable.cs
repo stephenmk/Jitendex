@@ -16,20 +16,33 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.Data;
+using Jitendex.Data.Export.Entities;
+using Jitendex.Export.Base.TableRows;
 
-namespace Jitendex.Data.Export.Entities;
+namespace Jitendex.Export.Base.Tables;
 
-[Table(nameof(HeadwordFurigana))]
-[PrimaryKey(nameof(HeadwordId), nameof(Order))]
-public sealed class HeadwordFurigana
+internal sealed class TermTable : Table<TermRow>
 {
-    public required int HeadwordId { get; init; }
-    public required int Order { get; init; }
-    public required string BaseText { get; set; }
-    public required string? RubyText { get; set; }
+    protected override string Name { get; } = nameof(Term);
 
-    [ForeignKey(nameof(HeadwordId))]
-    public Headword Headword { get; init; } = null!;
+    protected override ImmutableArray<string> ColumnNames { get; } =
+    [
+        nameof(Term.HeadwordId),
+        nameof(Term.Number),
+        nameof(Term.Score),
+    ];
+
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(Term.HeadwordId),
+        nameof(Term.Number),
+    ];
+
+    protected override object?[] ParameterValues(TermRow row) =>
+    [
+        row.HeadwordId,
+        row.Number,
+        row.Score,
+    ];
 }

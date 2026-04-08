@@ -16,20 +16,25 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+namespace Jitendex.Export.Base.TableRows;
 
-namespace Jitendex.Data.Export.Entities;
+internal sealed record HeadwordRow
+(
+    string Surface,
+    string? Reading
+);
 
-[Table(nameof(HeadwordFurigana))]
-[PrimaryKey(nameof(HeadwordId), nameof(Order))]
-public sealed class HeadwordFurigana
-{
-    public required int HeadwordId { get; init; }
-    public required int Order { get; init; }
-    public required string BaseText { get; set; }
-    public required string? RubyText { get; set; }
+internal sealed record HeadwordFuriganaRow
+(
+    int HeadwordId,
+    int Order,
+    string BaseText,
+    string? RubyText
+);
 
-    [ForeignKey(nameof(HeadwordId))]
-    public Headword Headword { get; init; } = null!;
-}
+internal sealed record TermRow
+(
+    int HeadwordId,
+    int Number,
+    int Score
+);

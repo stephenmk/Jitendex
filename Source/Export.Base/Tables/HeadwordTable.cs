@@ -16,20 +16,28 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.Data;
+using Jitendex.Data.Export.Entities;
+using Jitendex.Export.Base.TableRows;
 
-namespace Jitendex.Data.Export.Entities;
+namespace Jitendex.Export.Base.Tables;
 
-[Table(nameof(HeadwordFurigana))]
-[PrimaryKey(nameof(HeadwordId), nameof(Order))]
-public sealed class HeadwordFurigana
+internal sealed class HeadwordTable : Table<HeadwordRow>
 {
-    public required int HeadwordId { get; init; }
-    public required int Order { get; init; }
-    public required string BaseText { get; set; }
-    public required string? RubyText { get; set; }
+    protected override string Name { get; } = nameof(Headword);
 
-    [ForeignKey(nameof(HeadwordId))]
-    public Headword Headword { get; init; } = null!;
+    protected override ImmutableArray<string> ColumnNames { get; } =
+    [
+        nameof(Headword.Surface),
+        nameof(Headword.Reading),
+    ];
+
+    protected override ImmutableArray<string> KeyColNames
+        => throw new InvalidOperationException($"The primary key for table {Name} is auto-incremented.");
+
+    protected override object?[] ParameterValues(HeadwordRow row) =>
+    [
+        row.Surface,
+        row.Reading,
+    ];
 }

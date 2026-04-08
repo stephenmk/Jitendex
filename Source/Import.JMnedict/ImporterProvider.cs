@@ -20,12 +20,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.JMnedict;
 using Jitendex.EdrdgDictionaryArchive;
-using Jitendex.Import.JMnedict.Models;
-using Jitendex.Import.JMnedict.Parsing;
-using Jitendex.Import.JMnedict.Parsing.EntryElementReaders;
-using Jitendex.Import.JMnedict.Parsing.EntryElementReaders.KanjiFormElementReaders;
-using Jitendex.Import.JMnedict.Parsing.EntryElementReaders.ReadingElementReaders;
-using Jitendex.Import.JMnedict.Parsing.EntryElementReaders.TranslationElementReaders;
+using Jitendex.Import.JMnedict.Readers;
+using Jitendex.Import.JMnedict.Readers.EntryElementReaders;
+using Jitendex.Import.JMnedict.Readers.EntryElementReaders.KanjiFormElementReaders;
+using Jitendex.Import.JMnedict.Readers.EntryElementReaders.ReadingElementReaders;
+using Jitendex.Import.JMnedict.Readers.EntryElementReaders.TranslationElementReaders;
 
 namespace Jitendex.Import.JMnedict;
 

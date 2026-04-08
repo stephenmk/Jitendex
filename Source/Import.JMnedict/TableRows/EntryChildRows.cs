@@ -16,42 +16,36 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.JMnedict.Models;
+namespace Jitendex.Import.JMnedict.TableRows;
 
-internal sealed record EntryElement
-{
-    public required int Id { get; set; }
-    public bool IsJmnedictEntry() => Id != 9999990; // Date entry
-}
-
-internal interface IEntryElement
+internal interface IEntryChildRow
 {
     public int EntryId { get; init; }
     public int Order { get; init; }
 }
 
-internal sealed record KanjiFormElement : IEntryElement
+internal sealed record KanjiFormRow : IEntryChildRow
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
     public required string Text { get; set; }
 }
 
-internal sealed record ReadingElement : IEntryElement
+internal sealed record ReadingRow : IEntryChildRow
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
     public required string Text { get; set; }
 }
 
-internal sealed record TranslationElement : IEntryElement
+internal sealed record TranslationRow : IEntryChildRow
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
 }
 
-internal static class EntryElementExtensions
+internal static class EntryChildRowExtensions
 {
-    public static (int, int) Key(this IEntryElement element)
+    public static (int, int) Key(this IEntryChildRow element)
         => (element.EntryId, element.Order);
 }

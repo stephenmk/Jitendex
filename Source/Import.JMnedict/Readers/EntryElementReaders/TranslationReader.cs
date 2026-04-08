@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
-using Jitendex.Import.JMnedict.Parsing.EntryElementReaders.TranslationElementReaders;
+using Jitendex.Import.JMnedict.TableRows;
+using Jitendex.Import.JMnedict.Readers.EntryElementReaders.TranslationElementReaders;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders;
 
 internal partial class TranslationReader
 (
@@ -29,11 +29,11 @@ internal partial class TranslationReader
     CrossReferenceReader crossReferenceReader,
     DetailReader detailReader,
     NameTypeReader nameTypeReader
-) : XmlParentElementReader<Document, TranslationElement>(logger)
+) : XmlParentElementReader<Document, TranslationRow>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
-        var translation = new TranslationElement
+        var translation = new TranslationRow
         {
             EntryId = entry.Id,
             Order = document.Translations.NextOrder(entry.Id),
@@ -44,7 +44,7 @@ internal partial class TranslationReader
         document.Translations.Add(translation.Key(), translation);
     }
 
-    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, TranslationElement translation)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, TranslationRow translation)
     {
         switch (xmlReader.Name)
         {

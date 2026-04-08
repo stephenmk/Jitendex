@@ -19,8 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.IO.Compression;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
-using Jitendex.Import.JMnedict.Parsing;
+using Jitendex.Import.JMnedict.Readers;
 
 namespace Jitendex.Import.JMnedict;
 

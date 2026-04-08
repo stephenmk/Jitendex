@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
-using Jitendex.Import.JMnedict.Parsing.EntryElementReaders;
+using Jitendex.Import.JMnedict.TableRows;
+using Jitendex.Import.JMnedict.Readers.EntryElementReaders;
 
-namespace Jitendex.Import.JMnedict.Parsing;
+namespace Jitendex.Import.JMnedict.Readers;
 
 internal partial class EntryReader
 (

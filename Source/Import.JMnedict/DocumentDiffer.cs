@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict;
 
@@ -39,20 +39,20 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
 
         DiffDictionaryProperties<int, EntryElement>(diff, docA, docB, nameof(Document.Entries));
 
-        DiffDictionaryProperties<(int, int), KanjiFormElement>(diff, docA, docB, nameof(Document.KanjiForms));
-        DiffDictionaryProperties<(int, int), ReadingElement>(diff, docA, docB, nameof(Document.Readings));
-        DiffDictionaryProperties<(int, int), TranslationElement>(diff, docA, docB, nameof(Document.Translations));
+        DiffDictionaryProperties<(int, int), KanjiFormRow>(diff, docA, docB, nameof(Document.KanjiForms));
+        DiffDictionaryProperties<(int, int), ReadingRow>(diff, docA, docB, nameof(Document.Readings));
+        DiffDictionaryProperties<(int, int), TranslationRow>(diff, docA, docB, nameof(Document.Translations));
 
-        DiffDictionaryProperties<(int, int, int), KanjiFormInfoElement>(diff, docA, docB, nameof(Document.KanjiFormInfos));
-        DiffDictionaryProperties<(int, int, int), KanjiFormPriorityElement>(diff, docA, docB, nameof(Document.KanjiFormPriorities));
+        DiffDictionaryProperties<(int, int, int), KanjiFormInfoRow>(diff, docA, docB, nameof(Document.KanjiFormInfos));
+        DiffDictionaryProperties<(int, int, int), KanjiFormPriorityRow>(diff, docA, docB, nameof(Document.KanjiFormPriorities));
 
-        DiffDictionaryProperties<(int, int, int), ReadingInfoElement>(diff, docA, docB, nameof(Document.ReadingInfos));
-        DiffDictionaryProperties<(int, int, int), ReadingPriorityElement>(diff, docA, docB, nameof(Document.ReadingPriorities));
-        DiffDictionaryProperties<(int, int, int), RestrictionElement>(diff, docA, docB, nameof(Document.Restrictions));
+        DiffDictionaryProperties<(int, int, int), ReadingInfoRow>(diff, docA, docB, nameof(Document.ReadingInfos));
+        DiffDictionaryProperties<(int, int, int), ReadingPriorityRow>(diff, docA, docB, nameof(Document.ReadingPriorities));
+        DiffDictionaryProperties<(int, int, int), RestrictionRow>(diff, docA, docB, nameof(Document.Restrictions));
 
-        DiffDictionaryProperties<(int, int, int), CrossReferenceElement>(diff, docA, docB, nameof(Document.CrossReferences));
-        DiffDictionaryProperties<(int, int, int), DetailElement>(diff, docA, docB, nameof(Document.Details));
-        DiffDictionaryProperties<(int, int, int), NameTypeElement>(diff, docA, docB, nameof(Document.NameTypes));
+        DiffDictionaryProperties<(int, int, int), CrossReferenceRow>(diff, docA, docB, nameof(Document.CrossReferences));
+        DiffDictionaryProperties<(int, int, int), DetailRow>(diff, docA, docB, nameof(Document.Details));
+        DiffDictionaryProperties<(int, int, int), NameTypeRow>(diff, docA, docB, nameof(Document.NameTypes));
 
         return diff;
     }

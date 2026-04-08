@@ -16,7 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
+
+namespace Jitendex.Import.JMnedict;
 
 internal sealed class Document : IDocument<DateOnly>
 {
@@ -24,26 +26,26 @@ internal sealed class Document : IDocument<DateOnly>
     public Dictionary<int, EntryElement> Entries { get; init; }
 
     #region Entry Elements
-    public Dictionary<(int, int), KanjiFormElement> KanjiForms { get; init; }
-    public Dictionary<(int, int), ReadingElement> Readings { get; init; }
-    public Dictionary<(int, int), TranslationElement> Translations { get; init; }
+    public Dictionary<(int, int), KanjiFormRow> KanjiForms { get; init; }
+    public Dictionary<(int, int), ReadingRow> Readings { get; init; }
+    public Dictionary<(int, int), TranslationRow> Translations { get; init; }
     #endregion
 
     #region Kanji Form Elements
-    public Dictionary<(int, int, int), KanjiFormInfoElement> KanjiFormInfos { get; init; }
-    public Dictionary<(int, int, int), KanjiFormPriorityElement> KanjiFormPriorities { get; init; }
+    public Dictionary<(int, int, int), KanjiFormInfoRow> KanjiFormInfos { get; init; }
+    public Dictionary<(int, int, int), KanjiFormPriorityRow> KanjiFormPriorities { get; init; }
     #endregion
 
     #region Reading Elements
-    public Dictionary<(int, int, int), ReadingInfoElement> ReadingInfos { get; init; }
-    public Dictionary<(int, int, int), ReadingPriorityElement> ReadingPriorities { get; init; }
-    public Dictionary<(int, int, int), RestrictionElement> Restrictions { get; init; }
+    public Dictionary<(int, int, int), ReadingInfoRow> ReadingInfos { get; init; }
+    public Dictionary<(int, int, int), ReadingPriorityRow> ReadingPriorities { get; init; }
+    public Dictionary<(int, int, int), RestrictionRow> Restrictions { get; init; }
     #endregion
 
     #region Translation Elements
-    public Dictionary<(int, int, int), NameTypeElement> NameTypes { get; init; }
-    public Dictionary<(int, int, int), DetailElement> Details { get; init; }
-    public Dictionary<(int, int, int), CrossReferenceElement> CrossReferences { get; init; }
+    public Dictionary<(int, int, int), NameTypeRow> NameTypes { get; init; }
+    public Dictionary<(int, int, int), DetailRow> Details { get; init; }
+    public Dictionary<(int, int, int), CrossReferenceRow> CrossReferences { get; init; }
     #endregion
 
     #region Keywords
@@ -79,20 +81,20 @@ internal sealed class Document : IDocument<DateOnly>
     public IEnumerable<DocumentSequence> GetSequences(int fileHeaderId)
         => Entries.Select(e => new DocumentSequence(e.Key, fileHeaderId));
 
-    public IEnumerable<PriorityTagElement> GetPriorityTags(int fileHeaderId)
-        => PriorityTags.Select(e => new PriorityTagElement(e, fileHeaderId));
+    public IEnumerable<PriorityTagRow> GetPriorityTags(int fileHeaderId)
+        => PriorityTags.Select(e => new PriorityTagRow(e, fileHeaderId));
 
-    public IEnumerable<ReadingInfoTagElement> GetReadingInfoTags(int fileHeaderId)
-        => ReadingInfoTags.Select(e => new ReadingInfoTagElement(e, fileHeaderId));
+    public IEnumerable<ReadingInfoTagRow> GetReadingInfoTags(int fileHeaderId)
+        => ReadingInfoTags.Select(e => new ReadingInfoTagRow(e, fileHeaderId));
 
-    public IEnumerable<KanjiFormInfoTagElement> GetKanjiFormInfoTags(int fileHeaderId)
-        => KanjiFormInfoTags.Select(e => new KanjiFormInfoTagElement(e, fileHeaderId));
+    public IEnumerable<KanjiFormInfoTagRow> GetKanjiFormInfoTags(int fileHeaderId)
+        => KanjiFormInfoTags.Select(e => new KanjiFormInfoTagRow(e, fileHeaderId));
 
-    public IEnumerable<NameTypeTagElement> GetNameTypeTags(int fileHeaderId)
-        => NameTypeTags.Select(e => new NameTypeTagElement(e, fileHeaderId));
+    public IEnumerable<NameTypeTagRow> GetNameTypeTags(int fileHeaderId)
+        => NameTypeTags.Select(e => new NameTypeTagRow(e, fileHeaderId));
 
-    public IEnumerable<DetailLanguageElement> GetDetailLanguages(int fileHeaderId)
-        => DetailLanguages.Select(e => new DetailLanguageElement(e, fileHeaderId));
+    public IEnumerable<DetailLanguageRow> GetDetailLanguages(int fileHeaderId)
+        => DetailLanguages.Select(e => new DetailLanguageRow(e, fileHeaderId));
 
     public IEnumerable<int> ConcatAllEntryIds()
         => Entries.Keys

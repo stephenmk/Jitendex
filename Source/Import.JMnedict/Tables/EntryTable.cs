@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables;
 
@@ -36,8 +36,8 @@ internal sealed class EntryTable : Table<EntryElement>
         nameof(Entry.Id)
     ];
 
-    protected override object?[] ParameterValues(EntryElement entry) =>
+    protected override object?[] ParameterValues(EntryElement row) =>
     [
-        entry.Id
+        row.Id
     ];
 }

@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities.EntryItems.TranslationItems;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables.EntryElements.TranslationElements;
 
-internal sealed class CrossReferenceTable : Table<CrossReferenceElement>
+internal sealed class CrossReferenceTable : Table<CrossReferenceRow>
 {
     protected override string Name { get; } = nameof(CrossReference);
 
@@ -41,11 +41,11 @@ internal sealed class CrossReferenceTable : Table<CrossReferenceElement>
         nameof(CrossReference.Order),
     ];
 
-    protected override object?[] ParameterValues(CrossReferenceElement xref) =>
+    protected override object?[] ParameterValues(CrossReferenceRow row) =>
     [
-        xref.EntryId,
-        xref.ParentOrder,
-        xref.Order,
-        xref.Text,
+        row.EntryId,
+        row.ParentOrder,
+        row.Order,
+        row.Text,
     ];
 }

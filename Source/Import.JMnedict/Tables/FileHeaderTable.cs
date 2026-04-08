@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables;
 
@@ -34,8 +34,8 @@ internal sealed class FileHeaderTable : Table<DocumentHeader>
     protected override ImmutableArray<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
 
-    protected override object?[] ParameterValues(DocumentHeader header) =>
+    protected override object?[] ParameterValues(DocumentHeader row) =>
     [
-        header.Date
+        row.Date
     ];
 }

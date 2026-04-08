@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables;
 
-internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
+internal sealed class KeywordTable<T> : Table<T> where T : IKeywordRow
 {
     protected override string Name { get; } = ElementNameToEntityName(typeof(T).Name);
 
@@ -37,20 +37,20 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         nameof(IKeyword.Name)
     ];
 
-    protected override object?[] ParameterValues(T keyword) =>
+    protected override object?[] ParameterValues(T row) =>
     [
-        keyword.Name,
-        keyword.FileHeaderId,
+        row.Name,
+        row.FileHeaderId,
     ];
 
     #pragma warning disable format
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
-        nameof(ReadingInfoTagElement)   => nameof(ReadingInfoTag),
-        nameof(KanjiFormInfoTagElement) => nameof(KanjiFormInfoTag),
-        nameof(NameTypeTagElement)      => nameof(NameTypeTag),
-        nameof(PriorityTagElement)      => nameof(PriorityTag),
-        nameof(DetailLanguageElement)   => nameof(DetailLanguage),
+        nameof(ReadingInfoTagRow)   => nameof(ReadingInfoTag),
+        nameof(KanjiFormInfoTagRow) => nameof(KanjiFormInfoTag),
+        nameof(NameTypeTagRow)      => nameof(NameTypeTag),
+        nameof(PriorityTagRow)      => nameof(PriorityTag),
+        nameof(DetailLanguageRow)   => nameof(DetailLanguage),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
     #pragma warning restore format

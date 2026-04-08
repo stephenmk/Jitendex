@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
-using Jitendex.Import.JMnedict.Parsing.EntryElementReaders.ReadingElementReaders;
+using Jitendex.Import.JMnedict.TableRows;
+using Jitendex.Import.JMnedict.Readers.EntryElementReaders.ReadingElementReaders;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders;
 
 internal partial class ReadingReader
 (
@@ -29,11 +29,11 @@ internal partial class ReadingReader
     RestrictionReader restrictionReader,
     RInfoReader infoReader,
     RPriorityReader priorityReader
-) : XmlParentElementReader<Document, ReadingElement>(logger)
+) : XmlParentElementReader<Document, ReadingRow>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
-        var reading = new ReadingElement
+        var reading = new ReadingRow
         {
             EntryId = entry.Id,
             Order = document.Readings.NextOrder(entry.Id),
@@ -52,7 +52,7 @@ internal partial class ReadingReader
         }
     }
 
-    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ReadingElement reading)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, ReadingRow reading)
     {
         switch (xmlReader.Name)
         {
@@ -74,7 +74,7 @@ internal partial class ReadingReader
         }
     }
 
-    private async Task ReadReadingText(XmlReader xmlReader, ReadingElement reading)
+    private async Task ReadReadingText(XmlReader xmlReader, ReadingRow reading)
     {
         if (reading.Text is not null)
         {

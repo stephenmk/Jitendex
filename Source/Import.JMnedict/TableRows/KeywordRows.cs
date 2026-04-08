@@ -16,17 +16,17 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.JMnedict.Models;
+namespace Jitendex.Import.JMnedict.TableRows;
 
-internal interface IKeywordElement
+internal interface IKeywordRow
 {
     string Name { get; init; }
     int FileHeaderId { get; init; }
 }
 
-internal sealed record PriorityTagElement(string Name, int FileHeaderId) : IKeywordElement;
-internal sealed record ReadingInfoTagElement(string Name, int FileHeaderId) : IKeywordElement;
-internal sealed record KanjiFormInfoTagElement(string Name, int FileHeaderId) : IKeywordElement;
-internal sealed record NameTypeTagElement(string Name, int FileHeaderId) : IKeywordElement;
-internal sealed record DetailLanguageElement(string Name, int FileHeaderId) : IKeywordElement;
-internal sealed record CrossReferenceTypeElement(string Name, int FileHeaderId) : IKeywordElement;
+internal sealed record PriorityTagRow(string Name, int FileHeaderId) : IKeywordRow;
+internal sealed record ReadingInfoTagRow(string Name, int FileHeaderId) : IKeywordRow;
+internal sealed record KanjiFormInfoTagRow(string Name, int FileHeaderId) : IKeywordRow;
+internal sealed record NameTypeTagRow(string Name, int FileHeaderId) : IKeywordRow;
+internal sealed record DetailLanguageRow(string Name, int FileHeaderId) : IKeywordRow;
+internal sealed record CrossReferenceTypeRow(string Name, int FileHeaderId) : IKeywordRow;

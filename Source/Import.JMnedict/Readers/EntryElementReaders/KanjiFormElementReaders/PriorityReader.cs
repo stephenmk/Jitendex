@@ -18,24 +18,26 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders.ReadingElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders.KanjiFormElementReaders;
 
-internal sealed class RestrictionReader(ILogger<RestrictionReader> logger) : XmlBaseReader(logger)
+internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingElement reading)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormRow kanjiForm)
     {
-        var kanjiFormText = await xmlReader.ReadElementContentAsStringAsync();
+        var tagName = await xmlReader.ReadElementContentAsStringAsync();
 
-        var restriction = new RestrictionElement
+        document.PriorityTags.Add(tagName);
+
+        var priority = new KanjiFormPriorityRow
         (
-            EntryId: reading.EntryId,
-            ParentOrder: reading.Order,
-            Order: document.Restrictions.NextOrder(reading.Key()),
-            KanjiFormText: kanjiFormText
+            EntryId: kanjiForm.EntryId,
+            ParentOrder: kanjiForm.Order,
+            Order: document.KanjiFormPriorities.NextOrder(kanjiForm.Key()),
+            TagName: tagName
         );
 
-        document.Restrictions.Add(restriction.Key(), restriction);
+        document.KanjiFormPriorities.Add(priority.Key(), priority);
     }
 }

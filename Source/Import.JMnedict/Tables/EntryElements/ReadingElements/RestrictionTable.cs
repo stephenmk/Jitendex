@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables.EntryElements.ReadingElements;
 
-internal sealed class RestrictionTable : Table<RestrictionElement>
+internal sealed class RestrictionTable : Table<RestrictionRow>
 {
     protected override string Name { get; } = nameof(Restriction);
 
@@ -41,11 +41,11 @@ internal sealed class RestrictionTable : Table<RestrictionElement>
         nameof(Restriction.Order),
     ];
 
-    protected override object?[] ParameterValues(RestrictionElement restriction) =>
+    protected override object?[] ParameterValues(RestrictionRow row) =>
     [
-        restriction.EntryId,
-        restriction.ParentOrder,
-        restriction.Order,
-        restriction.KanjiFormText,
+        row.EntryId,
+        row.ParentOrder,
+        row.Order,
+        row.KanjiFormText,
     ];
 }

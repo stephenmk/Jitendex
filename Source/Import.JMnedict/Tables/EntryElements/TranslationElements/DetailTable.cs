@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities.EntryItems.TranslationItems;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables.EntryElements.TranslationElements;
 
-internal sealed class DetailTable : Table<DetailElement>
+internal sealed class DetailTable : Table<DetailRow>
 {
     protected override string Name { get; } = nameof(Detail);
 
@@ -42,12 +42,12 @@ internal sealed class DetailTable : Table<DetailElement>
         nameof(Detail.Order),
     ];
 
-    protected override object?[] ParameterValues(DetailElement detail) =>
+    protected override object?[] ParameterValues(DetailRow row) =>
     [
-        detail.EntryId,
-        detail.ParentOrder,
-        detail.Order,
-        detail.Text,
-        detail.LanguageName,
+        row.EntryId,
+        row.ParentOrder,
+        row.Order,
+        row.Text,
+        row.LanguageName,
     ];
 }

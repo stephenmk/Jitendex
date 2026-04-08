@@ -18,22 +18,33 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders.TranslationElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders.TranslationElementReaders;
 
-internal sealed class CrossReferenceReader(ILogger<CrossReferenceReader> logger) : XmlBaseReader(logger)
+internal sealed class NameTypeReader(ILogger<NameTypeReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationElement translation)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationRow translation)
     {
-        var xref = new CrossReferenceElement
+        var description = await xmlReader.ReadElementContentAsStringAsync();
+
+        if (!document.KeywordDescriptionToName.TryGetValue(description, out var tagName))
+        {
+            tagName = description;
+            document.KeywordDescriptionToName[description] = description;
+            LogMissingEntityDefinition(description);
+        }
+
+        document.NameTypeTags.Add(tagName);
+
+        var nameType = new NameTypeRow
         (
             EntryId: translation.EntryId,
             ParentOrder: translation.Order,
-            Order: document.CrossReferences.NextOrder(translation.Key()),
-            Text: await xmlReader.ReadElementContentAsStringAsync()
+            Order: document.NameTypes.NextOrder(translation.Key()),
+            TagName: tagName
         );
 
-        document.CrossReferences.Add(xref.Key(), xref);
+        document.NameTypes.Add(nameType.Key(), nameType);
     }
 }

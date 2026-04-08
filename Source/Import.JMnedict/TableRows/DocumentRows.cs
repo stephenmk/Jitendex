@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.JMnedict.Models;
+namespace Jitendex.Import.JMnedict.TableRows;
 
 internal sealed record DocumentHeader
 (
@@ -36,3 +36,9 @@ internal sealed record DocumentRevision
     int FileHeaderId,
     byte[] DiffJson
 );
+
+internal sealed record EntryElement
+{
+    public required int Id { get; set; }
+    public bool IsJmnedictEntry() => Id != 9999990; // Date entry
+}

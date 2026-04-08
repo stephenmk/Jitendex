@@ -18,29 +18,22 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders.TranslationElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders.TranslationElementReaders;
 
-internal sealed class DetailReader(ILogger<DetailReader> logger) : XmlBaseReader(logger)
+internal sealed class CrossReferenceReader(ILogger<CrossReferenceReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationElement translation)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationRow translation)
     {
-        var languageName = xmlReader.GetAttribute(XmlAttributeName.DetailLanguage);
-        if (languageName is not null)
-        {
-            document.DetailLanguages.Add(languageName);
-        }
-
-        var detail = new DetailElement
+        var xref = new CrossReferenceRow
         (
             EntryId: translation.EntryId,
             ParentOrder: translation.Order,
-            Order: document.Details.NextOrder(translation.Key()),
-            Text: await xmlReader.ReadElementContentAsStringAsync(),
-            LanguageName: languageName
+            Order: document.CrossReferences.NextOrder(translation.Key()),
+            Text: await xmlReader.ReadElementContentAsStringAsync()
         );
 
-        document.Details.Add(detail.Key(), detail);
+        document.CrossReferences.Add(xref.Key(), xref);
     }
 }

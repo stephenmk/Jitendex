@@ -18,13 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders.KanjiFormElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders.KanjiFormElementReaders;
 
 internal sealed class KInfoReader(ILogger<KInfoReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormElement kanjiForm)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormRow kanjiForm)
     {
         var description = await xmlReader.ReadElementContentAsStringAsync();
 
@@ -37,7 +37,7 @@ internal sealed class KInfoReader(ILogger<KInfoReader> logger) : XmlBaseReader(l
 
         document.KanjiFormInfoTags.Add(tagName);
 
-        var info = new KanjiFormInfoElement
+        var info = new KanjiFormInfoRow
         (
             EntryId: kanjiForm.EntryId,
             ParentOrder: kanjiForm.Order,

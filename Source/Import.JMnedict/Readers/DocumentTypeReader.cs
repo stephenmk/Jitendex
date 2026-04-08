@@ -19,9 +19,8 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
 
-namespace Jitendex.Import.JMnedict.Parsing;
+namespace Jitendex.Import.JMnedict.Readers;
 
 internal partial class DocumentTypeReader(ILogger<DocumentTypeReader> logger) : XmlBaseReader(logger)
 {

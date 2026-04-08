@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities.EntryItems;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables.EntryElements;
 
-internal sealed class KanjiFormTable : Table<KanjiFormElement>
+internal sealed class KanjiFormTable : Table<KanjiFormRow>
 {
     protected override string Name { get; } = nameof(KanjiForm);
 
@@ -39,10 +39,10 @@ internal sealed class KanjiFormTable : Table<KanjiFormElement>
         nameof(KanjiForm.Order),
     ];
 
-    protected override object?[] ParameterValues(KanjiFormElement kanjiForm) =>
+    protected override object?[] ParameterValues(KanjiFormRow row) =>
     [
-        kanjiForm.EntryId,
-        kanjiForm.Order,
-        kanjiForm.Text,
+        row.EntryId,
+        row.Order,
+        row.Text,
     ];
 }

@@ -17,9 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.CommandLine;
-using Jitendex.Import.JMnedict;
 
-namespace Jitendex.JMnedict;
+namespace Jitendex.Import.JMnedict;
 
 public static class Program
 {

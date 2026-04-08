@@ -18,33 +18,29 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders.TranslationElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders.TranslationElementReaders;
 
-internal sealed class NameTypeReader(ILogger<NameTypeReader> logger) : XmlBaseReader(logger)
+internal sealed class DetailReader(ILogger<DetailReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationElement translation)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, TranslationRow translation)
     {
-        var description = await xmlReader.ReadElementContentAsStringAsync();
-
-        if (!document.KeywordDescriptionToName.TryGetValue(description, out var tagName))
+        var languageName = xmlReader.GetAttribute(XmlAttributeName.DetailLanguage);
+        if (languageName is not null)
         {
-            tagName = description;
-            document.KeywordDescriptionToName[description] = description;
-            LogMissingEntityDefinition(description);
+            document.DetailLanguages.Add(languageName);
         }
 
-        document.NameTypeTags.Add(tagName);
-
-        var nameType = new NameTypeElement
+        var detail = new DetailRow
         (
             EntryId: translation.EntryId,
             ParentOrder: translation.Order,
-            Order: document.NameTypes.NextOrder(translation.Key()),
-            TagName: tagName
+            Order: document.Details.NextOrder(translation.Key()),
+            Text: await xmlReader.ReadElementContentAsStringAsync(),
+            LanguageName: languageName
         );
 
-        document.NameTypes.Add(nameType.Key(), nameType);
+        document.Details.Add(detail.Key(), detail);
     }
 }

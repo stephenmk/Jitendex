@@ -18,13 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders.ReadingElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders.ReadingElementReaders;
 
 internal sealed class RInfoReader(ILogger<RInfoReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingElement reading)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingRow reading)
     {
         var description = await xmlReader.ReadElementContentAsStringAsync();
 
@@ -37,7 +37,7 @@ internal sealed class RInfoReader(ILogger<RInfoReader> logger) : XmlBaseReader(l
 
         document.ReadingInfoTags.Add(tagName);
 
-        var info = new ReadingInfoElement
+        var info = new ReadingInfoRow
         (
             EntryId: reading.EntryId,
             ParentOrder: reading.Order,

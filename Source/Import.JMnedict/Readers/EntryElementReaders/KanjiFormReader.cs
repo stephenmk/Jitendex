@@ -18,21 +18,21 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
-using Jitendex.Import.JMnedict.Parsing.EntryElementReaders.KanjiFormElementReaders;
+using Jitendex.Import.JMnedict.TableRows;
+using Jitendex.Import.JMnedict.Readers.EntryElementReaders.KanjiFormElementReaders;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders;
 
 internal partial class KanjiFormReader
 (
     ILogger<KanjiFormReader> logger,
     KInfoReader infoReader,
     KPriorityReader priorityReader
-) : XmlParentElementReader<Document, KanjiFormElement>(logger)
+) : XmlParentElementReader<Document, KanjiFormRow>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryElement entry)
     {
-        var kanjiForm = new KanjiFormElement
+        var kanjiForm = new KanjiFormRow
         {
             EntryId = entry.Id,
             Order = document.KanjiForms.NextOrder(entry.Id),
@@ -51,7 +51,7 @@ internal partial class KanjiFormReader
         }
     }
 
-    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, KanjiFormElement kanjiForm)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, KanjiFormRow kanjiForm)
     {
         switch (xmlReader.Name)
         {
@@ -70,7 +70,7 @@ internal partial class KanjiFormReader
         }
     }
 
-    private async Task ReadKanjiFormText(XmlReader xmlReader, KanjiFormElement kanjiForm)
+    private async Task ReadKanjiFormText(XmlReader xmlReader, KanjiFormRow kanjiForm)
     {
         if (kanjiForm.Text is not null)
         {

@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities.EntryItems.ReadingItems;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables.EntryElements.ReadingElements;
 
-internal sealed class ReadingPriorityTable : Table<ReadingPriorityElement>
+internal sealed class ReadingPriorityTable : Table<ReadingPriorityRow>
 {
     protected override string Name { get; } = nameof(ReadingPriority);
 
@@ -41,11 +41,11 @@ internal sealed class ReadingPriorityTable : Table<ReadingPriorityElement>
         nameof(ReadingPriority.Order),
     ];
 
-    protected override object?[] ParameterValues(ReadingPriorityElement priority) =>
+    protected override object?[] ParameterValues(ReadingPriorityRow row) =>
     [
-        priority.EntryId,
-        priority.ParentOrder,
-        priority.Order,
-        priority.TagName,
+        row.EntryId,
+        row.ParentOrder,
+        row.Order,
+        row.TagName,
     ];
 }

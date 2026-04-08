@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.JMnedict;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 using Jitendex.Import.JMnedict.Tables;
 using Jitendex.Import.JMnedict.Tables.EntryElements;
 using Jitendex.Import.JMnedict.Tables.EntryElements.KanjiFormElements;
@@ -60,11 +60,11 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMnedic
     #endregion
 
     #region Keyword Tables
-    private static readonly KeywordTable<PriorityTagElement> PriorityTagTable = new();
-    private static readonly KeywordTable<ReadingInfoTagElement> ReadingInfoTagTable = new();
-    private static readonly KeywordTable<KanjiFormInfoTagElement> KanjiFormInfoTagTable = new();
-    private static readonly KeywordTable<NameTypeTagElement> NameTypeTagTable = new();
-    private static readonly KeywordTable<DetailLanguageElement> DetailLanguageTable = new();
+    private static readonly KeywordTable<PriorityTagRow> PriorityTagTable = new();
+    private static readonly KeywordTable<ReadingInfoTagRow> ReadingInfoTagTable = new();
+    private static readonly KeywordTable<KanjiFormInfoTagRow> KanjiFormInfoTagTable = new();
+    private static readonly KeywordTable<NameTypeTagRow> NameTypeTagTable = new();
+    private static readonly KeywordTable<DetailLanguageRow> DetailLanguageTable = new();
     #endregion
 
     public void EnsureCreated()

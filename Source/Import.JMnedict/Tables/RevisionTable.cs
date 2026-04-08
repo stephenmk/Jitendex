@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMnedict.Entities;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
 namespace Jitendex.Import.JMnedict.Tables;
 
@@ -40,11 +40,11 @@ internal sealed class RevisionTable : Table<DocumentRevision>
         nameof(Revision.Number),
     ];
 
-    protected override object?[] ParameterValues(DocumentRevision revision) =>
+    protected override object?[] ParameterValues(DocumentRevision row) =>
     [
-        revision.SequenceId,
-        revision.Number,
-        revision.FileHeaderId,
-        revision.DiffJson,
+        row.SequenceId,
+        row.Number,
+        row.FileHeaderId,
+        row.DiffJson,
     ];
 }

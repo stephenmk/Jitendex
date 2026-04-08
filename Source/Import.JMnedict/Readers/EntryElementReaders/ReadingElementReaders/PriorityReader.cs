@@ -18,26 +18,26 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMnedict.Models;
+using Jitendex.Import.JMnedict.TableRows;
 
-namespace Jitendex.Import.JMnedict.Parsing.EntryElementReaders.KanjiFormElementReaders;
+namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders.ReadingElementReaders;
 
-internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : XmlBaseReader(logger)
+internal sealed class RPriorityReader(ILogger<RPriorityReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormElement kanjiForm)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, ReadingRow reading)
     {
         var tagName = await xmlReader.ReadElementContentAsStringAsync();
 
         document.PriorityTags.Add(tagName);
 
-        var priority = new KanjiFormPriorityElement
+        var priority = new ReadingPriorityRow
         (
-            EntryId: kanjiForm.EntryId,
-            ParentOrder: kanjiForm.Order,
-            Order: document.KanjiFormPriorities.NextOrder(kanjiForm.Key()),
+            EntryId: reading.EntryId,
+            ParentOrder: reading.Order,
+            Order: document.ReadingPriorities.NextOrder(reading.Key()),
             TagName: tagName
         );
 
-        document.KanjiFormPriorities.Add(priority.Key(), priority);
+        document.ReadingPriorities.Add(priority.Key(), priority);
     }
 }

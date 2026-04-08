@@ -23,7 +23,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Kanwa;
-using Jitendex.Import.Home.Models;
+using Jitendex.Import.Home.RowModels;
 using Jitendex.Import.Home.Tables.Kanwa;
 using Microsoft.EntityFrameworkCore;
 

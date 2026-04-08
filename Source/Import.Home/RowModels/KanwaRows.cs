@@ -16,44 +16,53 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.Models;
+namespace Jitendex.Import.Home.RowModels;
 
-internal sealed record CrossReferenceSequenceRow
+internal sealed record CharacterRow(int Value);
+
+internal sealed record CharacterReadingRow
 (
-    int EntryId,
-    int SenseNumber,
+    int CharacterValue,
     string Text,
-    int? RefEntryId
+    bool IsPrefix,
+    bool IsSuffix,
+    string? Okurigana,
+    int ReadingTypeId
 );
 
-internal sealed record JMdictPatchRow
+internal sealed record CharacterReadingTypeRow
 (
     int Id,
-    int SequenceId,
-    DateOnly SequenceDate,
-    DateTime CreatedAt,
-    int AuthorId,
-    string AuthorComment,
-    int? PreviousPatchId,
-    byte[] Json
+    string Name
 );
 
-internal sealed record JMdictPatchApprovalRow
+internal sealed record CompoundRow
 (
-    int PatchId,
-    int ApproverId,
-    DateTime CreatedAt
+    string Text
 );
 
-internal sealed record JMdictPatchRecallRow
+internal sealed record CompoundReadingRow
 (
-    int PatchId,
-    int RecallerId,
-    DateTime CreatedAt
+    int CompoundId,
+    string Text,
+    int TypeId
 );
 
-internal sealed record TrademarkGlossRow
+internal sealed record CompoundReadingTypeRow
 (
-    string OriginalText,
-    string ReplacementText
+    int Id,
+    string Name
+);
+
+internal sealed record VariantRow
+(
+    int CharacterValue,
+    int VariantValue,
+    int VariantTypeId
+);
+
+internal sealed record VariantTypeRow
+(
+    int Id,
+    string Name
 );

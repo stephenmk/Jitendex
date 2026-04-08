@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.JMdict;
-using Jitendex.Import.Home.Models;
+using Jitendex.Import.Home.RowModels;
 
 namespace Jitendex.Import.Home.Tables.JMdict;
 

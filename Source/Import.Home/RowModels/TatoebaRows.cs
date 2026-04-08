@@ -16,53 +16,17 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.Models;
+namespace Jitendex.Import.Home.RowModels;
 
-internal sealed record CharacterRow(int Value);
-
-internal sealed record CharacterReadingRow
+internal sealed record ExampleRow
 (
-    int CharacterValue,
-    string Text,
-    bool IsPrefix,
-    bool IsSuffix,
-    string? Okurigana,
-    int ReadingTypeId
+    int Id
 );
 
-internal sealed record CharacterReadingTypeRow
+internal sealed record ExampleFuriganaRow
 (
-    int Id,
-    string Name
-);
-
-internal sealed record CompoundRow
-(
-    string Text
-);
-
-internal sealed record CompoundReadingRow
-(
-    int CompoundId,
-    string Text,
-    int TypeId
-);
-
-internal sealed record CompoundReadingTypeRow
-(
-    int Id,
-    string Name
-);
-
-internal sealed record VariantRow
-(
-    int CharacterValue,
-    int VariantValue,
-    int VariantTypeId
-);
-
-internal sealed record VariantTypeRow
-(
-    int Id,
-    string Name
+    int ExampleId,
+    int Order,
+    string BaseText,
+    string? RubyText
 );

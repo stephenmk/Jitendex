@@ -24,7 +24,7 @@ using System.Text.Json.Nodes;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Kanwa;
-using Jitendex.Import.Home.Models;
+using Jitendex.Import.Home.RowModels;
 using Jitendex.Import.Home.Tables.Kanwa;
 
 namespace Jitendex.Import.Home.Services.Kanwa;

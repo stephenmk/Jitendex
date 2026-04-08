@@ -16,45 +16,44 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.Models;
+namespace Jitendex.Import.Home.RowModels;
 
-internal sealed record GraphicLicenseRow
+internal sealed record CrossReferenceSequenceRow
 (
-    int Id,
-    string Name,
-    string InfoUrl
-);
-
-internal sealed record GraphicRow
-(
-    int Id,
-    int LicenseId,
-    bool Cropped,
-    string PageUrl,
-    string FileUrl,
-    string Author,
-    string? AuthorUrl,
-    string? Title,
-    byte[] FileData
-);
-
-internal sealed record SenseGraphicRow
-(
-    int SequenceId,
-    int SenseOrder,
-    int Order,
-    DateOnly SequenceDate,
-    int? PatchId,
-    int GraphicId
-);
-
-internal sealed record KanjiAliveAudioRow
-(
-    string Filename,
     int EntryId,
-    string ReadingText,
-    string KanjiFormText,
-    string? Suffix,
-    int? PitchAccent,
-    byte[] FileData
+    int SenseNumber,
+    string Text,
+    int? RefEntryId
+);
+
+internal sealed record JMdictPatchRow
+(
+    int Id,
+    int SequenceId,
+    DateOnly SequenceDate,
+    DateTime CreatedAt,
+    int AuthorId,
+    string AuthorComment,
+    int? PreviousPatchId,
+    byte[] Json
+);
+
+internal sealed record JMdictPatchApprovalRow
+(
+    int PatchId,
+    int ApproverId,
+    DateTime CreatedAt
+);
+
+internal sealed record JMdictPatchRecallRow
+(
+    int PatchId,
+    int RecallerId,
+    DateTime CreatedAt
+);
+
+internal sealed record TrademarkGlossRow
+(
+    string OriginalText,
+    string ReplacementText
 );

@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
-using Jitendex.Import.Home.Models;
+using Jitendex.Import.Home.RowModels;
 using Jitendex.Import.Home.Tables.JMdict;
 
 namespace Jitendex.Import.Home.Services.JMdict;

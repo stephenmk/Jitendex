@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.Home;
-using Jitendex.Import.Home.Models;
+using Jitendex.Import.Home.RowModels;
 using Jitendex.Import.Home.Tables.Tatoeba;
 
 namespace Jitendex.Import.Home.Services.Tatoeba;

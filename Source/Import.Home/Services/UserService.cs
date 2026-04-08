@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 
 namespace Jitendex.Import.Home.Services;
@@ -46,17 +45,16 @@ internal sealed class UserService(HomeContext context, ServiceOptions options)
     public async Task ExportAsync()
     {
         var dictionary = context.Users
-            .AsNoTracking()
             .OrderBy(static x => x.Id)
-            .ToDictionary(static x => x.Id, static x => x.Name);
+            .Select(static x => new
+            {
+                Key = x.Id,
+                Value = x.Name,
+            })
+            .ToDictionary(static x => x.Key, static x => x.Value);
 
         var filePath = GetJsonFilePath();
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-
-        await using var stream = File.OpenWrite(filePath);
+        await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
         await JsonSerializer.SerializeAsync(stream, dictionary, JsonSerializerOptions);
     }
 

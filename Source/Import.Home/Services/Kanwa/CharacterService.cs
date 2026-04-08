@@ -16,9 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Frozen;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Kanwa;
@@ -40,16 +42,44 @@ internal sealed class CharacterService
     {
         var filePath = GetJsonFilePath();
         await using var stream = File.OpenRead(filePath);
-        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, CharacterReadingsObject>>(stream, ReadOptions) ?? [];
+        var data = await JsonSerializer.DeserializeAsync<Dictionary<string, JsonObject>>(stream, ReadOptions) ?? [];
 
         var characterRows = new List<CharacterRow>();
         var readingRows = new List<CharacterReadingRow>();
 
-        foreach (var (key, value) in data)
+        foreach (var (key, obj) in data)
         {
             var characterValue = key.EnumerateRunes().First().Value;
             characterRows.Add(new(characterValue));
-            readingRows.AddRange(value.ToReadingRows(characterValue));
+
+            foreach (var (typeName, node) in obj)
+            {
+                var readings = (JsonArray)node!;
+                var typeId = TypeNameToId[typeName];
+                foreach (var reading in readings)
+                {
+                    const string hyphen = "-";
+                    const char delimiter = '.';
+                    var text = (string)reading!;
+
+                    if (text.Equals(hyphen, StringComparison.Ordinal))
+                    {
+                        readingRows.Add(new(characterValue, text, false, false, null, (int)typeId));
+                        continue;
+                    }
+
+                    var split = text.Replace(hyphen, string.Empty).Split(delimiter);
+                    readingRows.Add(new
+                    (
+                        CharacterValue: characterValue,
+                        Text: split[0],
+                        IsPrefix: text.EndsWith('-'),
+                        IsSuffix: text.StartsWith('-'),
+                        Okurigana: split.Length == 2 ? split[1] : null,
+                        ReadingTypeId: (int)typeId
+                    ));
+                }
+            }
         }
 
         typeTable.InsertItems(context, GetTypeRows());
@@ -61,6 +91,7 @@ internal sealed class CharacterService
     {
         var data = context.Characters
             .AsNoTracking()
+            .AsSplitQuery()
             .Include(static x => x.Readings)
             .ThenInclude(static x => x.Type)
             .Where(static x => x.Readings.Any())
@@ -106,6 +137,14 @@ internal sealed class CharacterService
     };
 
     private static IEnumerable<CharacterReadingTypeRow> GetTypeRows()
-        => Enum.GetValues<CharacterReadingTypeId>()
-            .Select(static type => new CharacterReadingTypeRow((int)type, type.ToString()));
+        => TypeNameToId.Select(static x => new CharacterReadingTypeRow((int)x.Value, x.Key));
+
+    private readonly static FrozenDictionary<string, CharacterReadingTypeId> TypeNameToId = Enum
+        .GetValues<CharacterReadingTypeId>()
+        .Select(static type => new
+        {
+            Key = type.ToString().ToLower(),
+            Value = type,
+        })
+        .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 }

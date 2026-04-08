@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Collections.Frozen;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -60,7 +61,7 @@ internal sealed class CompoundService
             foreach (var (typeName, node) in obj)
             {
                 var readings = (JsonArray)node!;
-                var typeId = TypeNameToId(typeName);
+                var typeId = TypeNameToId[typeName];
                 foreach (var reading in readings)
                 {
                     readingRows.Add(new(id, (string)reading!, (int)typeId));
@@ -106,6 +107,9 @@ internal sealed class CompoundService
             "compounds.json"
         );
 
+    private static IEnumerable<CompoundReadingTypeRow> GetTypeRows()
+        => TypeNameToId.Select(static x => new CompoundReadingTypeRow((int)x.Value, x.Key));
+
     private readonly static JsonSerializerOptions ReadOptions = new()
     {
         PropertyNameCaseInsensitive = true
@@ -118,24 +122,15 @@ internal sealed class CompoundService
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
 
-    private static IEnumerable<CompoundReadingTypeRow> GetTypeRows()
-    {
-        foreach (var type in Enum.GetValues<CompoundReadingTypeId>())
-        {
-            yield return new CompoundReadingTypeRow((int)type, type.ToString().ToLower());
-        }
-    }
-
     private readonly static StringComparer StringComparer =
         StringComparer.Create(new CultureInfo("ja-JP"), CompareOptions.NumericOrdering);
 
-    #pragma warning disable format
-    private static CompoundReadingTypeId TypeNameToId(string name) => name switch
-    {
-        "alphanumeric" => CompoundReadingTypeId.Alphanumeric,
-        "ateji"        => CompoundReadingTypeId.Ateji,
-        "idiom"        => CompoundReadingTypeId.Idiom,
-        _              => throw new ArgumentOutOfRangeException(nameof(name))
-    };
-    #pragma warning restore format
+    private readonly static FrozenDictionary<string, CompoundReadingTypeId> TypeNameToId = Enum
+        .GetValues<CompoundReadingTypeId>()
+        .Select(static type => new
+        {
+            Key = type.ToString().ToLower(),
+            Value = type,
+        })
+        .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 }

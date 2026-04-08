@@ -35,21 +35,13 @@ internal sealed record ServiceOptions
         }
     }
 
-    public DirectoryInfo GetKanwaDirectory()
-        => DataDirectory.CreateSubdirectory("kanwa");
+    public DirectoryInfo GetKanwaDirectory() => GetDirectory("kanwa");
+    public DirectoryInfo GetPatchDirectory() => GetDirectory("patches");
+    public DirectoryInfo GetJMdictDirectory() => GetDirectory("jmdict");
+    public DirectoryInfo GetTatoebaDirectory() => GetDirectory("tatoeba");
+    public DirectoryInfo GetGraphicDirectory() => GetDirectory("graphics");
+    public DirectoryInfo GetAudioDirectory() => GetDirectory("audio");
 
-    public DirectoryInfo GetPatchDirectory()
-        => DataDirectory.CreateSubdirectory("patches");
-
-    public DirectoryInfo GetJMdictDirectory()
-        => DataDirectory.CreateSubdirectory("jmdict");
-
-    public DirectoryInfo GetTatoebaDirectory()
-        => DataDirectory.CreateSubdirectory("tatoeba");
-
-    public DirectoryInfo GetGraphicDirectory()
-        => DataDirectory.CreateSubdirectory("graphics");
-
-    public DirectoryInfo GetAudioDirectory()
-        => DataDirectory.CreateSubdirectory("audio");
+    private DirectoryInfo GetDirectory(string name)
+        => DataDirectory.CreateSubdirectory(name);
 }

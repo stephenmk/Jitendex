@@ -16,14 +16,16 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Tatoeba.Models;
+using Jitendex.Import.Tatoeba.RowModels;
+
+namespace Jitendex.Import.Tatoeba;
 
 internal sealed class Document : IDocument<DateOnly>
 {
     public required DateOnly ArchiveKey { get; init; }
-    public Dictionary<int, ExampleElement> Examples { get; init; }
-    public Dictionary<(int, int), SegmentationElement> Segmentations { get; init; }
-    public Dictionary<(int, int, int), TokenElement> Tokens { get; init; }
+    public Dictionary<int, ExampleRow> Examples { get; init; }
+    public Dictionary<(int, int), SegmentationRow> Segmentations { get; init; }
+    public Dictionary<(int, int, int), TokenRow> Tokens { get; init; }
 
     public Document(int expectedExampleCount = 300_000)
     {
@@ -32,8 +34,8 @@ internal sealed class Document : IDocument<DateOnly>
         Tokens = new(expectedExampleCount * 4);
     }
 
-    public IEnumerable<SequenceElement> GetSequences(int fileHeaderId)
-        => Examples.Select(e => new SequenceElement(e.Key, fileHeaderId));
+    public IEnumerable<SequenceRow> GetSequences(int fileHeaderId)
+        => Examples.Select(e => new SequenceRow(e.Key, fileHeaderId));
 
     public IEnumerable<int> ConcatAllExampleIds()
         => Examples.Keys

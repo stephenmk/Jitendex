@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.IO.Compression;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.Tatoeba.Models;
 using Jitendex.Import.Tatoeba.Parsing;
+using Jitendex.Import.Tatoeba.RowModels;
 
 namespace Jitendex.Import.Tatoeba;
 
@@ -72,7 +72,7 @@ internal sealed class DocumentReader(ILogger<DocumentReader> logger)
         var translation = GetTranslation(text, document);
         var index = document.Segmentations.NextOrder(example.Id);
 
-        var segmentation = new SegmentationElement
+        var segmentation = new SegmentationRow
         {
             ExampleId = example.Id,
             Order = index,
@@ -85,7 +85,7 @@ internal sealed class DocumentReader(ILogger<DocumentReader> logger)
         foreach (var range in text.ElementTextRanges())
         {
             var elementText = text.GetElementText(range);
-            var token = new TokenElement
+            var token = new TokenRow
             {
                 ExampleId = segmentation.ExampleId,
                 SegmentationOrder = segmentation.Order,
@@ -101,23 +101,23 @@ internal sealed class DocumentReader(ILogger<DocumentReader> logger)
         }
     }
 
-    private ExampleElement GetExample(in ExampleText text, Document document)
+    private ExampleRow GetExample(in ExampleText text, Document document)
     {
         var id = text.GetExampleId();
-        var example = new ExampleElement(id, text.GetExampleText());
+        var example = new ExampleRow(id, text.GetExampleText());
         CheckExample(example, document);
         return example;
     }
 
-    private ExampleElement GetTranslation(in ExampleText text, Document document)
+    private ExampleRow GetTranslation(in ExampleText text, Document document)
     {
         var id = text.GetTranslationId();
-        var translation = new ExampleElement(id, text.GetTranslationText());
+        var translation = new ExampleRow(id, text.GetTranslationText());
         CheckExample(translation, document);
         return translation;
     }
 
-    private void CheckExample(ExampleElement example, Document document)
+    private void CheckExample(ExampleRow example, Document document)
     {
         if (!document.Examples.TryGetValue(example.Id, out var oldSentence))
         {

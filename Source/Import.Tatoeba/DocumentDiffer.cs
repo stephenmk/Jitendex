@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Import.Tatoeba.Models;
+using Jitendex.Import.Tatoeba.RowModels;
 
 namespace Jitendex.Import.Tatoeba;
 
@@ -31,9 +31,9 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
             Deletes = new Document(0) { ArchiveKey = docB.ArchiveKey },
         };
 
-        DiffDictionaryProperties<int, ExampleElement>(diff, docA, docB, propertyName: nameof(Document.Examples));
-        DiffDictionaryProperties<(int, int), SegmentationElement>(diff, docA, docB, propertyName: nameof(Document.Segmentations));
-        DiffDictionaryProperties<(int, int, int), TokenElement>(diff, docA, docB, propertyName: nameof(Document.Tokens));
+        DiffDictionaryProperties<int, ExampleRow>(diff, docA, docB, propertyName: nameof(Document.Examples));
+        DiffDictionaryProperties<(int, int), SegmentationRow>(diff, docA, docB, propertyName: nameof(Document.Segmentations));
+        DiffDictionaryProperties<(int, int, int), TokenRow>(diff, docA, docB, propertyName: nameof(Document.Tokens));
 
         return diff;
     }

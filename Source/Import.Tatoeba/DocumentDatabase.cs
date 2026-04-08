@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.Tatoeba;
-using Jitendex.Import.Tatoeba.Models;
+using Jitendex.Import.Tatoeba.RowModels;
 using Jitendex.Import.Tatoeba.Tables;
 
 namespace Jitendex.Import.Tatoeba;
@@ -95,7 +95,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
                 RevisionCount = seq.Revisions.Count,
             });
 
-        var revisions = new List<DocumentRevision>(aSequences.Count);
+        var revisions = new List<RevisionRow>(aSequences.Count);
 
         foreach (var sequence in sequences)
         {

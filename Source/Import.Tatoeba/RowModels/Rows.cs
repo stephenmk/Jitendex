@@ -16,14 +16,14 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Tatoeba.Models;
+namespace Jitendex.Import.Tatoeba.RowModels;
 
-internal sealed record DocumentHeader
+internal sealed record HeaderRow
 (
     DateOnly Date
 );
 
-internal sealed record DocumentRevision
+internal sealed record RevisionRow
 (
     int SequenceId,
     int Number,
@@ -32,19 +32,19 @@ internal sealed record DocumentRevision
     byte[] DiffJson
 );
 
-internal sealed record SequenceElement
+internal sealed record SequenceRow
 (
     int Id,
     int FileHeaderId
 );
 
-internal sealed record ExampleElement
+internal sealed record ExampleRow
 (
     int Id,
     string Text
 );
 
-internal sealed record SegmentationElement
+internal sealed record SegmentationRow
 {
     public required int ExampleId { get; init; }
     public required int Order { get; init; }
@@ -52,7 +52,7 @@ internal sealed record SegmentationElement
     public (int, int) GetKey() => (ExampleId, Order);
 }
 
-internal sealed record TokenElement
+internal sealed record TokenRow
 {
     public required int ExampleId { get; init; }
     public required int SegmentationOrder { get; init; }

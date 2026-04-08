@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.Entities;
-using Jitendex.Import.Tatoeba.Models;
+using Jitendex.Import.Tatoeba.RowModels;
 
 namespace Jitendex.Import.Tatoeba.Tables;
 
-internal sealed class SequenceTable : Table<SequenceElement>
+internal sealed class SequenceTable : Table<SequenceRow>
 {
     protected override string Name { get; } = nameof(Sequence);
 
@@ -37,9 +37,9 @@ internal sealed class SequenceTable : Table<SequenceElement>
         nameof(Sequence.Id)
     ];
 
-    protected override object?[] ParameterValues(SequenceElement sequence) =>
+    protected override object?[] ParameterValues(SequenceRow row) =>
     [
-        sequence.Id,
-        sequence.FileHeaderId,
+        row.Id,
+        row.FileHeaderId,
     ];
 }

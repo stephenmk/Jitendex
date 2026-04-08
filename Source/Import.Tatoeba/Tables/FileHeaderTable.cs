@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.Entities;
-using Jitendex.Import.Tatoeba.Models;
+using Jitendex.Import.Tatoeba.RowModels;
 
 namespace Jitendex.Import.Tatoeba.Tables;
 
-internal sealed class FileHeaderTable : Table<DocumentHeader>
+internal sealed class FileHeaderTable : Table<HeaderRow>
 {
     protected override string Name { get; } = nameof(FileHeader);
 
@@ -34,8 +34,8 @@ internal sealed class FileHeaderTable : Table<DocumentHeader>
     protected override ImmutableArray<string> KeyColNames
         => throw new NotImplementedException($"The primary key for table {Name} is auto-incremented.");
 
-    protected override object?[] ParameterValues(DocumentHeader header) =>
+    protected override object?[] ParameterValues(HeaderRow row) =>
     [
-        header.Date
+        row.Date
     ];
 }

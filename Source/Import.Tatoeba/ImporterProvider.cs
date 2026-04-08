@@ -20,7 +20,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Data.Tatoeba;
-using Jitendex.Import.Tatoeba.Models;
 
 namespace Jitendex.Import.Tatoeba;
 

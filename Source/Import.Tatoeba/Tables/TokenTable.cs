@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.Entities;
-using Jitendex.Import.Tatoeba.Models;
+using Jitendex.Import.Tatoeba.RowModels;
 
 namespace Jitendex.Import.Tatoeba.Tables;
 
-internal sealed class TokenTable : Table<TokenElement>
+internal sealed class TokenTable : Table<TokenRow>
 {
     protected override string Name { get; } = nameof(Token);
 
@@ -46,16 +46,16 @@ internal sealed class TokenTable : Table<TokenElement>
         nameof(Token.Order),
     ];
 
-    protected override object?[] ParameterValues(TokenElement token) =>
+    protected override object?[] ParameterValues(TokenRow row) =>
     [
-        token.ExampleId,
-        token.SegmentationOrder,
-        token.Order,
-        token.Headword,
-        token.Reading,
-        token.EntryId,
-        token.SenseNumber,
-        token.SentenceForm,
-        token.IsPriority,
+        row.ExampleId,
+        row.SegmentationOrder,
+        row.Order,
+        row.Headword,
+        row.Reading,
+        row.EntryId,
+        row.SenseNumber,
+        row.SentenceForm,
+        row.IsPriority,
     ];
 }

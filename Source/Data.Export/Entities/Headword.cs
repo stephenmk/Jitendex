@@ -18,37 +18,21 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.Export.Entities.HeadwordItems;
 
 namespace Jitendex.Data.Export.Entities;
 
 [Table(nameof(Headword))]
 [PrimaryKey(nameof(Id))]
+[Index(nameof(Surface), nameof(Reading), IsUnique = true)]
 public sealed class Headword
 {
     public required int Id { get; init; }
     public required string Surface { get; init; }
     public required string? Reading { get; init; }
-    public required int Score { get; init; }
 
-    #region HeadwordItems
+    [InverseProperty(nameof(HeadwordFurigana.Headword))]
+    public List<HeadwordFurigana> Furigana { get; init; } = [];
 
-    [InverseProperty(nameof(HeadwordNumber.Headword))]
-    public HeadwordNumber Number { get; set; } = null!;
-
-    [InverseProperty(nameof(HeadwordRedirect.Headword))]
-    public HeadwordRedirect? Redirect { get; set; }
-
-    [InverseProperty(nameof(HeadwordRedirect.RedirectHeadword))]
-    public ICollection<HeadwordRedirect> ReverseRedirects { get; init; } = [];
-
-    [InverseProperty(nameof(HeadwordRule.Headword))]
-    public ICollection<HeadwordRule> Rules { get; init; } = [];
-
-    [InverseProperty(nameof(HeadwordTag.Headword))]
-    public List<HeadwordTag> Tags { get; init; } = [];
-
-    public string Glossary { get; set; } = null!;
-
-    #endregion
+    [InverseProperty(nameof(Term.Headword))]
+    public ICollection<Term> Terms { get; init; } = [];
 }

@@ -19,16 +19,16 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.Export.Entities.HeadwordItems;
+namespace Jitendex.Data.Export.Entities.TermChildren;
 
-[Table(nameof(HeadwordNumber))]
-[PrimaryKey(nameof(HeadwordId), nameof(Number))]
-public sealed class HeadwordNumber
+[Table(nameof(TermRule))]
+[PrimaryKey(nameof(HeadwordId), nameof(TermNumber), nameof(Name))]
+public sealed class TermRule
 {
     public required int HeadwordId { get; init; }
-    public required int Number { get; init; }
-    public required int Total { get; init; }
+    public required int TermNumber { get; init; }
+    public required string Name { get; init; }
 
-    [ForeignKey(nameof(HeadwordId))]
-    public Headword Headword { get; init; } = null!;
+    [ForeignKey($"{nameof(HeadwordId)}, {nameof(TermNumber)}")]
+    public Term Term { get; init; } = null!;
 }

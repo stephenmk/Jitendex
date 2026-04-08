@@ -16,9 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Data.Export.Entities;
+namespace Jitendex.Data.Export.Glossaries;
 
-public sealed record Glossary
+public sealed record JitendexGlossary
 (
     ImmutableArray<FuriganaSegment> FuriganaSegments,
     ImmutableArray<GlossaryTag> Tags,

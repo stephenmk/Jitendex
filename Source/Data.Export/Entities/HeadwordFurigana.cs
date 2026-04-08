@@ -19,15 +19,16 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.Export.Entities.HeadwordItems;
+namespace Jitendex.Data.Export.Entities;
 
-[Table(nameof(HeadwordTag))]
+[Table(nameof(Headword))]
 [PrimaryKey(nameof(HeadwordId), nameof(Order))]
-public sealed class HeadwordTag
+public sealed class HeadwordFurigana
 {
     public required int HeadwordId { get; init; }
     public required int Order { get; init; }
-    public required string Name { get; init; }
+    public required string BaseText { get; set; }
+    public required string? RubyText { get; set; }
 
     [ForeignKey(nameof(HeadwordId))]
     public Headword Headword { get; init; } = null!;

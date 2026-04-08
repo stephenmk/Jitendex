@@ -17,32 +17,35 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities;
+using Jitendex.Data.JMdict.Entities.EntryItems.ReadingItems;
 using Jitendex.Import.JMdict.RowModels;
 
-namespace Jitendex.Import.JMdict.Tables;
+namespace Jitendex.Import.JMdict.Tables.EntryChildren.ReadingChildren;
 
-internal sealed class RevisionTable : Table<RevisionRow>
+internal sealed class ReadingPriorityTable : Table<ReadingPriorityRow>
 {
-    protected override string Name { get; } = nameof(Revision);
+    protected override string Name { get; } = nameof(ReadingPriority);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
-        nameof(Revision.DiffJson),
+        nameof(ReadingPriority.EntryId),
+        nameof(ReadingPriority.ReadingOrder),
+        nameof(ReadingPriority.Order),
+        nameof(ReadingPriority.TagName),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
+        nameof(ReadingPriority.EntryId),
+        nameof(ReadingPriority.ReadingOrder),
+        nameof(ReadingPriority.Order),
     ];
 
-    protected override object?[] ParameterValues(RevisionRow row) =>
+    protected override object?[] ParameterValues(ReadingPriorityRow row) =>
     [
-        row.SequenceId,
-        row.FileHeaderId,
-        row.DiffJson,
+        row.EntryId,
+        row.ParentOrder,
+        row.Order,
+        row.TagName,
     ];
 }

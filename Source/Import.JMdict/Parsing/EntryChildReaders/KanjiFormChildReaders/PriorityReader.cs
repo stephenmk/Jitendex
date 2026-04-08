@@ -16,33 +16,28 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities;
+using System.Xml;
+using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.RowModels;
 
-namespace Jitendex.Import.JMdict.Tables;
+namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.KanjiFormChildReaders;
 
-internal sealed class RevisionTable : Table<RevisionRow>
+internal sealed class KPriorityReader(ILogger<KPriorityReader> logger) : XmlBaseReader(logger)
 {
-    protected override string Name { get; } = nameof(Revision);
+    public async Task ReadAsync(XmlReader xmlReader, Document document, KanjiFormRow kanjiForm)
+    {
+        var tagName = await xmlReader.ReadElementContentAsStringAsync();
 
-    protected override ImmutableArray<string> ColumnNames { get; } =
-    [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
-        nameof(Revision.DiffJson),
-    ];
+        document.PriorityTags.Add(tagName);
 
-    protected override ImmutableArray<string> KeyColNames { get; } =
-    [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
-    ];
+        var priority = new KanjiFormPriorityRow
+        (
+            EntryId: kanjiForm.EntryId,
+            ParentOrder: kanjiForm.Order,
+            Order: document.KanjiFormPriorities.NextOrder(kanjiForm.Key()),
+            TagName: tagName
+        );
 
-    protected override object?[] ParameterValues(RevisionRow row) =>
-    [
-        row.SequenceId,
-        row.FileHeaderId,
-        row.DiffJson,
-    ];
+        document.KanjiFormPriorities.Add(priority.Key(), priority);
+    }
 }

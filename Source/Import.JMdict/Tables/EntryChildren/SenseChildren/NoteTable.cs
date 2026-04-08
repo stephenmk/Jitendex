@@ -17,32 +17,35 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities;
+using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.RowModels;
 
-namespace Jitendex.Import.JMdict.Tables;
+namespace Jitendex.Import.JMdict.Tables.EntryChildren.SenseChildren;
 
-internal sealed class RevisionTable : Table<RevisionRow>
+internal sealed class NoteTable : Table<NoteRow>
 {
-    protected override string Name { get; } = nameof(Revision);
+    protected override string Name { get; } = nameof(Note);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
-        nameof(Revision.DiffJson),
+        nameof(Note.EntryId),
+        nameof(Note.SenseOrder),
+        nameof(Note.Order),
+        nameof(Note.Text),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
+        nameof(Note.EntryId),
+        nameof(Note.SenseOrder),
+        nameof(Note.Order),
     ];
 
-    protected override object?[] ParameterValues(RevisionRow row) =>
+    protected override object?[] ParameterValues(NoteRow row) =>
     [
-        row.SequenceId,
-        row.FileHeaderId,
-        row.DiffJson,
+        row.EntryId,
+        row.ParentOrder,
+        row.Order,
+        row.Text,
     ];
 }

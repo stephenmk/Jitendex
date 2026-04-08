@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities;
-using Jitendex.Import.JMdict.Models;
+using Jitendex.Import.JMdict.RowModels;
 
 namespace Jitendex.Import.JMdict.Tables;
 
-internal sealed class SequenceTable : Table<DocumentSequence>
+internal sealed class SequenceTable : Table<SequenceRow>
 {
     protected override string Name { get; } = nameof(Sequence);
 
@@ -37,9 +37,9 @@ internal sealed class SequenceTable : Table<DocumentSequence>
         nameof(Sequence.Id)
     ];
 
-    protected override object?[] ParameterValues(DocumentSequence sequence) =>
+    protected override object?[] ParameterValues(SequenceRow row) =>
     [
-        sequence.Id,
-        sequence.FileHeaderId,
+        row.Id,
+        row.FileHeaderId,
     ];
 }

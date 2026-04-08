@@ -16,28 +16,33 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities;
-using Jitendex.Import.JMdict.RowModels;
+namespace Jitendex.Import.JMdict.RowModels;
 
-namespace Jitendex.Import.JMdict.Tables;
+internal sealed record HeaderRow
+(
+    DateOnly Date
+);
 
-internal sealed class EntryTable : Table<EntryRow>
+internal sealed record SequenceRow
+(
+    int Id,
+    int FileHeaderId
+);
+
+internal sealed record EntryRow
 {
-    protected override string Name { get; } = nameof(Entry);
+    public required int Id { get; set; }
 
-    protected override ImmutableArray<string> ColumnNames { get; } =
-    [
-        nameof(Entry.Id)
-    ];
-
-    protected override ImmutableArray<string> KeyColNames { get; } =
-    [
-        nameof(Entry.Id)
-    ];
-
-    protected override object?[] ParameterValues(EntryRow row) =>
-    [
-        row.Id
-    ];
+    public bool IsJmdictEntry() => Id switch
+    {
+        >= 1_000_000 and <= 3_000_000 => true,
+        _ => false,
+    };
 }
+
+internal sealed record RevisionRow
+(
+    int SequenceId,
+    int FileHeaderId,
+    byte[] DiffJson
+);

@@ -20,12 +20,12 @@ using Microsoft.Extensions.Logging;
 using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
-using Jitendex.Import.JMdict.Models;
+using Jitendex.Import.JMdict.RowModels;
 using Jitendex.Import.JMdict.Tables;
-using Jitendex.Import.JMdict.Tables.EntryElements;
-using Jitendex.Import.JMdict.Tables.EntryElements.KanjiFormElements;
-using Jitendex.Import.JMdict.Tables.EntryElements.ReadingElements;
-using Jitendex.Import.JMdict.Tables.EntryElements.SenseElements;
+using Jitendex.Import.JMdict.Tables.EntryChildren;
+using Jitendex.Import.JMdict.Tables.EntryChildren.KanjiFormChildren;
+using Jitendex.Import.JMdict.Tables.EntryChildren.ReadingChildren;
+using Jitendex.Import.JMdict.Tables.EntryChildren.SenseChildren;
 
 namespace Jitendex.Import.JMdict;
 
@@ -37,24 +37,24 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
     private static readonly SequenceTable SequenceTable = new();
     private static readonly EntryTable EntryTable = new();
 
-    #region Entry Element Tables
+    #region Entry Children Tables
     private static readonly KanjiFormTable KanjiFormTable = new();
     private static readonly ReadingTable ReadingTable = new();
     private static readonly SenseTable SenseTable = new();
     #endregion
 
-    #region Kanji Form Element Tables
+    #region Kanji Form Children Tables
     private static readonly KanjiFormInfoTable KanjiFormInfoTable = new();
     private static readonly KanjiFormPriorityTable KanjiFormPriorityTable = new();
     #endregion
 
-    #region Reading Element Tables
+    #region Reading Children Tables
     private static readonly ReadingInfoTable ReadingInfoTable = new();
     private static readonly ReadingPriorityTable ReadingPriorityTable = new();
     private static readonly RestrictionTable RestrictionTable = new();
     #endregion
 
-    #region Sense Element Tables
+    #region Sense Children Tables
     private static readonly CrossReferenceTable CrossReferenceTable = new();
     private static readonly DialectTable DialectTable = new();
     private static readonly FieldTable FieldTable = new();
@@ -69,17 +69,17 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
     #endregion
 
     #region Keyword Tables
-    private static readonly KeywordTable<ReadingInfoTagElement> ReadingInfoTagTable = new();
-    private static readonly KeywordTable<KanjiFormInfoTagElement> KanjiFormInfoTagTable = new();
-    private static readonly KeywordTable<PartOfSpeechTagElement> PartOfSpeechTagTable = new();
-    private static readonly KeywordTable<FieldTagElement> FieldTagTable = new();
-    private static readonly KeywordTable<MiscTagElement> MiscTagTable = new();
-    private static readonly KeywordTable<DialectTagElement> DialectTagTable = new();
-    private static readonly KeywordTable<GlossTypeTagElement> GlossTypeTagTable = new();
-    private static readonly KeywordTable<CrossReferenceTypeElement> CrossReferenceTypeTable = new();
-    private static readonly KeywordTable<LanguageSourceTypeElement> LanguageSourceTypeTable = new();
-    private static readonly KeywordTable<PriorityTagElement> PriorityTagTable = new();
-    private static readonly KeywordTable<LanguageElement> LanguageTable = new();
+    private static readonly KeywordTable<ReadingInfoTagRow> ReadingInfoTagTable = new();
+    private static readonly KeywordTable<KanjiFormInfoTagRow> KanjiFormInfoTagTable = new();
+    private static readonly KeywordTable<PartOfSpeechTagRow> PartOfSpeechTagTable = new();
+    private static readonly KeywordTable<FieldTagRow> FieldTagTable = new();
+    private static readonly KeywordTable<MiscTagRow> MiscTagTable = new();
+    private static readonly KeywordTable<DialectTagRow> DialectTagTable = new();
+    private static readonly KeywordTable<GlossTypeTagRow> GlossTypeTagTable = new();
+    private static readonly KeywordTable<CrossReferenceTypeRow> CrossReferenceTypeTable = new();
+    private static readonly KeywordTable<LanguageSourceTypeRow> LanguageSourceTypeTable = new();
+    private static readonly KeywordTable<PriorityTagRow> PriorityTagTable = new();
+    private static readonly KeywordTable<LanguageRow> LanguageTable = new();
     #endregion
 
     public void EnsureCreated()
@@ -215,7 +215,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
                 RevisionCount = seq.Revisions.Count,
             });
 
-        var revisions = new List<DocumentRevision>(aSequences.Count);
+        var revisions = new List<RevisionRow>(aSequences.Count);
 
         foreach (var seq in sequences)
         {

@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.JMdict.Entities;
-using Jitendex.Import.JMdict.Models;
+using Jitendex.Import.JMdict.RowModels;
 
 namespace Jitendex.Import.JMdict.Tables;
 
-internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
+internal sealed class KeywordTable<T> : Table<T> where T : IKeywordRow
 {
     protected override string Name { get; } = ElementNameToEntityName(typeof(T).Name);
 
@@ -37,26 +37,26 @@ internal sealed class KeywordTable<T> : Table<T> where T : IKeywordElement
         nameof(IKeyword.Name)
     ];
 
-    protected override object?[] ParameterValues(T keyword) =>
+    protected override object?[] ParameterValues(T row) =>
     [
-        keyword.Name,
-        keyword.OriginFileId,
+        row.Name,
+        row.OriginFileId,
     ];
 
     #pragma warning disable format
     private static string ElementNameToEntityName(string elementName) => elementName switch
     {
-        nameof(ReadingInfoTagElement)     => nameof(ReadingInfoTag),
-        nameof(KanjiFormInfoTagElement)   => nameof(KanjiFormInfoTag),
-        nameof(PartOfSpeechTagElement)    => nameof(PartOfSpeechTag),
-        nameof(FieldTagElement)           => nameof(FieldTag),
-        nameof(MiscTagElement)            => nameof(MiscTag),
-        nameof(DialectTagElement)         => nameof(DialectTag),
-        nameof(GlossTypeTagElement)       => nameof(GlossTypeTag),
-        nameof(CrossReferenceTypeElement) => nameof(CrossReferenceType),
-        nameof(LanguageSourceTypeElement) => nameof(LanguageSourceType),
-        nameof(PriorityTagElement)        => nameof(PriorityTag),
-        nameof(LanguageElement)           => nameof(Language),
+        nameof(ReadingInfoTagRow)     => nameof(ReadingInfoTag),
+        nameof(KanjiFormInfoTagRow)   => nameof(KanjiFormInfoTag),
+        nameof(PartOfSpeechTagRow)    => nameof(PartOfSpeechTag),
+        nameof(FieldTagRow)           => nameof(FieldTag),
+        nameof(MiscTagRow)            => nameof(MiscTag),
+        nameof(DialectTagRow)         => nameof(DialectTag),
+        nameof(GlossTypeTagRow)       => nameof(GlossTypeTag),
+        nameof(CrossReferenceTypeRow) => nameof(CrossReferenceType),
+        nameof(LanguageSourceTypeRow) => nameof(LanguageSourceType),
+        nameof(PriorityTagRow)        => nameof(PriorityTag),
+        nameof(LanguageRow)           => nameof(Language),
         _ => throw new ArgumentOutOfRangeException(nameof(elementName), $"Value: `{elementName}`")
     };
     #pragma warning restore format

@@ -16,33 +16,26 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities;
+using System.Xml;
+using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMdict.RowModels;
 
-namespace Jitendex.Import.JMdict.Tables;
+namespace Jitendex.Import.JMdict.Parsing.EntryChildReaders.SenseChildReaders;
 
-internal sealed class RevisionTable : Table<RevisionRow>
+internal sealed class ReadingRestrictionReader(ILogger<ReadingRestrictionReader> logger) : XmlBaseReader(logger)
 {
-    protected override string Name { get; } = nameof(Revision);
+    public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
+    {
+        var text = await xmlReader.ReadElementContentAsStringAsync();
 
-    protected override ImmutableArray<string> ColumnNames { get; } =
-    [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
-        nameof(Revision.DiffJson),
-    ];
+        var restriction = new ReadingRestrictionRow
+        (
+            EntryId: sense.EntryId,
+            ParentOrder: sense.Order,
+            Order: document.ReadingRestrictions.NextOrder(sense.Key()),
+            ReadingText: text
+        );
 
-    protected override ImmutableArray<string> KeyColNames { get; } =
-    [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
-    ];
-
-    protected override object?[] ParameterValues(RevisionRow row) =>
-    [
-        row.SequenceId,
-        row.FileHeaderId,
-        row.DiffJson,
-    ];
+        document.ReadingRestrictions.Add(restriction.Key(), restriction);
+    }
 }

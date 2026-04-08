@@ -17,32 +17,35 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities;
+using Jitendex.Data.JMdict.Entities.EntryItems.KanjiFormItems;
 using Jitendex.Import.JMdict.RowModels;
 
-namespace Jitendex.Import.JMdict.Tables;
+namespace Jitendex.Import.JMdict.Tables.EntryChildren.KanjiFormChildren;
 
-internal sealed class RevisionTable : Table<RevisionRow>
+internal sealed class KanjiFormPriorityTable : Table<KanjiFormPriorityRow>
 {
-    protected override string Name { get; } = nameof(Revision);
+    protected override string Name { get; } = nameof(KanjiFormPriority);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
-        nameof(Revision.DiffJson),
+        nameof(KanjiFormPriority.EntryId),
+        nameof(KanjiFormPriority.KanjiFormOrder),
+        nameof(KanjiFormPriority.Order),
+        nameof(KanjiFormPriority.TagName),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
+        nameof(KanjiFormPriority.EntryId),
+        nameof(KanjiFormPriority.KanjiFormOrder),
+        nameof(KanjiFormPriority.Order),
     ];
 
-    protected override object?[] ParameterValues(RevisionRow row) =>
+    protected override object?[] ParameterValues(KanjiFormPriorityRow row) =>
     [
-        row.SequenceId,
-        row.FileHeaderId,
-        row.DiffJson,
+        row.EntryId,
+        row.ParentOrder,
+        row.Order,
+        row.TagName,
     ];
 }

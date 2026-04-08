@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
 using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMdict.Models;
-using Jitendex.Import.JMdict.Parsing.EntryElementReaders;
+using Jitendex.Import.JMdict.RowModels;
+using Jitendex.Import.JMdict.Parsing.EntryChildReaders;
 
 namespace Jitendex.Import.JMdict.Parsing;
 
@@ -29,11 +29,11 @@ internal partial class EntryReader
     KanjiFormReader kanjiFormReader,
     ReadingReader readingReader,
     SenseReader senseReader
-) : XmlParentElementReader<Document, EntryElement>(logger)
+) : XmlParentElementReader<Document, EntryRow>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document)
     {
-        var entry = new EntryElement
+        var entry = new EntryRow
         {
             Id = default
         };
@@ -50,7 +50,7 @@ internal partial class EntryReader
         }
     }
 
-    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, EntryElement entry)
+    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, EntryRow entry)
     {
         if (entry.Id.Equals(default))
         {
@@ -87,7 +87,7 @@ internal partial class EntryReader
         }
     }
 
-    private async Task ReadEntryId(XmlReader xmlReader, EntryElement entry)
+    private async Task ReadEntryId(XmlReader xmlReader, EntryRow entry)
     {
         var idText = await xmlReader.ReadElementContentAsStringAsync();
         if (int.TryParse(idText, out int id))

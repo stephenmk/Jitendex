@@ -17,32 +17,41 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities;
+using Jitendex.Data.JMdict.Entities.EntryItems.SenseItems;
 using Jitendex.Import.JMdict.RowModels;
 
-namespace Jitendex.Import.JMdict.Tables;
+namespace Jitendex.Import.JMdict.Tables.EntryChildren.SenseChildren;
 
-internal sealed class RevisionTable : Table<RevisionRow>
+internal sealed class LanguageSourceTable : Table<LanguageSourceRow>
 {
-    protected override string Name { get; } = nameof(Revision);
+    protected override string Name { get; } = nameof(LanguageSource);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
-        nameof(Revision.DiffJson),
+        nameof(LanguageSource.EntryId),
+        nameof(LanguageSource.SenseOrder),
+        nameof(LanguageSource.Order),
+        nameof(LanguageSource.Text),
+        nameof(LanguageSource.LanguageCode),
+        nameof(LanguageSource.TypeName),
+        nameof(LanguageSource.IsWasei),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Revision.SequenceId),
-        nameof(Revision.FileHeaderId),
+        nameof(LanguageSource.EntryId),
+        nameof(LanguageSource.SenseOrder),
+        nameof(LanguageSource.Order),
     ];
 
-    protected override object?[] ParameterValues(RevisionRow row) =>
+    protected override object?[] ParameterValues(LanguageSourceRow row) =>
     [
-        row.SequenceId,
-        row.FileHeaderId,
-        row.DiffJson,
+        row.EntryId,
+        row.ParentOrder,
+        row.Order,
+        row.Text,
+        row.LanguageCode,
+        row.TypeName,
+        row.IsWasei,
     ];
 }

@@ -29,7 +29,7 @@ public sealed class Revision
     public required int Number { get; init; }
     public required int FileHeaderId { get; init; }
     public required bool IsPriority { get; init; }
-    public required string DiffJson { get; init; }
+    public required byte[] DiffJson { get; init; }
 
     [ForeignKey(nameof(SequenceId))]
     public Sequence Sequence { get; init; } = null!;

@@ -222,7 +222,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
             if (aSequences.TryGetValue(seq.Id, out var aSeq))
             {
                 var bSeq = bSequences[seq.Id];
-                var baDiff = JsonDiffer.Diff(a: bSeq, b: aSeq);
+                var baDiff = JsonDiffer.DiffToUtf8Bytes(a: bSeq, b: aSeq);
                 revisions.Add(new
                 (
                     SequenceId: seq.Id,

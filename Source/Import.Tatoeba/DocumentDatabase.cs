@@ -102,7 +102,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
             if (aSequences.TryGetValue(sequence.Id, out var aSequence))
             {
                 var bSequence = bSequences[sequence.Id];
-                var baDiff = JsonDiffer.Diff(a: bSequence, b: aSequence);
+                var baDiff = JsonDiffer.DiffToUtf8Bytes(a: bSequence, b: aSequence);
                 revisions.Add(new
                 (
                     SequenceId: sequence.Id,

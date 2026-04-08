@@ -33,5 +33,5 @@ internal sealed record DocumentRevision
 (
     int SequenceId,
     int FileHeaderId,
-    string DiffJson
+    byte[] DiffJson
 );

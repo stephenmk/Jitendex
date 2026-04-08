@@ -29,7 +29,7 @@ internal sealed record DocumentRevision
     int Number,
     int FileHeaderId,
     bool IsPriority,
-    string DiffJson
+    byte[] DiffJson
 );
 
 internal sealed record SequenceElement

@@ -18,8 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Jitendex.Data.Export.Entities.AlternativeForms;
-using Jitendex.Data.Export.Entities.GlossaryItems;
 using Jitendex.Data.Export.Entities.HeadwordItems;
 
 namespace Jitendex.Data.Export.Entities;
@@ -34,9 +32,6 @@ public sealed class Headword
     public required int Score { get; init; }
 
     #region HeadwordItems
-
-    [InverseProperty(nameof(FuriganaSegment.Headword))]
-    public List<FuriganaSegment> FuriganaSegments { get; init; } = [];
 
     [InverseProperty(nameof(HeadwordNumber.Headword))]
     public HeadwordNumber Number { get; set; } = null!;
@@ -53,31 +48,7 @@ public sealed class Headword
     [InverseProperty(nameof(HeadwordTag.Headword))]
     public List<HeadwordTag> Tags { get; init; } = [];
 
-    #endregion
-
-    #region Glossary Items
-
-    [InverseProperty(nameof(LanguageSource.Headword))]
-    public LanguageSource? LanguageSource { get; set; }
-
-    [InverseProperty(nameof(Pronunciation.Headword))]
-    public List<Pronunciation> Pronunciations { get; init; } = [];
-
-    [InverseProperty(nameof(SenseGroup.Headword))]
-    public List<SenseGroup> SenseGroups { get; init; } = [];
-
-    #endregion
-
-    #region Alternative Forms
-
-    [InverseProperty(nameof(OtherReading.Headword))]
-    public List<OtherReading> OtherReadings { get; init; } = [];
-
-    [InverseProperty(nameof(OtherSurface.Headword))]
-    public List<OtherSurface> OtherSurfaces { get; init; } = [];
-
-    [InverseProperty(nameof(RelatedForm.Headword))]
-    public List<RelatedForm> RelatedForms { get; init; } = [];
+    public string Glossary { get; set; } = null!;
 
     #endregion
 }

@@ -51,26 +51,30 @@ internal sealed class DocumentDatabase(KanjiVGContext context)
 
         using var transaction = context.Database.BeginTransaction();
 
-        VariantTypesTable.InsertItems(context, document.GetVariantTypes());
-        CommentsTable.InsertItems(context, document.GetComments());
-        ComponentGroupStylesTable.InsertItems(context, document.GetComponentGroupStyles());
-        StrokeNumberGroupStylesTable.InsertItems(context, document.GetStrokeNumberGroupStyles());
-        ComponentCharactersTable.InsertItems(context, document.GetComponentCharacters());
-        ComponentOriginalsTable.InsertItems(context, document.GetComponentOriginals());
-        ComponentPositionsTable.InsertItems(context, document.GetComponentPositions());
-        ComponentRadicalsTable.InsertItems(context, document.GetComponentRadicals());
-        ComponentPhonsTable.InsertItems(context, document.GetComponentPhons());
-        StrokeTypesTable.InsertItems(context, document.GetStrokeTypes());
+        #pragma warning disable format
 
-        EntryTable.InsertItems(context, document.GetKanjis());
-        VariantTable.InsertItems(context, document.Variants.Values);
+        VariantTypesTable            .InsertItems(context, document.GetVariantTypes());
+        CommentsTable                .InsertItems(context, document.GetComments());
+        ComponentGroupStylesTable    .InsertItems(context, document.GetComponentGroupStyles());
+        StrokeNumberGroupStylesTable .InsertItems(context, document.GetStrokeNumberGroupStyles());
+        ComponentCharactersTable     .InsertItems(context, document.GetComponentCharacters());
+        ComponentOriginalsTable      .InsertItems(context, document.GetComponentOriginals());
+        ComponentPositionsTable      .InsertItems(context, document.GetComponentPositions());
+        ComponentRadicalsTable       .InsertItems(context, document.GetComponentRadicals());
+        ComponentPhonsTable          .InsertItems(context, document.GetComponentPhons());
+        StrokeTypesTable             .InsertItems(context, document.GetStrokeTypes());
 
-        ComponentGroupTable.InsertItems(context, document.ComponentGroups.Values);
-        ComponentTable.InsertItems(context, document.Components.Values);
-        StrokeTable.InsertItems(context, document.Strokes.Values);
+        EntryTable                   .InsertItems(context, document.GetKanjis());
+        VariantTable                 .InsertItems(context, document.Variants.Values);
 
-        StrokeNumberGroupTable.InsertItems(context, document.StrokeNumberGroups.Values);
-        StrokeNumberTable.InsertItems(context, document.StrokeNumbers.Values);
+        ComponentGroupTable          .InsertItems(context, document.ComponentGroups.Values);
+        ComponentTable               .InsertItems(context, document.Components.Values);
+        StrokeTable                  .InsertItems(context, document.Strokes.Values);
+
+        StrokeNumberGroupTable       .InsertItems(context, document.StrokeNumberGroups.Values);
+        StrokeNumberTable            .InsertItems(context, document.StrokeNumbers.Values);
+
+        #pragma warning restore format
 
         transaction.Commit();
         context.ExecuteVacuum();

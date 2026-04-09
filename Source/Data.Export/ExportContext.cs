@@ -25,4 +25,5 @@ public sealed class ExportContext() : SqliteContext(DatabaseFile.Export)
 {
     public DbSet<Headword> Headwords { get; set; } = null!;
     public DbSet<Term> Terms { get; set; } = null!;
+    public DbSet<JMdictEntry> JMdictEntries { get; set; } = null!;
 }

@@ -27,26 +27,28 @@ internal sealed class Service
     ILogger<Service> logger,
     ExportContext context,
     HeadwordService headwordService,
-    TermService termService
+    TermService termService,
+    JMdictTermService jmdictTermService
 )
 {
     public void Run()
     {
+        logger.LogInformation("Initializing database file.");
         context.RecreateDatabase();
 
         using var exportTransaction = context.Database.BeginTransaction();
 
-        RunHeadwordServices();
-
-        exportTransaction.Commit();
-    }
-
-    private void RunHeadwordServices()
-    {
         logger.LogInformation("Importing headwords.");
         headwordService.Write();
 
         logger.LogInformation("Importing Terms.");
         termService.Write();
+
+        logger.LogInformation("Importing JMdict term data.");
+        jmdictTermService.Write();
+
+        exportTransaction.Commit();
+
+        logger.LogInformation("Finished.");
     }
 }

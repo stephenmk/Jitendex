@@ -20,7 +20,7 @@ using System.Collections.Frozen;
 using System.Text.Json;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Media;
-using Jitendex.Import.Home.RowModels;
+using Jitendex.Import.Home.TableRows;
 using Jitendex.Import.Home.Tables.Media;
 using static Jitendex.Data.Home.Entities.Media.GraphicLicenceId;
 

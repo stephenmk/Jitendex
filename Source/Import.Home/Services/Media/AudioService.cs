@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.Home;
-using Jitendex.Import.Home.RowModels;
+using Jitendex.Import.Home.TableRows;
 using Jitendex.Import.Home.Tables.Media;
 
 namespace Jitendex.Import.Home.Services.Media;

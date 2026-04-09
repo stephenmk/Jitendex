@@ -16,53 +16,45 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.RowModels;
+namespace Jitendex.Import.Home.TableRows;
 
-internal sealed record CharacterRow(int Value);
-
-internal sealed record CharacterReadingRow
-(
-    int CharacterValue,
-    string Text,
-    bool IsPrefix,
-    bool IsSuffix,
-    string? Okurigana,
-    int ReadingTypeId
-);
-
-internal sealed record CharacterReadingTypeRow
+internal sealed record GraphicLicenseRow
 (
     int Id,
-    string Name
+    string Name,
+    string InfoUrl
 );
 
-internal sealed record CompoundRow
-(
-    string Text
-);
-
-internal sealed record CompoundReadingRow
-(
-    int CompoundId,
-    string Text,
-    int TypeId
-);
-
-internal sealed record CompoundReadingTypeRow
+internal sealed record GraphicRow
 (
     int Id,
-    string Name
+    int LicenseId,
+    bool Cropped,
+    string PageUrl,
+    string FileUrl,
+    string Author,
+    string? AuthorUrl,
+    string? Title,
+    byte[] FileData
 );
 
-internal sealed record VariantRow
+internal sealed record SenseGraphicRow
 (
-    int CharacterValue,
-    int VariantValue,
-    int VariantTypeId
+    int SequenceId,
+    int SenseOrder,
+    int Order,
+    DateOnly SequenceDate,
+    int? PatchId,
+    int GraphicId
 );
 
-internal sealed record VariantTypeRow
+internal sealed record KanjiAliveAudioRow
 (
-    int Id,
-    string Name
+    string Filename,
+    int EntryId,
+    string ReadingText,
+    string KanjiFormText,
+    string? Suffix,
+    int? PitchAccent,
+    byte[] FileData
 );

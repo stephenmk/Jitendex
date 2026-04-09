@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.Home.Entities.Kanwa;
-using Jitendex.Import.Home.RowModels;
+using Jitendex.Import.Home.TableRows;
 
 namespace Jitendex.Import.Home.Tables.Kanwa;
 

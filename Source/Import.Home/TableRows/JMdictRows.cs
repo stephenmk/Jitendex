@@ -16,17 +16,44 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.RowModels;
+namespace Jitendex.Import.Home.TableRows;
 
-internal sealed record ExampleRow
+internal sealed record CrossReferenceSequenceRow
 (
-    int Id
+    int EntryId,
+    int SenseNumber,
+    string Text,
+    int? RefEntryId
 );
 
-internal sealed record ExampleFuriganaRow
+internal sealed record JMdictPatchRow
 (
-    int ExampleId,
-    int Order,
-    string BaseText,
-    string? RubyText
+    int Id,
+    int SequenceId,
+    DateOnly SequenceDate,
+    DateTime CreatedAt,
+    int AuthorId,
+    string AuthorComment,
+    int? PreviousPatchId,
+    byte[] Json
+);
+
+internal sealed record JMdictPatchApprovalRow
+(
+    int PatchId,
+    int ApproverId,
+    DateTime CreatedAt
+);
+
+internal sealed record JMdictPatchRecallRow
+(
+    int PatchId,
+    int RecallerId,
+    DateTime CreatedAt
+);
+
+internal sealed record TrademarkGlossRow
+(
+    string OriginalText,
+    string ReplacementText
 );

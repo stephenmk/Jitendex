@@ -16,45 +16,17 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Home.RowModels;
+namespace Jitendex.Import.Home.TableRows;
 
-internal sealed record GraphicLicenseRow
+internal sealed record ExampleRow
 (
-    int Id,
-    string Name,
-    string InfoUrl
+    int Id
 );
 
-internal sealed record GraphicRow
+internal sealed record ExampleFuriganaRow
 (
-    int Id,
-    int LicenseId,
-    bool Cropped,
-    string PageUrl,
-    string FileUrl,
-    string Author,
-    string? AuthorUrl,
-    string? Title,
-    byte[] FileData
-);
-
-internal sealed record SenseGraphicRow
-(
-    int SequenceId,
-    int SenseOrder,
+    int ExampleId,
     int Order,
-    DateOnly SequenceDate,
-    int? PatchId,
-    int GraphicId
-);
-
-internal sealed record KanjiAliveAudioRow
-(
-    string Filename,
-    int EntryId,
-    string ReadingText,
-    string KanjiFormText,
-    string? Suffix,
-    int? PitchAccent,
-    byte[] FileData
+    string BaseText,
+    string? RubyText
 );

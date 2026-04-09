@@ -23,8 +23,9 @@ internal sealed class DocumentDiff : IDocumentDiff<DateOnly, Document>
     public required DateOnly ArchiveKey { get; init; }
     public required Document Upserts { get; init; }
     public required Document Deletes { get; init; }
-    public IReadOnlySet<int> SequenceIds()
+    public ImmutableArray<int> SequenceIds()
         => Upserts.ConcatAllEntryIds()
             .Concat(Deletes.ConcatAllEntryIds())
-            .ToHashSet();
+            .Distinct()
+            .ToImmutableArray();
 }

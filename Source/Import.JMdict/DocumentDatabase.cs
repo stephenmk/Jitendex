@@ -145,7 +145,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
     {
         var sequenceIds = diff.SequenceIds();
 
-        logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", sequenceIds.Count, diff.ArchiveKey);
+        logger.LogInformation("Updating {Count} entries with data from {Date:yyyy-MM-dd}", sequenceIds.Length, diff.ArchiveKey);
 
         using var transaction = context.Database.BeginTransaction();
 

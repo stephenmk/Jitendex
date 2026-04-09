@@ -127,7 +127,9 @@ internal partial class HeadwordService
                             RedirectHeadwordOrder: 0
                         ));
                     }
-                    tagRows.AddRange(reading.Infos.Concat(reading.Prios)
+                    tagRows.AddRange(reading.Infos
+                        .Where(static t => t != "gikun")
+                        .Concat(reading.Prios)
                         .Select(t => new HeadwordTagRow(entry.Id, entryOrder, t)));
                     headwordRows.Add(new(
                         EntryId: entry.Id,

@@ -77,7 +77,10 @@ internal sealed class Service
         forkTransaction.Commit();
         homeTransaction.Commit();
 
+        logger.LogInformation("Vacuuming database file.");
         forkContext.ExecuteVacuum();
+
+        logger.LogInformation("Finished.");
     }
 
     private void RunPreprocessing()

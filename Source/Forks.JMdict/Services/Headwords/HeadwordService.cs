@@ -30,7 +30,8 @@ internal partial class HeadwordService
 (
     JMdictForkContext context,
     HeadwordTable headwordTable,
-    HeadwordRedirectTable redirectTable
+    HeadwordRedirectTable redirectTable,
+    HeadwordTagTable tagTable
 )
 {
     private readonly static ImmutableArray<string> HighPriorityTagNames = ["spec1", "news1", "ichi1", "gai1"];
@@ -45,6 +46,7 @@ internal partial class HeadwordService
         var kanaOnlyHeadwords = GetKanaOnlyHeadwords();
         var headwordRows = new List<HeadwordRow>();
         var redirectRows = new List<HeadwordRedirectRow>();
+        var tagRows = new List<HeadwordTagRow>();
 
         var kanjiToVariants = context.CharacterVariants
             .GroupBy(static v => v.CharacterValue)
@@ -125,6 +127,8 @@ internal partial class HeadwordService
                             RedirectHeadwordOrder: 0
                         ));
                     }
+                    tagRows.AddRange(reading.Infos.Concat(reading.Prios)
+                        .Select(t => new HeadwordTagRow(entry.Id, entryOrder, t)));
                     headwordRows.Add(new(
                         EntryId: entry.Id,
                         Order: entryOrder++,
@@ -157,11 +161,13 @@ internal partial class HeadwordService
                             }
                         }
                     }
-                    var infos = reading.Infos.Union(kanjiForm.Infos);
-                    var prios = reading.Prios.Intersect(kanjiForm.Infos);
+                    var infos = reading.Infos.Union(kanjiForm.Infos); // Union excludes duplicates.
+                    var prios = reading.Prios.Intersect(kanjiForm.Prios);
                     var readingParts = kanjiForm.Furigana
                         .Select(static f => f.Furigana ?? f.BaseText);
                     var normalizedReading = string.Join(string.Empty, readingParts);
+                    tagRows.AddRange(infos.Concat(prios)
+                        .Select(name => new HeadwordTagRow(entry.Id, entryOrder, name)));
                     headwordRows.Add(new(
                         EntryId: entry.Id,
                         Order: entryOrder++,
@@ -195,6 +201,8 @@ internal partial class HeadwordService
                         RedirectHeadwordOrder: redirectOrder
                     ));
                 }
+                tagRows.AddRange(kanjiForm.Infos.Concat(kanjiForm.Prios)
+                    .Select(name => new HeadwordTagRow(entry.Id, entryOrder, name)));
                 headwordRows.Add(new(
                     EntryId: entry.Id,
                     Order: entryOrder++,
@@ -209,6 +217,7 @@ internal partial class HeadwordService
 
         headwordTable.InsertItems(context, headwordRows);
         redirectTable.InsertItems(context, redirectRows);
+        tagTable.InsertItems(context, tagRows);
     }
 
     private int CalculateScore(IEnumerable<string> infoTags, IEnumerable<string> prioTags)

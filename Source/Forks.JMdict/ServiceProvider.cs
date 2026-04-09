@@ -107,6 +107,7 @@ internal static class ServiceProvider
         .AddTransient<HeadwordSenseTable>()
         .AddTransient<HeadwordRuleTable>()
         .AddTransient<HeadwordReferenceTable>()
+        .AddTransient<HeadwordTagTable>()
         #endregion
 
         // Logging

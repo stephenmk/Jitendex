@@ -33,7 +33,7 @@ internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
         nameof(FuriganaSegment.KanjiFormOrder),
         nameof(FuriganaSegment.Order),
         nameof(FuriganaSegment.BaseText),
-        nameof(FuriganaSegment.Furigana),
+        nameof(FuriganaSegment.RubyText),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
@@ -51,6 +51,6 @@ internal sealed class FuriganaSegmentTable : Table<FuriganaSegmentRow>
         row.KanjiFormOrder,
         row.Order,
         row.BaseText,
-        row.Furigana,
+        row.RubyText,
     ];
 }

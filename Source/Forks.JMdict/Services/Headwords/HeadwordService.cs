@@ -81,7 +81,7 @@ internal partial class HeadwordService
                                 Prios = b.KanjiForm.Priorities.Select(static p => p.TagName),
                                 Furigana = b.FuriganaSegments
                                     .OrderBy(static f => f.Order)
-                                    .Select(static f => new { f.BaseText, f.Furigana })
+                                    .Select(static f => new { f.BaseText, f.RubyText })
                             })
                     }),
                 KanjiForms = e.KanjiForms
@@ -150,9 +150,9 @@ internal partial class HeadwordService
                             formToHeadwordOrder[kanjiForm.Text] = entryOrder;
                         }
                         var parts = kanjiForm.Furigana
-                            .Select(static f => f.Furigana == null
+                            .Select(static f => f.RubyText == null
                                 ? new string[] { f.BaseText }
-                                : [f.BaseText, f.Furigana])
+                                : [f.BaseText, f.RubyText])
                             .ToArray();
                         var variants = cartProdSolver.SolveCartesianProducts(parts);
                         foreach (var variant in variants)
@@ -166,7 +166,7 @@ internal partial class HeadwordService
                     var infos = reading.Infos.Union(kanjiForm.Infos); // Union excludes duplicates.
                     var prios = reading.Prios.Intersect(kanjiForm.Prios);
                     var readingParts = kanjiForm.Furigana
-                        .Select(static f => f.Furigana ?? f.BaseText);
+                        .Select(static f => f.RubyText ?? f.BaseText);
                     var normalizedReading = string.Join(string.Empty, readingParts);
                     tagRows.AddRange(infos.Concat(prios)
                         .Select(name => new HeadwordTagRow(entry.Id, entryOrder, name)));

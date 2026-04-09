@@ -75,7 +75,7 @@ internal partial class HeadwordService
                     {
                         s.Order,
                         s.BaseText,
-                        s.Furigana,
+                        s.RubyText,
                     })
             });
 
@@ -95,7 +95,7 @@ internal partial class HeadwordService
             }
             foreach (var segment in headword.Furigana)
             {
-                rows.Add(new(id, segment.Order, segment.BaseText, segment.Furigana));
+                rows.Add(new(id, segment.Order, segment.BaseText, segment.RubyText));
             }
         }
 

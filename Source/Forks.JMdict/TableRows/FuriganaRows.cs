@@ -32,7 +32,7 @@ internal sealed record FuriganaSegmentRow
     int KanjiFormOrder,
     int Order,
     string BaseText,
-    string? Furigana
+    string? RubyText
 );
 
 internal sealed record CharacterReadingLinkRow

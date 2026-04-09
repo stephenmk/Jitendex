@@ -31,7 +31,7 @@ public sealed class FuriganaSegment
     public required int Order { get; init; }
 
     public required string BaseText { get; set; }
-    public required string? Furigana { get; set; }
+    public required string? RubyText { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
     public ReadingKanjiFormBridge KanjiFormBridge { get; init; } = null!;

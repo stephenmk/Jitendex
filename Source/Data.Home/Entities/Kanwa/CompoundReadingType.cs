@@ -29,5 +29,5 @@ public sealed class CompoundReadingType
     public required string Name { get; set; }
 
     [InverseProperty(nameof(CompoundReading.Type))]
-    public ICollection<CompoundReading> CompoundReadings { get; init; } = null!;
+    public ICollection<CompoundReading> CompoundReadings { get; init; } = [];
 }

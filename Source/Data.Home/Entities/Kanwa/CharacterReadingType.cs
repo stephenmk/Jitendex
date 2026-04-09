@@ -29,5 +29,5 @@ public sealed class CharacterReadingType
     public required string Name { get; set; }
 
     [InverseProperty(nameof(CharacterReading.Type))]
-    public ICollection<CharacterReading> CharacterReadings { get; init; } = null!;
+    public ICollection<CharacterReading> CharacterReadings { get; init; } = [];
 }

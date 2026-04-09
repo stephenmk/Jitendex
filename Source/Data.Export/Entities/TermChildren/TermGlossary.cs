@@ -22,13 +22,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.Data.Export.Entities.TermChildren;
 
 [Table(nameof(TermGlossary))]
-[PrimaryKey(nameof(HeadwordId), nameof(TermNumber))]
+[PrimaryKey(nameof(HeadwordId), nameof(TermGroupId))]
 public sealed class TermGlossary
 {
     public required int HeadwordId { get; init; }
-    public required int TermNumber { get; init; }
+    public required int TermGroupId { get; init; }
     public required byte[] Json { get; init; }
 
-    [ForeignKey($"{nameof(HeadwordId)}, {nameof(TermNumber)}")]
+    [ForeignKey($"{nameof(HeadwordId)}, {nameof(TermGroupId)}")]
     public Term Term { get; init; } = null!;
 }

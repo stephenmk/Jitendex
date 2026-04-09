@@ -26,7 +26,8 @@ internal sealed class Service
 (
     ILogger<Service> logger,
     ExportContext context,
-    HeadwordService headwordService
+    HeadwordService headwordService,
+    TermService termService
 )
 {
     public void Run()
@@ -44,5 +45,8 @@ internal sealed class Service
     {
         logger.LogInformation("Importing headwords.");
         headwordService.Write();
+
+        logger.LogInformation("Importing Terms.");
+        termService.Write();
     }
 }

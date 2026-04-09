@@ -19,20 +19,16 @@ If not, see <https://www.gnu.org/licenses/>.
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.Export.Entities.TermChildren;
+namespace Jitendex.Data.Export.Entities;
 
-[Table(nameof(TermRedirect))]
-[PrimaryKey(nameof(HeadwordId), nameof(TermGroupId))]
-public sealed class TermRedirect
+[Table(nameof(JMdictEntry))]
+[PrimaryKey(nameof(Id))]
+[Index(nameof(GroupId), IsUnique = true)]
+public sealed class JMdictEntry
 {
-    public required int HeadwordId { get; init; }
-    public required int TermGroupId { get; init; }
-    public required int RedirectHeadwordId { get; set; }
-    public required int RedirectTermGroup { get; set; }
+    public required int Id { get; init; }
+    public required int GroupId { get; set; }
 
-    [ForeignKey($"{nameof(HeadwordId)}, {nameof(TermGroupId)}")]
-    public Term Term { get; init; } = null!;
-
-    [ForeignKey($"{nameof(RedirectHeadwordId)}, {nameof(RedirectTermGroup)}")]
-    public Term RedirectTerm { get; set; } = null!;
+    [ForeignKey(nameof(GroupId))]
+    public TermGroup Group { get; set; } = null!;
 }

@@ -32,9 +32,20 @@ internal sealed record HeadwordFuriganaRow
     string? RubyText
 );
 
+internal sealed record TermGroupRow
+(
+    int Id
+);
+
+internal sealed record JMdictEntryRow
+(
+    int Id,
+    int GroupId
+);
+
 internal sealed record TermRow
 (
     int HeadwordId,
-    int Number,
+    int GroupId,
     int Score
 );

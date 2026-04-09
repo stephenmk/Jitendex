@@ -29,20 +29,20 @@ internal sealed class TermTable : Table<TermRow>
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Term.HeadwordId),
-        nameof(Term.Number),
+        nameof(Term.GroupId),
         nameof(Term.Score),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Term.HeadwordId),
-        nameof(Term.Number),
+        nameof(Term.GroupId),
     ];
 
     protected override object?[] ParameterValues(TermRow row) =>
     [
         row.HeadwordId,
-        row.Number,
+        row.GroupId,
         row.Score,
     ];
 }

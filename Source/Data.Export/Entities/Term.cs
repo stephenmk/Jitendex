@@ -23,15 +23,18 @@ using Jitendex.Data.Export.Entities.TermChildren;
 namespace Jitendex.Data.Export.Entities;
 
 [Table(nameof(Term))]
-[PrimaryKey(nameof(HeadwordId), nameof(Number))]
+[PrimaryKey(nameof(HeadwordId), nameof(GroupId))]
 public sealed class Term
 {
     public required int HeadwordId { get; init; }
-    public required int Number { get; init; }
+    public required int GroupId { get; init; }
     public required int Score { get; set; }
 
     [ForeignKey(nameof(HeadwordId))]
     public Headword Headword { get; init; } = null!;
+
+    [ForeignKey(nameof(GroupId))]
+    public TermGroup Group { get; init; } = null!;
 
     [InverseProperty(nameof(TermGlossary.Term))]
     public TermGlossary? Glossary { get; set; }

@@ -16,23 +16,28 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using Jitendex.Data;
+using Jitendex.Data.Export.Entities;
+using Jitendex.Export.Base.TableRows;
 
-namespace Jitendex.Data.Export.Entities.TermChildren;
+namespace Jitendex.Export.Base.Tables;
 
-[Table(nameof(TermRedirect))]
-[PrimaryKey(nameof(HeadwordId), nameof(TermGroupId))]
-public sealed class TermRedirect
+internal sealed class TermGroupTable : Table<TermGroupRow>
 {
-    public required int HeadwordId { get; init; }
-    public required int TermGroupId { get; init; }
-    public required int RedirectHeadwordId { get; set; }
-    public required int RedirectTermGroup { get; set; }
+    protected override string Name { get; } = nameof(TermGroup);
 
-    [ForeignKey($"{nameof(HeadwordId)}, {nameof(TermGroupId)}")]
-    public Term Term { get; init; } = null!;
+    protected override ImmutableArray<string> ColumnNames { get; } =
+    [
+        nameof(TermGroup.Id)
+    ];
 
-    [ForeignKey($"{nameof(RedirectHeadwordId)}, {nameof(RedirectTermGroup)}")]
-    public Term RedirectTerm { get; set; } = null!;
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(TermGroup.Id)
+    ];
+
+    protected override object?[] ParameterValues(TermGroupRow row) =>
+    [
+        row.Id
+    ];
 }

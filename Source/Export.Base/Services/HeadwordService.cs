@@ -45,9 +45,10 @@ internal partial class HeadwordService
         var rows = jmdictContext.Headwords
             .OrderBy(static h => h.Surface)
             .ThenBy(static h => h.Reading)
-            .Select(static h => new HeadwordRow(h.Surface, h.Reading));
+            .GroupBy(static h => new { h.Surface, h.Reading })
+            .Select(static g => new HeadwordRow(g.Key.Surface, g.Key.Reading));
 
-        headwordTable.InsertOrIgnoreItems(context, rows);
+        headwordTable.InsertItems(context, rows);
     }
 
     private void WriteHeadwordFurigana()
@@ -85,7 +86,7 @@ internal partial class HeadwordService
         {
             if (!headwordToId.TryGetValue((headword.Surface, headword.Reading), out var id))
             {
-                LogMissingFurigana(headword.Surface, headword.Reading);
+                LogMissingHeadwordId(headword.Surface, headword.Reading);
                 continue;
             }
             if (!seenHeadwords.Add(id))
@@ -102,5 +103,5 @@ internal partial class HeadwordService
     }
 
     [LoggerMessage(LogLevel.Warning, "No ID found for headword {Reading}【{Surface}】")]
-    partial void LogMissingFurigana(string surface, string reading);
+    partial void LogMissingHeadwordId(string surface, string reading);
 }

@@ -22,14 +22,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Jitendex.Data.Export.Entities.TermChildren;
 
 [Table(nameof(TermTag))]
-[PrimaryKey(nameof(HeadwordId), nameof(TermNumber), nameof(Order))]
+[PrimaryKey(nameof(HeadwordId), nameof(TermGroupId), nameof(Order))]
 public sealed class TermTag
 {
     public required int HeadwordId { get; init; }
-    public required int TermNumber { get; init; }
+    public required int TermGroupId { get; init; }
     public required int Order { get; init; }
     public required string Name { get; set; }
 
-    [ForeignKey($"{nameof(HeadwordId)}, {nameof(TermNumber)}")]
+    [ForeignKey($"{nameof(HeadwordId)}, {nameof(TermGroupId)}")]
     public Term Term { get; init; } = null!;
 }

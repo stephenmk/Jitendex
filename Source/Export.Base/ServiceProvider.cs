@@ -39,12 +39,15 @@ internal static class ServiceProvider
 
         #region Services
         .AddTransient<HeadwordService>()
+        .AddTransient<TermService>()
         #endregion
 
         #region Tables
         .AddTransient<HeadwordTable>()
         .AddTransient<HeadwordFuriganaTable>()
         .AddTransient<TermTable>()
+        .AddTransient<TermGroupTable>()
+        .AddTransient<JMdictEntryTable>()
         #endregion
 
         // Logging

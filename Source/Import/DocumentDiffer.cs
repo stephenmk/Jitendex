@@ -40,7 +40,7 @@ public abstract class DocumentDiffer<TKey, TDocument, TDiff> : IDocumentDiffer<T
         }
     }
 
-    protected void DiffDictionaryProperties<T1, T2>(TDiff diff, TDocument docA, TDocument docB, string propertyName)
+    protected void Diff<T1, T2>(TDiff diff, TDocument docA, TDocument docB, string propertyName)
         where T1 : notnull
         where T2 : notnull
     {

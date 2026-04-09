@@ -153,10 +153,10 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
 
         FileHeaderTable.InsertItem(context, new(diff.Upserts.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
-        SequenceTable.InsertOrIgnoreItems(context, diff.Upserts.GetSequences(fileHeaderId));
 
         #pragma warning disable format
 
+        SequenceTable            .InsertOrIgnoreItems(context, diff.Upserts.GetSequences(fileHeaderId));
         ReadingInfoTagTable      .InsertOrIgnoreItems(context, diff.Upserts.GetReadingInfoTags(fileHeaderId));
         KanjiFormInfoTagTable    .InsertOrIgnoreItems(context, diff.Upserts.GetKanjiFormInfoTags(fileHeaderId));
         PartOfSpeechTagTable     .InsertOrIgnoreItems(context, diff.Upserts.GetPartOfSpeechTags(fileHeaderId));

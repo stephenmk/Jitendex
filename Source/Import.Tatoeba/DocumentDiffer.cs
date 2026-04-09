@@ -31,9 +31,9 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
             Deletes = new Document(0) { ArchiveKey = docB.ArchiveKey },
         };
 
-        DiffDictionaryProperties<int, ExampleRow>(diff, docA, docB, propertyName: nameof(Document.Examples));
-        DiffDictionaryProperties<(int, int), SegmentationRow>(diff, docA, docB, propertyName: nameof(Document.Segmentations));
-        DiffDictionaryProperties<(int, int, int), TokenRow>(diff, docA, docB, propertyName: nameof(Document.Tokens));
+        Diff<int, ExampleRow>(diff, docA, docB, propertyName: nameof(Document.Examples));
+        Diff<(int, int), SegmentationRow>(diff, docA, docB, propertyName: nameof(Document.Segmentations));
+        Diff<(int, int, int), TokenRow>(diff, docA, docB, propertyName: nameof(Document.Tokens));
 
         return diff;
     }

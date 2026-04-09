@@ -37,22 +37,26 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
         FindNew<string>(diff, docA, docB, nameof(Document.NameTypeTags));
         FindNew<string>(diff, docA, docB, nameof(Document.DetailLanguages));
 
-        DiffDictionaryProperties<int, EntryElement>(diff, docA, docB, nameof(Document.Entries));
+        Diff<int, EntryElement>(diff, docA, docB, nameof(Document.Entries));
 
-        DiffDictionaryProperties<(int, int), KanjiFormRow>(diff, docA, docB, nameof(Document.KanjiForms));
-        DiffDictionaryProperties<(int, int), ReadingRow>(diff, docA, docB, nameof(Document.Readings));
-        DiffDictionaryProperties<(int, int), TranslationRow>(diff, docA, docB, nameof(Document.Translations));
+        #pragma warning disable format
 
-        DiffDictionaryProperties<(int, int, int), KanjiFormInfoRow>(diff, docA, docB, nameof(Document.KanjiFormInfos));
-        DiffDictionaryProperties<(int, int, int), KanjiFormPriorityRow>(diff, docA, docB, nameof(Document.KanjiFormPriorities));
+        Diff<(int, int), KanjiFormRow>             (diff, docA, docB, nameof(Document.KanjiForms));
+        Diff<(int, int), ReadingRow>               (diff, docA, docB, nameof(Document.Readings));
+        Diff<(int, int), TranslationRow>           (diff, docA, docB, nameof(Document.Translations));
 
-        DiffDictionaryProperties<(int, int, int), ReadingInfoRow>(diff, docA, docB, nameof(Document.ReadingInfos));
-        DiffDictionaryProperties<(int, int, int), ReadingPriorityRow>(diff, docA, docB, nameof(Document.ReadingPriorities));
-        DiffDictionaryProperties<(int, int, int), RestrictionRow>(diff, docA, docB, nameof(Document.Restrictions));
+        Diff<(int, int, int), KanjiFormInfoRow>    (diff, docA, docB, nameof(Document.KanjiFormInfos));
+        Diff<(int, int, int), KanjiFormPriorityRow>(diff, docA, docB, nameof(Document.KanjiFormPriorities));
 
-        DiffDictionaryProperties<(int, int, int), CrossReferenceRow>(diff, docA, docB, nameof(Document.CrossReferences));
-        DiffDictionaryProperties<(int, int, int), DetailRow>(diff, docA, docB, nameof(Document.Details));
-        DiffDictionaryProperties<(int, int, int), NameTypeRow>(diff, docA, docB, nameof(Document.NameTypes));
+        Diff<(int, int, int), ReadingInfoRow>      (diff, docA, docB, nameof(Document.ReadingInfos));
+        Diff<(int, int, int), ReadingPriorityRow>  (diff, docA, docB, nameof(Document.ReadingPriorities));
+        Diff<(int, int, int), RestrictionRow>      (diff, docA, docB, nameof(Document.Restrictions));
+
+        Diff<(int, int, int), CrossReferenceRow>   (diff, docA, docB, nameof(Document.CrossReferences));
+        Diff<(int, int, int), DetailRow>           (diff, docA, docB, nameof(Document.Details));
+        Diff<(int, int, int), NameTypeRow>         (diff, docA, docB, nameof(Document.NameTypes));
+
+        #pragma warning restore format
 
         return diff;
     }

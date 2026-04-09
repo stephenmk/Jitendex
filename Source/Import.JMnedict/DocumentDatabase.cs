@@ -83,26 +83,30 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMnedic
 
         FileHeaderTable.InsertItem(context, new(document.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
-        SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
-        PriorityTagTable.InsertItems(context, document.GetPriorityTags(fileHeaderId));
-        ReadingInfoTagTable.InsertItems(context, document.GetReadingInfoTags(fileHeaderId));
-        KanjiFormInfoTagTable.InsertItems(context, document.GetKanjiFormInfoTags(fileHeaderId));
-        NameTypeTagTable.InsertItems(context, document.GetNameTypeTags(fileHeaderId));
-        DetailLanguageTable.InsertItems(context, document.GetDetailLanguages(fileHeaderId));
+        #pragma warning disable format
 
-        EntryTable.InsertItems(context, document.Entries.Values);
-        KanjiFormTable.InsertItems(context, document.KanjiForms.Values);
-        ReadingTable.InsertItems(context, document.Readings.Values);
-        TranslationTable.InsertItems(context, document.Translations.Values);
-        KanjiFormInfoTable.InsertItems(context, document.KanjiFormInfos.Values);
+        SequenceTable         .InsertItems(context, document.GetSequences(fileHeaderId));
+        PriorityTagTable      .InsertItems(context, document.GetPriorityTags(fileHeaderId));
+        ReadingInfoTagTable   .InsertItems(context, document.GetReadingInfoTags(fileHeaderId));
+        KanjiFormInfoTagTable .InsertItems(context, document.GetKanjiFormInfoTags(fileHeaderId));
+        NameTypeTagTable      .InsertItems(context, document.GetNameTypeTags(fileHeaderId));
+        DetailLanguageTable   .InsertItems(context, document.GetDetailLanguages(fileHeaderId));
+
+        EntryTable            .InsertItems(context, document.Entries.Values);
+        KanjiFormTable        .InsertItems(context, document.KanjiForms.Values);
+        ReadingTable          .InsertItems(context, document.Readings.Values);
+        TranslationTable      .InsertItems(context, document.Translations.Values);
+        KanjiFormInfoTable    .InsertItems(context, document.KanjiFormInfos.Values);
         KanjiFormPriorityTable.InsertItems(context, document.KanjiFormPriorities.Values);
-        ReadingInfoTable.InsertItems(context, document.ReadingInfos.Values);
-        ReadingPriorityTable.InsertItems(context, document.ReadingPriorities.Values);
-        RestrictionTable.InsertItems(context, document.Restrictions.Values);
-        CrossReferenceTable.InsertItems(context, document.CrossReferences.Values);
-        DetailTable.InsertItems(context, document.Details.Values);
-        NameTypeTable.InsertItems(context, document.NameTypes.Values);
+        ReadingInfoTable      .InsertItems(context, document.ReadingInfos.Values);
+        ReadingPriorityTable  .InsertItems(context, document.ReadingPriorities.Values);
+        RestrictionTable      .InsertItems(context, document.Restrictions.Values);
+        CrossReferenceTable   .InsertItems(context, document.CrossReferences.Values);
+        DetailTable           .InsertItems(context, document.Details.Values);
+        NameTypeTable         .InsertItems(context, document.NameTypes.Values);
+
+        #pragma warning restore format
 
         transaction.Commit();
         context.ExecuteVacuum();
@@ -120,39 +124,43 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMnedic
 
         FileHeaderTable.InsertItem(context, new(diff.ArchiveKey));
         var fileHeaderId = (int)context.GetLastInsertRowId();
-        SequenceTable.InsertOrIgnoreItems(context, diff.Upserts.GetSequences(fileHeaderId));
 
-        PriorityTagTable.InsertOrIgnoreItems(context, diff.Upserts.GetPriorityTags(fileHeaderId));
-        ReadingInfoTagTable.InsertOrIgnoreItems(context, diff.Upserts.GetReadingInfoTags(fileHeaderId));
-        KanjiFormInfoTagTable.InsertOrIgnoreItems(context, diff.Upserts.GetKanjiFormInfoTags(fileHeaderId));
-        NameTypeTagTable.InsertOrIgnoreItems(context, diff.Upserts.GetNameTypeTags(fileHeaderId));
-        DetailLanguageTable.InsertOrIgnoreItems(context, diff.Upserts.GetDetailLanguages(fileHeaderId));
+        #pragma warning disable format
 
-        EntryTable.UpsertItems(context, diff.Upserts.Entries.Values);
-        KanjiFormTable.UpsertItems(context, diff.Upserts.KanjiForms.Values);
-        ReadingTable.UpsertItems(context, diff.Upserts.Readings.Values);
-        TranslationTable.UpsertItems(context, diff.Upserts.Translations.Values);
-        KanjiFormInfoTable.UpsertItems(context, diff.Upserts.KanjiFormInfos.Values);
+        SequenceTable         .InsertOrIgnoreItems(context, diff.Upserts.GetSequences(fileHeaderId));
+        PriorityTagTable      .InsertOrIgnoreItems(context, diff.Upserts.GetPriorityTags(fileHeaderId));
+        ReadingInfoTagTable   .InsertOrIgnoreItems(context, diff.Upserts.GetReadingInfoTags(fileHeaderId));
+        KanjiFormInfoTagTable .InsertOrIgnoreItems(context, diff.Upserts.GetKanjiFormInfoTags(fileHeaderId));
+        NameTypeTagTable      .InsertOrIgnoreItems(context, diff.Upserts.GetNameTypeTags(fileHeaderId));
+        DetailLanguageTable   .InsertOrIgnoreItems(context, diff.Upserts.GetDetailLanguages(fileHeaderId));
+
+        EntryTable            .UpsertItems(context, diff.Upserts.Entries.Values);
+        KanjiFormTable        .UpsertItems(context, diff.Upserts.KanjiForms.Values);
+        ReadingTable          .UpsertItems(context, diff.Upserts.Readings.Values);
+        TranslationTable      .UpsertItems(context, diff.Upserts.Translations.Values);
+        KanjiFormInfoTable    .UpsertItems(context, diff.Upserts.KanjiFormInfos.Values);
         KanjiFormPriorityTable.UpsertItems(context, diff.Upserts.KanjiFormPriorities.Values);
-        ReadingInfoTable.UpsertItems(context, diff.Upserts.ReadingInfos.Values);
-        ReadingPriorityTable.UpsertItems(context, diff.Upserts.ReadingPriorities.Values);
-        RestrictionTable.UpsertItems(context, diff.Upserts.Restrictions.Values);
-        CrossReferenceTable.UpsertItems(context, diff.Upserts.CrossReferences.Values);
-        DetailTable.UpsertItems(context, diff.Upserts.Details.Values);
-        NameTypeTable.UpsertItems(context, diff.Upserts.NameTypes.Values);
+        ReadingInfoTable      .UpsertItems(context, diff.Upserts.ReadingInfos.Values);
+        ReadingPriorityTable  .UpsertItems(context, diff.Upserts.ReadingPriorities.Values);
+        RestrictionTable      .UpsertItems(context, diff.Upserts.Restrictions.Values);
+        CrossReferenceTable   .UpsertItems(context, diff.Upserts.CrossReferences.Values);
+        DetailTable           .UpsertItems(context, diff.Upserts.Details.Values);
+        NameTypeTable         .UpsertItems(context, diff.Upserts.NameTypes.Values);
 
-        NameTypeTable.DeleteItems(context, diff.Deletes.NameTypes.Values);
-        DetailTable.DeleteItems(context, diff.Deletes.Details.Values);
-        CrossReferenceTable.DeleteItems(context, diff.Deletes.CrossReferences.Values);
-        RestrictionTable.DeleteItems(context, diff.Deletes.Restrictions.Values);
-        ReadingPriorityTable.DeleteItems(context, diff.Deletes.ReadingPriorities.Values);
-        ReadingInfoTable.DeleteItems(context, diff.Deletes.ReadingInfos.Values);
+        NameTypeTable         .DeleteItems(context, diff.Deletes.NameTypes.Values);
+        DetailTable           .DeleteItems(context, diff.Deletes.Details.Values);
+        CrossReferenceTable   .DeleteItems(context, diff.Deletes.CrossReferences.Values);
+        RestrictionTable      .DeleteItems(context, diff.Deletes.Restrictions.Values);
+        ReadingPriorityTable  .DeleteItems(context, diff.Deletes.ReadingPriorities.Values);
+        ReadingInfoTable      .DeleteItems(context, diff.Deletes.ReadingInfos.Values);
         KanjiFormPriorityTable.DeleteItems(context, diff.Deletes.KanjiFormPriorities.Values);
-        KanjiFormInfoTable.DeleteItems(context, diff.Deletes.KanjiFormInfos.Values);
-        TranslationTable.DeleteItems(context, diff.Deletes.Translations.Values);
-        ReadingTable.DeleteItems(context, diff.Deletes.Readings.Values);
-        KanjiFormTable.DeleteItems(context, diff.Deletes.KanjiForms.Values);
-        EntryTable.DeleteItems(context, diff.Deletes.Entries.Values);
+        KanjiFormInfoTable    .DeleteItems(context, diff.Deletes.KanjiFormInfos.Values);
+        TranslationTable      .DeleteItems(context, diff.Deletes.Translations.Values);
+        ReadingTable          .DeleteItems(context, diff.Deletes.Readings.Values);
+        KanjiFormTable        .DeleteItems(context, diff.Deletes.KanjiForms.Values);
+        EntryTable            .DeleteItems(context, diff.Deletes.Entries.Values);
+
+        #pragma warning restore format
 
         var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
 

@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Kanjidic2.Models;
+namespace Jitendex.Import.Kanjidic2;
 
 internal sealed class DocumentDiff : IDocumentDiff<DateOnly, Document>
 {

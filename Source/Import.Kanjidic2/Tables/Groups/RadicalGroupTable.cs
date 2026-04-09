@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
 using Jitendex.Data.Kanjidic2.Entities.Groups;
-using Jitendex.Import.Kanjidic2.Models;
+using Jitendex.Import.Kanjidic2.TableRows;
 
 namespace Jitendex.Import.Kanjidic2.Tables.Groups;
 

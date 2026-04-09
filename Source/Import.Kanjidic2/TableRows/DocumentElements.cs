@@ -16,21 +16,23 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Import.Kanjidic2.Models;
+namespace Jitendex.Import.Kanjidic2.TableRows;
 
-internal interface ISubgroupElement
-{
-    int EntryId { get; init; }
-    int GroupOrder { get; init; }
-    int ReadingMeaningOrder { get; init; }
-    int Order { get; init; }
-}
+internal sealed record DocumentSequence
+(
+    int Id,
+    int FileHeaderId
+);
 
-internal sealed record MeaningElement(int EntryId, int GroupOrder, int ReadingMeaningOrder, int Order, string Text) : ISubgroupElement;
-internal sealed record ReadingElement(int EntryId, int GroupOrder, int ReadingMeaningOrder, int Order, string Text, string TypeName) : ISubgroupElement;
+internal sealed record DocumentRevision
+(
+    int SequenceId,
+    int Number,
+    int FileHeaderId,
+    byte[] DiffJson
+);
 
-internal static class SubgroupElementExtensions
-{
-    public static (int, int, int, int) Key(this ISubgroupElement element)
-        => (element.EntryId, element.GroupOrder, element.ReadingMeaningOrder, element.Order);
-}
+internal sealed record DocumentHeader
+(
+    DateOnly Date
+);

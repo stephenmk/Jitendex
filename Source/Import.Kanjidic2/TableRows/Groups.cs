@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text;
 
-namespace Jitendex.Import.Kanjidic2.Models;
+namespace Jitendex.Import.Kanjidic2.TableRows;
 
 internal sealed record EntryElement
 {

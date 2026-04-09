@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.Kanjidic2;
 using Jitendex.MinimalJsonDiff;
-using Jitendex.Import.Kanjidic2.Models;
+using Jitendex.Import.Kanjidic2.TableRows;
 using Jitendex.Import.Kanjidic2.Tables;
 using Jitendex.Import.Kanjidic2.Tables.Groups;
 using Jitendex.Import.Kanjidic2.Tables.GroupElements;

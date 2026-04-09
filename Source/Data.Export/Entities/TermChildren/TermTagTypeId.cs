@@ -16,40 +16,15 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Export.Base.TableRows;
+namespace Jitendex.Data.Export.Entities.TermChildren;
 
-internal sealed record TermRedirectRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int RedirectHeadwordId,
-    int RedirectTermGroup
-);
-
-internal sealed record TermRuleRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    string Name
-);
-
-internal sealed record TermNumberRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int Value,
-    int Total
-);
-
-internal sealed record TermTagRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int TypeId
-);
-
-internal sealed record TermTagTypeRow
-(
-    int Id,
-    string Name
-);
+public enum TermTagTypeId
+{
+    Priority,
+    Ateji,
+    SpecialReading,
+    OldKanji,
+    Irregular,
+    Rare,
+    ObsoleteReading,
+}

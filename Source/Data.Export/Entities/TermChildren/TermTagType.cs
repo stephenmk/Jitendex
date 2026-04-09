@@ -16,40 +16,18 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Export.Base.TableRows;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-internal sealed record TermRedirectRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int RedirectHeadwordId,
-    int RedirectTermGroup
-);
+namespace Jitendex.Data.Export.Entities.TermChildren;
 
-internal sealed record TermRuleRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    string Name
-);
+[Table(nameof(TermTagType))]
+[PrimaryKey(nameof(Id))]
+public sealed class TermTagType
+{
+    public required TermTagTypeId Id { get; init; }
+    public required string Name { get; set; }
 
-internal sealed record TermNumberRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int Value,
-    int Total
-);
-
-internal sealed record TermTagRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int TypeId
-);
-
-internal sealed record TermTagTypeRow
-(
-    int Id,
-    string Name
-);
+    [InverseProperty(nameof(TermTag.TagType))]
+    public ICollection<TermTag> Tags { get; init; } = [];
+}

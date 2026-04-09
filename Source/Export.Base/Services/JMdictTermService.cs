@@ -16,21 +16,22 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-// using Microsoft.Extensions.Logging;
 using Jitendex.Data.Export;
+using Jitendex.Data.Export.Entities.TermChildren;
 using Jitendex.Data.JMdict;
 using Jitendex.Export.Base.TableRows;
 using Jitendex.Export.Base.Tables.TermChildren;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Export.Base.Services;
 
 internal sealed class JMdictTermService
 (
-    // ILogger<TermService> logger,
     ExportContext context,
     JMdictForkContext jmdictContext,
     TermRedirectTable redirectTable,
-    TermRuleTable ruleTable
+    TermRuleTable ruleTable,
+    TermTagTable tagTable
 )
 {
     private sealed record Mapping
@@ -57,6 +58,7 @@ internal sealed class JMdictTermService
 
         WriteRedirects(mapping);
         WriteRules(mapping);
+        WriteTags(mapping);
     }
 
     private void WriteRedirects(Mapping mapping)
@@ -115,4 +117,58 @@ internal sealed class JMdictTermService
 
         ruleTable.InsertItems(context, rows);
     }
+
+    private void WriteTags(Mapping mapping)
+    {
+        var rows = new List<TermTagRow>();
+
+        var headwords = jmdictContext.Headwords
+            .AsSplitQuery()
+            .Where(static h => h.Tags.Any())
+            .Select(static h => new
+            {
+                h.EntryId,
+                h.Surface,
+                h.Reading,
+                Tags = h.Tags.Select(static t => t.Name),
+            });
+
+        foreach (var x in headwords)
+        {
+            var headword = (x.Surface, x.Reading);
+            var headwordId = mapping.HeadwordToId[headword];
+            var groupId = mapping.EntryIdToGroupId[x.EntryId];
+
+            var tagIds = new HashSet<int>();
+            foreach (var tag in x.Tags)
+            {
+                if (TagNameToId(tag) is TermTagTypeId id)
+                {
+                    tagIds.Add((int)id);
+                }
+            }
+            foreach (var tagId in tagIds)
+            {
+                rows.Add(new(headwordId, groupId, tagId));
+            }
+        }
+
+        tagTable.InsertItems(context, rows);
+    }
+
+    #pragma warning disable format
+    private static TermTagTypeId? TagNameToId(string tagName)
+        => tagName switch
+        {
+            "spec1" or "gai1" or
+            "ichi1" or "news1"   => TermTagTypeId.Priority,
+            "iK" or "ik" or "io" => TermTagTypeId.Irregular,
+            "rK" or "rk"         => TermTagTypeId.Rare,
+            "ateji"              => TermTagTypeId.Ateji,
+            "gikun"              => TermTagTypeId.SpecialReading,
+            "oK"                 => TermTagTypeId.OldKanji,
+            "ok"                 => TermTagTypeId.ObsoleteReading,
+            _                    => null,
+        };
+    #pragma warning restore format
 }

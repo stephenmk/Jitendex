@@ -54,6 +54,8 @@ internal static class ServiceProvider
         .AddTransient<TermRedirectTable>()
         .AddTransient<TermRuleTable>()
         .AddTransient<TermNumberTable>()
+        .AddTransient<TermTagTable>()
+        .AddTransient<TermTagTypeTable>()
         #endregion
 
         // Logging

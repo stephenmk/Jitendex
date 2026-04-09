@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.Export;
+using Jitendex.Data.Export.Entities.TermChildren;
 using Jitendex.Data.JMdict;
 using Jitendex.Export.Base.TableRows;
 using Jitendex.Export.Base.Tables;
@@ -31,13 +32,15 @@ internal sealed class TermService
     TermTable termTable,
     TermGroupTable groupTable,
     JMdictEntryTable jmdictEntryTable,
-    TermNumberTable numberTable
+    TermNumberTable numberTable,
+    TermTagTypeTable tagTypeTable
 )
 {
     public void Write()
     {
         WriteTerms();
         WriteNumbers();
+        WriteTagTypes();
     }
 
     private void WriteTerms()
@@ -113,5 +116,13 @@ internal sealed class TermService
         }
 
         numberTable.InsertItems(context, rows);
+    }
+
+    private void WriteTagTypes()
+    {
+        var rows = Enum.GetValues<TermTagTypeId>()
+            .Select(static type => new TermTagTypeRow((int)type, type.ToString()));
+
+        tagTypeTable.InsertItems(context, rows);
     }
 }

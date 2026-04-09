@@ -16,40 +16,30 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Export.Base.TableRows;
+using Jitendex.Data;
+using Jitendex.Data.Export.Entities.TermChildren;
+using Jitendex.Export.Base.TableRows;
 
-internal sealed record TermRedirectRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int RedirectHeadwordId,
-    int RedirectTermGroup
-);
+namespace Jitendex.Export.Base.Tables.TermChildren;
 
-internal sealed record TermRuleRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    string Name
-);
+internal sealed class TermTagTypeTable : Table<TermTagTypeRow>
+{
+    protected override string Name { get; } = nameof(TermTagType);
 
-internal sealed record TermNumberRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int Value,
-    int Total
-);
+    protected override ImmutableArray<string> ColumnNames { get; } =
+    [
+        nameof(TermTagType.Id),
+        nameof(TermTagType.Name),
+    ];
 
-internal sealed record TermTagRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int TypeId
-);
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(TermTagType.Id)
+    ];
 
-internal sealed record TermTagTypeRow
-(
-    int Id,
-    string Name
-);
+    protected override object?[] ParameterValues(TermTagTypeRow row) =>
+    [
+        row.Id,
+        row.Name,
+    ];
+}

@@ -41,25 +41,29 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
 
         Diff<int, EntryElement>(diff, docA, docB, propertyName: nameof(Document.Entries));
 
-        Diff<(int, int), CodepointGroupElement>(diff, docA, docB, propertyName: nameof(Document.CodepointGroups));
-        Diff<(int, int), DictionaryGroupElement>(diff, docA, docB, propertyName: nameof(Document.DictionaryGroups));
-        Diff<(int, int), MiscGroupElement>(diff, docA, docB, propertyName: nameof(Document.MiscGroups));
-        Diff<(int, int), QueryCodeGroupElement>(diff, docA, docB, propertyName: nameof(Document.QueryCodeGroups));
-        Diff<(int, int), RadicalGroupElement>(diff, docA, docB, propertyName: nameof(Document.RadicalGroups));
-        Diff<(int, int), ReadingMeaningGroupElement>(diff, docA, docB, propertyName: nameof(Document.ReadingMeaningGroups));
+        #pragma warning disable format
 
-        Diff<(int, int, int), CodepointElement>(diff, docA, docB, propertyName: nameof(Document.Codepoints));
-        Diff<(int, int, int), DictionaryElement>(diff, docA, docB, propertyName: nameof(Document.Dictionaries));
-        Diff<(int, int, int), NanoriElement>(diff, docA, docB, propertyName: nameof(Document.Nanoris));
-        Diff<(int, int, int), QueryCodeElement>(diff, docA, docB, propertyName: nameof(Document.QueryCodes));
-        Diff<(int, int, int), RadicalElement>(diff, docA, docB, propertyName: nameof(Document.Radicals));
-        Diff<(int, int, int), RadicalNameElement>(diff, docA, docB, propertyName: nameof(Document.RadicalNames));
-        Diff<(int, int, int), ReadingMeaningElement>(diff, docA, docB, propertyName: nameof(Document.ReadingMeanings));
-        Diff<(int, int, int), StrokeCountElement>(diff, docA, docB, propertyName: nameof(Document.StrokeCounts));
-        Diff<(int, int, int), VariantElement>(diff, docA, docB, propertyName: nameof(Document.Variants));
+        Diff<(int, int), CodepointGroupElement>      (diff, docA, docB, propertyName: nameof(Document.CodepointGroups));
+        Diff<(int, int), DictionaryGroupElement>     (diff, docA, docB, propertyName: nameof(Document.DictionaryGroups));
+        Diff<(int, int), MiscGroupElement>           (diff, docA, docB, propertyName: nameof(Document.MiscGroups));
+        Diff<(int, int), QueryCodeGroupElement>      (diff, docA, docB, propertyName: nameof(Document.QueryCodeGroups));
+        Diff<(int, int), RadicalGroupElement>        (diff, docA, docB, propertyName: nameof(Document.RadicalGroups));
+        Diff<(int, int), ReadingMeaningGroupElement> (diff, docA, docB, propertyName: nameof(Document.ReadingMeaningGroups));
 
-        Diff<(int, int, int, int), MeaningElement>(diff, docA, docB, propertyName: nameof(Document.Meanings));
-        Diff<(int, int, int, int), ReadingElement>(diff, docA, docB, propertyName: nameof(Document.Readings));
+        Diff<(int, int, int), CodepointElement>      (diff, docA, docB, propertyName: nameof(Document.Codepoints));
+        Diff<(int, int, int), DictionaryElement>     (diff, docA, docB, propertyName: nameof(Document.Dictionaries));
+        Diff<(int, int, int), NanoriElement>         (diff, docA, docB, propertyName: nameof(Document.Nanoris));
+        Diff<(int, int, int), QueryCodeElement>      (diff, docA, docB, propertyName: nameof(Document.QueryCodes));
+        Diff<(int, int, int), RadicalElement>        (diff, docA, docB, propertyName: nameof(Document.Radicals));
+        Diff<(int, int, int), RadicalNameElement>    (diff, docA, docB, propertyName: nameof(Document.RadicalNames));
+        Diff<(int, int, int), ReadingMeaningElement> (diff, docA, docB, propertyName: nameof(Document.ReadingMeanings));
+        Diff<(int, int, int), StrokeCountElement>    (diff, docA, docB, propertyName: nameof(Document.StrokeCounts));
+        Diff<(int, int, int), VariantElement>        (diff, docA, docB, propertyName: nameof(Document.Variants));
+
+        Diff<(int, int, int, int), MeaningElement>   (diff, docA, docB, propertyName: nameof(Document.Meanings));
+        Diff<(int, int, int, int), ReadingElement>   (diff, docA, docB, propertyName: nameof(Document.Readings));
+
+        #pragma warning restore format
 
         return diff;
     }

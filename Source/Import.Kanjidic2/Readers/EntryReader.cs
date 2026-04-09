@@ -20,9 +20,9 @@ using System.Text;
 using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.Kanjidic2.Models;
-using Jitendex.Import.Kanjidic2.Parsing.GroupReaders;
+using Jitendex.Import.Kanjidic2.Readers.GroupReaders;
 
-namespace Jitendex.Import.Kanjidic2.Parsing;
+namespace Jitendex.Import.Kanjidic2.Readers;
 
 internal partial class EntryReader
 (

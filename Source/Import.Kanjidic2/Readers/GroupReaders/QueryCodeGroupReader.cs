@@ -21,7 +21,7 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Jitendex.Import.Kanjidic2.Models;
 
-namespace Jitendex.Import.Kanjidic2.Parsing.GroupReaders;
+namespace Jitendex.Import.Kanjidic2.Readers.GroupReaders;
 
 internal partial class QueryCodeGroupReader(ILogger<QueryCodeGroupReader> logger)
     : XmlParentElementReader<Document, QueryCodeGroupElement>(logger)

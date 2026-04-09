@@ -33,7 +33,8 @@ internal sealed class TermService
     TermTable termTable,
     TermGroupTable groupTable,
     JMdictEntryTable jmdictEntryTable,
-    TermRedirectTable redirectTable
+    TermRedirectTable redirectTable,
+    TermRuleTable ruleTable
 )
 {
     private sealed record Mapping
@@ -46,6 +47,7 @@ internal sealed class TermService
     {
         var mapping = WriteTerms();
         WriteRedirects(mapping);
+        WriteRules(mapping);
     }
 
     private Mapping WriteTerms()
@@ -70,11 +72,13 @@ internal sealed class TermService
                 Score = (h.Score * 1000) + (100 - h.Order),
             });
 
+        const int jmdictSize = 225_000;
+        var entryIdToGroupId = new Dictionary<int, int>(jmdictSize);
+        var termRows = new List<TermRow>(600_000);
+        var groupRows = new List<TermGroupRow>(jmdictSize);
+        var jmdictRows = new List<JMdictEntryRow>(jmdictSize);
+
         var nextGroupId = 1;
-        var entryIdToGroupId = new Dictionary<int, int>();
-        var termRows = new List<TermRow>();
-        var groupRows = new List<TermGroupRow>();
-        var jmdictRows = new List<JMdictEntryRow>();
 
         foreach (var term in jmdictTerms)
         {
@@ -109,7 +113,7 @@ internal sealed class TermService
                 RedirectReading = h.RedirectHeadword.Reading
             });
 
-        var rows = new List<TermRedirectRow>();
+        var rows = new List<TermRedirectRow>(25_000);
 
         foreach (var x in redirects)
         {
@@ -126,6 +130,31 @@ internal sealed class TermService
         }
 
         redirectTable.InsertItems(context, rows);
+    }
+
+    private void WriteRules(Mapping mapping)
+    {
+        var rules = jmdictContext.HeadwordRules
+            .Select(static h => new
+            {
+                h.Headword.Surface,
+                h.Headword.Reading,
+                h.EntryId,
+                h.Name,
+            });
+
+        var rows = new List<TermRuleRow>(60_000);
+
+        foreach (var x in rules)
+        {
+            var headword = (x.Surface, x.Reading);
+            var headwordId = mapping.HeadwordToId[headword];
+            var groupId = mapping.JmdictEntryIdToGroupId[x.EntryId];
+
+            rows.Add(new(headwordId, groupId, x.Name));
+        }
+
+        ruleTable.InsertItems(context, rows);
     }
 
     // [LoggerMessage(LogLevel.Warning, "No ID found for headword {Reading}【{Surface}】")]

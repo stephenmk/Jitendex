@@ -25,3 +25,10 @@ internal sealed record TermRedirectRow
     int RedirectHeadwordId,
     int RedirectTermGroup
 );
+
+internal sealed record TermRuleRow
+(
+    int HeadwordId,
+    int TermGroupId,
+    string Name
+);

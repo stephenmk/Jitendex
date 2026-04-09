@@ -51,6 +51,7 @@ internal static class ServiceProvider
         .AddTransient<JMdictEntryTable>()
 
         .AddTransient<TermRedirectTable>()
+        .AddTransient<TermRuleTable>()
         #endregion
 
         // Logging

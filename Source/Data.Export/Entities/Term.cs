@@ -36,6 +36,9 @@ public sealed class Term
     [ForeignKey(nameof(GroupId))]
     public TermGroup Group { get; init; } = null!;
 
+    [InverseProperty(nameof(TermNumber.Term))]
+    public TermNumber Number { get; set; } = null!;
+
     [InverseProperty(nameof(TermGlossary.Term))]
     public TermGlossary? Glossary { get; set; }
 

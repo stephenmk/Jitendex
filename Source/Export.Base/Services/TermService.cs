@@ -34,7 +34,8 @@ internal sealed class TermService
     TermGroupTable groupTable,
     JMdictEntryTable jmdictEntryTable,
     TermRedirectTable redirectTable,
-    TermRuleTable ruleTable
+    TermRuleTable ruleTable,
+    TermNumberTable numberTable
 )
 {
     private sealed record Mapping
@@ -48,6 +49,7 @@ internal sealed class TermService
         var mapping = WriteTerms();
         WriteRedirects(mapping);
         WriteRules(mapping);
+        WriteNumbers();
     }
 
     private Mapping WriteTerms()
@@ -110,7 +112,7 @@ internal sealed class TermService
                 h.Headword.Reading,
                 RedirectEntryId = h.RedirectHeadword.EntryId,
                 RedirectSurface = h.RedirectHeadword.Surface,
-                RedirectReading = h.RedirectHeadword.Reading
+                RedirectReading = h.RedirectHeadword.Reading,
             });
 
         var rows = new List<TermRedirectRow>(25_000);
@@ -155,6 +157,33 @@ internal sealed class TermService
         }
 
         ruleTable.InsertItems(context, rows);
+    }
+
+    private void WriteNumbers()
+    {
+        var rows = new List<TermNumberRow>();
+
+        var groups = context.Terms
+            .GroupBy(static t => t.HeadwordId)
+            .Select(static group => new
+            {
+                HeadwordId = group.Key,
+                GroupIds = group
+                    .OrderByDescending(static t => t.Score)
+                    .ThenBy(static t => t.GroupId)
+                    .Select(static t => t.GroupId)
+            });
+
+        foreach (var x in groups)
+        {
+            var ids = x.GroupIds.ToArray();
+            for (int i = 0; i < ids.Length; i++)
+            {
+                rows.Add(new(x.HeadwordId, ids[i], i + 1, ids.Length));
+            }
+        }
+
+        numberTable.InsertItems(context, rows);
     }
 
     // [LoggerMessage(LogLevel.Warning, "No ID found for headword {Reading}【{Surface}】")]

@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Forks.JMdict.RowModels;
+namespace Jitendex.Forks.JMdict.TableRows;
 
 internal sealed record CompoundRow
 (

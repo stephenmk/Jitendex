@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Extensions.Logging;
-using Jitendex.Forks.JMdict.RowModels;
+using Jitendex.Forks.JMdict.TableRows;
 
 namespace Jitendex.Forks.JMdict.Services.References;
 

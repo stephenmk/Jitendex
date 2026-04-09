@@ -20,7 +20,7 @@ using System.Collections.Frozen;
 using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.RowModels;
+using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Media;
 
 namespace Jitendex.Forks.JMdict.Services.Media;

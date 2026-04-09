@@ -16,54 +16,45 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Forks.JMdict.RowModels;
+namespace Jitendex.Forks.JMdict.TableRows;
 
-internal sealed record HeadwordRow
+internal sealed record ParsedReferenceText
 (
-    int EntryId,
-    int Order,
-    int Score,
-    string Surface,
-    string? Reading,
-    int? ReadingOrder,
-    int? KanjiFormOrder
+    string Text1,
+    string? Text2,
+    int SenseNumber
 );
 
-internal sealed record HeadwordRedirectRow
-(
-    int EntryId,
-    int HeadwordOrder,
-    int RedirectHeadwordOrder
-);
-
-internal sealed record HeadwordReferenceRow
+internal sealed record AmbiguousReferenceRow
 (
     int EntryId,
     int SenseOrder,
-    int Order,
+    int CrossReferenceOrder
+);
+
+internal sealed record EntryReferenceRow
+(
+    int EntryId,
+    int SenseOrder,
+    int CrossReferenceOrder,
     int RefEntryId,
-    int RefHeadwordOrder,
     int RefSenseOrder
 );
 
-internal sealed record HeadwordRuleRow
+internal sealed record KanjiFormReferenceRow
 (
     int EntryId,
-    int HeadwordOrder,
-    string Name
+    int SenseOrder,
+    int CrossReferenceOrder,
+    int RefEntryId,
+    int RefKanjiFormOrder
 );
 
-internal sealed record HeadwordSenseRow
+internal sealed record ReadingReferenceRow
 (
     int EntryId,
-    int HeadwordOrder,
-    int Order,
-    int SenseOrder
-);
-
-internal sealed record HeadwordTagRow
-(
-    int EntryId,
-    int HeadwordOrder,
-    string Name
+    int SenseOrder,
+    int CrossReferenceOrder,
+    int RefEntryId,
+    int RefReadingOrder
 );

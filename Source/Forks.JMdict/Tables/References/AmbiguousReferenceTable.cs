@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Forks.JMdict.RowModels;
+using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Data.JMdict.ForkEntities.References;
 
 namespace Jitendex.Forks.JMdict.Tables.References;

@@ -16,28 +16,41 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Forks.JMdict.RowModels;
+namespace Jitendex.Forks.JMdict.TableRows;
 
-internal sealed record RestrictionLinkRow
+internal sealed record KanjiFormBridgeRow
 (
     int EntryId,
     int ReadingOrder,
-    int RestrictionOrder,
     int KanjiFormOrder
 );
 
-internal sealed record ReadingRestrictionLinkRow
+internal sealed record FuriganaSegmentRow
 (
     int EntryId,
-    int SenseOrder,
-    int RestrictionOrder,
-    int ReadingOrder
+    int ReadingOrder,
+    int KanjiFormOrder,
+    int Order,
+    string BaseText,
+    string? Furigana
 );
 
-internal sealed record KanjiFormRestrictionLinkRow
+internal sealed record CharacterReadingLinkRow
 (
     int EntryId,
-    int SenseOrder,
-    int RestrictionOrder,
-    int KanjiFormOrder
+    int ReadingOrder,
+    int KanjiFormOrder,
+    int FuriganaSegmentOrder,
+    int CharacterReadingId,
+    string DerivedReadingText
+);
+
+internal sealed record CompoundReadingLinkRow
+(
+    int EntryId,
+    int ReadingOrder,
+    int KanjiFormOrder,
+    int FuriganaSegmentOrder,
+    int CompoundId,
+    string ReadingText
 );

@@ -16,41 +16,54 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Forks.JMdict.RowModels;
+namespace Jitendex.Forks.JMdict.TableRows;
 
-internal sealed record KanjiFormBridgeRow
+internal sealed record HeadwordRow
 (
     int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder
-);
-
-internal sealed record FuriganaSegmentRow
-(
-    int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder,
     int Order,
-    string BaseText,
-    string? Furigana
+    int Score,
+    string Surface,
+    string? Reading,
+    int? ReadingOrder,
+    int? KanjiFormOrder
 );
 
-internal sealed record CharacterReadingLinkRow
+internal sealed record HeadwordRedirectRow
 (
     int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder,
-    int FuriganaSegmentOrder,
-    int CharacterReadingId,
-    string DerivedReadingText
+    int HeadwordOrder,
+    int RedirectHeadwordOrder
 );
 
-internal sealed record CompoundReadingLinkRow
+internal sealed record HeadwordReferenceRow
 (
     int EntryId,
-    int ReadingOrder,
-    int KanjiFormOrder,
-    int FuriganaSegmentOrder,
-    int CompoundId,
-    string ReadingText
+    int SenseOrder,
+    int Order,
+    int RefEntryId,
+    int RefHeadwordOrder,
+    int RefSenseOrder
+);
+
+internal sealed record HeadwordRuleRow
+(
+    int EntryId,
+    int HeadwordOrder,
+    string Name
+);
+
+internal sealed record HeadwordSenseRow
+(
+    int EntryId,
+    int HeadwordOrder,
+    int Order,
+    int SenseOrder
+);
+
+internal sealed record HeadwordTagRow
+(
+    int EntryId,
+    int HeadwordOrder,
+    string Name
 );

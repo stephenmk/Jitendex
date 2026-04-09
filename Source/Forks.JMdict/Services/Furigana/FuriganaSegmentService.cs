@@ -21,7 +21,7 @@ using Microsoft.Extensions.Logging;
 using Jitendex.Furigana;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;
-using Jitendex.Forks.JMdict.RowModels;
+using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 using static Jitendex.Data.JMdict.ForkEntities.Kanwa.DerivedCharacterReadingTypeId;
 

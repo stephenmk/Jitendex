@@ -20,7 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Jitendex.JapaneseTextUtils;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.RowModels;
+using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 
 namespace Jitendex.Forks.JMdict.Services.Furigana;

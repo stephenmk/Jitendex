@@ -20,7 +20,7 @@ using System.Collections.Frozen;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.RowModels;
+using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Headwords;
 using Jitendex.JapaneseTextUtils;
 

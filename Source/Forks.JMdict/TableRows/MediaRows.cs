@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025-2026 Stephen Kraus
+Copyright (c) 2026 Stephen Kraus
 SPDX-License-Identifier: AGPL-3.0-or-later
 
 This file is part of Jitendex.
@@ -16,45 +16,31 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-namespace Jitendex.Forks.JMdict.RowModels;
+namespace Jitendex.Forks.JMdict.TableRows;
 
-internal sealed record ParsedReferenceText
+internal sealed record GraphicLicenseRow
 (
-    string Text1,
-    string? Text2,
-    int SenseNumber
+    int Id,
+    string Name,
+    string InfoUrl
 );
 
-internal sealed record AmbiguousReferenceRow
+internal sealed record GraphicRow
+(
+    int Id,
+    int LicenseId,
+    bool Cropped,
+    string PageUrl,
+    string FileUrl,
+    string Author,
+    string? AuthorUrl,
+    string? Title
+);
+
+internal sealed record SenseGraphicRow
 (
     int EntryId,
     int SenseOrder,
-    int CrossReferenceOrder
-);
-
-internal sealed record EntryReferenceRow
-(
-    int EntryId,
-    int SenseOrder,
-    int CrossReferenceOrder,
-    int RefEntryId,
-    int RefSenseOrder
-);
-
-internal sealed record KanjiFormReferenceRow
-(
-    int EntryId,
-    int SenseOrder,
-    int CrossReferenceOrder,
-    int RefEntryId,
-    int RefKanjiFormOrder
-);
-
-internal sealed record ReadingReferenceRow
-(
-    int EntryId,
-    int SenseOrder,
-    int CrossReferenceOrder,
-    int RefEntryId,
-    int RefReadingOrder
+    int Order,
+    int GraphicId
 );

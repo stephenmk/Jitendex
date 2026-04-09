@@ -23,6 +23,7 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Export.Base.Services;
 using Jitendex.Export.Base.Tables;
+using Jitendex.Export.Base.Tables.TermChildren;
 
 namespace Jitendex.Export.Base;
 
@@ -48,6 +49,8 @@ internal static class ServiceProvider
         .AddTransient<TermTable>()
         .AddTransient<TermGroupTable>()
         .AddTransient<JMdictEntryTable>()
+
+        .AddTransient<TermRedirectTable>()
         #endregion
 
         // Logging

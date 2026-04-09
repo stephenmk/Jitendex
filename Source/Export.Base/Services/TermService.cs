@@ -16,26 +16,39 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+// using Microsoft.Extensions.Logging;
 using Jitendex.Data.Export;
 using Jitendex.Data.JMdict;
 using Jitendex.Export.Base.TableRows;
 using Jitendex.Export.Base.Tables;
+using Jitendex.Export.Base.Tables.TermChildren;
 
 namespace Jitendex.Export.Base.Services;
 
-internal partial class TermService
+internal sealed class TermService
 (
-    ILogger<TermService> logger,
+    // ILogger<TermService> logger,
     ExportContext context,
     JMdictForkContext jmdictContext,
     TermTable termTable,
     TermGroupTable groupTable,
-    JMdictEntryTable jmdictEntryTable
+    JMdictEntryTable jmdictEntryTable,
+    TermRedirectTable redirectTable
 )
 {
+    private sealed record Mapping
+    (
+        FrozenDictionary<(string, string?), int> HeadwordToId,
+        IReadOnlyDictionary<int, int> JmdictEntryIdToGroupId
+    );
+
     public void Write()
+    {
+        var mapping = WriteTerms();
+        WriteRedirects(mapping);
+    }
+
+    private Mapping WriteTerms()
     {
         var headwordToId = context.Headwords
             .Select(static h => new { h.Id, h.Surface, h.Reading })
@@ -65,11 +78,6 @@ internal partial class TermService
 
         foreach (var term in jmdictTerms)
         {
-            if (!headwordToId.TryGetValue((term.Surface, term.Reading), out var headwordId))
-            {
-                LogMissingHeadwordId(term.Surface, term.Reading);
-                continue;
-            }
             if (!entryIdToGroupId.TryGetValue(term.EntryId, out var groupId))
             {
                 groupId = nextGroupId++;
@@ -77,14 +85,49 @@ internal partial class TermService
                 groupRows.Add(new(groupId));
                 jmdictRows.Add(new(term.EntryId, groupId));
             }
+            var headwordId = headwordToId[(term.Surface, term.Reading)];
             termRows.Add(new(headwordId, groupId, term.Score));
         }
 
         groupTable.InsertItems(context, groupRows);
         termTable.InsertItems(context, termRows);
         jmdictEntryTable.InsertItems(context, jmdictRows);
+
+        return new Mapping(headwordToId, entryIdToGroupId);
     }
 
-    [LoggerMessage(LogLevel.Warning, "No ID found for headword {Reading}【{Surface}】")]
-    partial void LogMissingHeadwordId(string surface, string? reading);
+    private void WriteRedirects(Mapping mapping)
+    {
+        var redirects = jmdictContext.HeadwordRedirects
+            .Select(static h => new
+            {
+                h.EntryId,
+                h.Headword.Surface,
+                h.Headword.Reading,
+                RedirectEntryId = h.RedirectHeadword.EntryId,
+                RedirectSurface = h.RedirectHeadword.Surface,
+                RedirectReading = h.RedirectHeadword.Reading
+            });
+
+        var rows = new List<TermRedirectRow>();
+
+        foreach (var x in redirects)
+        {
+            var headword = (x.Surface, x.Reading);
+            var headwordId = mapping.HeadwordToId[headword];
+
+            var redirectHeadword = (x.RedirectSurface, x.RedirectReading);
+            var redirectHeadwordId = mapping.HeadwordToId[redirectHeadword];
+
+            var groupId = mapping.JmdictEntryIdToGroupId[x.EntryId];
+            var redirectGroupId = mapping.JmdictEntryIdToGroupId[x.RedirectEntryId];
+
+            rows.Add(new(headwordId, groupId, redirectHeadwordId, redirectGroupId));
+        }
+
+        redirectTable.InsertItems(context, rows);
+    }
+
+    // [LoggerMessage(LogLevel.Warning, "No ID found for headword {Reading}【{Surface}】")]
+    // partial void LogMissingHeadwordId(string surface, string? reading);
 }

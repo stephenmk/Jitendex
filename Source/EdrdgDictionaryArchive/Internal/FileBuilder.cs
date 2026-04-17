@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+using System.Buffers;
 using Microsoft.Extensions.Logging;
 using Jitendex.MinimalPatch;
 
@@ -23,6 +24,8 @@ namespace Jitendex.EdrdgDictionaryArchive.Internal;
 
 internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, FileArchive archive)
 {
+    private static readonly ArrayPool<char> _arrayPool = ArrayPool<char>.Shared;
+
     public FileInfo? GetFile(FileRequest request)
         => cache.GetExistingFile(request) ?? BuildFile(request);
 
@@ -72,9 +75,9 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
         }
 
         var length = buildBase.File.Length();
-        Span<char> @patchBuffer = new char[length / 10];
-        Span<char> originBuffer = new char[length * 3 / 2];
-        Span<char> outputBuffer = new char[length * 3 / 2];
+        var @patchBuffer = _arrayPool.Rent(length / 10);
+        var originBuffer = _arrayPool.Rent(length * 3 / 2);
+        var outputBuffer = _arrayPool.Rent(length * 3 / 2);
         buildBase.File.ReadInto(originBuffer);
 
         foreach (var patch in buildBase.Patches)
@@ -85,18 +88,24 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
 
             length = Patcher.ApplyPatch
             (
-                @patchBuffer[..patchLength],
-                originBuffer[..length],
+                @patchBuffer.AsSpan(..patchLength),
+                originBuffer.AsSpan(..length),
                 outputBuffer
             );
 
-            outputBuffer[..length].CopyTo(originBuffer[..length]);
+            var patched = outputBuffer.AsSpan(..length);
+            var newOrigin = originBuffer.AsSpan(..length);
+            patched.CopyTo(newOrigin);
         }
 
-        var builtFile = cache.WriteFile(request, outputBuffer[..length]);
+        var builtFile = cache.WriteFile(request, outputBuffer.AsSpan(..length));
 
         var baseFileRequest = request with { Date = buildBase.Date };
         cache.DeleteFile(baseFileRequest);
+
+        _arrayPool.Return(@patchBuffer);
+        _arrayPool.Return(originBuffer);
+        _arrayPool.Return(outputBuffer);
 
         return builtFile;
     }

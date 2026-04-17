@@ -21,7 +21,7 @@ using Jitendex.AppDirectory;
 
 namespace Jitendex.Import.KanjiVG;
 
-public class Program
+public static class Program
 {
     public static async Task<int> Main(string[] args)
     {

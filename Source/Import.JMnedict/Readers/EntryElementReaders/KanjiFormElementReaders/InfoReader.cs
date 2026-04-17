@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Xml;
-using Microsoft.Extensions.Logging;
 using Jitendex.Import.JMnedict.TableRows;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.JMnedict.Readers.EntryElementReaders.KanjiFormElementReaders;
 

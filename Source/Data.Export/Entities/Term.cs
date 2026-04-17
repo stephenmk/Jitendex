@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Export.Entities.TermChildren;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Export.Entities;
 

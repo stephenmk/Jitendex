@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.EntityFrameworkCore.Storage;
-using Dependencies = Microsoft.EntityFrameworkCore.Storage.RelationalCommandBuilderDependencies;
 using Builder = Microsoft.EntityFrameworkCore.Storage.RelationalCommandBuilder;
+using Dependencies = Microsoft.EntityFrameworkCore.Storage.RelationalCommandBuilderDependencies;
 
 namespace Jitendex.Data.EntityFrameworkCore;
 

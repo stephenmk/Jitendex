@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Data.JMdict.ForkEntities.Furigana;
+using Jitendex.Forks.JMdict.TableRows;
 
 namespace Jitendex.Forks.JMdict.Tables.Furigana;
 

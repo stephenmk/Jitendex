@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Buffers;
-using Microsoft.Extensions.Logging;
 using Jitendex.MinimalPatch;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.EdrdgDictionaryArchive.Internal;
 

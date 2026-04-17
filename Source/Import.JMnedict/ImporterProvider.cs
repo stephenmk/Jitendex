@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.JMnedict;
 using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Import.JMnedict.Readers;
@@ -25,6 +23,8 @@ using Jitendex.Import.JMnedict.Readers.EntryElementReaders;
 using Jitendex.Import.JMnedict.Readers.EntryElementReaders.KanjiFormElementReaders;
 using Jitendex.Import.JMnedict.Readers.EntryElementReaders.ReadingElementReaders;
 using Jitendex.Import.JMnedict.Readers.EntryElementReaders.TranslationElementReaders;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.JMnedict;
 

@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.KanjiVG;
 using Jitendex.Import.KanjiVG.Readers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.KanjiVG;
 

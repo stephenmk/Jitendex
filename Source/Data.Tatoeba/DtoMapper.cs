@@ -17,9 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using Jitendex.Dto.Tatoeba;
 using Jitendex.Data.Tatoeba.Entities;
+using Jitendex.Dto.Tatoeba;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Tatoeba;
 

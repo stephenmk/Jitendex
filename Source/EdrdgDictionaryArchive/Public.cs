@@ -16,9 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.DependencyInjection;
-using Jitendex.Import;
 using Jitendex.EdrdgDictionaryArchive.Internal;
+using Jitendex.Import;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Jitendex.EdrdgDictionaryArchive;
 

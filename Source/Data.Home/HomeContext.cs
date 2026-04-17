@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home.Entities;
 using Jitendex.Data.Home.Entities.JMdict;
 using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Data.Home.Entities.Media;
 using Jitendex.Data.Home.Entities.Tatoeba;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Home;
 

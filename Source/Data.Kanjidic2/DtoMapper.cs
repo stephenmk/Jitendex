@@ -17,11 +17,11 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using Jitendex.Dto.Kanjidic2;
 using Jitendex.Data.Kanjidic2.Entities;
-using Jitendex.Data.Kanjidic2.Entities.Groups;
 using Jitendex.Data.Kanjidic2.Entities.GroupItems;
+using Jitendex.Data.Kanjidic2.Entities.Groups;
+using Jitendex.Dto.Kanjidic2;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Kanjidic2;
 

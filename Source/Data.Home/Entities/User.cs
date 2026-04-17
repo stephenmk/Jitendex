@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home.Entities.JMdict;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Home.Entities;
 

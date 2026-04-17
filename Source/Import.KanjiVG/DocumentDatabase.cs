@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data.KanjiVG;
-using Jitendex.Import.KanjiVG.Tables;
 using Jitendex.Import.KanjiVG.Models;
+using Jitendex.Import.KanjiVG.Tables;
 
 namespace Jitendex.Import.KanjiVG;
 

@@ -16,9 +16,9 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Kanjidic2.Entities;
 using Jitendex.Data.Kanjidic2.Entities.SubgroupItems;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Kanjidic2;
 

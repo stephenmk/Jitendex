@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Dto.JMdict;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Data.JMdict.Entities.EntryChildren;
 using Jitendex.Data.JMdict.Entities.EntryChildren.KanjiFormChildren;
 using Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
 using Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
+using Jitendex.Dto.JMdict;
 
 namespace Jitendex.Data.JMdict.Mappers;
 

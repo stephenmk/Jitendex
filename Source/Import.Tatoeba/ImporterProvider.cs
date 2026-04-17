@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Data.Tatoeba;
+using Jitendex.EdrdgDictionaryArchive;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.Tatoeba;
 

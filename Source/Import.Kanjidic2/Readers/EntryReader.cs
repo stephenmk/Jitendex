@@ -18,9 +18,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text;
 using System.Xml;
-using Microsoft.Extensions.Logging;
-using Jitendex.Import.Kanjidic2.TableRows;
 using Jitendex.Import.Kanjidic2.Readers.GroupReaders;
+using Jitendex.Import.Kanjidic2.TableRows;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.Kanjidic2.Readers;
 

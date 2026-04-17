@@ -17,12 +17,12 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Text;
-using Microsoft.Extensions.Logging;
-using Jitendex.Furigana;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Furigana;
+using Jitendex.Furigana;
+using Microsoft.Extensions.Logging;
 using static Jitendex.Data.JMdict.ForkEntities.Kanwa.DerivedCharacterReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Furigana;

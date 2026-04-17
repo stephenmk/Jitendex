@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba;
 using Jitendex.Data.Tatoeba.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Forks.Tatoeba.Services;
 

@@ -16,14 +16,14 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
 using Jitendex.Data.Kanjidic2;
-using Jitendex.MinimalJsonDiff;
 using Jitendex.Import.Kanjidic2.TableRows;
 using Jitendex.Import.Kanjidic2.Tables;
-using Jitendex.Import.Kanjidic2.Tables.Groups;
 using Jitendex.Import.Kanjidic2.Tables.GroupElements;
+using Jitendex.Import.Kanjidic2.Tables.Groups;
 using Jitendex.Import.Kanjidic2.Tables.SubgroupElements;
+using Jitendex.MinimalJsonDiff;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.Kanjidic2;
 

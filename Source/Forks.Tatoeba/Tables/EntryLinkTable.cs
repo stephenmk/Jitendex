@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Data;
-using Jitendex.Forks.Tatoeba.Models;
 using Jitendex.Data.Tatoeba.ForkEntities;
+using Jitendex.Forks.Tatoeba.Models;
 
 namespace Jitendex.Forks.Tatoeba.Tables;
 

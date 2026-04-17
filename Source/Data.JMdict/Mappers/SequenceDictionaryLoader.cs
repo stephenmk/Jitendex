@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Immutable;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using Jitendex.Dto.JMdict;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Data.JMdict.Entities.EntryChildren;
+using Jitendex.Dto.JMdict;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.Mappers;
 

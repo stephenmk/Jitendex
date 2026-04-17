@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMnedict.Entities;
 using Jitendex.Data.JMnedict.Entities.EntryChildren;
 using Jitendex.Data.JMnedict.Entities.EntryChildren.KanjiFormChildren;
 using Jitendex.Data.JMnedict.Entities.EntryChildren.ReadingChildren;
 using Jitendex.Data.JMnedict.Entities.EntryChildren.TranslationChildren;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMnedict;
 

@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Forks.JMdict.TableRows;
-using Jitendex.Forks.JMdict.Tables.Kanwa;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using HomeTypeId = Jitendex.Data.Home.Entities.Kanwa.CharacterReadingTypeId;
+using Jitendex.Forks.JMdict.TableRows;
+using Jitendex.Forks.JMdict.Tables.Kanwa;
 using ForkTypeId = Jitendex.Data.JMdict.ForkEntities.Kanwa.CharacterReadingTypeId;
+using HomeTypeId = Jitendex.Data.Home.Entities.Kanwa.CharacterReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 

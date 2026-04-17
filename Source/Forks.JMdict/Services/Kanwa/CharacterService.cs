@@ -20,8 +20,8 @@ using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
-using HomeTypeId = Jitendex.Data.Home.Entities.Kanwa.CompoundReadingTypeId;
 using ForkTypeId = Jitendex.Data.JMdict.ForkEntities.Kanwa.CompoundReadingTypeId;
+using HomeTypeId = Jitendex.Data.Home.Entities.Kanwa.CompoundReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;
 

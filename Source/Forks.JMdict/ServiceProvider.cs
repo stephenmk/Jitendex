@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Services;
@@ -34,6 +32,8 @@ using Jitendex.Forks.JMdict.Tables.Kanwa;
 using Jitendex.Forks.JMdict.Tables.Media;
 using Jitendex.Forks.JMdict.Tables.References;
 using Jitendex.Forks.JMdict.Tables.Restrictions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.JMdict;
 
@@ -42,19 +42,19 @@ internal static class ServiceProvider
     public static Service GetService() => new ServiceCollection()
         .AddTransient<Service>()
 
-        #region Databases
+    #region Databases
         .AddDbContext<JMdictContext>()
         .AddDbContext<JMdictForkContext>()
         .AddDbContext<HomeContext>()
-        #endregion
+    #endregion
 
-        #region Helpers
+    #region Helpers
         .AddTransient<DatabaseCopyService>()
         .AddTransient<CrossReferenceTextParser>()
         .AddTransient<CrossReferenceCacheService>()
-        #endregion
+    #endregion
 
-        #region Services
+    #region Services
         .AddTransient<PatchService>()
         .AddTransient<PatchRebaser>()
         .AddTransient<IntegrityService>()
@@ -73,9 +73,9 @@ internal static class ServiceProvider
         .AddTransient<HeadwordService>()
         .AddTransient<HeadwordSenseService>()
         .AddTransient<HeadwordReferenceService>()
-        #endregion
+    #endregion
 
-        #region Tables
+    #region Tables
         .AddTransient<RestrictionLinkTable>()
         .AddTransient<ReadingRestrictionLinkTable>()
         .AddTransient<KanjiFormRestrictionLinkTable>()
@@ -108,7 +108,7 @@ internal static class ServiceProvider
         .AddTransient<HeadwordRuleTable>()
         .AddTransient<HeadwordReferenceTable>()
         .AddTransient<HeadwordTagTable>()
-        #endregion
+    #endregion
 
         // Logging
         .AddLogging(static builder =>

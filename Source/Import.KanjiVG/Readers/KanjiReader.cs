@@ -20,8 +20,8 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Microsoft.Extensions.Logging;
 using Jitendex.Import.KanjiVG.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.KanjiVG.Readers;
 

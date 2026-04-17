@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Reflection;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Tatoeba.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Tatoeba;
 

@@ -17,11 +17,11 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Collections.Frozen;
-using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Media;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.JMdict.Services.Media;
 

@@ -16,8 +16,8 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal.Models;
+using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Internal.Algorithms.Enlightenment;
 

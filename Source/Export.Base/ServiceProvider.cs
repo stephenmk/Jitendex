@@ -16,14 +16,14 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using Jitendex.Data.Export;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Export.Base.Services;
 using Jitendex.Export.Base.Tables;
 using Jitendex.Export.Base.Tables.TermChildren;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Export.Base;
 
@@ -32,19 +32,19 @@ internal static class ServiceProvider
     public static Service GetService() => new ServiceCollection()
         .AddTransient<Service>()
 
-        #region Databases
+    #region Databases
         .AddDbContext<ExportContext>()
         .AddDbContext<JMdictForkContext>()
         .AddDbContext<HomeContext>()
-        #endregion
+    #endregion
 
-        #region Services
+    #region Services
         .AddTransient<HeadwordService>()
         .AddTransient<TermService>()
         .AddTransient<JMdictTermService>()
-        #endregion
+    #endregion
 
-        #region Tables
+    #region Tables
         .AddTransient<HeadwordTable>()
         .AddTransient<HeadwordFuriganaTable>()
         .AddTransient<TermTable>()
@@ -56,7 +56,7 @@ internal static class ServiceProvider
         .AddTransient<TermNumberTable>()
         .AddTransient<TermTagTable>()
         .AddTransient<TermTagTypeTable>()
-        #endregion
+    #endregion
 
         // Logging
         .AddLogging(static builder =>

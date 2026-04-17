@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMnedict.Entities.EntryChildren.TranslationChildren;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMnedict.Entities.EntryChildren;
 

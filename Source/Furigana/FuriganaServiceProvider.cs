@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Jitendex.Furigana.Internal;
-using Jitendex.Furigana.Internal.Models;
 using Jitendex.Furigana.Internal.Algorithms;
 using Jitendex.Furigana.Internal.Algorithms.Enlightenment;
 using Jitendex.Furigana.Internal.Algorithms.Ignorance;
+using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana;
 

@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.Services;
@@ -27,6 +26,7 @@ using Jitendex.Forks.JMdict.Services.Media;
 using Jitendex.Forks.JMdict.Services.Patching;
 using Jitendex.Forks.JMdict.Services.References;
 using Jitendex.Forks.JMdict.Services.Restrictions;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.JMdict;
 

@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Text;
-using Jitendex.JapaneseTextUtils;
 using Jitendex.Furigana.Internal.Models;
+using Jitendex.JapaneseTextUtils;
 
 namespace Jitendex.Furigana.Internal;
 

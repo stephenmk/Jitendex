@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Jitendex.JapaneseTextUtils;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Furigana;
+using Jitendex.JapaneseTextUtils;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.JMdict.Services.Furigana;
 

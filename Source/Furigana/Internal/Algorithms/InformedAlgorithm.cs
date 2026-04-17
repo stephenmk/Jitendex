@@ -16,8 +16,8 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.Furigana.Internal.Models;
 using Jitendex.Furigana.Internal.Algorithms.Enlightenment;
+using Jitendex.Furigana.Internal.Models;
 
 namespace Jitendex.Furigana.Internal.Algorithms;
 

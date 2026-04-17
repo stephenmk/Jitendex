@@ -16,11 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Jitendex.JapaneseTextUtils;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
+using Jitendex.JapaneseTextUtils;
 using static Jitendex.Data.JMdict.ForkEntities.Kanwa.CharacterReadingTypeId;
 
 namespace Jitendex.Forks.JMdict.Services.Kanwa;

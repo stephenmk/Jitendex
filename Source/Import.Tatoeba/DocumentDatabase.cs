@@ -16,11 +16,11 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
-using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.Tatoeba;
 using Jitendex.Import.Tatoeba.TableRows;
 using Jitendex.Import.Tatoeba.Tables;
+using Jitendex.MinimalJsonDiff;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.Tatoeba;
 

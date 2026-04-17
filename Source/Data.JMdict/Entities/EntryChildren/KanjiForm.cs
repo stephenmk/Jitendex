@@ -17,11 +17,11 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities.EntryChildren.KanjiFormChildren;
 using Jitendex.Data.JMdict.ForkEntities.Furigana;
 using Jitendex.Data.JMdict.ForkEntities.Links;
 using Jitendex.Data.JMdict.ForkEntities.References;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.Entities.EntryChildren;
 

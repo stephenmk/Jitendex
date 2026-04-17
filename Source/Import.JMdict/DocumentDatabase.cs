@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
-using Jitendex.MinimalJsonDiff;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Import.JMdict.TableRows;
@@ -26,6 +24,8 @@ using Jitendex.Import.JMdict.Tables.EntryChildren;
 using Jitendex.Import.JMdict.Tables.EntryChildren.KanjiFormChildren;
 using Jitendex.Import.JMdict.Tables.EntryChildren.ReadingChildren;
 using Jitendex.Import.JMdict.Tables.EntryChildren.SenseChildren;
+using Jitendex.MinimalJsonDiff;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.JMdict;
 

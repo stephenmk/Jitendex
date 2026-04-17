@@ -17,9 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities.EntryChildren;
 using Jitendex.Data.JMdict.ForkEntities.Headwords;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Furigana;
 

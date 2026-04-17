@@ -18,11 +18,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Frozen;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Headwords;
 using Jitendex.JapaneseTextUtils;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Forks.JMdict.Services.Headwords;
 

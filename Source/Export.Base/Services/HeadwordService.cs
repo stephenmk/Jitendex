@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Jitendex.Data.Export;
 using Jitendex.Data.JMdict;
 using Jitendex.Export.Base.TableRows;
 using Jitendex.Export.Base.Tables;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Export.Base.Services;
 

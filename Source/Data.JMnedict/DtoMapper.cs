@@ -17,10 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using Jitendex.Dto.JMnedict;
 using Jitendex.Data.JMnedict.Entities;
 using Jitendex.Data.JMnedict.Entities.EntryChildren;
+using Jitendex.Dto.JMnedict;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMnedict;
 

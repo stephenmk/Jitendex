@@ -18,13 +18,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Frozen;
 using System.Text.Json;
-using Microsoft.AspNetCore.JsonPatch.SystemTextJson;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Dto.JMdict;
+using Microsoft.AspNetCore.JsonPatch.SystemTextJson;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.JMdict.Services.Patching;
 

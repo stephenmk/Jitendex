@@ -16,15 +16,15 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Data.JMdict;
+using Jitendex.EdrdgDictionaryArchive;
 using Jitendex.Import.JMdict.Readers;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders.KanjiFormChildReaders;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders.ReadingChildReaders;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.JMdict;
 

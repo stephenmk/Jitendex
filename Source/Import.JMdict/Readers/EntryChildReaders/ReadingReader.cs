@@ -17,9 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Xml;
-using Microsoft.Extensions.Logging;
-using Jitendex.Import.JMdict.TableRows;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders.ReadingChildReaders;
+using Jitendex.Import.JMdict.TableRows;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.JMdict.Readers.EntryChildReaders;
 

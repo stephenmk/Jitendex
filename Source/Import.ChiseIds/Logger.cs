@@ -16,8 +16,8 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using static Jitendex.Import.ChiseIds.Parsing.ChiseError;
 using Jitendex.Import.ChiseIds.Parsing;
+using static Jitendex.Import.ChiseIds.Parsing.ChiseError;
 
 namespace Jitendex.Import.ChiseIds;
 

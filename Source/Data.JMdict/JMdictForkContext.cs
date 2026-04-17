@@ -16,7 +16,6 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.JMdict.Entities;
 using Jitendex.Data.JMdict.Entities.EntryChildren;
 using Jitendex.Data.JMdict.Entities.EntryChildren.KanjiFormChildren;
@@ -29,6 +28,7 @@ using Jitendex.Data.JMdict.ForkEntities.Kanwa;
 using Jitendex.Data.JMdict.ForkEntities.Links;
 using Jitendex.Data.JMdict.ForkEntities.Media;
 using Jitendex.Data.JMdict.ForkEntities.References;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict;
 

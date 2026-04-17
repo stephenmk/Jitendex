@@ -16,8 +16,8 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
 using Jitendex.Forks.JMdict.TableRows;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.JMdict.Services.References;
 

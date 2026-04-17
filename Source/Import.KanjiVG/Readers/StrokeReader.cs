@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 using System.Xml;
-using Microsoft.Extensions.Logging;
 using Jitendex.Import.KanjiVG.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.KanjiVG.Readers;
 

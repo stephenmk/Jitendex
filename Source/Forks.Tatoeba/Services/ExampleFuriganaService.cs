@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License along w
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Microsoft.Extensions.Logging;
 using Jitendex.Data.Home;
 using Jitendex.Data.Tatoeba;
 using Jitendex.Forks.Tatoeba.Models;
 using Jitendex.Forks.Tatoeba.Tables;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.Tatoeba.Services;
 

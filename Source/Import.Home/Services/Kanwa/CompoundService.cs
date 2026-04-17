@@ -21,11 +21,11 @@ using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Microsoft.EntityFrameworkCore;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Kanwa;
 using Jitendex.Import.Home.TableRows;
 using Jitendex.Import.Home.Tables.Kanwa;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Import.Home.Services.Kanwa;
 

@@ -99,7 +99,7 @@ internal class HeadwordCartesianProductSolver
     {
         if (sets.Length == 0)
         {
-            throw new ArgumentException(nameof(sets));
+            return [];
         }
         if (sets.Length == 1)
         {

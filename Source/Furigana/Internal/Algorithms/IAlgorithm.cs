@@ -22,7 +22,7 @@ namespace Jitendex.Furigana.Internal.Algorithms;
 
 internal interface IAlgorithm
 {
-    public ImmutableArray<ImmutableArray<SolutionPart>> Solve
+    ImmutableArray<ImmutableArray<SolutionPart>> Solve
     (
         EntryType entryType,
         in TextSlice textSlice,

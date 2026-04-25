@@ -34,12 +34,12 @@ internal partial class HeadwordService
     HeadwordTagTable tagTable
 )
 {
-    private readonly static ImmutableArray<string> HighPriorityTagNames = ["spec1", "news1", "ichi1", "gai1"];
-    private readonly static ImmutableArray<string> IrregularKanjiTags = ["sK", "iK", "rK", "io", "ik"];
-    private readonly static ImmutableArray<string> IrregularReadingTags = ["ik", "sk", "rk", "ok"];
+    private static readonly ImmutableArray<string> HighPriorityTagNames = ["spec1", "news1", "ichi1", "gai1"];
+    private static readonly ImmutableArray<string> IrregularKanjiTags = ["sK", "iK", "rK", "io", "ik"];
+    private static readonly ImmutableArray<string> IrregularReadingTags = ["ik", "sk", "rk", "ok"];
 
-    private readonly static FrozenSet<string> HighPriorityTagNameSet = [.. HighPriorityTagNames];
-    private readonly static FrozenSet<string> IrregularInfoTagSet = [.. IrregularKanjiTags, .. IrregularReadingTags];
+    private static readonly FrozenSet<string> HighPriorityTagNameSet = [.. HighPriorityTagNames];
+    private static readonly FrozenSet<string> IrregularInfoTagSet = [.. IrregularKanjiTags, .. IrregularReadingTags];
 
     public void Write()
     {

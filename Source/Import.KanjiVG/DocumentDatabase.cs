@@ -24,25 +24,25 @@ namespace Jitendex.Import.KanjiVG;
 
 internal sealed class DocumentDatabase(KanjiVGContext context)
 {
-    private readonly static KanjiTable EntryTable = new();
-    private readonly static VariantTable VariantTable = new();
-    private readonly static ComponentGroupTable ComponentGroupTable = new();
-    private readonly static ComponentTable ComponentTable = new();
-    private readonly static StrokeNumberGroupTable StrokeNumberGroupTable = new();
-    private readonly static StrokeNumberTable StrokeNumberTable = new();
-    private readonly static StrokeTable StrokeTable = new();
+    private static readonly KanjiTable EntryTable = new();
+    private static readonly VariantTable VariantTable = new();
+    private static readonly ComponentGroupTable ComponentGroupTable = new();
+    private static readonly ComponentTable ComponentTable = new();
+    private static readonly StrokeNumberGroupTable StrokeNumberGroupTable = new();
+    private static readonly StrokeNumberTable StrokeNumberTable = new();
+    private static readonly StrokeTable StrokeTable = new();
 
     #region Lookup Tables
-    private readonly static LookupTable<VariantTypeElement> VariantTypesTable = new();
-    private readonly static LookupTable<CommentElement> CommentsTable = new();
-    private readonly static LookupTable<ComponentGroupStyleElement> ComponentGroupStylesTable = new();
-    private readonly static LookupTable<StrokeNumberGroupStyleElement> StrokeNumberGroupStylesTable = new();
-    private readonly static LookupTable<ComponentCharacterElement> ComponentCharactersTable = new();
-    private readonly static LookupTable<ComponentOriginalElement> ComponentOriginalsTable = new();
-    private readonly static LookupTable<ComponentPositionElement> ComponentPositionsTable = new();
-    private readonly static LookupTable<ComponentRadicalElement> ComponentRadicalsTable = new();
-    private readonly static LookupTable<ComponentPhonElement> ComponentPhonsTable = new();
-    private readonly static LookupTable<StrokeTypeElement> StrokeTypesTable = new();
+    private static readonly LookupTable<VariantTypeElement> VariantTypesTable = new();
+    private static readonly LookupTable<CommentElement> CommentsTable = new();
+    private static readonly LookupTable<ComponentGroupStyleElement> ComponentGroupStylesTable = new();
+    private static readonly LookupTable<StrokeNumberGroupStyleElement> StrokeNumberGroupStylesTable = new();
+    private static readonly LookupTable<ComponentCharacterElement> ComponentCharactersTable = new();
+    private static readonly LookupTable<ComponentOriginalElement> ComponentOriginalsTable = new();
+    private static readonly LookupTable<ComponentPositionElement> ComponentPositionsTable = new();
+    private static readonly LookupTable<ComponentRadicalElement> ComponentRadicalsTable = new();
+    private static readonly LookupTable<ComponentPhonElement> ComponentPhonsTable = new();
+    private static readonly LookupTable<StrokeTypeElement> StrokeTypesTable = new();
     #endregion
 
     public void Initialize(Document document)

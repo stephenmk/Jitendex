@@ -81,7 +81,7 @@ internal sealed class CrossReferenceDataService
             "cross_reference_sequences.json"
         );
 
-    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,

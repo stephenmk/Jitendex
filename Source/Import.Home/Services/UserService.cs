@@ -65,7 +65,7 @@ internal sealed class UserService(HomeContext context, ServiceOptions options)
             "users.json"
         );
 
-    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,

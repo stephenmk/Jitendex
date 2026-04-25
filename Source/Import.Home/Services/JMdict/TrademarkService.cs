@@ -59,7 +59,7 @@ internal sealed class TrademarkService
             "trademarks.json"
         );
 
-    private readonly static JsonSerializerOptions WriteOptions = new()
+    private static readonly JsonSerializerOptions WriteOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,

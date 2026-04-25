@@ -162,7 +162,7 @@ internal sealed class JMdictPatchService
     private DirectoryInfo GetPatchDirectory()
         => options.GetPatchDirectory().CreateSubdirectory("jmdict");
 
-    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,

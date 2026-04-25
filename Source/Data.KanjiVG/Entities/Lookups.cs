@@ -22,8 +22,8 @@ namespace Jitendex.Data.KanjiVG.Entities;
 
 public interface ILookup
 {
-    public int Id { get; init; }
-    public string Text { get; set; }
+    int Id { get; init; }
+    string Text { get; set; }
 }
 
 [Table(nameof(VariantType))]

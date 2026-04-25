@@ -20,9 +20,9 @@ namespace Jitendex.Import.JMdict.TableRows;
 
 internal interface IEntryGrandchildRow
 {
-    public int EntryId { get; init; }
-    public int ParentOrder { get; init; }
-    public int Order { get; init; }
+    int EntryId { get; init; }
+    int ParentOrder { get; init; }
+    int Order { get; init; }
 }
 
 internal sealed record KanjiFormInfoRow

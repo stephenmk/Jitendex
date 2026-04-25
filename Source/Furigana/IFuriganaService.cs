@@ -22,14 +22,14 @@ namespace Jitendex.Furigana;
 
 public interface IFuriganaService
 {
-    public Solution? Solve(string text, string reading);
-    public Solution? SolveName(string text, string reading);
-    public Solution? SolveChineseLoanword(string text, string reading);
-    public Solution? SolveKoreanLoanword(string text, string reading);
+    Solution? Solve(string text, string reading);
+    Solution? SolveName(string text, string reading);
+    Solution? SolveChineseLoanword(string text, string reading);
+    Solution? SolveKoreanLoanword(string text, string reading);
 
-    public int AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false);
-    public int AddNameReading(Rune kanji, string reading, bool isPrefix = false, bool isSuffix = false);
-    public int AddHanziReading(Rune hanzi, string reading, bool isPrefix = false, bool isSuffix = false);
-    public int AddHanjaReading(Rune hanja, string reading, bool isPrefix = false, bool isSuffix = false);
-    public int AddCompoundReading(string compound, string reading, bool isPrefix = false, bool isSuffix = false);
+    int AddCharacterReading(Rune character, string reading, bool isPrefix = false, bool isSuffix = false);
+    int AddNameReading(Rune kanji, string reading, bool isPrefix = false, bool isSuffix = false);
+    int AddHanziReading(Rune hanzi, string reading, bool isPrefix = false, bool isSuffix = false);
+    int AddHanjaReading(Rune hanja, string reading, bool isPrefix = false, bool isSuffix = false);
+    int AddCompoundReading(string compound, string reading, bool isPrefix = false, bool isSuffix = false);
 }

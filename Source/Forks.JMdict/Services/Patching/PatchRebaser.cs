@@ -82,7 +82,7 @@ internal sealed class PatchRebaser(HomeContext context, JMdictContext jmdictCont
         return user;
     }
 
-    private readonly static JsonSerializerOptions JsonSerializerOptions = new()
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,

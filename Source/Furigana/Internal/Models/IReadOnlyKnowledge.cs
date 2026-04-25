@@ -22,9 +22,9 @@ namespace Jitendex.Furigana.Internal.Models;
 
 internal interface IReadOnlyKnowledge
 {
-    public IReadOnlyList<ImmutableArray<Reading>> GetCompoundReadings(ReadOnlySpan<Rune> runes);
-    public IReadOnlyList<Reading> GetCharacterReadings(Rune rune);
-    public IReadOnlyList<Reading> GetNameKanjiReadings(Rune rune);
-    public IReadOnlyList<Reading> GetHanziReadings(Rune rune);
-    public IReadOnlyList<Reading> GetHanjaReadings(Rune rune);
+    IReadOnlyList<ImmutableArray<Reading>> GetCompoundReadings(ReadOnlySpan<Rune> runes);
+    IReadOnlyList<Reading> GetCharacterReadings(Rune rune);
+    IReadOnlyList<Reading> GetNameKanjiReadings(Rune rune);
+    IReadOnlyList<Reading> GetHanziReadings(Rune rune);
+    IReadOnlyList<Reading> GetHanjaReadings(Rune rune);
 }

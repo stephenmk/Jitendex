@@ -141,12 +141,12 @@ internal sealed class GraphicService
         await JsonSerializer.SerializeAsync(stream, data, WriteOptions);
     }
 
-    private readonly static JsonSerializerOptions ReadOptions = new()
+    private static readonly JsonSerializerOptions ReadOptions = new()
     {
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly static JsonSerializerOptions WriteOptions = new()
+    private static readonly JsonSerializerOptions WriteOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,

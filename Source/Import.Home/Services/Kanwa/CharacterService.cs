@@ -124,12 +124,12 @@ internal sealed class CharacterService
             "characters.json"
         );
 
-    private readonly static JsonSerializerOptions ReadOptions = new()
+    private static readonly JsonSerializerOptions ReadOptions = new()
     {
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly static JsonSerializerOptions WriteOptions = new()
+    private static readonly JsonSerializerOptions WriteOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,
@@ -139,7 +139,7 @@ internal sealed class CharacterService
     private static IEnumerable<CharacterReadingTypeRow> GetTypeRows()
         => TypeNameToId.Select(static x => new CharacterReadingTypeRow((int)x.Value, x.Key));
 
-    private readonly static FrozenDictionary<string, CharacterReadingTypeId> TypeNameToId = Enum
+    private static readonly FrozenDictionary<string, CharacterReadingTypeId> TypeNameToId = Enum
         .GetValues<CharacterReadingTypeId>()
         .Select(static type => new
         {

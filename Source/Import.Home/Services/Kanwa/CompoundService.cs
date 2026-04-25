@@ -110,22 +110,22 @@ internal sealed class CompoundService
     private static IEnumerable<CompoundReadingTypeRow> GetTypeRows()
         => TypeNameToId.Select(static x => new CompoundReadingTypeRow((int)x.Value, x.Key));
 
-    private readonly static JsonSerializerOptions ReadOptions = new()
+    private static readonly JsonSerializerOptions ReadOptions = new()
     {
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly static JsonSerializerOptions WriteOptions = new()
+    private static readonly JsonSerializerOptions WriteOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
 
-    private readonly static StringComparer StringComparer =
+    private static readonly StringComparer StringComparer =
         StringComparer.Create(new CultureInfo("ja-JP"), CompareOptions.NumericOrdering);
 
-    private readonly static FrozenDictionary<string, CompoundReadingTypeId> TypeNameToId = Enum
+    private static readonly FrozenDictionary<string, CompoundReadingTypeId> TypeNameToId = Enum
         .GetValues<CompoundReadingTypeId>()
         .Select(static type => new
         {

@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.CommandLine" Version="2.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.5" />
+    <PackageReference Include="System.CommandLine" Version="2.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Jitendex.Data.csproj" />
@@ -19,6 +19,6 @@
     <ProjectReference Include="..\..\Libraries\JapaneseTextUtils\Jitendex.JapaneseTextUtils\Jitendex.JapaneseTextUtils.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Using Include="System.Collections.Immutable"/>
+    <Using Include="System.Collections.Immutable" />
   </ItemGroup>
 </Project>

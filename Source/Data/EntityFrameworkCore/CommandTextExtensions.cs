@@ -20,9 +20,7 @@ namespace Jitendex.Data.EntityFrameworkCore;
 
 internal static class CommandTextExtensions
 {
-    /// <remarks>
-    /// See: https://sqlite.org/withoutrowid.html
-    /// </remarks>
+    // See: https://sqlite.org/withoutrowid.html
     public static string WithoutRowId(this string commandText)
     {
         if (!commandText.StartsWith("CREATE TABLE", StringComparison.Ordinal))

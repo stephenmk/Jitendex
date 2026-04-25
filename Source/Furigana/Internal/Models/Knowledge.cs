@@ -102,9 +102,7 @@ internal sealed class Knowledge : IReadOnlyKnowledge
         return builder.MoveToImmutable();
     }
 
-    /// <remarks>
-    /// This dictionary will be queried A LOT, so it's very worthwhile to avoid new memory allocations here.
-    /// </remarks>
+    // This dictionary will be queried A LOT, so it's very worthwhile to avoid new memory allocations here.
     public IReadOnlyList<ImmutableArray<Reading>> GetCompoundReadings(ReadOnlySpan<Rune> runes)
     {
         var compoundLength = runes.SumUtf16SequenceLengths();

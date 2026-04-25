@@ -12,4 +12,14 @@ edrdg-update:
   dotnet run -c Release --project Source/Forks.JMdict
   dotnet run -c Release --project Source/Forks.Tatoeba
 
+home-import:
+  dotnet run -c Release --project Source/Import.Home import
+
+home-export:
+  dotnet run -c Release --project Source/Import.Home export
+
+home-cycle:
+  @just home-import
+  @just home-export
+
 alias e := edrdg-update

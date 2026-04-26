@@ -22,7 +22,7 @@ namespace Jitendex.Import;
 public abstract partial class XmlBaseReader
 {
     protected readonly ILogger<XmlBaseReader> _logger;
-    public XmlBaseReader(ILogger<XmlBaseReader> logger)
+    protected XmlBaseReader(ILogger<XmlBaseReader> logger)
         => _logger = logger;
 
     protected void LogUnexpectedChildElement(XmlReader xmlReader, string parentTagName)

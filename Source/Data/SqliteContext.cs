@@ -26,7 +26,7 @@ public abstract class SqliteContext : DbContext
 {
     private readonly string _dbPath;
 
-    public SqliteContext(DatabaseFile databaseFile)
+    protected SqliteContext(DatabaseFile databaseFile)
     {
         var builder = new SqliteConnectionStringBuilder
         {

@@ -17,6 +17,7 @@
 global using SolvableData = System.Collections.Generic.IEnumerable<(string Text, string Reading, string Solution)>;
 global using UnsolvableData = System.Collections.Generic.IEnumerable<(string Text, string Reading)>;
 using Jitendex.Furigana.Internal.Models;
+[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 
 namespace Jitendex.Furigana.Test;
 

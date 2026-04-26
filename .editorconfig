@@ -18,3 +18,11 @@ dotnet_diagnostic.IDE0036.severity = warning
 
 # IDE0305: Use collection expression for fluent
 dotnet_diagnostic.IDE0305.severity = none
+
+[Source/**.cs]
+# Note: had to replace semicolon with a comma.
+# https://github.com/dotnet/roslyn/issues/44596
+file_header_template = Copyright (c) Stephen Kraus\nSPDX-License-Identifier: AGPL-3.0-or-later\n\nThis file, {fileName}, is part of Jitendex.\n\nJitendex is free software: you can redistribute it and/or modify it under the terms of\nthe GNU Affero General Public License as published by the Free Software Foundation,\neither version 3 of the License or (at your option) any later version.\n\nJitendex is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY,\nwithout even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU Affero General Public License for more details.\n\nYou should have received a copy of the GNU Affero General Public License along with Jitendex.\nIf not, see <https://www.gnu.org/licenses/>.
+
+# IDE0073: Require file header
+dotnet_diagnostic.IDE0073.severity = warning

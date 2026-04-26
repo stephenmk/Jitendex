@@ -18,9 +18,9 @@ using System.CommandLine;
 
 namespace Jitendex.Import.Kanjidic2;
 
-public static class Program
+internal static class Program
 {
-    public static async Task<int> Main(string[] args)
+    private static async Task<int> Main(string[] args)
     {
         Option<DirectoryInfo> archiveDirOption = new("--archive-path")
         {

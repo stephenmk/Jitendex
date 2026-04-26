@@ -16,9 +16,9 @@
 
 namespace Jitendex.Forks.Tatoeba;
 
-public static class Program
+internal static class Program
 {
-    public static int Main()
+    private static int Main()
     {
         var analyzer = ServiceProvider.GetService();
         analyzer.Run();

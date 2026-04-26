@@ -19,9 +19,9 @@ using Jitendex.AppDirectory;
 
 namespace Jitendex.Import.KanjiVG;
 
-public static class Program
+internal static class Program
 {
-    public static async Task<int> Main(string[] args)
+    private static async Task<int> Main(string[] args)
     {
         var kanjivgDirectoryOption = new Option<DirectoryInfo>("kanjivg-directory")
         {

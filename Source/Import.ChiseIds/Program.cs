@@ -20,9 +20,9 @@ using Jitendex.Data.ChiseIds;
 
 namespace Jitendex.Import.ChiseIds;
 
-public static class Program
+internal static class Program
 {
-    public static async Task<int> Main(string[] args)
+    private static async Task<int> Main(string[] args)
     {
         var chiseIdsDirectoryOption = new Option<DirectoryInfo>("chise-ids-dir")
         {

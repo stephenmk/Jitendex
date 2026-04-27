@@ -16,9 +16,9 @@
 
 namespace Jitendex.Export.Base;
 
-public static class Program
+internal static class Program
 {
-    public static int Main()
+    private static int Main()
     {
         var service = ServiceProvider.GetService();
         service.Run();

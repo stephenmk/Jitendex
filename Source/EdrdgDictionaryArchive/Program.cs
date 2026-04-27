@@ -21,9 +21,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Jitendex.EdrdgDictionaryArchive;
 
-public static class Program
+internal static class Program
 {
-    public static int Main(string[] args)
+    private static int Main(string[] args)
     {
         Argument<DictionaryFile> filenameArgument = new("file")
         {

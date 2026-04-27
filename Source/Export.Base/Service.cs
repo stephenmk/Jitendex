@@ -26,7 +26,8 @@ internal sealed class Service
     ExportContext context,
     HeadwordService headwordService,
     TermService termService,
-    JMdictTermService jmdictTermService
+    JMdictTermService jmdictTermService,
+    JMdictGlossaryService jmdictGlossaryService
 )
 {
     public void Run()
@@ -44,6 +45,9 @@ internal sealed class Service
 
         logger.LogInformation("Importing JMdict term data.");
         jmdictTermService.Write();
+
+        logger.LogInformation("Building JMdict glossaries");
+        jmdictGlossaryService.Write();
 
         exportTransaction.Commit();
 

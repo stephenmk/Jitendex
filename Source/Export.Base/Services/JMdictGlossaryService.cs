@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, TermChildRows.cs, is part of Jitendex.
+// This file, JMdictGlossaryService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -14,47 +14,21 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-namespace Jitendex.Export.Base.TableRows;
+// using Jitendex.Data.Export;
+// using Jitendex.Data.JMdict;
+// using Jitendex.Export.Base.Tables.TermChildren;
 
-internal sealed record TermRedirectRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int RedirectHeadwordId,
-    int RedirectTermGroup
-);
+namespace Jitendex.Export.Base.Services;
 
-internal sealed record TermRuleRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    string Name
-);
+internal sealed class JMdictGlossaryService
+// (
+//     ExportContext context,
+//     JMdictForkContext jmdictContext,
+//     TermGlossaryTable glossaryTable
+// )
+{
+    public void Write()
+    {
 
-internal sealed record TermNumberRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int Value,
-    int Total
-);
-
-internal sealed record TermTagRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    int TypeId
-);
-
-internal sealed record TermTagTypeRow
-(
-    int Id,
-    string Name
-);
-
-internal sealed record TermGlossaryRow
-(
-    int HeadwordId,
-    int TermGroupId,
-    byte[] Json
-);
+    }
+}

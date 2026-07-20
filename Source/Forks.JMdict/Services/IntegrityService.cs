@@ -34,6 +34,7 @@ internal partial class IntegrityService
         CheckForPriorityTagsOnRareForms();
         CheckForTransitivityTagOnSensesGlossedAsAdverbs();
         CheckForCrossReferencesToSearchOnlyForms();
+        CheckForRestrictionsToEveryVisibleKanjiForm();
 
         context.SaveChanges();
     }
@@ -152,6 +153,19 @@ internal partial class IntegrityService
         }
     }
 
+    private void CheckForRestrictionsToEveryVisibleKanjiForm()
+    {
+        var references = context.Readings
+            .Where(static r => r.Restrictions.Any())
+            .Where(static r => r.Restrictions.Count == r.Entry.KanjiForms.Count(static k => k.Bridges.Any()))
+            .Select(static r => new { r.EntryId, r.Order, r.Text });
+
+        foreach (var r in references)
+        {
+            LogRedundantRestriction(r.EntryId, r.Order + 1, r.Text);
+        }
+    }
+
     [LoggerMessage(LogLevel.Warning,
     "Entry ID {Id} contains a [uk] misc tag, but no kanji forms.")]
     partial void LogUkTagOnEntryWithoutKanjiForms(int id);
@@ -179,4 +193,8 @@ internal partial class IntegrityService
     [LoggerMessage(LogLevel.Warning,
     "Entry ID `{Id}` sense number {SenseNumber} contains a reference to search-only form `{Text}`")]
     partial void LogReferenceToSearchOnlyForm(int id, int senseNumber, string text);
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry ID `{Id}` reading number #{Number} ({Text}) contains a restriction to every visible kanji form")]
+    partial void LogRedundantRestriction(int id, int number, string text);
 }

@@ -5,6 +5,10 @@ jmdict:
   dotnet run -c Release --project Source/Import.JMdict
 
 edrdg-update:
+  git -C Data/edrdg-dictionary-archive pull origin main
+  git -C Data/edrdg-dictionary-archive checkout main
+  git -C Data/edrdg-dictionary-archive verify-commit HEAD
+
   dotnet run -c Release --project Source/Import.JMdict
   dotnet run -c Release --project Source/Import.JMnedict
   dotnet run -c Release --project Source/Import.Kanjidic2

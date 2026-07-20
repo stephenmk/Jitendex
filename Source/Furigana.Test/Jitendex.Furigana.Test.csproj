@@ -3,9 +3,9 @@
     <ProjectReference Include="..\Furigana\Jitendex.Furigana.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.2.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.2.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.3.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.3.2" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>

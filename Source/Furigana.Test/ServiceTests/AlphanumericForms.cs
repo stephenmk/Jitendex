@@ -22,28 +22,57 @@ public class AlphanumericForms : ServiceTest
     private static readonly Dictionary<string, string[]> _kanji = new()
     {
         ["Ｄ"] = ["ディー"],
+        ["Ｆ"] = ["エフ"],
+        ["Ｍ"] = ["エム"],
+        ["Ｎ"] = ["エヌ", "エン"],
         ["３"] = ["スリー"],
     };
 
-    private static readonly SolvableData _data =
+    private static readonly SolvableData _solvable =
+    [
+        ("ＡＤＳＬ", "エー・ディー・エス・エル", "[ＡＤＳＬ|エー・ディー・エス・エル]"),
+    ];
+
+    private static readonly SolvableData _solvableWithKanji =
     [
         ("ＡＤＳＬ", "エー・ディー・エス・エル", "[ＡＤＳＬ|エー・ディー・エス・エル]"),
         ("３Ｄレンダリング", "スリーディーレンダリング", "[３|スリー][Ｄ|ディー]レンダリング"),
     ];
 
-    private static readonly UnsolvableData _unsolvableData =
-        _data.Skip(1).Select(static x => (x.Text, x.Reading));
+    private static readonly UnsolvableData _unsolvable =
+    [
+        ("３Ｄレンダリング", "スリーディーレンダリング"),
+        ("ＭＦＮ", "エム・エフ・エン"),
+    ];
+
+    private static readonly UnsolvableData _unsolvableWithKanji =
+    [
+        ("ＭＦＮ", "エム・エフ・エン"),
+    ];
 
     [TestMethod]
     public void TestSolvable()
     {
+        TestSolvable(_solvable);
+    }
+
+    [TestMethod]
+    public void TestSolvableWithKanji()
+    {
         AddCharacters(_kanji);
-        TestSolvable(_data);
+        TestSolvable(_solvableWithKanji);
     }
 
     [TestMethod]
     public void TestUnsolvable()
     {
-        TestUnsolvable(_unsolvableData);
+        TestUnsolvable(_unsolvable);
+    }
+
+    [TestMethod]
+    public void TestUnsolvableWithKanji()
+    {
+        AddCharacters(_kanji);
+        TestUnsolvable(_unsolvableWithKanji);
     }
 }

@@ -24,8 +24,10 @@ internal sealed class IgnorantAlgorithm
     SingleCharacterAlgorithm singleSolver,
     RepeatedKanjiAlgorithm repeatedSolver,
     IdentityAlgorithm identityAlgorithm,
+    InitialismAlgorithm initialismAlgorithm,
     ConsecutiveKanjiAlgorithm? consecutiveSolver = null
-) : IAlgorithm
+)
+    : IAlgorithm
 {
     #pragma warning disable format
     public ImmutableArray<ImmutableArray<SolutionPart>> Solve(EntryType _, in TextSlice textSlice, in ReadingState readingState)
@@ -46,7 +48,9 @@ internal sealed class IgnorantAlgorithm
             : SolveAnyRuneLengthText(textSlice, readingState);
 
     private ImmutableArray<ImmutableArray<SolutionPart>> SolveAnyRuneLengthText(in TextSlice textSlice, in ReadingState readingState)
-        => identityAlgorithm.Solve(textSlice, readingState) is var parts and not []
-            ? parts
+        => identityAlgorithm.Solve(textSlice, readingState) is var identityParts and not []
+            ? identityParts
+            : initialismAlgorithm.Solve(textSlice, readingState) is var initialismParts and not []
+            ? initialismParts
             : consecutiveSolver?.Solve(textSlice, readingState) ?? [];
 }

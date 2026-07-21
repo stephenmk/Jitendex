@@ -37,13 +37,15 @@ public static class FuriganaServiceProvider
         (
             new SingleCharacterAlgorithm(),
             new RepeatedKanjiAlgorithm(),
-            new IdentityAlgorithm()
+            new IdentityAlgorithm(),
+            new InitialismAlgorithm()
         );
         var lazyIgnorantAlgo = new IgnorantAlgorithm
         (
             new SingleCharacterAlgorithm(),
             new RepeatedKanjiAlgorithm(),
             new IdentityAlgorithm(),
+            new InitialismAlgorithm(),
             new ConsecutiveKanjiAlgorithm()
         );
 
@@ -51,7 +53,7 @@ public static class FuriganaServiceProvider
         var ignorantSolver = new IterationSolver([ignorantAlgo]);
         var lazyIgnorantSolver = new IterationSolver([lazyIgnorantAlgo]);
 
-        var service = new Service
+        return new Service
         (
             knowledge,
             solvers: [
@@ -60,7 +62,5 @@ public static class FuriganaServiceProvider
                 lazyIgnorantSolver
             ]
         );
-
-        return service;
     }
 }

@@ -27,11 +27,12 @@ public class AlphanumericForms : ServiceTest
 
     private static readonly SolvableData _data =
     [
+        ("ＡＤＳＬ", "エー・ディー・エス・エル", "[ＡＤＳＬ|エー・ディー・エス・エル]"),
         ("３Ｄレンダリング", "スリーディーレンダリング", "[３|スリー][Ｄ|ディー]レンダリング"),
     ];
 
     private static readonly UnsolvableData _unsolvableData =
-        _data.Select(static x => (x.Text, x.Reading));
+        _data.Skip(1).Select(static x => (x.Text, x.Reading));
 
     [TestMethod]
     public void TestSolvable()

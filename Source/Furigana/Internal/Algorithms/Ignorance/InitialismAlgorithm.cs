@@ -23,9 +23,9 @@ namespace Jitendex.Furigana.Internal.Algorithms.Ignorance;
 /// Solves compounds consisting of fullwidth alphabetical characters and readings
 /// consisting of alphabetical pronunciations separated by interpuncts.
 /// </summary>
-internal sealed class InitialismAlgorithm : CharacterAlgorithm
+internal sealed class InitialismAlgorithm
 {
-    public override ImmutableArray<ImmutableArray<SolutionPart>> Solve(in TextSlice textSlice, in ReadingState readingState)
+    public ImmutableArray<ImmutableArray<SolutionPart>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         if (!textSlice.Runes.AreAllFullwidthAlphanumeric())
             return [];

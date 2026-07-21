@@ -19,6 +19,9 @@ dotnet_diagnostic.IDE0036.severity = warning
 # IDE0305: Use collection expression for fluent
 dotnet_diagnostic.IDE0305.severity = none
 
+# RCS1110: Declare type inside namespace
+dotnet_diagnostic.RCS1110.severity = warning
+
 # RCS1160: Abstract type should not have public constructors
 dotnet_diagnostic.RCS1160.severity = warning
 

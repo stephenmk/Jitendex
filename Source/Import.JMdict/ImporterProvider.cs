@@ -46,7 +46,7 @@ internal static class ImporterProvider
         // Import interfaces.
         .AddEdrdgArchiveService(options =>
         {
-            options.File = DictionaryFile.JMdict_e_examp;
+            options.File = DictionaryFile.JMdict_b;
             options.ArchiveDirectory = archiveDirectory;
         })
         .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()

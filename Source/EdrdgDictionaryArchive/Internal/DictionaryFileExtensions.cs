@@ -25,12 +25,19 @@ internal static class DictionaryFileExtensions
         => file switch
         {
             JMdict         => "JMdict",
+            JMdict_b       => "JMdict_b",
             JMdict_e       => "JMdict_e",
             JMdict_e_examp => "JMdict_e_examp",
-            JMnedict       => "JMnedict.xml",
-            kanjidic2      => "kanjidic2.xml",
-            examples       => "examples.utf",
-            _              => throw new ArgumentOutOfRangeException(nameof(file))
+
+            JMdict_b_NG       => "JMdict_b_NG",
+            JMdict_e_NG       => "JMdict_e_NG",
+            JMdict_e_NG_examp => "JMdict_e_NG_examp",
+
+            JMnedict  => "JMnedict.xml",
+            kanjidic2 => "kanjidic2.xml",
+            examples  => "examples.utf",
+
+            _ => throw new ArgumentOutOfRangeException(nameof(file))
         };
     #pragma warning restore format
 

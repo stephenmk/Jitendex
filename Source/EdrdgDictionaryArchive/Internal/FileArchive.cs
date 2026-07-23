@@ -124,13 +124,20 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
      private static DateOnly GetBaseFileDate(DictionaryFile file)
          => file switch
          {
-             JMdict         => new(2023,  8, 20),
-             JMdict_e       => new(2025, 10,  9),
-             JMdict_e_examp => new(2023,  8, 26),
-             JMnedict       => new(2023,  8, 20),
-             kanjidic2      => new(2023,  8, 20),
-             examples       => new(2023,  9, 25),
-             _              => throw new ArgumentOutOfRangeException(nameof(file))
+             JMdict         => new(2023, 08, 20),
+             JMdict_b       => new(2023, 08, 20),
+             JMdict_e       => new(2025, 10, 09),
+             JMdict_e_examp => new(2023, 08, 26),
+
+             JMdict_b_NG       => new(2026, 05, 08),
+             JMdict_e_NG       => new(2026, 05, 08),
+             JMdict_e_NG_examp => new(2026, 07, 22),
+
+             JMnedict  => new(2023, 08, 20),
+             kanjidic2 => new(2023, 08, 20),
+             examples  => new(2023, 09, 25),
+
+             _ => throw new ArgumentOutOfRangeException(nameof(file))
          };
      #pragma warning restore format
 

@@ -55,8 +55,12 @@ public static class ServiceCollectionExtensions
 public enum DictionaryFile : byte
 {
     JMdict,
+    JMdict_b,
     JMdict_e,
     JMdict_e_examp,
+    JMdict_b_NG,
+    JMdict_e_NG,
+    JMdict_e_NG_examp,
     JMnedict,
     kanjidic2,
     examples,

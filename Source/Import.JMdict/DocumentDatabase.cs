@@ -93,8 +93,9 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         context.RecreateDatabase();
 
         using var transaction = context.Database.BeginTransaction();
+        var header = new HeaderRow(document.ArchiveKey, document.Version);
 
-        FileHeaderTable.InsertItem(context, new(document.ArchiveKey));
+        FileHeaderTable.InsertItem(context, header);
         var fileHeaderId = (int)context.GetLastInsertRowId();
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
@@ -148,8 +149,9 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         using var transaction = context.Database.BeginTransaction();
 
         var aSequences = SequenceDictionaryLoader.Load(context, sequenceIds);
+        var header = new HeaderRow(diff.Upserts.ArchiveKey, diff.Upserts.Version);
 
-        FileHeaderTable.InsertItem(context, new(diff.Upserts.ArchiveKey));
+        FileHeaderTable.InsertItem(context, header);
         var fileHeaderId = (int)context.GetLastInsertRowId();
 
         #pragma warning disable format

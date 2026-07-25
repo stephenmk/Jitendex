@@ -26,7 +26,8 @@ internal sealed class FileHeaderTable : Table<HeaderRow>
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(FileHeader.Date)
+        nameof(FileHeader.Date),
+        nameof(FileHeader.Version),
     ];
 
     protected override ImmutableArray<string> KeyColNames
@@ -34,6 +35,7 @@ internal sealed class FileHeaderTable : Table<HeaderRow>
 
     protected override object?[] ParameterValues(HeaderRow row) =>
     [
-        row.Date
+        row.Date,
+        row.Version,
     ];
 }

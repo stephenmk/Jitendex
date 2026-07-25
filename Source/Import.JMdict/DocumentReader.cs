@@ -17,17 +17,14 @@
 using System.IO.Compression;
 using System.Xml;
 using Jitendex.Import.JMdict.Readers;
-using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.JMdict;
 
-internal partial class DocumentReader
+internal class DocumentReader
 (
-    ILogger<DocumentReader> logger,
     DocumentTypeReader docTypeReader,
-    EntryReader entryReader
+    JMdictReader jmdictReader
 ) :
-    XmlParentElementReader<Document, byte>(logger),
     IDocumentReader<DateOnly, Document>
 {
     public async Task<Document> ReadAsync(FileInfo file, DateOnly fileDate)
@@ -38,29 +35,40 @@ internal partial class DocumentReader
 
         var document = new Document
         {
-            ArchiveKey = fileDate
+            ArchiveKey = fileDate,
+            Version = null!,
         };
 
         await docTypeReader.ReadAsync(xmlReader, document);
-        await ReadToEndAsync(xmlReader, document, default, XmlTagName.Jmdict);
+        document.Version = await GetJMdictVersionAsync(xmlReader);
+
+        switch (document.Version)
+        {
+            case JMdictVersion.OG:
+                await jmdictReader.ReadAsync(xmlReader, document);
+                break;
+            default:
+                throw new NotSupportedException($"Cannot read entries for JMdict Version {document.Version}");
+        }
 
         return document;
     }
 
-    protected override async Task ReadChildElementAsync(XmlReader xmlReader, Document document, byte _)
+    private async Task<string> GetJMdictVersionAsync(XmlReader xmlReader)
     {
-        switch (xmlReader.Name)
+        do
         {
-            case XmlTagName.Entry:
-                await entryReader.ReadAsync(xmlReader, document);
-                break;
-            case XmlTagName.Jmdict:
-                // Nothing to do.
-                break;
-            default:
-                LogUnexpectedChildElement(xmlReader, XmlTagName.Jmdict);
-                break;
+            await xmlReader.ReadAsync();
         }
+        while (xmlReader.NodeType is XmlNodeType.Comment or XmlNodeType.Whitespace);
+
+        if (xmlReader.Name != XmlTagName.Jmdict)
+            throw new InvalidDataException($"Expected node `{XmlTagName.Jmdict}`, but found element named `{xmlReader.Name}`");
+
+        if (xmlReader.GetAttribute("version") is string version)
+            return version;
+        else
+            return JMdictVersion.OG;
     }
 
     private static readonly XmlReaderSettings XmlReaderSettings = new()

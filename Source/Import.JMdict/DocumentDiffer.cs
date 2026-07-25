@@ -25,8 +25,8 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
         var diff = new DocumentDiff
         {
             ArchiveKey = docB.ArchiveKey,
-            Upserts = new Document(0) { ArchiveKey = docB.ArchiveKey },
-            Deletes = new Document(0) { ArchiveKey = docB.ArchiveKey },
+            Upserts = new Document(0) { ArchiveKey = docB.ArchiveKey, Version = docB.Version },
+            Deletes = new Document(0) { ArchiveKey = docB.ArchiveKey, Version = docB.Version },
         };
 
         FindNew<string>(diff, docA, docB, nameof(Document.ReadingInfoTags));

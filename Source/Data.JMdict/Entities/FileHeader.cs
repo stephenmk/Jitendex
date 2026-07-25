@@ -27,6 +27,7 @@ public sealed class FileHeader
     [Key]
     public required int Id { get; init; }
     public required DateOnly Date { get; init; }
+    public required string Version { get; init; }
 
     [InverseProperty(nameof(Revision.FileHeader))]
     public List<Revision> SequenceRevisions { get; init; } = [];

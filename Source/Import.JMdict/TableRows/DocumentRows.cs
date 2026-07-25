@@ -18,7 +18,8 @@ namespace Jitendex.Import.JMdict.TableRows;
 
 internal sealed record HeaderRow
 (
-    DateOnly Date
+    DateOnly Date,
+    string Version
 );
 
 internal sealed record SequenceRow

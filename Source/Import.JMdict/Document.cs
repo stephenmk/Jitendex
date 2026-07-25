@@ -21,6 +21,8 @@ namespace Jitendex.Import.JMdict;
 internal sealed class Document : IDocument<DateOnly>
 {
     public required DateOnly ArchiveKey { get; init; }
+    public required string Version { get; set; }
+
     public Dictionary<int, EntryRow> Entries { get; init; }
 
     #region Entry Children

@@ -49,6 +49,14 @@ public static class SequenceDictionaryLoader
                     .OrderBy(static reading => reading.Order)
                     .Select(ReadingProjection)
                     .ToList(),
+                LanguageSources = seq.Entry.LanguageSources
+                    .OrderBy(static l => l.Order)
+                    .Select(static l => new LanguageSourceDto(l.Text, l.LanguageCode, l.TypeName, l.IsWasei))
+                    .ToList(),
+                Notes = seq.Entry.Notes
+                    .OrderBy(static n => n.Order)
+                    .Select(static n => n.Text)
+                    .ToList(),
                 Senses = seq.Entry.Senses
                     .AsQueryable()
                     .OrderBy(static sense => sense.Order)
@@ -95,7 +103,7 @@ public static class SequenceDictionaryLoader
         {
             CrossReferences = sense.CrossReferences
                 .OrderBy(static x => x.Order)
-                .Select(static x => new CrossReferenceDto(x.TypeName, x.Text))
+                .Select(static x => new CrossReferenceDto(x.TypeName, x.Sequence, x.Corpus, x.SenseNumber, x.KanjiForm, x.Reading, x.Text))
                 .ToList(),
             Dialects = sense.Dialects
                 .OrderBy(static dia => dia.Order)
@@ -112,10 +120,6 @@ public static class SequenceDictionaryLoader
             KanjiFormRestrictions = sense.KanjiFormRestrictions
                 .OrderBy(static rstr => rstr.Order)
                 .Select(static rstr => rstr.KanjiFormText)
-                .ToList(),
-            LanguageSources = sense.LanguageSources
-                .OrderBy(static l => l.Order)
-                .Select(static l => new LanguageSourceDto(l.Text, l.LanguageCode, l.TypeName, l.IsWasei))
                 .ToList(),
             Miscs = sense.Miscs
                 .OrderBy(static m => m.Order)

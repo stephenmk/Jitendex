@@ -41,9 +41,11 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
         $"""
         INSERT INTO "{nameof(FileHeader)}"
              ( "{nameof(FileHeader.Id)}"
-             , "{nameof(FileHeader.Date)}")
+             , "{nameof(FileHeader.Date)}"
+             , "{nameof(FileHeader.Version)}")
         SELECT "{nameof(FileHeader.Id)}"
              , "{nameof(FileHeader.Date)}"
+             , "{nameof(FileHeader.Version)}"
           FROM "{Schema}"."{nameof(FileHeader)}";
 
         INSERT INTO "{nameof(CrossReferenceType)}"
@@ -164,6 +166,30 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
              , "{nameof(Reading.NoKanji)}"
           FROM "{Schema}"."{nameof(Reading)}";
 
+        INSERT INTO "{nameof(LanguageSource)}"
+             ( "{nameof(LanguageSource.EntryId)}"
+             , "{nameof(LanguageSource.Order)}"
+             , "{nameof(LanguageSource.Text)}"
+             , "{nameof(LanguageSource.LanguageCode)}"
+             , "{nameof(LanguageSource.TypeName)}"
+             , "{nameof(LanguageSource.IsWasei)}")
+        SELECT "{nameof(LanguageSource.EntryId)}"
+             , "{nameof(LanguageSource.Order)}"
+             , "{nameof(LanguageSource.Text)}"
+             , "{nameof(LanguageSource.LanguageCode)}"
+             , "{nameof(LanguageSource.TypeName)}"
+             , "{nameof(LanguageSource.IsWasei)}"
+          FROM "{Schema}"."{nameof(LanguageSource)}";
+
+        INSERT INTO "{nameof(EntryNote)}"
+             ( "{nameof(EntryNote.EntryId)}"
+             , "{nameof(EntryNote.Order)}"
+             , "{nameof(EntryNote.Text)}")
+        SELECT "{nameof(EntryNote.EntryId)}"
+             , "{nameof(EntryNote.Order)}"
+             , "{nameof(EntryNote.Text)}"
+          FROM "{Schema}"."{nameof(EntryNote)}";
+
         INSERT INTO "{nameof(Sense)}"
              ( "{nameof(Sense.EntryId)}"
              , "{nameof(Sense.Order)}")
@@ -231,11 +257,21 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
              , "{nameof(CrossReference.SenseOrder)}"
              , "{nameof(CrossReference.Order)}"
              , "{nameof(CrossReference.TypeName)}"
+             , "{nameof(CrossReference.Sequence)}"
+             , "{nameof(CrossReference.Corpus)}"
+             , "{nameof(CrossReference.SenseNumber)}"
+             , "{nameof(CrossReference.KanjiForm)}"
+             , "{nameof(CrossReference.Reading)}"
              , "{nameof(CrossReference.Text)}")
         SELECT "{nameof(CrossReference.EntryId)}"
              , "{nameof(CrossReference.SenseOrder)}"
              , "{nameof(CrossReference.Order)}"
              , "{nameof(CrossReference.TypeName)}"
+             , "{nameof(CrossReference.Sequence)}"
+             , "{nameof(CrossReference.Corpus)}"
+             , "{nameof(CrossReference.SenseNumber)}"
+             , "{nameof(CrossReference.KanjiForm)}"
+             , "{nameof(CrossReference.Reading)}"
              , "{nameof(CrossReference.Text)}"
           FROM "{Schema}"."{nameof(CrossReference)}";
 
@@ -294,23 +330,6 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
              , "{nameof(KanjiFormRestriction.KanjiFormText)}"
           FROM "{Schema}"."{nameof(KanjiFormRestriction)}";
 
-        INSERT INTO "{nameof(LanguageSource)}"
-             ( "{nameof(LanguageSource.EntryId)}"
-             , "{nameof(LanguageSource.SenseOrder)}"
-             , "{nameof(LanguageSource.Order)}"
-             , "{nameof(LanguageSource.Text)}"
-             , "{nameof(LanguageSource.LanguageCode)}"
-             , "{nameof(LanguageSource.TypeName)}"
-             , "{nameof(LanguageSource.IsWasei)}")
-        SELECT "{nameof(LanguageSource.EntryId)}"
-             , "{nameof(LanguageSource.SenseOrder)}"
-             , "{nameof(LanguageSource.Order)}"
-             , "{nameof(LanguageSource.Text)}"
-             , "{nameof(LanguageSource.LanguageCode)}"
-             , "{nameof(LanguageSource.TypeName)}"
-             , "{nameof(LanguageSource.IsWasei)}"
-          FROM "{Schema}"."{nameof(LanguageSource)}";
-
         INSERT INTO "{nameof(Misc)}"
              ( "{nameof(Misc.EntryId)}"
              , "{nameof(Misc.SenseOrder)}"
@@ -322,16 +341,16 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
              , "{nameof(Misc.TagName)}"
           FROM "{Schema}"."{nameof(Misc)}";
 
-        INSERT INTO "{nameof(Note)}"
-             ( "{nameof(Note.EntryId)}"
-             , "{nameof(Note.SenseOrder)}"
-             , "{nameof(Note.Order)}"
-             , "{nameof(Note.Text)}")
-        SELECT "{nameof(Note.EntryId)}"
-             , "{nameof(Note.SenseOrder)}"
-             , "{nameof(Note.Order)}"
-             , "{nameof(Note.Text)}"
-          FROM "{Schema}"."{nameof(Note)}";
+        INSERT INTO "{nameof(SenseNote)}"
+             ( "{nameof(SenseNote.EntryId)}"
+             , "{nameof(SenseNote.SenseOrder)}"
+             , "{nameof(SenseNote.Order)}"
+             , "{nameof(SenseNote.Text)}")
+        SELECT "{nameof(SenseNote.EntryId)}"
+             , "{nameof(SenseNote.SenseOrder)}"
+             , "{nameof(SenseNote.Order)}"
+             , "{nameof(SenseNote.Text)}"
+          FROM "{Schema}"."{nameof(SenseNote)}";
 
         INSERT INTO "{nameof(PartOfSpeech)}"
              ( "{nameof(PartOfSpeech.EntryId)}"

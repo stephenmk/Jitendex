@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, LanguageSourceReader.cs, is part of Jitendex.
+// This file, LanguageSourceNGReader.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,14 +15,15 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
+using Jitendex.Import.JMdict.Readers;
 using Jitendex.Import.JMdict.TableRows;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
+namespace Jitendex.Import.JMdict.NGReaders.EntryChildReaders;
 
-internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger) : XmlBaseReader(logger)
+internal sealed partial class LanguageSourceNGReader(ILogger<LanguageSourceNGReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
+    public async Task ReadAsync(XmlReader xmlReader, Document document, EntryRow entry)
     {
         var typeName = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceType) ?? "full";
         document.LanguageSourceTypes.Add(typeName);
@@ -33,7 +34,7 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
         var wasei = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceWasei);
         if (wasei is not null && wasei != "y")
         {
-            LogInvalidWaseiValue(sense.EntryId, sense.Order, wasei);
+            LogInvalidWaseiValue(entry.Id, wasei);
         }
 
         var text = xmlReader.IsEmptyElement
@@ -42,8 +43,8 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
 
         var languageSource = new LanguageSourceRow
         (
-            EntryId: sense.EntryId,
-            Order: document.LanguageSources.NextOrder(sense.EntryId),
+            EntryId: entry.Id,
+            Order: document.LanguageSources.NextOrder(entry.Id),
             Text: text,
             LanguageCode: languageCode,
             TypeName: typeName,
@@ -54,6 +55,6 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry `{EntryId}` sense #{SenseOrder} has a language source WASEI attribute with an invalid value: `{Value}`")]
-    partial void LogInvalidWaseiValue(int entryId, int senseOrder, string value);
+    "Entry `{EntryId}` has a language source WASEI attribute with an invalid value: `{Value}`")]
+    partial void LogInvalidWaseiValue(int entryId, string value);
 }

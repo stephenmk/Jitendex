@@ -16,6 +16,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Jitendex.Data.JMdict.Entities.EntryChildren;
 using Jitendex.Data.JMdict.Entities.EntryChildren.KanjiFormChildren;
 using Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
 using Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;

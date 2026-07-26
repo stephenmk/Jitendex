@@ -57,9 +57,3 @@ internal static class XmlAttributeName
     public const string LanguageSourceCode = "xml:lang";
     public const string LanguageSourceWasei = "ls_wasei";
 }
-
-internal static class JMdictVersion
-{
-    public const string OG = "1.09";
-    public const string NG = "1.10";
-}

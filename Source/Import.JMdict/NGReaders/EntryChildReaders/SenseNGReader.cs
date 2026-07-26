@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, SenseReader.cs, is part of Jitendex.
+// This file, SenseNGReader.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,26 +15,27 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using System.Xml;
+using Jitendex.Import.JMdict.Readers;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 using Jitendex.Import.JMdict.TableRows;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Import.JMdict.Readers.EntryChildReaders;
+namespace Jitendex.Import.JMdict.NGReaders.EntryChildReaders;
 
-internal partial class SenseReader
+internal sealed class SenseNGReader
 (
-    ILogger<SenseReader> logger,
+    ILogger<SenseNGReader> logger,
     KanjiFormRestrictionReader kRestrictionReader,
     ReadingRestrictionReader rRestrictionReader,
-    CrossReferenceReader crossReferenceReader,
+    CrossReferenceNGReader crossReferenceReader,
     DialectReader dialectReader,
     FieldReader fieldReader,
     GlossReader glossReader,
-    LanguageSourceReader languageSourceReader,
     MiscReader miscReader,
     SenseNoteReader noteReader,
     PartOfSpeechReader partOfSpeechReader
-) : XmlParentElementReader<Document, SenseRow>(logger)
+) :
+    XmlParentElementReader<Document, SenseRow>(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, EntryRow entry)
     {
@@ -63,7 +64,6 @@ internal partial class SenseReader
                 await miscReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.CrossReference:
-            case XmlTagName.Antonym:
                 await crossReferenceReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.Example:
@@ -71,9 +71,6 @@ internal partial class SenseReader
                 break;
             case XmlTagName.Field:
                 await fieldReader.ReadAsync(xmlReader, document, sense);
-                break;
-            case XmlTagName.LanguageSource:
-                await languageSourceReader.ReadAsync(xmlReader, document, sense);
                 break;
             case XmlTagName.SenseNote:
                 await noteReader.ReadAsync(xmlReader, document, sense);

@@ -16,6 +16,7 @@
 
 using System.IO.Compression;
 using System.Xml;
+using Jitendex.Import.JMdict.NGReaders;
 using Jitendex.Import.JMdict.Readers;
 
 namespace Jitendex.Import.JMdict;
@@ -23,7 +24,8 @@ namespace Jitendex.Import.JMdict;
 internal class DocumentReader
 (
     DocumentTypeReader docTypeReader,
-    JMdictReader jmdictReader
+    JMdictReader jmdictReader,
+    JMdictNGReader jmdictNGReader
 ) :
     IDocumentReader<DateOnly, Document>
 {
@@ -46,6 +48,9 @@ internal class DocumentReader
         {
             case JMdictVersion.OG:
                 await jmdictReader.ReadAsync(xmlReader, document);
+                break;
+            case JMdictVersion.NG:
+                await jmdictNGReader.ReadAsync(xmlReader, document);
                 break;
             default:
                 throw new NotSupportedException($"Cannot read entries for JMdict Version {document.Version}");
@@ -78,4 +83,10 @@ internal class DocumentReader
         MaxCharactersFromEntities = long.MaxValue,
         MaxCharactersInDocument = long.MaxValue,
     };
+
+    private static class JMdictVersion
+    {
+        public const string OG = "1.09";
+        public const string NG = "1.10";
+    }
 }

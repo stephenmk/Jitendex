@@ -26,6 +26,8 @@ public sealed class Entry
     public required int Id { get; init; }
     public List<Reading> Readings { get; init; } = [];
     public List<KanjiForm> KanjiForms { get; init; } = [];
+    public List<LanguageSource> LanguageSources { get; init; } = [];
+    public List<EntryNote> Notes { get; init; } = [];
     public List<Sense> Senses { get; init; } = [];
 
     [ForeignKey(nameof(Id))]

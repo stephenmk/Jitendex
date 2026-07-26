@@ -41,9 +41,8 @@ public sealed class Sense
     public List<Misc> Miscs { get; init; } = [];
     public List<Dialect> Dialects { get; init; } = [];
 
-    public List<Note> Notes { get; init; } = [];
+    public List<SenseNote> Notes { get; init; } = [];
     public List<Gloss> Glosses { get; init; } = [];
-    public List<LanguageSource> LanguageSources { get; init; } = [];
     public List<CrossReference> CrossReferences { get; init; } = [];
 
     #region Fork Properties

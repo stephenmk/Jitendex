@@ -29,6 +29,8 @@ internal sealed class Document : IDocument<DateOnly>
     public Dictionary<(int, int), KanjiFormRow> KanjiForms { get; init; }
     public Dictionary<(int, int), ReadingRow> Readings { get; init; }
     public Dictionary<(int, int), SenseRow> Senses { get; init; }
+    public Dictionary<(int, int), LanguageSourceRow> LanguageSources { get; init; }
+    public Dictionary<(int, int), EntryNoteRow> EntryNotes { get; init; }
     #endregion
 
     #region Kanji Form Children
@@ -49,9 +51,8 @@ internal sealed class Document : IDocument<DateOnly>
     public Dictionary<(int, int, int), GlossRow> Glosses { get; init; }
     public Dictionary<(int, int, int), GlossTypeRow> GlossTypes { get; init; }
     public Dictionary<(int, int, int), KanjiFormRestrictionRow> KanjiFormRestrictions { get; init; }
-    public Dictionary<(int, int, int), LanguageSourceRow> LanguageSources { get; init; }
     public Dictionary<(int, int, int), MiscRow> Miscs { get; init; }
-    public Dictionary<(int, int, int), NoteRow> Notes { get; init; }
+    public Dictionary<(int, int, int), SenseNoteRow> SenseNotes { get; init; }
     public Dictionary<(int, int, int), PartOfSpeechRow> PartsOfSpeech { get; init; }
     public Dictionary<(int, int, int), ReadingRestrictionRow> ReadingRestrictions { get; init; }
     #endregion
@@ -76,7 +77,9 @@ internal sealed class Document : IDocument<DateOnly>
     {
         Entries = new(expectedEntryCount);
 
+        EntryNotes = new(expectedEntryCount / 20);
         KanjiForms = new(expectedEntryCount);
+        LanguageSources = new(expectedEntryCount / 30);
         Readings = new(expectedEntryCount);
         Senses = new(expectedEntryCount);
 
@@ -93,11 +96,10 @@ internal sealed class Document : IDocument<DateOnly>
         Glosses = new(expectedEntryCount * 2);
         GlossTypes = new(expectedEntryCount / 30);
         KanjiFormRestrictions = new(expectedEntryCount / 100);
-        LanguageSources = new(expectedEntryCount / 30);
         Miscs = new(expectedEntryCount / 5);
-        Notes = new(expectedEntryCount / 20);
         PartsOfSpeech = new(expectedEntryCount * 2);
         ReadingRestrictions = new(expectedEntryCount / 100);
+        SenseNotes = new(expectedEntryCount / 20);
     }
 
     public IEnumerable<SequenceRow> GetSequences(int fileHeaderId)
@@ -140,6 +142,8 @@ internal sealed class Document : IDocument<DateOnly>
         => Entries.Keys
             .Concat(KanjiForms.EntryIds())
             .Concat(Readings.EntryIds())
+            .Concat(LanguageSources.EntryIds())
+            .Concat(EntryNotes.EntryIds())
             .Concat(Senses.EntryIds())
             .Concat(KanjiFormInfos.EntryIds())
             .Concat(KanjiFormPriorities.EntryIds())
@@ -152,9 +156,8 @@ internal sealed class Document : IDocument<DateOnly>
             .Concat(Glosses.EntryIds())
             .Concat(GlossTypes.EntryIds())
             .Concat(KanjiFormRestrictions.EntryIds())
-            .Concat(LanguageSources.EntryIds())
             .Concat(Miscs.EntryIds())
-            .Concat(Notes.EntryIds())
             .Concat(PartsOfSpeech.EntryIds())
-            .Concat(ReadingRestrictions.EntryIds());
+            .Concat(ReadingRestrictions.EntryIds())
+            .Concat(SenseNotes.EntryIds());
 }

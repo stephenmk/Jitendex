@@ -48,6 +48,8 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
         Diff<(int, int), KanjiFormRow>                (diff, docA, docB, nameof(Document.KanjiForms));
         Diff<(int, int), ReadingRow>                  (diff, docA, docB, nameof(Document.Readings));
         Diff<(int, int), SenseRow>                    (diff, docA, docB, nameof(Document.Senses));
+        Diff<(int, int), LanguageSourceRow>           (diff, docA, docB, nameof(Document.LanguageSources));
+        Diff<(int, int), EntryNoteRow>                (diff, docA, docB, nameof(Document.EntryNotes));
 
         Diff<(int, int, int), KanjiFormInfoRow>       (diff, docA, docB, nameof(Document.KanjiFormInfos));
         Diff<(int, int, int), KanjiFormPriorityRow>   (diff, docA, docB, nameof(Document.KanjiFormPriorities));
@@ -62,9 +64,8 @@ internal sealed class DocumentDiffer : DocumentDiffer<DateOnly, Document, Docume
         Diff<(int, int, int), GlossRow>               (diff, docA, docB, nameof(Document.Glosses));
         Diff<(int, int, int), GlossTypeRow>           (diff, docA, docB, nameof(Document.GlossTypes));
         Diff<(int, int, int), KanjiFormRestrictionRow>(diff, docA, docB, nameof(Document.KanjiFormRestrictions));
-        Diff<(int, int, int), LanguageSourceRow>      (diff, docA, docB, nameof(Document.LanguageSources));
         Diff<(int, int, int), MiscRow>                (diff, docA, docB, nameof(Document.Miscs));
-        Diff<(int, int, int), NoteRow>                (diff, docA, docB, nameof(Document.Notes));
+        Diff<(int, int, int), SenseNoteRow>           (diff, docA, docB, nameof(Document.SenseNotes));
         Diff<(int, int, int), PartOfSpeechRow>        (diff, docA, docB, nameof(Document.PartsOfSpeech));
         Diff<(int, int, int), ReadingRestrictionRow>  (diff, docA, docB, nameof(Document.ReadingRestrictions));
 

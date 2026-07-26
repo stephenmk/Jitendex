@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, NoteTable.cs, is part of Jitendex.
+// This file, EntryNoteTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,34 +15,31 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
+using Jitendex.Data.JMdict.Entities.EntryChildren;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Tables.EntryChildren.SenseChildren;
+namespace Jitendex.Import.JMdict.Tables.EntryChildren;
 
-internal sealed class NoteTable : Table<NoteRow>
+internal sealed class EntryNoteTable : Table<EntryNoteRow>
 {
-    protected override string Name { get; } = nameof(Note);
+    protected override string Name { get; } = nameof(EntryNote);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Note.EntryId),
-        nameof(Note.SenseOrder),
-        nameof(Note.Order),
-        nameof(Note.Text),
+        nameof(EntryNote.EntryId),
+        nameof(EntryNote.Order),
+        nameof(EntryNote.Text),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Note.EntryId),
-        nameof(Note.SenseOrder),
-        nameof(Note.Order),
+        nameof(EntryNote.EntryId),
+        nameof(EntryNote.Order),
     ];
 
-    protected override object?[] ParameterValues(NoteRow row) =>
+    protected override object?[] ParameterValues(EntryNoteRow row) =>
     [
         row.EntryId,
-        row.ParentOrder,
         row.Order,
         row.Text,
     ];

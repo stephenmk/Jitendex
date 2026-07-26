@@ -52,6 +52,22 @@ public static class DtoTextExtensions
                 sb.AppendLine($"\t{i + 1}: {x.Readings[i].ToText()}");
             }
         }
+        if (x.LanguageSources.Count > 0)
+        {
+            foreach (var langSource in x.LanguageSources)
+            {
+                sb.AppendLine();
+                sb.Append($"\t[langsrc = {langSource.ToText()}]");
+            }
+        }
+        if (x.Notes.Count > 0)
+        {
+            foreach (var note in x.Notes)
+            {
+                sb.AppendLine();
+                sb.Append($"\t《{note}》");
+            }
+        }
         if (x.Senses.Count > 0)
         {
             sb.AppendLine("Senses");
@@ -130,14 +146,6 @@ public static class DtoTextExtensions
                 sb.Append($"\t[dialect = {dialect}]");
             }
         }
-        if (x.LanguageSources.Count > 0)
-        {
-            foreach (var langSource in x.LanguageSources)
-            {
-                sb.AppendLine();
-                sb.Append($"\t[langsrc = {langSource.ToText()}]");
-            }
-        }
         if (x.Notes.Count > 0)
         {
             foreach (var note in x.Notes)
@@ -171,7 +179,29 @@ public static class DtoTextExtensions
             : $"[{x.TypeName}] {x.Text}";
 
     private static string ToText(this CrossReferenceDto x)
-        => $"⇒ {x.TypeName}: {x.Text}";
+    {
+        if (x.Sequence is null)
+            return $"⇒ {x.TypeName}: {x.Text}";
+
+        var sb = new StringBuilder($"⇒ {x.TypeName}: Entry {x.Sequence}");
+
+        if (x.Corpus is not null)
+            sb.Append($" ({x.Corpus})");
+        sb.Append(',');
+
+        if (x.KanjiForm is not null && x.Reading is not null)
+            sb.Append($"{x.Reading}【{x.KanjiForm}】");
+        else if (x.KanjiForm is not null)
+            sb.Append(x.KanjiForm);
+        else
+            sb.Append(x.Reading);
+
+        if (x.SenseNumber.HasValue)
+            sb.Append($" (#{x.SenseNumber})");
+
+        return sb.ToString();
+    }
+
 
     private static string ToText(this LanguageSourceDto x)
     {

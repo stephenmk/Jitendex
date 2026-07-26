@@ -28,6 +28,11 @@ public sealed class CrossReference
     public required int SenseOrder { get; init; }
     public required int Order { get; init; }
     public required string TypeName { get; set; }
+    public int? Sequence { get; set; }
+    public string? Corpus { get; set; }
+    public int? SenseNumber { get; set; }
+    public string? KanjiForm { get; set; }
+    public string? Reading { get; set; }
     public required string Text { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]

@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, NoteReader.cs, is part of Jitendex.
+// This file, CrossReferenceNGReader.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -18,29 +18,35 @@ using System.Xml;
 using Jitendex.Import.JMdict.TableRows;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
+namespace Jitendex.Import.JMdict.NGReaders.EntryChildReaders;
 
-internal partial class NoteReader(ILogger<NoteReader> logger) : XmlBaseReader(logger)
+internal sealed class CrossReferenceNGReader
+(
+    ILogger<CrossReferenceNGReader> logger,
+    CrossReferenceAttributesReader attributesReader
+) :
+    XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
     {
-        var note = new NoteRow
+        var attributes = attributesReader.Read(xmlReader, sense);
+
+        document.CrossReferenceTypes.Add(attributes.TypeName);
+
+        var xref = new CrossReferenceRow
         (
             EntryId: sense.EntryId,
             ParentOrder: sense.Order,
-            Order: document.Notes.NextOrder(sense.Key()),
-            Text: await xmlReader.ReadElementContentAsStringAsync()
+            Order: document.CrossReferences.NextOrder(sense.Key()),
+            Text: await xmlReader.ReadElementContentAsStringAsync(),
+            attributes.TypeName,
+            attributes.Sequence,
+            attributes.Corpus,
+            attributes.SenseNumber,
+            attributes.KanjiForm,
+            attributes.Reading
         );
 
-        if (note.Order > 0)
-        {
-            LogTooManySenseNotes(sense.EntryId, sense.Order);
-        }
-
-        document.Notes.Add(note.Key(), note);
+        document.CrossReferences.Add(xref.Key(), xref);
     }
-
-    [LoggerMessage(LogLevel.Warning,
-    "Entry ID `{entryId}` sense #{SenseOrder} contains multiple sense notes")]
-    partial void LogTooManySenseNotes(int entryId, int senseOrder);
 }

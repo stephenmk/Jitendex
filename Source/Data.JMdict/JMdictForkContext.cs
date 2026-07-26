@@ -63,7 +63,7 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     public DbSet<KanjiFormRestriction> KanjiFormRestrictions { get; set; } = null!;
     public DbSet<LanguageSource> LanguageSources { get; set; } = null!;
     public DbSet<Misc> Miscs { get; set; } = null!;
-    public DbSet<Note> Notes { get; set; } = null!;
+    public DbSet<SenseNote> Notes { get; set; } = null!;
     public DbSet<PartOfSpeech> PartsOfSpeech { get; set; } = null!;
     public DbSet<ReadingRestriction> ReadingRestrictions { get; set; } = null!;
     #endregion

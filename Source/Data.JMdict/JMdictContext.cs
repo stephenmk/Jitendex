@@ -34,6 +34,8 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
     #region Entry Items
     public DbSet<KanjiForm> KanjiForms { get; set; } = null!;
     public DbSet<Reading> Readings { get; set; } = null!;
+    public DbSet<LanguageSource> LanguageSources { get; set; } = null!;
+    public DbSet<EntryNote> EntryNotes { get; set; } = null!;
     public DbSet<Sense> Senses { get; set; } = null!;
     #endregion
 
@@ -55,9 +57,8 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
     public DbSet<Gloss> Glosses { get; set; } = null!;
     public DbSet<GlossType> GlossTypes { get; set; } = null!;
     public DbSet<KanjiFormRestriction> KanjiFormRestrictions { get; set; } = null!;
-    public DbSet<LanguageSource> LanguageSources { get; set; } = null!;
     public DbSet<Misc> Miscs { get; set; } = null!;
-    public DbSet<Note> Notes { get; set; } = null!;
+    public DbSet<SenseNote> SenseNotes { get; set; } = null!;
     public DbSet<PartOfSpeech> PartsOfSpeech { get; set; } = null!;
     public DbSet<ReadingRestriction> ReadingRestrictions { get; set; } = null!;
     #endregion
@@ -84,8 +85,7 @@ public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
             $"{nameof(Jitendex)}.{nameof(Data)}.{nameof(JMdict)}.{nameof(ForkEntities)}";
 
         var forkTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(static t => !t.IsAbstract)
-            .Where(t => t.Namespace is not null && t.Namespace.StartsWith(forkNamespace));
+            .Where(static t => !t.IsAbstract && t.Namespace?.StartsWith(forkNamespace) == true);
 
         foreach (var type in forkTypes)
         {

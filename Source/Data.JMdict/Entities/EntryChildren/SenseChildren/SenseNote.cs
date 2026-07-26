@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, LanguageSource.cs, is part of Jitendex.
+// This file, SenseNote.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -19,24 +19,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 
-[Table(nameof(LanguageSource))]
+[Table(nameof(SenseNote))]
 [PrimaryKey(nameof(EntryId), nameof(SenseOrder), nameof(Order))]
-public sealed class LanguageSource
+public sealed class SenseNote
 {
     public required int EntryId { get; init; }
     public required int SenseOrder { get; init; }
     public required int Order { get; init; }
-    public required string? Text { get; set; }
-    public required string LanguageCode { get; set; }
-    public required string TypeName { get; set; }
-    public required bool IsWasei { get; set; }
+    public required string Text { get; set; }
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(SenseOrder)}")]
     public Sense Sense { get; init; } = null!;
-
-    [ForeignKey(nameof(LanguageCode))]
-    public Language Language { get; set; } = null!;
-
-    [ForeignKey(nameof(TypeName))]
-    public LanguageSourceType Type { get; set; } = null!;
 }

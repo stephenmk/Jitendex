@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, CrossReferenceReader.cs, is part of Jitendex.
+// This file, SenseNoteReader.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -20,34 +20,27 @@ using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 
-internal sealed class CrossReferenceReader(ILogger<CrossReferenceReader> logger) : XmlBaseReader(logger)
+internal partial class SenseNoteReader(ILogger<SenseNoteReader> logger) : XmlBaseReader(logger)
 {
     public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
     {
-        var typeName = GetTypeName(xmlReader.Name);
-
-        document.CrossReferenceTypes.Add(typeName);
-
-        var xref = new CrossReferenceRow
+        var note = new SenseNoteRow
         (
             EntryId: sense.EntryId,
             ParentOrder: sense.Order,
-            Order: document.CrossReferences.NextOrder(sense.Key()),
-            Text: await xmlReader.ReadElementContentAsStringAsync(),
-            TypeName: typeName,
-            Sequence: null,
-            Corpus: null,
-            SenseNumber: null,
-            KanjiForm: null,
-            Reading: null
+            Order: document.SenseNotes.NextOrder(sense.Key()),
+            Text: await xmlReader.ReadElementContentAsStringAsync()
         );
 
-        document.CrossReferences.Add(xref.Key(), xref);
+        if (note.Order > 0)
+        {
+            LogTooManySenseNotes(sense.EntryId, sense.Order);
+        }
+
+        document.SenseNotes.Add(note.Key(), note);
     }
 
-    private static string GetTypeName(string nodeName) => nodeName switch
-    {
-        "xref" => "see",
-        _ => nodeName
-    };
+    [LoggerMessage(LogLevel.Warning,
+    "Entry ID `{entryId}` sense #{SenseOrder} contains multiple sense notes")]
+    partial void LogTooManySenseNotes(int entryId, int senseOrder);
 }

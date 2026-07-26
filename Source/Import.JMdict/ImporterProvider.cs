@@ -16,6 +16,8 @@
 
 using Jitendex.Data.JMdict;
 using Jitendex.EdrdgDictionaryArchive;
+using Jitendex.Import.JMdict.NGReaders;
+using Jitendex.Import.JMdict.NGReaders.EntryChildReaders;
 using Jitendex.Import.JMdict.Readers;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders.KanjiFormChildReaders;
@@ -46,7 +48,7 @@ internal static class ImporterProvider
         // Import interfaces.
         .AddEdrdgArchiveService(options =>
         {
-            options.File = DictionaryFile.JMdict_b;
+            options.File = DictionaryFile.JMdict_b_NG;
             options.ArchiveDirectory = archiveDirectory;
         })
         .AddTransient<IDocumentReader<DateOnly, Document>, DocumentReader>()
@@ -80,9 +82,18 @@ internal static class ImporterProvider
         .AddTransient<KanjiFormRestrictionReader>()
         .AddTransient<LanguageSourceReader>()
         .AddTransient<MiscReader>()
-        .AddTransient<NoteReader>()
+        .AddTransient<SenseNoteReader>()
         .AddTransient<PartOfSpeechReader>()
         .AddTransient<ReadingRestrictionReader>()
+
+        // NG Version Readers
+        .AddTransient<JMdictNGReader>()
+        .AddTransient<EntryNGReader>()
+        .AddTransient<EntryNoteReader>()
+        .AddTransient<LanguageSourceNGReader>()
+        .AddTransient<SenseNGReader>()
+        .AddTransient<CrossReferenceNGReader>()
+        .AddTransient<CrossReferenceAttributesReader>()
 
         // Build and return the importer service.
         .AddTransient<Importer<DateOnly, Document, DocumentDiff>>()

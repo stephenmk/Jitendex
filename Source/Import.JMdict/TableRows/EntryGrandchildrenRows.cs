@@ -39,7 +39,8 @@ internal sealed record RestrictionRow
     (int EntryId, int ParentOrder, int Order, string KanjiFormText) : IEntryGrandchildRow;
 
 internal sealed record CrossReferenceRow
-    (int EntryId, int ParentOrder, int Order, string TypeName, string Text) : IEntryGrandchildRow;
+    (int EntryId, int ParentOrder, int Order, string Text, string TypeName,
+    int? Sequence, string? Corpus, int? SenseNumber, string? KanjiForm, string? Reading) : IEntryGrandchildRow;
 
 internal sealed record DialectRow
     (int EntryId, int ParentOrder, int Order, string TagName) : IEntryGrandchildRow;
@@ -56,13 +57,10 @@ internal sealed record GlossTypeRow
 internal sealed record KanjiFormRestrictionRow
     (int EntryId, int ParentOrder, int Order, string KanjiFormText) : IEntryGrandchildRow;
 
-internal sealed record LanguageSourceRow
-    (int EntryId, int ParentOrder, int Order, string? Text, string LanguageCode, string TypeName, bool IsWasei) : IEntryGrandchildRow;
-
 internal sealed record MiscRow
     (int EntryId, int ParentOrder, int Order, string TagName) : IEntryGrandchildRow;
 
-internal sealed record NoteRow
+internal sealed record SenseNoteRow
     (int EntryId, int ParentOrder, int Order, string Text) : IEntryGrandchildRow;
 
 internal sealed record PartOfSpeechRow

@@ -15,10 +15,10 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
+using Jitendex.Data.JMdict.Entities.EntryChildren;
 using Jitendex.Import.JMdict.TableRows;
 
-namespace Jitendex.Import.JMdict.Tables.EntryChildren.SenseChildren;
+namespace Jitendex.Import.JMdict.Tables.EntryChildren;
 
 internal sealed class LanguageSourceTable : Table<LanguageSourceRow>
 {
@@ -27,7 +27,6 @@ internal sealed class LanguageSourceTable : Table<LanguageSourceRow>
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(LanguageSource.EntryId),
-        nameof(LanguageSource.SenseOrder),
         nameof(LanguageSource.Order),
         nameof(LanguageSource.Text),
         nameof(LanguageSource.LanguageCode),
@@ -38,14 +37,12 @@ internal sealed class LanguageSourceTable : Table<LanguageSourceRow>
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(LanguageSource.EntryId),
-        nameof(LanguageSource.SenseOrder),
         nameof(LanguageSource.Order),
     ];
 
     protected override object?[] ParameterValues(LanguageSourceRow row) =>
     [
         row.EntryId,
-        row.ParentOrder,
         row.Order,
         row.Text,
         row.LanguageCode,

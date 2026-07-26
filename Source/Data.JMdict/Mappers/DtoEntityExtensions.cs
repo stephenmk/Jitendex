@@ -35,6 +35,12 @@ public static class DtoEntityExtensions
             KanjiForms = entry.KanjiForms
                 .Select((kanjiForm, order) => kanjiForm.ToKanjiForm(id, order))
                 .ToList(),
+            LanguageSources = entry.LanguageSources
+                .Select((x, order) => x.ToLanguageSource(id, order))
+                .ToList(),
+            Notes = entry.Notes
+                .Select((x, order) => x.ToEntryNote(id, order))
+                .ToList(),
             Senses = entry.Senses
                 .Select((sense, order) => sense.ToSense(id, order))
                 .ToList(),
@@ -72,6 +78,25 @@ public static class DtoEntityExtensions
                 .ToList(),
         };
 
+    private static LanguageSource ToLanguageSource(this LanguageSourceDto source, int entryId, int order)
+        => new()
+        {
+            EntryId = entryId,
+            Order = order,
+            Text = source.Text,
+            TypeName = source.TypeName,
+            LanguageCode = source.LanguageCode,
+            IsWasei = source.IsWasei,
+        };
+
+    private static EntryNote ToEntryNote(this string text, int entryId, int order)
+        => new()
+        {
+            EntryId = entryId,
+            Order = order,
+            Text = text,
+        };
+
     private static Sense ToSense(this SenseDto sense, int entryId, int senseOrder)
         => new()
         {
@@ -92,14 +117,11 @@ public static class DtoEntityExtensions
             KanjiFormRestrictions = sense.KanjiFormRestrictions
                 .Select((x, order) => x.ToKanjiFormRestriction(entryId, senseOrder, order))
                 .ToList(),
-            LanguageSources = sense.LanguageSources
-                .Select((x, order) => x.ToLanguageSource(entryId, senseOrder, order))
-                .ToList(),
             Miscs = sense.Miscs
                 .Select((x, order) => x.ToMisc(entryId, senseOrder, order))
                 .ToList(),
             Notes = sense.Notes
-                .Select((x, order) => x.ToNote(entryId, senseOrder, order))
+                .Select((x, order) => x.ToSenseNote(entryId, senseOrder, order))
                 .ToList(),
             PartsOfSpeech = sense.PartsOfSpeech
                 .Select((x, order) => x.ToPartOfSpeech(entryId, senseOrder, order))
@@ -207,18 +229,6 @@ public static class DtoEntityExtensions
             KanjiFormText = kanjiFormText,
         };
 
-    private static LanguageSource ToLanguageSource(this LanguageSourceDto source, int entryId, int senseOrder, int order)
-        => new()
-        {
-            EntryId = entryId,
-            SenseOrder = senseOrder,
-            Order = order,
-            Text = source.Text,
-            TypeName = source.TypeName,
-            LanguageCode = source.LanguageCode,
-            IsWasei = source.IsWasei,
-        };
-
     private static Misc ToMisc(this string tagName, int entryId, int senseOrder, int order)
         => new()
         {
@@ -228,7 +238,7 @@ public static class DtoEntityExtensions
             TagName = tagName,
         };
 
-    private static Note ToNote(this string text, int entryId, int senseOrder, int order)
+    private static SenseNote ToSenseNote(this string text, int entryId, int senseOrder, int order)
         => new()
         {
             EntryId = entryId,

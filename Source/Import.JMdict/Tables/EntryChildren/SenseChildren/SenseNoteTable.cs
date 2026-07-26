@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, CrossReferenceTable.cs, is part of Jitendex.
+// This file, SenseNoteTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -20,42 +20,30 @@ using Jitendex.Import.JMdict.TableRows;
 
 namespace Jitendex.Import.JMdict.Tables.EntryChildren.SenseChildren;
 
-internal sealed class CrossReferenceTable : Table<CrossReferenceRow>
+internal sealed class SenseNoteTable : Table<SenseNoteRow>
 {
-    protected override string Name { get; } = nameof(CrossReference);
+    protected override string Name { get; } = nameof(SenseNote);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(CrossReference.EntryId),
-        nameof(CrossReference.SenseOrder),
-        nameof(CrossReference.Order),
-        nameof(CrossReference.TypeName),
-        nameof(CrossReference.Sequence),
-        nameof(CrossReference.Corpus),
-        nameof(CrossReference.SenseNumber),
-        nameof(CrossReference.KanjiForm),
-        nameof(CrossReference.Reading),
-        nameof(CrossReference.Text),
+        nameof(SenseNote.EntryId),
+        nameof(SenseNote.SenseOrder),
+        nameof(SenseNote.Order),
+        nameof(SenseNote.Text),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(CrossReference.EntryId),
-        nameof(CrossReference.SenseOrder),
-        nameof(CrossReference.Order),
+        nameof(SenseNote.EntryId),
+        nameof(SenseNote.SenseOrder),
+        nameof(SenseNote.Order),
     ];
 
-    protected override object?[] ParameterValues(CrossReferenceRow row) =>
+    protected override object?[] ParameterValues(SenseNoteRow row) =>
     [
         row.EntryId,
         row.ParentOrder,
         row.Order,
-        row.TypeName,
-        row.Sequence,
-        row.Corpus,
-        row.SenseNumber,
-        row.KanjiForm,
-        row.Reading,
         row.Text,
     ];
 }

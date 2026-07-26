@@ -28,6 +28,8 @@ public sealed record EntryDto
 {
     public List<KanjiFormDto> KanjiForms { get; init; } = [];
     public List<ReadingDto> Readings { get; init; } = [];
+    public List<LanguageSourceDto> LanguageSources { get; init; } = [];
+    public List<string> Notes { get; init; } = [];
     public List<SenseDto> Senses { get; init; } = [];
 }
 
@@ -55,7 +57,6 @@ public sealed record SenseDto
     public List<string> Fields { get; init; } = [];
     public List<string> Miscs { get; init; } = [];
     public List<string> Dialects { get; init; } = [];
-    public List<LanguageSourceDto> LanguageSources { get; init; } = [];
     public List<string> Notes { get; init; } = [];
     public List<GlossDto> Glosses { get; init; } = [];
     public List<CrossReferenceDto> CrossReferences { get; init; } = [];
@@ -84,5 +85,10 @@ public sealed record GlossDto
 public sealed record CrossReferenceDto
 (
     string TypeName,
+    int? Sequence,
+    string? Corpus,
+    int? SenseNumber,
+    string? KanjiForm,
+    string? Reading,
     string Text
 );

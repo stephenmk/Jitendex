@@ -41,7 +41,25 @@ internal sealed record SenseRow : IEntryChildRow
 {
     public required int EntryId { get; init; }
     public required int Order { get; init; }
+    public int Number => Order + 1;
 }
+
+internal sealed record LanguageSourceRow
+(
+    int EntryId,
+    int Order,
+    string? Text,
+    string LanguageCode,
+    string TypeName,
+    bool IsWasei
+) : IEntryChildRow;
+
+internal sealed record EntryNoteRow
+(
+    int EntryId,
+    int Order,
+    string Text
+) : IEntryChildRow;
 
 internal static class EntryChildRowExtensions
 {

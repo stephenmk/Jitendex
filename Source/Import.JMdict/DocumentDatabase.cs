@@ -39,6 +39,8 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
     private static readonly KanjiFormTable KanjiFormTable = new();
     private static readonly ReadingTable ReadingTable = new();
     private static readonly SenseTable SenseTable = new();
+    private static readonly LanguageSourceTable LanguageSourceTable = new();
+    private static readonly EntryNoteTable EntryNoteTable = new();
     #endregion
 
     #region Kanji Form Children Tables
@@ -59,9 +61,8 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
     private static readonly GlossTable GlossTable = new();
     private static readonly GlossTypeTable GlossTypeTable = new();
     private static readonly KanjiFormRestrictionTable KanjiFormRestrictionTable = new();
-    private static readonly LanguageSourceTable LanguageSourceTable = new();
     private static readonly MiscTable MiscTable = new();
-    private static readonly NoteTable NoteTable = new();
+    private static readonly SenseNoteTable SenseNoteTable = new();
     private static readonly PartOfSpeechTable PartOfSpeechTable = new();
     private static readonly ReadingRestrictionTable ReadingRestrictionTable = new();
     #endregion
@@ -117,6 +118,8 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         KanjiFormTable           .InsertItems(context, document.KanjiForms.Values);
         ReadingTable             .InsertItems(context, document.Readings.Values);
         SenseTable               .InsertItems(context, document.Senses.Values);
+        LanguageSourceTable      .InsertItems(context, document.LanguageSources.Values);
+        EntryNoteTable           .InsertItems(context, document.EntryNotes.Values);
         KanjiFormInfoTable       .InsertItems(context, document.KanjiFormInfos.Values);
         KanjiFormPriorityTable   .InsertItems(context, document.KanjiFormPriorities.Values);
         ReadingInfoTable         .InsertItems(context, document.ReadingInfos.Values);
@@ -128,9 +131,8 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         GlossTable               .InsertItems(context, document.Glosses.Values);
         GlossTypeTable           .InsertItems(context, document.GlossTypes.Values);
         KanjiFormRestrictionTable.InsertItems(context, document.KanjiFormRestrictions.Values);
-        LanguageSourceTable      .InsertItems(context, document.LanguageSources.Values);
         MiscTable                .InsertItems(context, document.Miscs.Values);
-        NoteTable                .InsertItems(context, document.Notes.Values);
+        SenseNoteTable           .InsertItems(context, document.SenseNotes.Values);
         PartOfSpeechTable        .InsertItems(context, document.PartsOfSpeech.Values);
         ReadingRestrictionTable  .InsertItems(context, document.ReadingRestrictions.Values);
 
@@ -173,6 +175,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         KanjiFormTable           .UpsertItems(context, diff.Upserts.KanjiForms.Values);
         ReadingTable             .UpsertItems(context, diff.Upserts.Readings.Values);
         SenseTable               .UpsertItems(context, diff.Upserts.Senses.Values);
+        LanguageSourceTable      .UpsertItems(context, diff.Upserts.LanguageSources.Values);
         KanjiFormInfoTable       .UpsertItems(context, diff.Upserts.KanjiFormInfos.Values);
         KanjiFormPriorityTable   .UpsertItems(context, diff.Upserts.KanjiFormPriorities.Values);
         ReadingInfoTable         .UpsertItems(context, diff.Upserts.ReadingInfos.Values);
@@ -184,17 +187,15 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         GlossTable               .UpsertItems(context, diff.Upserts.Glosses.Values);
         GlossTypeTable           .UpsertItems(context, diff.Upserts.GlossTypes.Values);
         KanjiFormRestrictionTable.UpsertItems(context, diff.Upserts.KanjiFormRestrictions.Values);
-        LanguageSourceTable      .UpsertItems(context, diff.Upserts.LanguageSources.Values);
         MiscTable                .UpsertItems(context, diff.Upserts.Miscs.Values);
-        NoteTable                .UpsertItems(context, diff.Upserts.Notes.Values);
+        SenseNoteTable           .UpsertItems(context, diff.Upserts.SenseNotes.Values);
         PartOfSpeechTable        .UpsertItems(context, diff.Upserts.PartsOfSpeech.Values);
         ReadingRestrictionTable  .UpsertItems(context, diff.Upserts.ReadingRestrictions.Values);
 
         ReadingRestrictionTable  .DeleteItems(context, diff.Deletes.ReadingRestrictions.Values);
         PartOfSpeechTable        .DeleteItems(context, diff.Deletes.PartsOfSpeech.Values);
-        NoteTable                .DeleteItems(context, diff.Deletes.Notes.Values);
+        SenseNoteTable           .DeleteItems(context, diff.Deletes.SenseNotes.Values);
         MiscTable                .DeleteItems(context, diff.Deletes.Miscs.Values);
-        LanguageSourceTable      .DeleteItems(context, diff.Deletes.LanguageSources.Values);
         KanjiFormRestrictionTable.DeleteItems(context, diff.Deletes.KanjiFormRestrictions.Values);
         GlossTypeTable           .DeleteItems(context, diff.Deletes.GlossTypes.Values);
         GlossTable               .DeleteItems(context, diff.Deletes.Glosses.Values);
@@ -206,6 +207,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         ReadingInfoTable         .DeleteItems(context, diff.Deletes.ReadingInfos.Values);
         KanjiFormPriorityTable   .DeleteItems(context, diff.Deletes.KanjiFormPriorities.Values);
         KanjiFormInfoTable       .DeleteItems(context, diff.Deletes.KanjiFormInfos.Values);
+        LanguageSourceTable      .DeleteItems(context, diff.Deletes.LanguageSources.Values);
         SenseTable               .DeleteItems(context, diff.Deletes.Senses.Values);
         ReadingTable             .DeleteItems(context, diff.Deletes.Readings.Values);
         KanjiFormTable           .DeleteItems(context, diff.Deletes.KanjiForms.Values);

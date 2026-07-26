@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, FileHeaderTable.cs, is part of Jitendex.
+// This file, FileVersionTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -20,22 +20,20 @@ using Jitendex.Import.JMdict.TableRows;
 
 namespace Jitendex.Import.JMdict.Tables;
 
-internal sealed class FileHeaderTable : Table<HeaderRow>
+internal sealed class FileVersionTable : Table<VersionRow>
 {
-    protected override string Name { get; } = nameof(FileHeader);
+    protected override string Name { get; } = nameof(FileVersion);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(FileHeader.Date),
-        nameof(FileHeader.VersionId),
+        nameof(FileVersion.Number)
     ];
 
     protected override ImmutableArray<string> KeyColNames
         => throw new InvalidOperationException($"The primary key for table {Name} is auto-incremented.");
 
-    protected override object?[] ParameterValues(HeaderRow row) =>
+    protected override object?[] ParameterValues(VersionRow row) =>
     [
-        row.Date,
-        row.VersionId,
+        row.Number
     ];
 }

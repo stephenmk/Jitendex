@@ -26,6 +26,7 @@ namespace Jitendex.Data.JMdict;
 
 public class JMdictContext() : SqliteContext(DatabaseFile.JMdict)
 {
+    public DbSet<FileVersion> FileVersions { get; set; } = null!;
     public DbSet<FileHeader> FileHeaders { get; set; } = null!;
     public DbSet<Sequence> Sequences { get; set; } = null!;
     public DbSet<Revision> Revisions { get; set; } = null!;

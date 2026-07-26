@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, DocumentRows.cs, is part of Jitendex.
+// This file, FileVersion.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -14,39 +14,18 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-namespace Jitendex.Import.JMdict.TableRows;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-internal sealed record VersionRow
-(
-    string Number
-);
+namespace Jitendex.Data.JMdict.Entities;
 
-internal sealed record HeaderRow
-(
-    DateOnly Date,
-    int VersionId
-);
-
-internal sealed record SequenceRow
-(
-    int Id,
-    int FileHeaderId
-);
-
-internal sealed record EntryRow
+[Table(nameof(FileVersion))]
+public sealed class FileVersion
 {
-    public required int Id { get; set; }
+    [Key]
+    public required int Id { get; init; }
+    public required string Number { get; init; }
 
-    public bool IsJmdictEntry() => Id switch
-    {
-        >= 1_000_000 and <= 3_000_000 => true,
-        _ => false,
-    };
+    [InverseProperty(nameof(FileHeader.Version))]
+    public ICollection<FileHeader> FileHeaders { get; init; } = [];
 }
-
-internal sealed record RevisionRow
-(
-    int SequenceId,
-    int FileHeaderId,
-    byte[] DiffJson
-);

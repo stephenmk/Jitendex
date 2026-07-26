@@ -30,6 +30,7 @@ namespace Jitendex.Import.JMdict;
 internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictContext context)
     : IDocumentDatabase<DateOnly, Document, DocumentDiff>
 {
+    private static readonly FileVersionTable FileVersionTable = new();
     private static readonly FileHeaderTable FileHeaderTable = new();
     private static readonly RevisionTable RevisionTable = new();
     private static readonly SequenceTable SequenceTable = new();
@@ -94,10 +95,15 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         context.RecreateDatabase();
 
         using var transaction = context.Database.BeginTransaction();
-        var header = new HeaderRow(document.ArchiveKey, document.Version);
 
+        var version = new VersionRow(document.Version);
+        FileVersionTable.InsertItem(context, version);
+        var versionId = (int)context.GetLastInsertRowId();
+
+        var header = new HeaderRow(document.ArchiveKey, versionId);
         FileHeaderTable.InsertItem(context, header);
         var fileHeaderId = (int)context.GetLastInsertRowId();
+
         SequenceTable.InsertItems(context, document.GetSequences(fileHeaderId));
 
         #pragma warning disable format
@@ -151,7 +157,20 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         using var transaction = context.Database.BeginTransaction();
 
         var aSequences = SequenceDictionaryLoader.Load(context, sequenceIds);
-        var header = new HeaderRow(diff.Upserts.ArchiveKey, diff.Upserts.Version);
+
+        var versionId = context.FileVersions
+            .Where(v => v.Number == diff.Upserts.Version)
+            .Select(static v => (int?)v.Id)
+            .FirstOrDefault();
+
+        if (versionId is null)
+        {
+            var version = new VersionRow(diff.Upserts.Version);
+            FileVersionTable.InsertOrIgnoreItems(context, [version]);
+            versionId = (int)context.GetLastInsertRowId();
+        }
+
+        var header = new HeaderRow(diff.Upserts.ArchiveKey, versionId.Value);
 
         FileHeaderTable.InsertItem(context, header);
         var fileHeaderId = (int)context.GetLastInsertRowId();

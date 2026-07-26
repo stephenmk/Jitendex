@@ -142,7 +142,7 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
              JMdict_e       => new(2025, 10, 09),
              JMdict_e_examp => new(2023, 08, 26),
 
-             JMdict_b_NG       => new(2026, 05, 08),
+             JMdict_b_NG       => GetBaseFileDate(JMdict_b),
              JMdict_e_NG       => new(2026, 05, 08),
              JMdict_e_NG_examp => new(2026, 07, 22),
 

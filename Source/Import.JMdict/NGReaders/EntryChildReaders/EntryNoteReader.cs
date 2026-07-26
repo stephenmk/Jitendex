@@ -32,14 +32,12 @@ internal partial class EntryNoteReader(ILogger<EntryNoteReader> logger) : XmlBas
         );
 
         if (note.Order > 0)
-        {
-            LogTooManySenseNotes(entry.Id);
-        }
+            LogTooManyEntryNotes(entry.Id);
 
         document.EntryNotes.Add(note.Key(), note);
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID `{entryId}` contains multiple sense notes")]
-    partial void LogTooManySenseNotes(int entryId);
+    "Entry ID `{entryId}` contains multiple entry notes")]
+    partial void LogTooManyEntryNotes(int entryId);
 }

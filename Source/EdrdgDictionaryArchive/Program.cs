@@ -17,6 +17,7 @@
 using System.CommandLine;
 using Jitendex.Import;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Jitendex.EdrdgDictionaryArchive;
@@ -24,6 +25,25 @@ namespace Jitendex.EdrdgDictionaryArchive;
 internal static class Program
 {
     private static int Main(string[] args)
+    {
+        if (ParseArgs(args) is not ParsedArgs parsedArgs)
+            return 1;
+
+        if (GetFile(parsedArgs) is not FileInfo file)
+            return 1;
+
+        Console.WriteLine(file.FullName);
+        return 0;
+    }
+
+    private readonly record struct ParsedArgs
+    (
+        DictionaryFile FileName,
+        DateOnly? Date,
+        DirectoryInfo? ArchiveDirectory
+    );
+
+    private static ParsedArgs? ParseArgs(string[] args)
     {
         Argument<DictionaryFile> filenameArgument = new("file")
         {
@@ -50,56 +70,43 @@ internal static class Program
         var parseResult = rootCommand.Parse(args);
 
         foreach (var parseError in parseResult.Errors)
-        {
             Console.Error.WriteLine(parseError.Message);
-        }
 
         if (parseResult.Errors.Count > 0)
-        {
-            return 1;
-        }
+            return null;
 
-        var filename = parseResult.GetRequiredValue(filenameArgument);
-        var date = parseResult.GetValue(dateOption);
-        var archiveDirectory = parseResult.GetValue(archiveDirOption);
-
-        var file = GetFile(filename, date, archiveDirectory);
-
-        if (file is not null)
-        {
-            Console.WriteLine(file.FullName);
-            return 0;
-        }
-        else
-        {
-            return 1;
-        }
+        return new ParsedArgs
+        (
+            parseResult.GetRequiredValue(filenameArgument),
+            parseResult.GetValue(dateOption),
+            parseResult.GetValue(archiveDirOption)
+        );
     }
 
-    private static FileInfo? GetFile(DictionaryFile filename, DateOnly? date, DirectoryInfo? archiveDirectory)
+    private static FileInfo? GetFile(ParsedArgs args)
     {
-        var service = GetService(filename, archiveDirectory);
-        return date.HasValue
-            ? service.GetFile(date.Value)
+        var builder = Host.CreateApplicationBuilder();
+
+        builder.Logging.AddSimpleConsole(static options =>
+        {
+            options.IncludeScopes = true;
+            options.SingleLine = true;
+            options.TimestampFormat = "HH:mm:ss ";
+        });
+
+        builder.Services.AddEdrdgArchiveService(options =>
+        {
+            options.File = args.FileName;
+            options.ArchiveDirectory = args.ArchiveDirectory;
+        });
+
+        using var host = builder.Build();
+        var service = host.Services.GetRequiredService<IFileArchive<DateOnly>>();
+
+        return args.Date.HasValue
+            ? service.GetFile(args.Date.Value)
             : service.GetLatestFile() is (FileInfo latestFile, DateOnly _)
             ? latestFile
             : null;
     }
-
-    private static IFileArchive<DateOnly> GetService(DictionaryFile filename, DirectoryInfo? archiveDirectory)
-        => new ServiceCollection()
-            .AddLogging(static builder =>
-                builder.AddSimpleConsole(static options =>
-                {
-                    options.IncludeScopes = true;
-                    options.SingleLine = true;
-                    options.TimestampFormat = "HH:mm:ss ";
-                }))
-            .AddEdrdgArchiveService(options =>
-            {
-                options.File = filename;
-                options.ArchiveDirectory = archiveDirectory;
-            })
-            .BuildServiceProvider()
-            .GetRequiredService<IFileArchive<DateOnly>>();
 }

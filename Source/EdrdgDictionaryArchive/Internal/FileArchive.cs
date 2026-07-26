@@ -25,13 +25,7 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
 {
     public (FileInfo, DateOnly)? GetExistingBaseFile(FileRequest request)
     {
-        var baseFilePath = Path.Join
-        (
-            request.ArchiveDirectory.FullName,
-            request.File.ToDirectoryName(),
-            $"{request.File.ToFileName()}.br"
-        );
-        var file = new FileInfo(baseFilePath);
+        var file = GetBaseFile(request);
         if (!file.Exists)
         {
             LogMissingFile(request.File.ToFileName(), request.ArchiveDirectory.FullName);
@@ -43,7 +37,7 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
 
     public DateOnly GetLatestPatchDate(FileRequest request)
     {
-        var patchesDirectory = PatchesDirectory(request);
+        var patchesDirectory = GetPatchesDirectory(request);
         var yearDir = patchesDirectory.GetSortedDirectories().Last();
         var monthDir = yearDir.GetSortedDirectories().Last();
         var patchFile = monthDir.GetSortedFiles().Last();
@@ -57,7 +51,7 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
 
     public DateOnly? GetNextPatchDate(FileRequest request)
     {
-        var patchesDirectory = PatchesDirectory(request);
+        var patchesDirectory = GetPatchesDirectory(request);
         foreach (var yearDir in patchesDirectory.GetSortedDirectories())
         {
             int year = int.Parse(yearDir.Name);
@@ -89,7 +83,7 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
     public IReadOnlyList<Patch> GetPatches(FileRequest request)
     {
         List<Patch> patches = [];
-        var patchesDirectory = PatchesDirectory(request);
+        var patchesDirectory = GetPatchesDirectory(request);
         foreach (var yearDir in patchesDirectory.GetSortedDirectories())
         {
             int year = int.Parse(yearDir.Name);
@@ -114,11 +108,30 @@ internal partial class FileArchive(ILogger<FileArchive> logger)
         return [];
     }
 
-    private static DirectoryInfo PatchesDirectory(FileRequest request)
-        => new(Path.Join(request.ArchiveDirectory.FullName, request.File.ToDirectoryName(), "patches"));
+    private static FileInfo GetBaseFile(FileRequest request)
+        => new(Path.Join
+        (
+            request.ArchiveDirectory.FullName,
+            request.File.ToDirectoryName(),
+            $"{request.File.ToFileName()}.br"
+        ));
 
-    private static string GetPatchPath(DirectoryInfo directory, DateOnly date)
-        => Path.Join(directory.FullName, $"{date.Year}", $"{date.Month:D2}", $"{date.Day:D2}.patch.br");
+    private static DirectoryInfo GetPatchesDirectory(FileRequest request)
+        => new(Path.Join
+        (
+            request.ArchiveDirectory.FullName,
+            request.File.ToDirectoryName(),
+            "patches"
+        ));
+
+    private static string GetPatchPath(DirectoryInfo patchesDirectory, DateOnly date)
+        => Path.Join
+        (
+            patchesDirectory.FullName,
+            $"{date.Year}",
+            $"{date.Month:D2}",
+            $"{date.Day:D2}.patch.br"
+        );
 
      #pragma warning disable format
      private static DateOnly GetBaseFileDate(DictionaryFile file)

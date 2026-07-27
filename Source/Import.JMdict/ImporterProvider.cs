@@ -90,7 +90,6 @@ internal static class ImporterProvider
         .AddTransient<JMdictNGReader>()
         .AddTransient<EntryNGReader>()
         .AddTransient<EntryNoteReader>()
-        .AddTransient<LanguageSourceNGReader>()
         .AddTransient<SenseNGReader>()
         .AddTransient<CrossReferenceNGReader>()
         .AddTransient<CrossReferenceAttributesReader>()

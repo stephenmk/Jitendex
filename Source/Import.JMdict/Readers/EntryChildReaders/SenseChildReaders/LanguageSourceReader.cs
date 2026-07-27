@@ -22,7 +22,13 @@ namespace Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 
 internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger) : XmlBaseReader(logger)
 {
-    public async Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
+    public Task ReadAsync(XmlReader xmlReader, Document document, EntryRow entry)
+        => ReadAsync(xmlReader, document, entry.Id, null);
+
+    public Task ReadAsync(XmlReader xmlReader, Document document, SenseRow sense)
+        => ReadAsync(xmlReader, document, sense.EntryId, sense.Order);
+
+    private async Task ReadAsync(XmlReader xmlReader, Document document, int entryId, int? senseOrder)
     {
         var typeName = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceType) ?? "full";
         document.LanguageSourceTypes.Add(typeName);
@@ -33,7 +39,10 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
         var wasei = xmlReader.GetAttribute(XmlAttributeName.LanguageSourceWasei);
         if (wasei is not null && wasei != "y")
         {
-            LogInvalidWaseiValue(sense.EntryId, sense.Order, wasei);
+            if (senseOrder.HasValue)
+                LogInvalidWaseiValue(entryId, senseOrder.Value, wasei);
+            else
+                LogInvalidWaseiValue(entryId, wasei);
         }
 
         var text = xmlReader.IsEmptyElement
@@ -42,8 +51,8 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
 
         var languageSource = new LanguageSourceRow
         (
-            EntryId: sense.EntryId,
-            Order: document.LanguageSources.NextOrder(sense.EntryId),
+            EntryId: entryId,
+            Order: document.LanguageSources.NextOrder(entryId),
             Text: text,
             LanguageCode: languageCode,
             TypeName: typeName,
@@ -52,6 +61,10 @@ internal partial class LanguageSourceReader(ILogger<LanguageSourceReader> logger
 
         document.LanguageSources.Add(languageSource.Key(), languageSource);
     }
+
+    [LoggerMessage(LogLevel.Warning,
+    "Entry `{EntryId}` has a language source WASEI attribute with an invalid value: `{Value}`")]
+    partial void LogInvalidWaseiValue(int entryId, string value);
 
     [LoggerMessage(LogLevel.Warning,
     "Entry `{EntryId}` sense #{SenseOrder} has a language source WASEI attribute with an invalid value: `{Value}`")]

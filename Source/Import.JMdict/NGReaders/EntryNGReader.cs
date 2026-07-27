@@ -18,6 +18,7 @@ using System.Xml;
 using Jitendex.Import.JMdict.NGReaders.EntryChildReaders;
 using Jitendex.Import.JMdict.Readers;
 using Jitendex.Import.JMdict.Readers.EntryChildReaders;
+using Jitendex.Import.JMdict.Readers.EntryChildReaders.SenseChildReaders;
 using Jitendex.Import.JMdict.TableRows;
 using Microsoft.Extensions.Logging;
 
@@ -29,7 +30,7 @@ internal partial class EntryNGReader
     KanjiFormReader kanjiFormReader,
     ReadingReader readingReader,
     SenseNGReader senseReader,
-    LanguageSourceNGReader languageSourceReader,
+    LanguageSourceReader languageSourceReader,
     EntryNoteReader noteReader
 ) :
     XmlParentElementReader<Document, EntryRow>(logger)

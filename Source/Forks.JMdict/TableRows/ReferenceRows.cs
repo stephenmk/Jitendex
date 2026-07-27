@@ -23,13 +23,6 @@ internal sealed record ParsedReferenceText
     int SenseNumber
 );
 
-internal sealed record AmbiguousReferenceRow
-(
-    int EntryId,
-    int SenseOrder,
-    int CrossReferenceOrder
-);
-
 internal sealed record EntryReferenceRow
 (
     int EntryId,

@@ -46,13 +46,8 @@ internal static class ServiceProvider
         .AddDbContext<HomeContext>()
     #endregion
 
-    #region Helpers
-        .AddTransient<DatabaseCopyService>()
-        .AddTransient<CrossReferenceTextParser>()
-        .AddTransient<CrossReferenceCacheService>()
-    #endregion
-
     #region Services
+        .AddTransient<DatabaseCopyService>()
         .AddTransient<PatchService>()
         .AddTransient<PatchRebaser>()
         .AddTransient<IntegrityService>()
@@ -77,7 +72,6 @@ internal static class ServiceProvider
         .AddTransient<RestrictionLinkTable>()
         .AddTransient<ReadingRestrictionLinkTable>()
         .AddTransient<KanjiFormRestrictionLinkTable>()
-        .AddTransient<AmbiguousReferenceTable>()
         .AddTransient<EntryReferenceTable>()
         .AddTransient<ReadingReferenceTable>()
         .AddTransient<KanjiFormReferenceTable>()

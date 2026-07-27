@@ -46,8 +46,5 @@ public sealed class CrossReference
     [InverseProperty(nameof(EntryReference.Source))]
     public EntryReference? ReferencedEntry { get; set; }
 
-    [InverseProperty(nameof(AmbiguousReference.Reference))]
-    public AmbiguousReference? IsAmbiguous { get; set; }
-
     #endregion
 }

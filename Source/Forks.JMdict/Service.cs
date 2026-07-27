@@ -66,7 +66,6 @@ internal sealed class Service
         RunRestrictionServices();
         RunKanwaServices();
         RunFuriganaServices();
-        RunReferenceServices();
         RunGraphicServices();
         RunHeadwordServices();
 
@@ -100,6 +99,7 @@ internal sealed class Service
         restrictions.Write();
         readingRestrictions.Write();
         kanjiFormRestrictions.Write();
+        crossReferences.Write();
     }
 
     private void RunKanwaServices()
@@ -120,12 +120,6 @@ internal sealed class Service
 
         logger.LogInformation("Running furigana solver.");
         furiganaSegments.Write();
-    }
-
-    private void RunReferenceServices()
-    {
-        logger.LogInformation("Deducing cross reference relationships.");
-        crossReferences.Write();
     }
 
     private void RunGraphicServices()

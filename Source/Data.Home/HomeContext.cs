@@ -40,7 +40,6 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
 
     #region JMdict
     public DbSet<TrademarkGloss> TrademarkGlosses { get; set; } = null!;
-    public DbSet<CrossReferenceSequence> CrossReferenceSequences { get; set; } = null!;
     public DbSet<JMdictPatch> JMdictPatches { get; set; } = null!;
     public DbSet<JMdictPatchApproval> JMdictPatchApprovals { get; set; } = null!;
     public DbSet<JMdictPatchRecall> JMdictPatchRecalls { get; set; } = null!;

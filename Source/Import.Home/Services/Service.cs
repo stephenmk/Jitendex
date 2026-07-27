@@ -28,7 +28,6 @@ internal sealed class Service
     CharacterService characterService,
     VariantService variantService,
     CompoundService compoundService,
-    CrossReferenceDataService crossReferenceDataService,
     UserService userService,
     JMdictPatchService jmdictPatchService,
     TrademarkService trademarkService,
@@ -46,7 +45,6 @@ internal sealed class Service
         await characterService.ImportAsync();
         await variantService.ImportAsync();
         await compoundService.ImportAsync();
-        await crossReferenceDataService.ImportAsync();
 
         await userService.ImportAsync();
         await jmdictPatchService.ImportAsync();
@@ -64,7 +62,6 @@ internal sealed class Service
         await characterService.ExportAsync();
         await variantService.ExportAsync();
         await compoundService.ExportAsync();
-        await crossReferenceDataService.ExportAsync();
 
         await userService.ExportAsync();
         await jmdictPatchService.ExportAsync();

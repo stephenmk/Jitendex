@@ -16,14 +16,6 @@
 
 namespace Jitendex.Import.Home.TableRows;
 
-internal sealed record CrossReferenceSequenceRow
-(
-    int EntryId,
-    int SenseNumber,
-    string Text,
-    int? RefEntryId
-);
-
 internal sealed record JMdictPatchRow
 (
     int Id,

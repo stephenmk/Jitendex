@@ -237,26 +237,17 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         #pragma warning restore format
 
         var bSequences = SequenceDictionaryLoader.Load(context, sequenceIds);
-
-        var sequences = context.Sequences
-            .Where(seq => sequenceIds.Contains(seq.Id))
-            .Select(seq => new
-            {
-                seq.Id,
-                RevisionCount = seq.Revisions.Count,
-            });
-
         var revisions = new List<RevisionRow>(aSequences.Count);
 
-        foreach (var seq in sequences)
+        foreach (var id in sequenceIds)
         {
-            if (aSequences.TryGetValue(seq.Id, out var aSeq))
+            if (aSequences.TryGetValue(id, out var aSeq))
             {
-                var bSeq = bSequences[seq.Id];
+                var bSeq = bSequences[id];
                 var baDiff = JsonDiffer.DiffToUtf8Bytes(a: bSeq, b: aSeq);
                 revisions.Add(new
                 (
-                    SequenceId: seq.Id,
+                    SequenceId: id,
                     FileHeaderId: fileHeaderId,
                     DiffJson: baDiff
                 ));

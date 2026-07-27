@@ -195,6 +195,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         ReadingTable             .UpsertItems(context, diff.Upserts.Readings.Values);
         SenseTable               .UpsertItems(context, diff.Upserts.Senses.Values);
         LanguageSourceTable      .UpsertItems(context, diff.Upserts.LanguageSources.Values);
+        EntryNoteTable           .UpsertItems(context, diff.Upserts.EntryNotes.Values);
         KanjiFormInfoTable       .UpsertItems(context, diff.Upserts.KanjiFormInfos.Values);
         KanjiFormPriorityTable   .UpsertItems(context, diff.Upserts.KanjiFormPriorities.Values);
         ReadingInfoTable         .UpsertItems(context, diff.Upserts.ReadingInfos.Values);
@@ -226,6 +227,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
         ReadingInfoTable         .DeleteItems(context, diff.Deletes.ReadingInfos.Values);
         KanjiFormPriorityTable   .DeleteItems(context, diff.Deletes.KanjiFormPriorities.Values);
         KanjiFormInfoTable       .DeleteItems(context, diff.Deletes.KanjiFormInfos.Values);
+        EntryNoteTable           .DeleteItems(context, diff.Deletes.EntryNotes.Values);
         LanguageSourceTable      .DeleteItems(context, diff.Deletes.LanguageSources.Values);
         SenseTable               .DeleteItems(context, diff.Deletes.Senses.Values);
         ReadingTable             .DeleteItems(context, diff.Deletes.Readings.Values);

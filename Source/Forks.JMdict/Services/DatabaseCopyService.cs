@@ -39,13 +39,20 @@ internal sealed class DatabaseCopyService(JMdictForkContext context)
     // `transfer_command_builder.sql` file in the Jitendex directory `~/Scripts`.
     private const string TransferCommandText =
         $"""
+        INSERT INTO "{nameof(FileVersion)}"
+             ( "{nameof(FileVersion.Id)}"
+             , "{nameof(FileVersion.Number)}")
+        SELECT "{nameof(FileVersion.Id)}"
+             , "{nameof(FileVersion.Number)}"
+          FROM "{Schema}"."{nameof(FileVersion)}";
+
         INSERT INTO "{nameof(FileHeader)}"
              ( "{nameof(FileHeader.Id)}"
              , "{nameof(FileHeader.Date)}"
-             , "{nameof(FileHeader.Version)}")
+             , "{nameof(FileHeader.VersionId)}")
         SELECT "{nameof(FileHeader.Id)}"
              , "{nameof(FileHeader.Date)}"
-             , "{nameof(FileHeader.Version)}"
+             , "{nameof(FileHeader.VersionId)}"
           FROM "{Schema}"."{nameof(FileHeader)}";
 
         INSERT INTO "{nameof(CrossReferenceType)}"

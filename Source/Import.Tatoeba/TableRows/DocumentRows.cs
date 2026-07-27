@@ -24,7 +24,6 @@ internal sealed record HeaderRow
 internal sealed record RevisionRow
 (
     int SequenceId,
-    int Number,
     int FileHeaderId,
     bool IsPriority,
     byte[] DiffJson

@@ -24,11 +24,13 @@ namespace Jitendex.Data.Tatoeba;
 public static class DtoMapper
 {
     public static Dictionary<int, SequenceDto> LoadSequencesWithoutRevisions(TatoebaContext context, IReadOnlySet<int> sequenceIds)
-        => context.Sequences
-            .AsSplitQuery()
-            .Where(seq => sequenceIds.Contains(seq.Id))
-            .Select(RevisionlessSequenceProjection)
-            .ToDictionary(static dto => dto.Id);
+        => sequenceIds.Chunk(10)
+            .SelectMany(ids =>
+                context.Sequences
+                    .AsSplitQuery()
+                    .Where(seq => ids.Contains(seq.Id))
+                    .Select(RevisionlessSequenceProjection)
+            ).ToDictionary(static dto => dto.Id);
 
     private static Expression<Func<Sequence, SequenceDto>> RevisionlessSequenceProjection =>
         static seq => new SequenceDto

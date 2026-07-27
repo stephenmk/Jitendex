@@ -58,12 +58,10 @@ internal sealed class DatabaseCopyService(TatoebaForkContext context)
 
         INSERT INTO "{nameof(Revision)}"
              ( "{nameof(Revision.SequenceId)}"
-             , "{nameof(Revision.Number)}"
              , "{nameof(Revision.FileHeaderId)}"
              , "{nameof(Revision.IsPriority)}"
              , "{nameof(Revision.DiffJson)}")
         SELECT "{nameof(Revision.SequenceId)}"
-             , "{nameof(Revision.Number)}"
              , "{nameof(Revision.FileHeaderId)}"
              , "{nameof(Revision.IsPriority)}"
              , "{nameof(Revision.DiffJson)}"

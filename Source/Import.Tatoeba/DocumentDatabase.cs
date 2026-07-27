@@ -63,7 +63,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
         var sequenceIds = diff.SequenceIds();
         var prioritySequenceIds = diff.PrioritySequenceIds();
 
-        logger.LogInformation("Updating {Count} sequences with data from {Date:yyyy-MM-dd}", sequenceIds.Count, diff.ArchiveKey);
+        logger.LogInformation("Updating {Count:N0} sequences with data from {Date:yyyy-MM-dd}", sequenceIds.Count, diff.ArchiveKey);
 
         using var transaction = context.Database.BeginTransaction();
 
@@ -84,29 +84,19 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Tatoeba
         ExampleTable.DeleteItems(context, diff.Deletes.Examples.Values);
 
         var bSequences = DtoMapper.LoadSequencesWithoutRevisions(context, sequenceIds);
-
-        var sequences = context.Sequences
-            .Where(seq => sequenceIds.Contains(seq.Id))
-            .Select(seq => new
-            {
-                seq.Id,
-                RevisionCount = seq.Revisions.Count,
-            });
-
         var revisions = new List<RevisionRow>(aSequences.Count);
 
-        foreach (var sequence in sequences)
+        foreach (var id in sequenceIds)
         {
-            if (aSequences.TryGetValue(sequence.Id, out var aSequence))
+            if (aSequences.TryGetValue(id, out var aSequence))
             {
-                var bSequence = bSequences[sequence.Id];
+                var bSequence = bSequences[id];
                 var baDiff = JsonDiffer.DiffToUtf8Bytes(a: bSequence, b: aSequence);
                 revisions.Add(new
                 (
-                    SequenceId: sequence.Id,
-                    Number: sequence.RevisionCount,
+                    SequenceId: id,
                     FileHeaderId: fileHeaderId,
-                    IsPriority: prioritySequenceIds.Contains(sequence.Id),
+                    IsPriority: prioritySequenceIds.Contains(id),
                     DiffJson: baDiff
                 ));
             }

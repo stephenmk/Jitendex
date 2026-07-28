@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, KanjiFormRestrictionService.cs, is part of Jitendex.
+// This file, 02-KanjiFormRestrictionService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -20,7 +20,7 @@ using Jitendex.Forks.JMdict.Tables.Restrictions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.JMdict.Services.Links;
+namespace Jitendex.Forks.JMdict.Services.Restrictions;
 
 internal sealed partial class KanjiFormRestrictionService
 (
@@ -29,7 +29,7 @@ internal sealed partial class KanjiFormRestrictionService
     KanjiFormRestrictionLinkTable table
 )
 {
-    public void Write()
+    public void Run02()
     {
         var restrictions = context.KanjiFormRestrictions
             .AsSplitQuery()
@@ -58,21 +58,15 @@ internal sealed partial class KanjiFormRestrictionService
                 if (string.Equals(r.KanjiFormText, kanjiForm.Text, StringComparison.Ordinal))
                 {
                     if (kanjiForm.IsSearchOnly)
-                    {
                         LogReferenceToSearchOnlyForm(r.EntryId, r.KanjiFormText);
-                    }
                     else
-                    {
                         rows.Add(new(r.EntryId, r.SenseOrder, r.Order, kanjiForm.Order));
-                    }
                     found = true;
                     break;
                 }
             }
             if (!found)
-            {
                 LogInvalidSenseKanjiFormRestriction(r.EntryId, r.KanjiFormText);
-            }
         }
 
         table.InsertItems(context, rows);

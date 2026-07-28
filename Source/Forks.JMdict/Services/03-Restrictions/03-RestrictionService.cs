@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, RestrictionService.cs, is part of Jitendex.
+// This file, 03-RestrictionService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -19,7 +19,7 @@ using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Restrictions;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.JMdict.Services.Links;
+namespace Jitendex.Forks.JMdict.Services.Restrictions;
 
 internal sealed partial class RestrictionService
 (
@@ -28,7 +28,7 @@ internal sealed partial class RestrictionService
     RestrictionLinkTable table
 )
 {
-    public void Write()
+    public void Run03()
     {
         var restrictions = context.Restrictions
             .Select(static r => new
@@ -56,21 +56,15 @@ internal sealed partial class RestrictionService
                 if (string.Equals(r.KanjiFormText, kanjiForm.Text, StringComparison.Ordinal))
                 {
                     if (kanjiForm.IsSearchOnly)
-                    {
                         LogReferenceToSearchOnlyForm(r.EntryId, r.KanjiFormText);
-                    }
                     else
-                    {
                         rows.Add(new(r.EntryId, r.ReadingOrder, r.Order, kanjiForm.Order));
-                    }
                     found = true;
                     break;
                 }
             }
             if (!found)
-            {
                 LogInvalidRestriction(r.EntryId, r.KanjiFormText);
-            }
         }
 
         table.InsertItems(context, rows);

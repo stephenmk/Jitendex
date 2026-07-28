@@ -16,14 +16,15 @@
 
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
+using Jitendex.Forks.JMdict.Services.CrossReferences;
 using Jitendex.Forks.JMdict.Services.DatabaseCopy;
 using Jitendex.Forks.JMdict.Services.Furigana;
 using Jitendex.Forks.JMdict.Services.Headwords;
 using Jitendex.Forks.JMdict.Services.Kanwa;
-using Jitendex.Forks.JMdict.Services.Links;
 using Jitendex.Forks.JMdict.Services.Media;
 using Jitendex.Forks.JMdict.Services.Patching;
 using Jitendex.Forks.JMdict.Services.PostProcessing;
+using Jitendex.Forks.JMdict.Services.Restrictions;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 using Jitendex.Forks.JMdict.Tables.Headwords;
 using Jitendex.Forks.JMdict.Tables.Kanwa;
@@ -54,10 +55,13 @@ internal static class ServiceProvider
         .AddTransient<PatchRebaser>()
         .AddTransient<TrademarkService>()
 
-        .AddTransient<CrossReferenceService>()
         .AddTransient<KanjiFormRestrictionService>()
         .AddTransient<ReadingRestrictionService>()
         .AddTransient<RestrictionService>()
+
+        .AddTransient<EntryReferenceService>()
+        .AddTransient<KanjiFormReferenceService>()
+        .AddTransient<ReadingReferenceService>()
 
         .AddTransient<CharacterReadingService>()
         .AddTransient<CharacterService>()

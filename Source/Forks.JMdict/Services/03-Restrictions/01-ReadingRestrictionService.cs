@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, ReadingRestrictionService.cs, is part of Jitendex.
+// This file, 01-ReadingRestrictionService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -20,7 +20,7 @@ using Jitendex.Forks.JMdict.Tables.Restrictions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.JMdict.Services.Links;
+namespace Jitendex.Forks.JMdict.Services.Restrictions;
 
 internal sealed partial class ReadingRestrictionService
 (
@@ -29,7 +29,7 @@ internal sealed partial class ReadingRestrictionService
     ReadingRestrictionLinkTable table
 )
 {
-    public void Write()
+    public void Run01()
     {
         var restrictions = context.ReadingRestrictions
             .AsSplitQuery()
@@ -58,21 +58,15 @@ internal sealed partial class ReadingRestrictionService
                 if (string.Equals(r.ReadingText, reading.Text, StringComparison.Ordinal))
                 {
                     if (reading.IsSearchOnly)
-                    {
                         LogReferenceToSearchOnlyForm(r.EntryId, r.ReadingText);
-                    }
                     else
-                    {
                         rows.Add(new(r.EntryId, r.SenseOrder, r.Order, reading.Order));
-                    }
                     found = true;
                     break;
                 }
             }
             if (!found)
-            {
                 LogInvalidSenseReadingRestriction(r.EntryId, r.ReadingText);
-            }
         }
 
         table.InsertItems(context, rows);

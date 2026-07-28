@@ -73,7 +73,7 @@ internal sealed class FileBuilder(ILogger<FileBuilder> logger, FileCache cache, 
         }
 
         var length = buildBase.File.Length();
-        var @patchBuffer = _arrayPool.Rent(length / 4);
+        var @patchBuffer = _arrayPool.Rent(length / 2);
         var originBuffer = _arrayPool.Rent(length * 3 / 2);
         var outputBuffer = _arrayPool.Rent(length * 3 / 2);
         buildBase.File.ReadInto(originBuffer);

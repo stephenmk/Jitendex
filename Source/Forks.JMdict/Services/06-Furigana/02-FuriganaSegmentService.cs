@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, FuriganaSegmentService.cs, is part of Jitendex.
+// This file, 02-FuriganaSegmentService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -34,9 +34,20 @@ internal partial class FuriganaSegmentService
     CompoundReadingLinkTable compoundTable
 )
 {
-    private abstract record ReadingKey(int Id, string Text);
-    private sealed record CharacterReadingKey(int Id, string Text, DerivedCharacterReadingTypeId TypeId) : ReadingKey(Id, Text);
-    private sealed record CompoundReadingKey(int Id, string Text) : ReadingKey(Id, Text);
+    private interface IReadingKey
+    {
+        int Id { get; init; }
+        string Text { get; init; }
+    }
+
+    private sealed record CharacterReadingKey
+    (
+        int Id,
+        string Text,
+        DerivedCharacterReadingTypeId TypeId
+    ) : IReadingKey;
+
+    private sealed record CompoundReadingKey(int Id, string Text) : IReadingKey;
 
     public void Write()
     {
@@ -97,10 +108,10 @@ internal partial class FuriganaSegmentService
         compoundTable.InsertItems(context, compoundLinks);
     }
 
-    private (IFuriganaService, Dictionary<int, ReadingKey>) LoadFuriganaService()
+    private (IFuriganaService, Dictionary<int, IReadingKey>) LoadFuriganaService()
     {
         var service = FuriganaServiceProvider.GetFuriganaService();
-        var idToKey = new Dictionary<int, ReadingKey>();
+        var idToKey = new Dictionary<int, IReadingKey>();
 
         var characters = context.CharacterReadings
             .Select(static g => new
@@ -152,7 +163,7 @@ internal partial class FuriganaSegmentService
             .Select(static l => l.EntryId)
             .ToHashSet();
 
-    private static ReadingKey? GetKey(Dictionary<int, ReadingKey> idToKey, ImmutableArray<int> ids)
+    private static IReadingKey? GetKey(Dictionary<int, IReadingKey> idToKey, ImmutableArray<int> ids)
     {
         if (ids.IsEmpty)
         {

@@ -23,7 +23,7 @@ using Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
 using Jitendex.Data.JMdict.Entities.EntryChildren.SenseChildren;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Forks.JMdict.Services;
+namespace Jitendex.Forks.JMdict.Services.DatabaseCopy;
 
 internal sealed class DatabaseCopyService(JMdictForkContext context)
 {

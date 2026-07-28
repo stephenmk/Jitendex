@@ -17,7 +17,7 @@
 using Jitendex.Data.JMdict;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.JMdict.Services;
+namespace Jitendex.Forks.JMdict.Services.PostProcessing;
 
 internal partial class IntegrityService
 (

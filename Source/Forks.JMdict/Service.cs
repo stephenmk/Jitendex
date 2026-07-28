@@ -16,13 +16,14 @@
 
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.JMdict.Services;
+using Jitendex.Forks.JMdict.Services.DatabaseCopy;
 using Jitendex.Forks.JMdict.Services.Furigana;
 using Jitendex.Forks.JMdict.Services.Headwords;
 using Jitendex.Forks.JMdict.Services.Kanwa;
 using Jitendex.Forks.JMdict.Services.Links;
 using Jitendex.Forks.JMdict.Services.Media;
 using Jitendex.Forks.JMdict.Services.Patching;
+using Jitendex.Forks.JMdict.Services.PostProcessing;
 using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.JMdict;
@@ -32,23 +33,39 @@ internal sealed class Service
     ILogger<Service> logger,
     HomeContext homeContext,
     JMdictForkContext forkContext,
+
+    // 01
     DatabaseCopyService databaseCopier,
+
+    // 02
     PatchService patches,
     TrademarkService trademarkService,
-    RestrictionService restrictions,
-    ReadingRestrictionService readingRestrictions,
-    KanjiFormRestrictionService kanjiFormRestrictions,
+
+    // 03
     CrossReferenceService crossReferences,
-    GraphicService graphicService,
-    CharacterService characters,
+    KanjiFormRestrictionService kanjiFormRestrictions,
+    ReadingRestrictionService readingRestrictions,
+    RestrictionService restrictions,
+
+    // 04
     CharacterReadingService characterReadings,
+    CharacterService characters,
     DerivedReadingService derivedReadings,
     DerivedReadingTypeService derivedReadingTypes,
+
+    // 05
     KanjiFormBridgeService kanjiFormBridges,
     FuriganaSegmentService furiganaSegments,
+
+    // 06
+    GraphicService graphicService,
+
+    // 07
     HeadwordService headwordService,
     HeadwordSenseService headwordSenseService,
     HeadwordReferenceService headwordReferenceService,
+
+    // 08
     IntegrityService integrityChecker
 )
 {
@@ -59,16 +76,14 @@ internal sealed class Service
         using var homeTransaction = homeContext.Database.BeginTransaction();
         using var forkTransaction = forkContext.Database.BeginTransaction();
 
-        RunPreprocessing();
-
-        RunPatchServices();
-        RunRestrictionServices();
-        RunKanwaServices();
-        RunFuriganaServices();
-        RunGraphicServices();
-        RunHeadwordServices();
-
-        RunPostprocessing();
+        Run01DatabaseCopy();
+        Run02PatchServices();
+        Run03LinkServices();
+        Run04KanwaServices();
+        Run05FuriganaServices();
+        Run06GraphicServices();
+        Run07HeadwordServices();
+        Run08Postprocessing();
 
         forkTransaction.Commit();
         homeTransaction.Commit();
@@ -79,20 +94,20 @@ internal sealed class Service
         logger.LogInformation("Finished.");
     }
 
-    private void RunPreprocessing()
+    private void Run01DatabaseCopy()
     {
         logger.LogInformation("Copying data from the JMdict database file.");
         databaseCopier.CopyDataFromJmdict();
     }
 
-    private void RunPatchServices()
+    private void Run02PatchServices()
     {
         logger.LogInformation("Applying home-grown data patches.");
         patches.Write();
         trademarkService.Write();
     }
 
-    private void RunRestrictionServices()
+    private void Run03LinkServices()
     {
         logger.LogInformation("Making the implicit relationships in the data explicit.");
         restrictions.Write();
@@ -101,7 +116,7 @@ internal sealed class Service
         crossReferences.Write();
     }
 
-    private void RunKanwaServices()
+    private void Run04KanwaServices()
     {
         logger.LogInformation("Transfer home-grown character information.");
         characters.Write();
@@ -112,7 +127,7 @@ internal sealed class Service
         derivedReadings.Write();
     }
 
-    private void RunFuriganaServices()
+    private void Run05FuriganaServices()
     {
         logger.LogInformation("Bridging readings with corresponding kanji forms");
         kanjiFormBridges.Write();
@@ -121,13 +136,13 @@ internal sealed class Service
         furiganaSegments.Write();
     }
 
-    private void RunGraphicServices()
+    private void Run06GraphicServices()
     {
         logger.LogInformation("Transferring graphics data.");
         graphicService.Write();
     }
 
-    private void RunHeadwordServices()
+    private void Run07HeadwordServices()
     {
         logger.LogInformation("Computing dictionary headwords.");
         headwordService.Write();
@@ -135,7 +150,7 @@ internal sealed class Service
         headwordReferenceService.Write();
     }
 
-    private void RunPostprocessing()
+    private void Run08Postprocessing()
     {
         logger.LogInformation("Checking for miscellaneous data integrity issues.");
         integrityChecker.Write();

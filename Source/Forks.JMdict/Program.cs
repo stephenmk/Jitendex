@@ -14,14 +14,20 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-namespace Jitendex.Forks.JMdict;
+using Jitendex.Forks.JMdict;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-internal static class Program
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Logging.AddSimpleConsole(static options =>
 {
-    private static int Main()
-    {
-        var service = ServiceProvider.GetService();
-        service.Run();
-        return 0;
-    }
-}
+    options.SingleLine = false;
+    options.TimestampFormat = "HH:mm:ss ";
+});
+
+builder.Services.AddJMdictForkService();
+using var host = builder.Build();
+var service = host.Services.GetRequiredService<Service>();
+service.Run();

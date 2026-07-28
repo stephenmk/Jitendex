@@ -31,13 +31,14 @@ using Jitendex.Forks.JMdict.Tables.Media;
 using Jitendex.Forks.JMdict.Tables.References;
 using Jitendex.Forks.JMdict.Tables.Restrictions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Forks.JMdict;
 
 internal static class ServiceProvider
 {
-    public static Service GetService() => new ServiceCollection()
+    public static IServiceCollection AddJMdictForkService(this IServiceCollection services)
+        => services
+
         .AddTransient<Service>()
 
     #region Databases
@@ -108,17 +109,5 @@ internal static class ServiceProvider
         .AddTransient<HeadwordReferenceTable>()
         .AddTransient<HeadwordTagTable>()
     #endregion
-
-        // Logging
-        .AddLogging(static builder =>
-            builder.AddSimpleConsole(static options =>
-            {
-                options.IncludeScopes = true;
-                options.SingleLine = false;
-                options.TimestampFormat = "HH:mm:ss ";
-            }))
-
-        // Build and return the Service service.
-        .BuildServiceProvider()
-        .GetRequiredService<Service>();
+    ;
 }

@@ -27,7 +27,6 @@ internal sealed class RevisionTable : Table<DocumentRevision>
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Revision.SequenceId),
-        nameof(Revision.Number),
         nameof(Revision.FileHeaderId),
         nameof(Revision.DiffJson),
     ];
@@ -35,13 +34,12 @@ internal sealed class RevisionTable : Table<DocumentRevision>
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
         nameof(Revision.SequenceId),
-        nameof(Revision.Number),
+        nameof(Revision.FileHeaderId),
     ];
 
     protected override object?[] ParameterValues(DocumentRevision row) =>
     [
         row.SequenceId,
-        row.Number,
         row.FileHeaderId,
         row.DiffJson,
     ];

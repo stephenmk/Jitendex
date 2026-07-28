@@ -25,7 +25,6 @@ internal sealed record DocumentSequence
 internal sealed record DocumentRevision
 (
     int SequenceId,
-    int Number,
     int FileHeaderId,
     byte[] DiffJson
 );

@@ -190,26 +190,16 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, Kanjidi
         #pragma warning restore format
 
         var bSequences = DtoMapper.LoadRevisionlessSequences(context, sequenceIds);
-
-        var sequences = context.Sequences
-            .Where(sequence => sequenceIds.Contains(sequence.Id))
-            .Select(static seq => new
-            {
-                seq.Id,
-                RevisionCount = seq.Revisions.Count,
-            });
-
         var revisions = new List<DocumentRevision>(aSequences.Count);
 
-        foreach (var seq in sequences)
+        foreach (var id in sequenceIds)
         {
-            if (aSequences.TryGetValue(seq.Id, out var aSeq))
+            if (aSequences.TryGetValue(id, out var aSeq))
             {
-                var bSeq = bSequences[seq.Id];
+                var bSeq = bSequences[id];
                 var baDiff = JsonDiffer.DiffToUtf8Bytes(a: bSeq, b: aSeq);
                 revisions.Add(new(
-                    SequenceId: seq.Id,
-                    Number: seq.RevisionCount,
+                    SequenceId: id,
                     FileHeaderId: fileHeaderId,
                     DiffJson: baDiff
                 ));

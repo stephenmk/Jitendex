@@ -22,7 +22,8 @@ public abstract class DocumentDiffer<TKey, TDocument, TDiff> : IDocumentDiffer<T
 {
     public abstract TDiff Diff(TDocument docA, TDocument docB);
 
-    protected void FindNew<T>(TDiff diff, TDocument docA, TDocument docB, string propertyName) where T : notnull
+    protected void FindNew<T>(TDiff diff, TDocument docA, TDocument docB, string propertyName)
+        where T : notnull
     {
         var prop = typeof(TDocument).GetProperty(propertyName)!;
         var setA = (HashSet<T>)prop.GetValue(docA)!;
@@ -39,7 +40,7 @@ public abstract class DocumentDiffer<TKey, TDocument, TDiff> : IDocumentDiffer<T
     }
 
     protected void Diff<T1, T2>(TDiff diff, TDocument docA, TDocument docB, string propertyName)
-        where T1 : notnull
+        where T1 : struct
         where T2 : notnull
     {
         var prop = typeof(TDocument).GetProperty(propertyName)!;

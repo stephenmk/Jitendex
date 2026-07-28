@@ -35,6 +35,7 @@ internal sealed partial class CrossReferenceService
     {
         WriteEntryReferences();
         WriteReadingReferences();
+        WriteKanjiFormReferences();
     }
 
     private void WriteEntryReferences()
@@ -57,7 +58,10 @@ internal sealed partial class CrossReferenceService
             var senseOrder = x.SenseNumber.HasValue
                 ? x.SenseNumber.Value - 1
                 : 0;
-            rows.Add(new(x.EntryId, x.SenseOrder, x.Order, x.Sequence, senseOrder));
+            if (context.Senses.Any(s => s.EntryId == x.Sequence && s.Order == senseOrder))
+                rows.Add(new(x.EntryId, x.SenseOrder, x.Order, x.Sequence, senseOrder));
+            else
+                LogMissingSense(x.EntryId, x.SenseOrder, x.Order, x.Sequence, senseOrder);
         }
         entryReferenceTable.InsertItems(context, rows);
     }
@@ -89,12 +93,10 @@ internal sealed partial class CrossReferenceService
                     break;
                 }
             }
-            if (!order.HasValue)
-            {
-                // TODO: Log
-                continue;
-            }
-            rows.Add(new(x.EntryId, x.SenseOrder, x.CrossReferenceOrder, x.RefEntryId, order.Value));
+            if (order.HasValue)
+                rows.Add(new(x.EntryId, x.SenseOrder, x.CrossReferenceOrder, x.RefEntryId, order.Value));
+            else
+                LogMissingReading(x.EntryId, x.SenseOrder, x.CrossReferenceOrder, x.RefEntryId, x.Reading);
         }
         readingReferenceTable.InsertItems(context, rows);
     }
@@ -126,35 +128,25 @@ internal sealed partial class CrossReferenceService
                     break;
                 }
             }
-            if (!order.HasValue)
-            {
-                // TODO: Log
-                continue;
-            }
-            rows.Add(new(x.EntryId, x.SenseOrder, x.CrossReferenceOrder, x.RefEntryId, order.Value));
+            if (order.HasValue)
+                rows.Add(new(x.EntryId, x.SenseOrder, x.CrossReferenceOrder, x.RefEntryId, order.Value));
+            else
+                LogMissingKanjiForm(x.EntryId, x.SenseOrder, x.CrossReferenceOrder, x.RefEntryId, x.KanjiForm);
         }
         kanjiFormReferenceTable.InsertItems(context, rows);
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Reference `{CacheKey}` could refer to {Count} possible entries: {EntryIds}")]
-    partial void LogAmbiguousReference(string cacheKey, int count, int[] entryIds);
+    "Reference {EntryId}・{SenseOrder}・{Order}: could not find referenced sense {RefEntryId}・{RefSenseOrder}")]
+    partial void LogMissingSense(int entryId, int senseOrder, int order, int refEntryId, int refSenseOrder);
 
     [LoggerMessage(LogLevel.Warning,
-    "Reference `{CacheKey}` refers to an entry that does not exist.")]
-    partial void LogImpossibleReference(string cacheKey);
+    "Reference {EntryId}・{KanjiFormOrder}・{Order}: could not find referenced kanji form {RefEntryId}・{RefKanjiFormText}")]
+    partial void LogMissingKanjiForm(int entryId, int kanjiFormOrder, int order, int refEntryId, string refKanjiFormText);
 
     [LoggerMessage(LogLevel.Warning,
-    "Reference `{CacheKey}` is invalid either because it points to itself or to an invalid sense number")]
-    partial void LogBizarreReference(string cacheKey);
-
-    [LoggerMessage(LogLevel.Warning,
-    "Reference `{CacheKey}` could not be assigned to a reading")]
-    partial void LogMissingReading(string cacheKey);
-
-    [LoggerMessage(LogLevel.Warning,
-    "Reference `{CacheKey}` could not be assigned to a kanji form")]
-    partial void LogMissingKanjiForm(string cacheKey);
+    "Reference {EntryId}・{ReadingOrder}・{Order}: could not find referenced reading {RefEntryId}・{RefReadingText}")]
+    partial void LogMissingReading(int entryId, int readingOrder, int order, int refEntryId, string refReadingText);
 
     [LoggerMessage(LogLevel.Warning,
     "Reference `{CacheKey}` refers to a reading that is search-only")]

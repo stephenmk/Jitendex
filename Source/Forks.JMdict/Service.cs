@@ -20,10 +20,10 @@ using Jitendex.Forks.JMdict.Services.CrossReferences;
 using Jitendex.Forks.JMdict.Services.DatabaseCopy;
 using Jitendex.Forks.JMdict.Services.Furigana;
 using Jitendex.Forks.JMdict.Services.Headwords;
+using Jitendex.Forks.JMdict.Services.IntegrityChecks;
 using Jitendex.Forks.JMdict.Services.Kanwa;
 using Jitendex.Forks.JMdict.Services.Media;
 using Jitendex.Forks.JMdict.Services.Patching;
-using Jitendex.Forks.JMdict.Services.PostProcessing;
 using Jitendex.Forks.JMdict.Services.Restrictions;
 using Microsoft.Extensions.Logging;
 
@@ -71,7 +71,14 @@ internal sealed class Service
     HeadwordReferenceService headwordReferenceService,
 
     // 09
-    IntegrityService integrityChecker
+    CheckForUkTagOnEntriesWithoutKanjiForms checkForUkTagOnEntriesWithoutKanjiForms,
+    CheckForRightSingleQuotes checkForRightSingleQuotes,
+    CheckForZeroWidthSpaces checkForZeroWidthSpaces,
+    CheckForUnpairedPriorityTags checkForUnpairedPriorityTags,
+    CheckForPriorityTagsOnRareForms checkForPriorityTagsOnRareForms,
+    CheckForTransitivityTagOnSensesGlossedAsAdverbs checkForTransitivityTagOnSensesGlossedAsAdverbs,
+    CheckForCrossReferencesToSearchOnlyForms checkForCrossReferencesToSearchOnlyForms,
+    CheckForRestrictionsToEveryVisibleKanjiForm checkForRestrictionsToEveryVisibleKanjiForm
 )
 {
     public void Run()
@@ -89,7 +96,7 @@ internal sealed class Service
         Run06FuriganaServices();
         Run07GraphicServices();
         Run08HeadwordServices();
-        Run09Postprocessing();
+        Run09IntegrityChecks();
 
         forkTransaction.Commit();
         homeTransaction.Commit();
@@ -165,9 +172,17 @@ internal sealed class Service
         headwordReferenceService.Write();
     }
 
-    private void Run09Postprocessing()
+    private void Run09IntegrityChecks()
     {
         logger.LogInformation("Checking for miscellaneous data integrity issues.");
-        integrityChecker.Write();
+
+        checkForUkTagOnEntriesWithoutKanjiForms.Run();
+        checkForRightSingleQuotes.Run();
+        checkForZeroWidthSpaces.Run();
+        checkForUnpairedPriorityTags.Run();
+        checkForPriorityTagsOnRareForms.Run();
+        checkForTransitivityTagOnSensesGlossedAsAdverbs.Run();
+        checkForCrossReferencesToSearchOnlyForms.Run();
+        checkForRestrictionsToEveryVisibleKanjiForm.Run();
     }
 }

@@ -20,10 +20,10 @@ using Jitendex.Forks.JMdict.Services.CrossReferences;
 using Jitendex.Forks.JMdict.Services.DatabaseCopy;
 using Jitendex.Forks.JMdict.Services.Furigana;
 using Jitendex.Forks.JMdict.Services.Headwords;
+using Jitendex.Forks.JMdict.Services.IntegrityChecks;
 using Jitendex.Forks.JMdict.Services.Kanwa;
 using Jitendex.Forks.JMdict.Services.Media;
 using Jitendex.Forks.JMdict.Services.Patching;
-using Jitendex.Forks.JMdict.Services.PostProcessing;
 using Jitendex.Forks.JMdict.Services.Restrictions;
 using Jitendex.Forks.JMdict.Tables.Furigana;
 using Jitendex.Forks.JMdict.Tables.Headwords;
@@ -77,7 +77,14 @@ internal static class ServiceProvider
         .AddTransient<HeadwordSenseService>()
         .AddTransient<HeadwordReferenceService>()
 
-        .AddTransient<IntegrityService>()
+        .AddTransient<CheckForUkTagOnEntriesWithoutKanjiForms>()
+        .AddTransient<CheckForRightSingleQuotes>()
+        .AddTransient<CheckForZeroWidthSpaces>()
+        .AddTransient<CheckForUnpairedPriorityTags>()
+        .AddTransient<CheckForPriorityTagsOnRareForms>()
+        .AddTransient<CheckForTransitivityTagOnSensesGlossedAsAdverbs>()
+        .AddTransient<CheckForCrossReferencesToSearchOnlyForms>()
+        .AddTransient<CheckForRestrictionsToEveryVisibleKanjiForm>()
     #endregion
 
     #region Tables

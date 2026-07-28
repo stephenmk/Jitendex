@@ -48,24 +48,31 @@ internal static class ServiceProvider
 
     #region Services
         .AddTransient<DatabaseCopyService>()
+
         .AddTransient<PatchService>()
         .AddTransient<PatchRebaser>()
-        .AddTransient<IntegrityService>()
         .AddTransient<TrademarkService>()
-        .AddTransient<RestrictionService>()
-        .AddTransient<ReadingRestrictionService>()
-        .AddTransient<KanjiFormRestrictionService>()
+
         .AddTransient<CrossReferenceService>()
-        .AddTransient<GraphicService>()
-        .AddTransient<CharacterService>()
+        .AddTransient<KanjiFormRestrictionService>()
+        .AddTransient<ReadingRestrictionService>()
+        .AddTransient<RestrictionService>()
+
         .AddTransient<CharacterReadingService>()
+        .AddTransient<CharacterService>()
         .AddTransient<DerivedReadingService>()
         .AddTransient<DerivedReadingTypeService>()
+
         .AddTransient<KanjiFormBridgeService>()
         .AddTransient<FuriganaSegmentService>()
+
+        .AddTransient<GraphicService>()
+
         .AddTransient<HeadwordService>()
         .AddTransient<HeadwordSenseService>()
         .AddTransient<HeadwordReferenceService>()
+
+        .AddTransient<IntegrityService>()
     #endregion
 
     #region Tables

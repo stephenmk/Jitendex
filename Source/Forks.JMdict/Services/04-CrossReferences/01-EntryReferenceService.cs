@@ -59,12 +59,4 @@ internal sealed partial class EntryReferenceService
     [LoggerMessage(LogLevel.Warning,
     "Reference {EntryId}・{SenseOrder}・{Order}: could not find referenced sense {RefEntryId}・{RefSenseOrder}")]
     partial void LogMissingSense(int entryId, int senseOrder, int order, int refEntryId, int refSenseOrder);
-
-    // [LoggerMessage(LogLevel.Warning,
-    // "Reference `{CacheKey}` refers to a reading that is search-only")]
-    // partial void LogReferenceToSearchOnlyReading(string cacheKey);
-
-    // [LoggerMessage(LogLevel.Warning,
-    // "Reference `{CacheKey}` refers to an invalid reading / kanji-form pair")]
-    // partial void LogInvalidPair(string cacheKey);
 }

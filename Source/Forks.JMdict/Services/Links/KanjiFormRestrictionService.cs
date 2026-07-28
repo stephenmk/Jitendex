@@ -20,9 +20,9 @@ using Jitendex.Forks.JMdict.Tables.Restrictions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.JMdict.Services.Restrictions;
+namespace Jitendex.Forks.JMdict.Services.Links;
 
-internal partial class KanjiFormRestrictionService
+internal sealed partial class KanjiFormRestrictionService
 (
     ILogger<KanjiFormRestrictionService> logger,
     JMdictForkContext context,

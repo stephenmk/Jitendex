@@ -19,9 +19,9 @@ using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.References;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.JMdict.Services.References;
+namespace Jitendex.Forks.JMdict.Services.Links;
 
-internal partial class CrossReferenceService
+internal sealed partial class CrossReferenceService
 (
     ILogger<CrossReferenceService> logger,
     JMdictForkContext context,

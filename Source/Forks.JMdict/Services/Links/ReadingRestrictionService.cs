@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, RestrictionService.cs, is part of Jitendex.
+// This file, ReadingRestrictionService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -17,51 +17,53 @@
 using Jitendex.Data.JMdict;
 using Jitendex.Forks.JMdict.TableRows;
 using Jitendex.Forks.JMdict.Tables.Restrictions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.JMdict.Services.Restrictions;
+namespace Jitendex.Forks.JMdict.Services.Links;
 
-internal partial class RestrictionService
+internal sealed partial class ReadingRestrictionService
 (
-    ILogger<RestrictionService> logger,
+    ILogger<ReadingRestrictionService> logger,
     JMdictForkContext context,
-    RestrictionLinkTable table
+    ReadingRestrictionLinkTable table
 )
 {
     public void Write()
     {
-        var restrictions = context.Restrictions
+        var restrictions = context.ReadingRestrictions
+            .AsSplitQuery()
             .Select(static r => new
             {
                 r.EntryId,
-                r.ReadingOrder,
+                r.SenseOrder,
                 r.Order,
-                r.KanjiFormText,
-                KanjiForms = r.Reading.Entry.KanjiForms
-                    .Select(static k => new
+                r.ReadingText,
+                Readings = r.Sense.Entry.Readings
+                    .Select(static reading => new
                     {
-                        k.Order,
-                        k.Text,
-                        IsSearchOnly = k.Infos.Any(static i => i.TagName == "sK"),
+                        reading.Order,
+                        reading.Text,
+                        IsSearchOnly = reading.Infos.Any(static i => i.TagName == "sk"),
                     })
             });
 
-        var rows = new List<RestrictionLinkRow>(10_000);
+        var rows = new List<ReadingRestrictionLinkRow>(5_000);
 
         foreach (var r in restrictions)
         {
             bool found = false;
-            foreach (var kanjiForm in r.KanjiForms)
+            foreach (var reading in r.Readings)
             {
-                if (string.Equals(r.KanjiFormText, kanjiForm.Text, StringComparison.Ordinal))
+                if (string.Equals(r.ReadingText, reading.Text, StringComparison.Ordinal))
                 {
-                    if (kanjiForm.IsSearchOnly)
+                    if (reading.IsSearchOnly)
                     {
-                        LogReferenceToSearchOnlyForm(r.EntryId, r.KanjiFormText);
+                        LogReferenceToSearchOnlyForm(r.EntryId, r.ReadingText);
                     }
                     else
                     {
-                        rows.Add(new(r.EntryId, r.ReadingOrder, r.Order, kanjiForm.Order));
+                        rows.Add(new(r.EntryId, r.SenseOrder, r.Order, reading.Order));
                     }
                     found = true;
                     break;
@@ -69,7 +71,7 @@ internal partial class RestrictionService
             }
             if (!found)
             {
-                LogInvalidRestriction(r.EntryId, r.KanjiFormText);
+                LogInvalidSenseReadingRestriction(r.EntryId, r.ReadingText);
             }
         }
 
@@ -77,10 +79,10 @@ internal partial class RestrictionService
     }
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} contains a reading restriction to invalid kanji form `{KanjiForm}`")]
-    partial void LogInvalidRestriction(int entryId, string kanjiForm);
+    "Entry ID {EntryId} contains a sense reading restriction to invalid `{Reading}`")]
+    partial void LogInvalidSenseReadingRestriction(int entryId, string reading);
 
     [LoggerMessage(LogLevel.Warning,
-    "Entry ID {EntryId} contains a kanji form restriction to search-only `{KanjiForm}`")]
-    partial void LogReferenceToSearchOnlyForm(int entryId, string kanjiForm);
+    "Entry ID {EntryId} contains a sense reading restriction to search-only `{Reading}`")]
+    partial void LogReferenceToSearchOnlyForm(int entryId, string reading);
 }

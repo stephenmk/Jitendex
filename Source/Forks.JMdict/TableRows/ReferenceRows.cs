@@ -16,13 +16,6 @@
 
 namespace Jitendex.Forks.JMdict.TableRows;
 
-internal sealed record ParsedReferenceText
-(
-    string Text1,
-    string? Text2,
-    int SenseNumber
-);
-
 internal sealed record EntryReferenceRow
 (
     int EntryId,

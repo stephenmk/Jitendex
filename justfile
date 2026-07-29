@@ -13,8 +13,9 @@ edrdg-update:
   dotnet run -c Release --project Source/Import.JMnedict
   dotnet run -c Release --project Source/Import.Kanjidic2
   dotnet run -c Release --project Source/Import.Tatoeba
-  dotnet run -c Release --project Source/Forks.JMdict
-  dotnet run -c Release --project Source/Forks.Tatoeba
+
+  dotnet run -c Release --project Source/Process.JMdict
+  dotnet run -c Release --project Source/Process.Tatoeba
 
 home-import:
   dotnet run -c Release --project Source/Import.Home import

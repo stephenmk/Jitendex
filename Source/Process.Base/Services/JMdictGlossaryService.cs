@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, Rows.cs, is part of Jitendex.
+// This file, JMdictGlossaryService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -14,36 +14,21 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-namespace Jitendex.Export.Base.TableRows;
+using Jitendex.Data.Export;
+using Jitendex.Data.JMdict;
+using Jitendex.Process.Base.Tables.TermChildren;
 
-internal sealed record HeadwordRow
-(
-    string Surface,
-    string? Reading
-);
+namespace Jitendex.Process.Base.Services;
 
-internal sealed record HeadwordFuriganaRow
+internal sealed class JMdictGlossaryService
 (
-    int HeadwordId,
-    int Order,
-    string BaseText,
-    string? RubyText
-);
+    ExportContext context,
+    JMdictForkContext jmdictContext,
+    TermGlossaryTable glossaryTable
+)
+{
+    public void Write()
+    {
 
-internal sealed record TermGroupRow
-(
-    int Id
-);
-
-internal sealed record JMdictEntryRow
-(
-    int Id,
-    int GroupId
-);
-
-internal sealed record TermRow
-(
-    int HeadwordId,
-    int GroupId,
-    int Score
-);
+    }
+}

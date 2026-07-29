@@ -16,12 +16,12 @@
 
 using Jitendex.Data.Export;
 using Jitendex.Data.JMdict;
-using Jitendex.Export.Base.TableRows;
-using Jitendex.Export.Base.Tables;
+using Jitendex.Process.Base.TableRows;
+using Jitendex.Process.Base.Tables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Export.Base.Services;
+namespace Jitendex.Process.Base.Services;
 
 internal partial class HeadwordService
 (

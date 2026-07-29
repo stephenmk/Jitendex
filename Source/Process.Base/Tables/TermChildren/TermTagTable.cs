@@ -16,9 +16,9 @@
 
 using Jitendex.Data;
 using Jitendex.Data.Export.Entities.TermChildren;
-using Jitendex.Export.Base.TableRows;
+using Jitendex.Process.Base.TableRows;
 
-namespace Jitendex.Export.Base.Tables.TermChildren;
+namespace Jitendex.Process.Base.Tables.TermChildren;
 
 internal sealed class TermTagTable : Table<TermTagRow>
 {

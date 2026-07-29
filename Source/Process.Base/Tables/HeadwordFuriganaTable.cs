@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, TermRedirectTable.cs, is part of Jitendex.
+// This file, HeadwordFuriganaTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,34 +15,34 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.Export.Entities.TermChildren;
-using Jitendex.Export.Base.TableRows;
+using Jitendex.Data.Export.Entities;
+using Jitendex.Process.Base.TableRows;
 
-namespace Jitendex.Export.Base.Tables.TermChildren;
+namespace Jitendex.Process.Base.Tables;
 
-internal sealed class TermRedirectTable : Table<TermRedirectRow>
+internal sealed class HeadwordFuriganaTable : Table<HeadwordFuriganaRow>
 {
-    protected override string Name { get; } = nameof(TermRedirect);
+    protected override string Name { get; } = nameof(HeadwordFurigana);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(TermRedirect.HeadwordId),
-        nameof(TermRedirect.TermGroupId),
-        nameof(TermRedirect.RedirectHeadwordId),
-        nameof(TermRedirect.RedirectTermGroup),
+        nameof(HeadwordFurigana.HeadwordId),
+        nameof(HeadwordFurigana.Order),
+        nameof(HeadwordFurigana.BaseText),
+        nameof(HeadwordFurigana.RubyText),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(TermRedirect.HeadwordId),
-        nameof(TermRedirect.TermGroupId),
+        nameof(HeadwordFurigana.HeadwordId),
+        nameof(HeadwordFurigana.Order),
     ];
 
-    protected override object?[] ParameterValues(TermRedirectRow row) =>
+    protected override object?[] ParameterValues(HeadwordFuriganaRow row) =>
     [
         row.HeadwordId,
-        row.TermGroupId,
-        row.RedirectHeadwordId,
-        row.RedirectTermGroup,
+        row.Order,
+        row.BaseText,
+        row.RubyText,
     ];
 }

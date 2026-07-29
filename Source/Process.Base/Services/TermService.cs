@@ -17,11 +17,11 @@
 using Jitendex.Data.Export;
 using Jitendex.Data.Export.Entities.TermChildren;
 using Jitendex.Data.JMdict;
-using Jitendex.Export.Base.TableRows;
-using Jitendex.Export.Base.Tables;
-using Jitendex.Export.Base.Tables.TermChildren;
+using Jitendex.Process.Base.TableRows;
+using Jitendex.Process.Base.Tables;
+using Jitendex.Process.Base.Tables.TermChildren;
 
-namespace Jitendex.Export.Base.Services;
+namespace Jitendex.Process.Base.Services;
 
 internal sealed class TermService
 (

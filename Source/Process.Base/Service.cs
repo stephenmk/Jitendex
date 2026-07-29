@@ -15,10 +15,10 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data.Export;
-using Jitendex.Export.Base.Services;
+using Jitendex.Process.Base.Services;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Export.Base;
+namespace Jitendex.Process.Base;
 
 internal sealed class Service
 (

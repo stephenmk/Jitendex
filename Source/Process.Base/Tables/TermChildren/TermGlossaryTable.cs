@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, TermTable.cs, is part of Jitendex.
+// This file, TermGlossaryTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,32 +15,32 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.Export.Entities;
-using Jitendex.Export.Base.TableRows;
+using Jitendex.Data.Export.Entities.TermChildren;
+using Jitendex.Process.Base.TableRows;
 
-namespace Jitendex.Export.Base.Tables;
+namespace Jitendex.Process.Base.Tables.TermChildren;
 
-internal sealed class TermTable : Table<TermRow>
+internal sealed class TermGlossaryTable : Table<TermGlossaryRow>
 {
-    protected override string Name { get; } = nameof(Term);
+    protected override string Name { get; } = nameof(TermGlossary);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Term.HeadwordId),
-        nameof(Term.GroupId),
-        nameof(Term.Score),
+        nameof(TermGlossary.HeadwordId),
+        nameof(TermGlossary.TermGroupId),
+        nameof(TermGlossary.Json),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Term.HeadwordId),
-        nameof(Term.GroupId),
+        nameof(TermNumber.HeadwordId),
+        nameof(TermNumber.TermGroupId),
     ];
 
-    protected override object?[] ParameterValues(TermRow row) =>
+    protected override object?[] ParameterValues(TermGlossaryRow row) =>
     [
         row.HeadwordId,
-        row.GroupId,
-        row.Score,
+        row.TermGroupId,
+        row.Json,
     ];
 }

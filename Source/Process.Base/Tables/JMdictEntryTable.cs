@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, HeadwordFuriganaTable.cs, is part of Jitendex.
+// This file, JMdictEntryTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -16,33 +16,28 @@
 
 using Jitendex.Data;
 using Jitendex.Data.Export.Entities;
-using Jitendex.Export.Base.TableRows;
+using Jitendex.Process.Base.TableRows;
 
-namespace Jitendex.Export.Base.Tables;
+namespace Jitendex.Process.Base.Tables;
 
-internal sealed class HeadwordFuriganaTable : Table<HeadwordFuriganaRow>
+internal sealed class JMdictEntryTable : Table<JMdictEntryRow>
 {
-    protected override string Name { get; } = nameof(HeadwordFurigana);
+    protected override string Name { get; } = nameof(JMdictEntry);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(HeadwordFurigana.HeadwordId),
-        nameof(HeadwordFurigana.Order),
-        nameof(HeadwordFurigana.BaseText),
-        nameof(HeadwordFurigana.RubyText),
+        nameof(JMdictEntry.Id),
+        nameof(JMdictEntry.GroupId),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(HeadwordFurigana.HeadwordId),
-        nameof(HeadwordFurigana.Order),
+        nameof(JMdictEntry.Id)
     ];
 
-    protected override object?[] ParameterValues(HeadwordFuriganaRow row) =>
+    protected override object?[] ParameterValues(JMdictEntryRow row) =>
     [
-        row.HeadwordId,
-        row.Order,
-        row.BaseText,
-        row.RubyText,
+        row.Id,
+        row.GroupId,
     ];
 }

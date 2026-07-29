@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, HeadwordTable.cs, is part of Jitendex.
+// This file, TermNumberTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,27 +15,34 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.Export.Entities;
-using Jitendex.Export.Base.TableRows;
+using Jitendex.Data.Export.Entities.TermChildren;
+using Jitendex.Process.Base.TableRows;
 
-namespace Jitendex.Export.Base.Tables;
+namespace Jitendex.Process.Base.Tables.TermChildren;
 
-internal sealed class HeadwordTable : Table<HeadwordRow>
+internal sealed class TermNumberTable : Table<TermNumberRow>
 {
-    protected override string Name { get; } = nameof(Headword);
+    protected override string Name { get; } = nameof(TermNumber);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Headword.Surface),
-        nameof(Headword.Reading),
+        nameof(TermNumber.HeadwordId),
+        nameof(TermNumber.TermGroupId),
+        nameof(TermNumber.Value),
+        nameof(TermNumber.Total),
     ];
 
-    protected override ImmutableArray<string> KeyColNames
-        => throw new InvalidOperationException($"The primary key for table {Name} is auto-incremented.");
-
-    protected override object?[] ParameterValues(HeadwordRow row) =>
+    protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        row.Surface,
-        row.Reading,
+        nameof(TermNumber.HeadwordId),
+        nameof(TermNumber.TermGroupId),
+    ];
+
+    protected override object?[] ParameterValues(TermNumberRow row) =>
+    [
+        row.HeadwordId,
+        row.TermGroupId,
+        row.Value,
+        row.Total,
     ];
 }

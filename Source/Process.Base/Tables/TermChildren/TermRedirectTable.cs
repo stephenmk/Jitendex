@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, TermGlossaryTable.cs, is part of Jitendex.
+// This file, TermRedirectTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -16,31 +16,33 @@
 
 using Jitendex.Data;
 using Jitendex.Data.Export.Entities.TermChildren;
-using Jitendex.Export.Base.TableRows;
+using Jitendex.Process.Base.TableRows;
 
-namespace Jitendex.Export.Base.Tables.TermChildren;
+namespace Jitendex.Process.Base.Tables.TermChildren;
 
-internal sealed class TermGlossaryTable : Table<TermGlossaryRow>
+internal sealed class TermRedirectTable : Table<TermRedirectRow>
 {
-    protected override string Name { get; } = nameof(TermGlossary);
+    protected override string Name { get; } = nameof(TermRedirect);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(TermGlossary.HeadwordId),
-        nameof(TermGlossary.TermGroupId),
-        nameof(TermGlossary.Json),
+        nameof(TermRedirect.HeadwordId),
+        nameof(TermRedirect.TermGroupId),
+        nameof(TermRedirect.RedirectHeadwordId),
+        nameof(TermRedirect.RedirectTermGroup),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(TermNumber.HeadwordId),
-        nameof(TermNumber.TermGroupId),
+        nameof(TermRedirect.HeadwordId),
+        nameof(TermRedirect.TermGroupId),
     ];
 
-    protected override object?[] ParameterValues(TermGlossaryRow row) =>
+    protected override object?[] ParameterValues(TermRedirectRow row) =>
     [
         row.HeadwordId,
         row.TermGroupId,
-        row.Json,
+        row.RedirectHeadwordId,
+        row.RedirectTermGroup,
     ];
 }

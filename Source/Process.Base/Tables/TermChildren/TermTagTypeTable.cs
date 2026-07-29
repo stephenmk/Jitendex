@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, JMdictGlossaryService.cs, is part of Jitendex.
+// This file, TermTagTypeTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -14,21 +14,30 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-// using Jitendex.Data.Export;
-// using Jitendex.Data.JMdict;
-// using Jitendex.Export.Base.Tables.TermChildren;
+using Jitendex.Data;
+using Jitendex.Data.Export.Entities.TermChildren;
+using Jitendex.Process.Base.TableRows;
 
-namespace Jitendex.Export.Base.Services;
+namespace Jitendex.Process.Base.Tables.TermChildren;
 
-internal sealed class JMdictGlossaryService
-// (
-//     ExportContext context,
-//     JMdictForkContext jmdictContext,
-//     TermGlossaryTable glossaryTable
-// )
+internal sealed class TermTagTypeTable : Table<TermTagTypeRow>
 {
-    public void Write()
-    {
+    protected override string Name { get; } = nameof(TermTagType);
 
-    }
+    protected override ImmutableArray<string> ColumnNames { get; } =
+    [
+        nameof(TermTagType.Id),
+        nameof(TermTagType.Name),
+    ];
+
+    protected override ImmutableArray<string> KeyColNames { get; } =
+    [
+        nameof(TermTagType.Id)
+    ];
+
+    protected override object?[] ParameterValues(TermTagTypeRow row) =>
+    [
+        row.Id,
+        row.Name,
+    ];
 }

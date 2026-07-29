@@ -17,13 +17,13 @@
 using Jitendex.Data.Export;
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
-using Jitendex.Export.Base.Services;
-using Jitendex.Export.Base.Tables;
-using Jitendex.Export.Base.Tables.TermChildren;
+using Jitendex.Process.Base.Services;
+using Jitendex.Process.Base.Tables;
+using Jitendex.Process.Base.Tables.TermChildren;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Export.Base;
+namespace Jitendex.Process.Base;
 
 internal static class ServiceProvider
 {

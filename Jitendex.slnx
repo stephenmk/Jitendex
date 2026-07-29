@@ -15,13 +15,6 @@
     <Project Path="Source/Data.KanjiVG/Jitendex.Data.KanjiVG.csproj" />
     <Project Path="Source/Data.Tatoeba/Jitendex.Data.Tatoeba.csproj" />
   </Folder>
-  <Folder Name="/Export/">
-    <Project Path="Source/Export.Base/Jitendex.Export.Base.csproj" />
-  </Folder>
-  <Folder Name="/Forks/">
-    <Project Path="Source/Forks.JMdict/Jitendex.Forks.JMdict.csproj" />
-    <Project Path="Source/Forks.Tatoeba/Jitendex.Forks.Tatoeba.csproj" />
-  </Folder>
   <Folder Name="/Import/">
     <Project Path="Source/AppDirectory/Jitendex.AppDirectory.csproj" />
     <Project Path="Source/EdrdgDictionaryArchive/Jitendex.EdrdgDictionaryArchive.csproj" />
@@ -33,6 +26,11 @@
     <Project Path="Source/Import.Kanjidic2/Jitendex.Import.Kanjidic2.csproj" />
     <Project Path="Source/Import.KanjiVG/Jitendex.Import.KanjiVG.csproj" />
     <Project Path="Source/Import.Tatoeba/Jitendex.Import.Tatoeba.csproj" />
+  </Folder>
+  <Folder Name="/Process/">
+    <Project Path="Source/Process.JMdict/Jitendex.Process.JMdict.csproj" />
+    <Project Path="Source/Forks.Tatoeba/Jitendex.Forks.Tatoeba.csproj" />
+    <Project Path="Source/Export.Base/Jitendex.Export.Base.csproj" />
   </Folder>
   <Folder Name="/Libraries/">
     <Project Path="Libraries/JapaneseTextUtils/Jitendex.JapaneseTextUtils/Jitendex.JapaneseTextUtils.csproj" />

@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, GraphicLicenseTable.cs, is part of Jitendex.
+// This file, SenseGraphicTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,31 +15,39 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Media;
+using Jitendex.Data.Home.Entities.Imagery;
 using Jitendex.Import.Home.TableRows;
 
-namespace Jitendex.Import.Home.Tables.Media;
+namespace Jitendex.Import.Home.Tables.Imagery;
 
-internal sealed class GraphicLicenseTable : Table<GraphicLicenseRow>
+internal sealed class SenseGraphicTable : Table<SenseGraphicRow>
 {
-    protected override string Name { get; } = nameof(GraphicLicense);
+    protected override string Name { get; } = nameof(SenseGraphic);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(GraphicLicense.Id),
-        nameof(GraphicLicense.Name),
-        nameof(GraphicLicense.InfoUrl),
+        nameof(SenseGraphic.SequenceId),
+        nameof(SenseGraphic.SenseOrder),
+        nameof(SenseGraphic.Order),
+        nameof(SenseGraphic.SequenceDate),
+        nameof(SenseGraphic.PatchId),
+        nameof(SenseGraphic.GraphicId),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(GraphicLicense.Id)
+        nameof(SenseGraphic.SequenceId),
+        nameof(SenseGraphic.SenseOrder),
+        nameof(SenseGraphic.Order),
     ];
 
-    protected override object?[] ParameterValues(GraphicLicenseRow row) =>
+    protected override object?[] ParameterValues(SenseGraphicRow row) =>
     [
-        row.Id,
-        row.Name,
-        row.InfoUrl,
+        row.SequenceId,
+        row.SenseOrder,
+        row.Order,
+        row.SequenceDate,
+        row.PatchId,
+        row.GraphicId,
     ];
 }

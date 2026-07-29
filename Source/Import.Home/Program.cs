@@ -41,14 +41,10 @@ internal static class Program
         var parseResult = rootCommand.Parse(args);
 
         foreach (var parseError in parseResult.Errors)
-        {
             Console.Error.WriteLine(parseError.Message);
-        }
 
         if (parseResult.Errors.Count > 0)
-        {
             return 1;
-        }
 
         var argumentResult = parseResult.GetRequiredValue(argument);
         var dataDirectory = parseResult.GetValue(dataDirOption);

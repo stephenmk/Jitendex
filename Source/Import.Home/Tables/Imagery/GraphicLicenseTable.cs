@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, GraphicTable.cs, is part of Jitendex.
+// This file, GraphicLicenseTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,43 +15,31 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Media;
+using Jitendex.Data.Home.Entities.Imagery;
 using Jitendex.Import.Home.TableRows;
 
-namespace Jitendex.Import.Home.Tables.Media;
+namespace Jitendex.Import.Home.Tables.Imagery;
 
-internal sealed class GraphicTable : Table<GraphicRow>
+internal sealed class GraphicLicenseTable : Table<GraphicLicenseRow>
 {
-    protected override string Name { get; } = nameof(Graphic);
+    protected override string Name { get; } = nameof(GraphicLicense);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Graphic.Id),
-        nameof(Graphic.LicenceId),
-        nameof(Graphic.Cropped),
-        nameof(Graphic.PageUrl),
-        nameof(Graphic.FileUrl),
-        nameof(Graphic.Author),
-        nameof(Graphic.AuthorUrl),
-        nameof(Graphic.Title),
-        nameof(Graphic.FileData),
+        nameof(GraphicLicense.Id),
+        nameof(GraphicLicense.Name),
+        nameof(GraphicLicense.InfoUrl),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Graphic.Id)
+        nameof(GraphicLicense.Id)
     ];
 
-    protected override object?[] ParameterValues(GraphicRow row) =>
+    protected override object?[] ParameterValues(GraphicLicenseRow row) =>
     [
         row.Id,
-        row.LicenseId,
-        row.Cropped,
-        row.PageUrl,
-        row.FileUrl,
-        row.Author,
-        row.AuthorUrl,
-        row.Title,
-        row.FileData,
+        row.Name,
+        row.InfoUrl,
     ];
 }

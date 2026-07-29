@@ -16,9 +16,9 @@
 
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.TableRows;
-using Jitendex.Import.Home.Tables.Media;
+using Jitendex.Import.Home.Tables.Sound;
 
-namespace Jitendex.Import.Home.Services.Media;
+namespace Jitendex.Import.Home.Services.Sound;
 
 internal sealed class AudioService
 (

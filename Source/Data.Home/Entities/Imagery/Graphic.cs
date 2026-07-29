@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, KanjiAliveAudio.cs, is part of Jitendex.
+// This file, Graphic.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -17,17 +17,25 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Jitendex.Data.Home.Entities.Media;
+namespace Jitendex.Data.Home.Entities.Imagery;
 
-[Table(nameof(KanjiAliveAudio))]
-public sealed class KanjiAliveAudio
+[Table(nameof(Graphic))]
+public sealed class Graphic
 {
     [Key]
-    public required string Filename { get; init; }
-    public required int EntryId { get; set; }
-    public required string ReadingText { get; set; }
-    public required string KanjiFormText { get; set; }
-    public required string? Suffix { get; set; }
-    public required int? PitchAccent { get; set; }
+    public required int Id { get; init; }
+    public required GraphicLicenceId LicenceId { get; set; }
+    public required bool Cropped { get; set; }
+    public required string PageUrl { get; set; }
+    public required string FileUrl { get; set; }
+    public required string Author { get; set; }
+    public required string? AuthorUrl { get; set; }
+    public required string? Title { get; set; }
     public required byte[] FileData { get; set; }
+
+    [ForeignKey(nameof(LicenceId))]
+    public GraphicLicense License { get; set; } = null!;
+
+    [InverseProperty(nameof(SenseGraphic.Graphic))]
+    public ICollection<SenseGraphic> Senses { get; init; } = [];
 }

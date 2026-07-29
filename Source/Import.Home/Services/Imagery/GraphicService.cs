@@ -17,12 +17,12 @@
 using System.Collections.Frozen;
 using System.Text.Json;
 using Jitendex.Data.Home;
-using Jitendex.Data.Home.Entities.Media;
+using Jitendex.Data.Home.Entities.Imagery;
 using Jitendex.Import.Home.TableRows;
-using Jitendex.Import.Home.Tables.Media;
-using static Jitendex.Data.Home.Entities.Media.GraphicLicenceId;
+using Jitendex.Import.Home.Tables.Imagery;
+using static Jitendex.Data.Home.Entities.Imagery.GraphicLicenceId;
 
-namespace Jitendex.Import.Home.Services.Media;
+namespace Jitendex.Import.Home.Services.Imagery;
 
 internal sealed class GraphicService
 (

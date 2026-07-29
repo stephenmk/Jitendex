@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, SenseGraphicTable.cs, is part of Jitendex.
+// This file, KanjiAliveAudioTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,39 +15,39 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Media;
+using Jitendex.Data.Home.Entities.Sound;
 using Jitendex.Import.Home.TableRows;
 
-namespace Jitendex.Import.Home.Tables.Media;
+namespace Jitendex.Import.Home.Tables.Sound;
 
-internal sealed class SenseGraphicTable : Table<SenseGraphicRow>
+internal sealed class KanjiAliveAudioTable : Table<KanjiAliveAudioRow>
 {
-    protected override string Name { get; } = nameof(SenseGraphic);
+    protected override string Name { get; } = nameof(KanjiAliveAudio);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(SenseGraphic.SequenceId),
-        nameof(SenseGraphic.SenseOrder),
-        nameof(SenseGraphic.Order),
-        nameof(SenseGraphic.SequenceDate),
-        nameof(SenseGraphic.PatchId),
-        nameof(SenseGraphic.GraphicId),
+        nameof(KanjiAliveAudio.Filename),
+        nameof(KanjiAliveAudio.EntryId),
+        nameof(KanjiAliveAudio.ReadingText),
+        nameof(KanjiAliveAudio.KanjiFormText),
+        nameof(KanjiAliveAudio.Suffix),
+        nameof(KanjiAliveAudio.PitchAccent),
+        nameof(KanjiAliveAudio.FileData),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(SenseGraphic.SequenceId),
-        nameof(SenseGraphic.SenseOrder),
-        nameof(SenseGraphic.Order),
+        nameof(KanjiAliveAudio.Filename)
     ];
 
-    protected override object?[] ParameterValues(SenseGraphicRow row) =>
+    protected override object?[] ParameterValues(KanjiAliveAudioRow row) =>
     [
-        row.SequenceId,
-        row.SenseOrder,
-        row.Order,
-        row.SequenceDate,
-        row.PatchId,
-        row.GraphicId,
+        row.Filename,
+        row.EntryId,
+        row.ReadingText,
+        row.KanjiFormText,
+        row.Suffix,
+        row.PitchAccent,
+        row.FileData,
     ];
 }

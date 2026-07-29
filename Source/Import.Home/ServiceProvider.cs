@@ -16,13 +16,15 @@
 
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Services;
+using Jitendex.Import.Home.Services.Imagery;
 using Jitendex.Import.Home.Services.JMdict;
 using Jitendex.Import.Home.Services.Kanwa;
-using Jitendex.Import.Home.Services.Media;
+using Jitendex.Import.Home.Services.Sound;
 using Jitendex.Import.Home.Services.Tatoeba;
+using Jitendex.Import.Home.Tables.Imagery;
 using Jitendex.Import.Home.Tables.JMdict;
 using Jitendex.Import.Home.Tables.Kanwa;
-using Jitendex.Import.Home.Tables.Media;
+using Jitendex.Import.Home.Tables.Sound;
 using Jitendex.Import.Home.Tables.Tatoeba;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

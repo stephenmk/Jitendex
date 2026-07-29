@@ -16,9 +16,9 @@
 
 using Jitendex.Data;
 using Jitendex.Data.JMdict.ForkEntities.Headwords;
-using Jitendex.Build.JMdict.TableRows;
+using Jitendex.Process.JMdict.TableRows;
 
-namespace Jitendex.Build.JMdict.Tables.Headwords;
+namespace Jitendex.Process.JMdict.Tables.Headwords;
 
 internal sealed class HeadwordRuleTable : Table<HeadwordRuleRow>
 {

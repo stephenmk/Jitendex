@@ -29,7 +29,7 @@
   </Folder>
   <Folder Name="/Process/">
     <Project Path="Source/Process.JMdict/Jitendex.Process.JMdict.csproj" />
-    <Project Path="Source/Forks.Tatoeba/Jitendex.Forks.Tatoeba.csproj" />
+    <Project Path="Source/Process.Tatoeba/Jitendex.Process.Tatoeba.csproj" />
     <Project Path="Source/Export.Base/Jitendex.Export.Base.csproj" />
   </Folder>
   <Folder Name="/Libraries/">

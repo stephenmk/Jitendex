@@ -15,10 +15,10 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data.Tatoeba;
-using Jitendex.Forks.Tatoeba.Services;
+using Jitendex.Process.Tatoeba.Services;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.Tatoeba;
+namespace Jitendex.Process.Tatoeba;
 
 internal sealed class Service
 (

@@ -15,12 +15,12 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data.Tatoeba;
-using Jitendex.Forks.Tatoeba.Models;
-using Jitendex.Forks.Tatoeba.Tables;
+using Jitendex.Process.Tatoeba.Models;
+using Jitendex.Process.Tatoeba.Tables;
 using Jitendex.JapaneseTextUtils;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.Tatoeba.Services;
+namespace Jitendex.Process.Tatoeba.Services;
 
 internal partial class EntryLinkService
 (

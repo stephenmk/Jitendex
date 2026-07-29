@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, JMdictData.cs, is part of Jitendex.
+// This file, Program.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-using System.Collections.Frozen;
+namespace Jitendex.Process.Tatoeba;
 
-namespace Jitendex.Forks.Tatoeba.Models;
-
-public sealed record JMdictData
+internal static class Program
 {
-    public required FrozenDictionary<string, ImmutableArray<int>> ReadingToEntryIds { get; init; }
-    public required FrozenDictionary<string, ImmutableArray<int>> KanjiFormToEntryIds { get; init; }
-    public required FrozenDictionary<(string, string), ImmutableArray<int>> BridgeToEntryIds { get; init; }
-    public required FrozenDictionary<int, int> EntryIdToSenseCount { get; init; }
+    private static int Main()
+    {
+        var analyzer = ServiceProvider.GetService();
+        analyzer.Run();
+        return 0;
+    }
 }

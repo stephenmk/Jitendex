@@ -16,9 +16,9 @@
 
 using System.Collections.Frozen;
 using Jitendex.Data.JMdict;
-using Jitendex.Forks.Tatoeba.Models;
+using Jitendex.Process.Tatoeba.Models;
 
-namespace Jitendex.Forks.Tatoeba.Services;
+namespace Jitendex.Process.Tatoeba.Services;
 
 internal partial class JMdictDataService(JMdictForkContext jmdictContext)
 {

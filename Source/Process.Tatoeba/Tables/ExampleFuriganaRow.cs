@@ -16,9 +16,9 @@
 
 using Jitendex.Data;
 using Jitendex.Data.Tatoeba.ForkEntities;
-using Jitendex.Forks.Tatoeba.Models;
+using Jitendex.Process.Tatoeba.Models;
 
-namespace Jitendex.Forks.Tatoeba.Tables;
+namespace Jitendex.Process.Tatoeba.Tables;
 
 internal sealed class ExampleFuriganaTable : Table<ExampleFuriganaRow>
 {

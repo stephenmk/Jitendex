@@ -19,7 +19,7 @@ using Jitendex.Data.Tatoeba;
 using Jitendex.Data.Tatoeba.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Forks.Tatoeba.Services;
+namespace Jitendex.Process.Tatoeba.Services;
 
 internal sealed class DatabaseCopyService(TatoebaForkContext context)
 {

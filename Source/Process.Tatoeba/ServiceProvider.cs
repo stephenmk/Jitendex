@@ -17,12 +17,12 @@
 using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.Tatoeba;
-using Jitendex.Forks.Tatoeba.Services;
-using Jitendex.Forks.Tatoeba.Tables;
+using Jitendex.Process.Tatoeba.Services;
+using Jitendex.Process.Tatoeba.Tables;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Forks.Tatoeba;
+namespace Jitendex.Process.Tatoeba;
 
 internal static class ServiceProvider
 {

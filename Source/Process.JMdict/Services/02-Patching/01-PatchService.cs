@@ -81,7 +81,7 @@ internal partial class PatchService
             .Select(static p => new
             {
                 Key = p.Id,
-                Value = new { p.Id, p.SequenceId, p.SequenceDate, p.Json, p.PreviousPatchId }
+                Value = new { p.Id, p.SequenceId, p.SequenceDate, p.JsonDiff, p.PreviousPatchId }
             })
             .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 

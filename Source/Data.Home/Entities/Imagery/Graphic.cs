@@ -16,6 +16,8 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Jitendex.Data.Home.Entities.Attribution;
+using Jitendex.Data.Home.Entities.JMdict;
 
 namespace Jitendex.Data.Home.Entities.Imagery;
 
@@ -24,7 +26,7 @@ public sealed class Graphic
 {
     [Key]
     public required int Id { get; init; }
-    public required GraphicLicenceId LicenceId { get; set; }
+    public required LicenceId LicenceId { get; set; }
     public required bool Cropped { get; set; }
     public required string PageUrl { get; set; }
     public required string FileUrl { get; set; }
@@ -34,8 +36,8 @@ public sealed class Graphic
     public required byte[] FileData { get; set; }
 
     [ForeignKey(nameof(LicenceId))]
-    public GraphicLicense License { get; set; } = null!;
+    public License License { get; set; } = null!;
 
-    [InverseProperty(nameof(SenseGraphic.Graphic))]
-    public ICollection<SenseGraphic> Senses { get; init; } = [];
+    [InverseProperty(nameof(PatchGraphic.Graphic))]
+    public ICollection<PatchGraphic> JMdictPatches { get; init; } = [];
 }

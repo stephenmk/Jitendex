@@ -50,7 +50,7 @@ internal sealed class PatchRebaser(HomeContext context, JMdictContext jmdictCont
             AuthorId = author.Id,
             AuthorComment = comment,
             PreviousPatchId = null,
-            Json = json,
+            JsonDiff = json,
             Author = author,
         });
 

@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, JMdictPatch.cs, is part of Jitendex.
+// This file, Patch.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,13 +15,14 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Jitendex.Data.Home.Entities.Attribution;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.Home.Entities.JMdict;
 
-[Table(nameof(JMdictPatch))]
+[Table(nameof(Patch))]
 [PrimaryKey(nameof(Id))]
-public sealed class JMdictPatch
+public sealed class Patch
 {
     public required int Id { get; init; }
     public required int SequenceId { get; init; }
@@ -30,17 +31,20 @@ public sealed class JMdictPatch
     public required int AuthorId { get; init; }
     public required string AuthorComment { get; init; }
     public required int? PreviousPatchId { get; init; }
-    public required byte[] Json { get; init; }
+    public required byte[]? JsonDiff { get; init; }
 
     [ForeignKey(nameof(AuthorId))]
     public User Author { get; init; } = null!;
 
     [ForeignKey(nameof(PreviousPatchId))]
-    public JMdictPatch? PreviousPatch { get; init; }
+    public Patch? PreviousPatch { get; init; }
 
-    [InverseProperty(nameof(JMdictPatchApproval.Patch))]
-    public ICollection<JMdictPatchApproval> Approvals { get; init; } = [];
+    [InverseProperty(nameof(PatchGraphic.Patch))]
+    public List<PatchGraphic> GraphicPatches { get; init; } = [];
 
-    [InverseProperty(nameof(JMdictPatchRecall.Patch))]
-    public ICollection<JMdictPatchRecall> Recalls { get; init; } = [];
+    [InverseProperty(nameof(PatchApproval.Patch))]
+    public ICollection<PatchApproval> Approvals { get; init; } = [];
+
+    [InverseProperty(nameof(PatchRecall.Patch))]
+    public ICollection<PatchRecall> Recalls { get; init; } = [];
 }

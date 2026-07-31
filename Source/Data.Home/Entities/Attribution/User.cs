@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, JMdictPatchApproval.cs, is part of Jitendex.
+// This file, User.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,21 +15,24 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Jitendex.Data.Home.Entities.JMdict;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.Home.Entities.JMdict;
+namespace Jitendex.Data.Home.Entities.Attribution;
 
-[Table(nameof(JMdictPatchApproval))]
-[PrimaryKey(nameof(PatchId), nameof(ApproverId), nameof(CreatedAt))]
-public sealed class JMdictPatchApproval
+[Table(nameof(User))]
+[PrimaryKey(nameof(Id))]
+public sealed class User
 {
-    public required int PatchId { get; init; }
-    public required int ApproverId { get; init; }
-    public required DateTime CreatedAt { get; init; }
+    public required int Id { get; init; }
+    public required string Name { get; init; }
 
-    [ForeignKey(nameof(PatchId))]
-    public JMdictPatch Patch { get; init; } = null!;
+    [InverseProperty(nameof(Patch.Author))]
+    public ICollection<Patch> AuthoredJMdictPatches { get; init; } = [];
 
-    [ForeignKey(nameof(ApproverId))]
-    public User Approver { get; init; } = null!;
+    [InverseProperty(nameof(PatchApproval.Approver))]
+    public ICollection<PatchApproval> ApprovedJMdictPatches { get; init; } = [];
+
+    [InverseProperty(nameof(PatchRecall.Recaller))]
+    public ICollection<PatchRecall> RecalledJMdictPatches { get; init; } = [];
 }

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-using Jitendex.Data.Home.Entities;
+using Jitendex.Data.Home.Entities.Attribution;
 using Jitendex.Data.Home.Entities.Imagery;
 using Jitendex.Data.Home.Entities.JMdict;
 using Jitendex.Data.Home.Entities.Kanwa;
@@ -26,7 +26,22 @@ namespace Jitendex.Data.Home;
 
 public class HomeContext() : SqliteContext(DatabaseFile.Home)
 {
+    #region Attribution
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<License> GraphicLicenses { get; set; } = null!;
+    #endregion
+
+    #region Imagery
+    public DbSet<Graphic> Graphics { get; set; } = null!;
+    #endregion
+
+    #region JMdict
+    public DbSet<Patch> JMdictPatches { get; set; } = null!;
+    public DbSet<PatchGraphic> JMdictPatchGraphics { get; set; } = null!;
+    public DbSet<PatchApproval> JMdictPatchApprovals { get; set; } = null!;
+    public DbSet<PatchRecall> JMdictPatchRecalls { get; set; } = null!;
+    public DbSet<TrademarkGloss> TrademarkGlosses { get; set; } = null!;
+    #endregion
 
     #region Kanwa
     public DbSet<Character> Characters { get; set; } = null!;
@@ -39,25 +54,12 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
     public DbSet<CompoundReadingType> CompoundReadingTypes { get; set; } = null!;
     #endregion
 
-    #region JMdict
-    public DbSet<TrademarkGloss> TrademarkGlosses { get; set; } = null!;
-    public DbSet<JMdictPatch> JMdictPatches { get; set; } = null!;
-    public DbSet<JMdictPatchApproval> JMdictPatchApprovals { get; set; } = null!;
-    public DbSet<JMdictPatchRecall> JMdictPatchRecalls { get; set; } = null!;
+    #region Sound
+    public DbSet<KanjiAliveAudio> KanjiAliveAudios { get; set; } = null!;
     #endregion
 
     #region Tatoeba
     public DbSet<Example> Examples { get; set; } = null!;
     public DbSet<ExampleFurigana> ExampleFurigana { get; set; } = null!;
-    #endregion
-
-    #region Imagery
-    public DbSet<Graphic> Graphics { get; set; } = null!;
-    public DbSet<GraphicLicense> GraphicLicenses { get; set; } = null!;
-    public DbSet<SenseGraphic> SenseGraphics { get; set; } = null!;
-    #endregion
-
-    #region Sound
-    public DbSet<KanjiAliveAudio> KanjiAliveAudios { get; set; } = null!;
     #endregion
 }

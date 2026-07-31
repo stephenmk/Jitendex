@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, User.cs, is part of Jitendex.
+// This file, PatchGraphic.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,21 +15,31 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Jitendex.Data.Home.Entities.JMdict;
+using Jitendex.Data.Home.Entities.Imagery;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.Home.Entities;
+namespace Jitendex.Data.Home.Entities.JMdict;
 
-[Table(nameof(User))]
-[PrimaryKey(nameof(Id))]
-public sealed class User
+[Table(nameof(PatchGraphic))]
+[PrimaryKey(nameof(PatchId), nameof(Order))]
+public sealed class PatchGraphic
 {
-    public required int Id { get; init; }
-    public required string Name { get; init; }
+    public required int PatchId { get; init; }
+    public required int Order { get; init; }
 
-    [InverseProperty(nameof(JMdictPatch.Author))]
-    public ICollection<JMdictPatch> AuthoredJMdictPatches { get; init; } = [];
+    public required PatchGraphicOperation Operation { get; set; }
+    public required int SenseOrder { get; set; }
+    public required int GraphicId { get; set; }
 
-    [InverseProperty(nameof(JMdictPatchApproval.Approver))]
-    public ICollection<JMdictPatchApproval> ApprovedJMdictPatches { get; init; } = [];
+    [ForeignKey(nameof(PatchId))]
+    public Patch Patch { get; init; } = null!;
+
+    [ForeignKey(nameof(GraphicId))]
+    public Graphic Graphic { get; set; } = null!;
+}
+
+public enum PatchGraphicOperation
+{
+    Add,
+    Remove,
 }

@@ -24,7 +24,7 @@ namespace Jitendex.Data.Home.Entities.Attribution;
 public sealed class License
 {
     [Key]
-    public required LicenseId Id { get; init; }
+    public required int Id { get; init; }
     public required string Name { get; set; }
     public required string InfoUrl { get; set; }
 

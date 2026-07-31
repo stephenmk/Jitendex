@@ -26,7 +26,7 @@ public sealed class Graphic
 {
     [Key]
     public required int Id { get; init; }
-    public required LicenseId LicenseId { get; set; }
+    public required int LicenseId { get; set; }
     public required bool Cropped { get; set; }
     public required string PageUrl { get; set; }
     public required string FileUrl { get; set; }

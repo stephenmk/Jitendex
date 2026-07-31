@@ -28,7 +28,7 @@ public class HomeContext() : SqliteContext(DatabaseFile.Home)
 {
     #region Attribution
     public DbSet<User> Users { get; set; } = null!;
-    public DbSet<License> GraphicLicenses { get; set; } = null!;
+    public DbSet<License> Licenses { get; set; } = null!;
     #endregion
 
     #region Imagery

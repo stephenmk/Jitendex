@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, LicenceId.cs, is part of Jitendex.
+// This file, LicenseId.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -16,7 +16,7 @@
 
 namespace Jitendex.Data.Home.Entities.Attribution;
 
-public enum LicenceId
+public enum LicenseId
 {
     PublicDomain,
     CreativeCommonsZero1_0,

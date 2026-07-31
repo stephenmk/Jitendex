@@ -26,7 +26,7 @@ public sealed class Graphic
 {
     [Key]
     public required int Id { get; init; }
-    public required LicenceId LicenceId { get; set; }
+    public required LicenseId LicenseId { get; set; }
     public required bool Cropped { get; set; }
     public required string PageUrl { get; set; }
     public required string FileUrl { get; set; }
@@ -35,7 +35,7 @@ public sealed class Graphic
     public required string? Title { get; set; }
     public required byte[] FileData { get; set; }
 
-    [ForeignKey(nameof(LicenceId))]
+    [ForeignKey(nameof(LicenseId))]
     public License License { get; set; } = null!;
 
     [InverseProperty(nameof(PatchGraphic.Graphic))]

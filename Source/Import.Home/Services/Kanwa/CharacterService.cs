@@ -118,7 +118,7 @@ internal sealed class CharacterService
     private string GetJsonFilePath()
         => Path.Join
         (
-            options.GetKanwaDirectory().FullName,
+            options.GetDirectory(DataDirectory.Kanwa).FullName,
             "characters.json"
         );
 

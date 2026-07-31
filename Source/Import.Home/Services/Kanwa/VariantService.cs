@@ -97,7 +97,7 @@ internal sealed class VariantService
     private string GetJsonFilePath()
         => Path.Join
         (
-            options.GetKanwaDirectory().FullName,
+            options.GetDirectory(DataDirectory.Kanwa).FullName,
             "variants.json"
         );
 

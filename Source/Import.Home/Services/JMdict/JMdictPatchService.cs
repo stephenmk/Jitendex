@@ -124,7 +124,7 @@ internal sealed class JMdictPatchService
     {
         var data = context.JMdictPatches
             .OrderBy(static x => x.Id)
-            .Select(static x => new { Key = x.Id, Value = x.Json })
+            .Select(static x => new { Key = x.Id, Value = x.JsonDiff })
             .ToDictionary(static x => x.Key, static x => x.Value);
 
         var patchDir = GetPatchDirectory();
@@ -153,12 +153,12 @@ internal sealed class JMdictPatchService
     private string GetMetadataFilePath()
         => Path.Join
         (
-            options.GetPatchDirectory().FullName,
-            "jmdict.json"
+            GetPatchDirectory().FullName,
+            "index.json"
         );
 
     private DirectoryInfo GetPatchDirectory()
-        => options.GetPatchDirectory().CreateSubdirectory("jmdict");
+        => options.GetDirectory(DataDirectory.JMdict).CreateSubdirectory("patches");
 
     private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {

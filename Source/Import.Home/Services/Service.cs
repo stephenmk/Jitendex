@@ -15,6 +15,7 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data.Home;
+using Jitendex.Import.Home.Services.Attribution;
 using Jitendex.Import.Home.Services.Imagery;
 using Jitendex.Import.Home.Services.JMdict;
 using Jitendex.Import.Home.Services.Kanwa;
@@ -26,10 +27,13 @@ namespace Jitendex.Import.Home.Services;
 internal sealed class Service
 (
     HomeContext context,
+
+    UserService userService,
+    LicenseService licenseService,
+
     CharacterService characterService,
     VariantService variantService,
     CompoundService compoundService,
-    UserService userService,
     JMdictPatchService jmdictPatchService,
     TrademarkService trademarkService,
     ExampleFuriganaService exampleFuriganaService,
@@ -43,15 +47,18 @@ internal sealed class Service
 
         using var transaction = context.Database.BeginTransaction();
 
+        await userService.ImportAsync();
+        await licenseService.ImportAsync();
+
+        await graphicService.ImportAsync();
+
         await characterService.ImportAsync();
         await variantService.ImportAsync();
         await compoundService.ImportAsync();
 
-        await userService.ImportAsync();
         await jmdictPatchService.ImportAsync();
         await trademarkService.ImportAsync();
         await exampleFuriganaService.ImportAsync();
-        await graphicService.ImportAsync();
         await audioService.ImportAsync();
 
         transaction.Commit();
@@ -60,15 +67,18 @@ internal sealed class Service
 
     public async Task ExportAsync()
     {
+        await userService.ExportAsync();
+        await licenseService.ExportAsync();
+
+        await graphicService.ExportAsync();
+
         await characterService.ExportAsync();
         await variantService.ExportAsync();
         await compoundService.ExportAsync();
 
-        await userService.ExportAsync();
         await jmdictPatchService.ExportAsync();
         await trademarkService.ExportAsync();
         await exampleFuriganaService.ExportAsync();
-        await graphicService.ExportAsync();
         await audioService.ExportAsync();
     }
 }

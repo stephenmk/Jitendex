@@ -27,7 +27,7 @@ internal sealed class GraphicTable : Table<GraphicRow>
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
         nameof(Graphic.Id),
-        nameof(Graphic.LicenceId),
+        nameof(Graphic.LicenseId),
         nameof(Graphic.Cropped),
         nameof(Graphic.PageUrl),
         nameof(Graphic.FileUrl),

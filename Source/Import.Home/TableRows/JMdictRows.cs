@@ -28,6 +28,15 @@ internal sealed record JMdictPatchRow
     byte[] Json
 );
 
+internal sealed record JMdictPatchGraphicRow
+(
+    int PatchId,
+    int Order,
+    int Operation,
+    int SenseOrder,
+    int GraphicId
+);
+
 internal sealed record JMdictPatchApprovalRow
 (
     int PatchId,

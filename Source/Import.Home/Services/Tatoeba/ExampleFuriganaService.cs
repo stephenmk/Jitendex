@@ -143,7 +143,7 @@ internal sealed class ExampleFuriganaService
     private string GetCsvFilePath()
         => Path.Join
         (
-            options.GetTatoebaDirectory().FullName,
+            options.GetDirectory(DataDirectory.Tatoeba).FullName,
             "example_sentence_furigana.csv"
         );
 }

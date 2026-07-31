@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, TrademarkService.cs, is part of Jitendex.
+// This file, 02-LicenseService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -17,16 +17,13 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
-using Jitendex.Import.Home.TableRows;
-using Jitendex.Import.Home.Tables.JMdict;
 
-namespace Jitendex.Import.Home.Services.JMdict;
+namespace Jitendex.Import.Home.Services.Attribution;
 
-internal sealed class TrademarkService
+internal sealed class LicenseService
 (
     HomeContext context,
-    ServiceOptions options,
-    TrademarkGlossTable table
+    ServiceOptions options
 )
 {
     public async Task ImportAsync()
@@ -34,33 +31,47 @@ internal sealed class TrademarkService
         var filePath = GetJsonFilePath();
         await using var stream = File.OpenRead(filePath);
         var data = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(stream) ?? [];
-        var rows = data.Select(static x => new TrademarkGlossRow(x.Key, x.Value));
-        table.InsertItems(context, rows);
+
+        foreach (var (key, value) in data)
+        {
+            context.Licenses.Add(new()
+            {
+                Id = default,
+                Name = key,
+                InfoUrl = value
+            });
+        }
+
+        context.SaveChanges();
     }
 
     public async Task ExportAsync()
     {
-        var data = context.TrademarkGlosses
-            .OrderBy(static g => g.OriginalText.ToLower())
-            .Select(static g => new { Key = g.OriginalText, Value = g.ReplacementText })
+        var dictionary = context.Licenses
+            .OrderBy(static x => x.Id)
+            .Select(static x => new
+            {
+                Key = x.Name,
+                Value = x.InfoUrl,
+            })
             .ToDictionary(static x => x.Key, static x => x.Value);
 
         var filePath = GetJsonFilePath();
         await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-        await JsonSerializer.SerializeAsync(stream, data, WriteOptions);
+        await JsonSerializer.SerializeAsync(stream, dictionary, JsonSerializerOptions);
     }
 
     private string GetJsonFilePath()
         => Path.Join
         (
-            options.GetDirectory(DataDirectory.JMdict).FullName,
-            "trademarks.json"
+            options.GetDirectory(DataDirectory.Attribution).FullName,
+            "licenses.json"
         );
 
-    private static readonly JsonSerializerOptions WriteOptions = new()
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         WriteIndented = true,
         IndentSize = 4,
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        Encoder = JavaScriptEncoder.Default,
     };
 }

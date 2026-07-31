@@ -22,20 +22,20 @@ namespace Jitendex.Import.Home.Tables.JMdict;
 
 internal sealed class JMdictPatchApprovalTable : Table<JMdictPatchApprovalRow>
 {
-    protected override string Name { get; } = nameof(JMdictPatchApproval);
+    protected override string Name { get; } = nameof(PatchApproval);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(JMdictPatchApproval.PatchId),
-        nameof(JMdictPatchApproval.ApproverId),
-        nameof(JMdictPatchApproval.CreatedAt),
+        nameof(PatchApproval.PatchId),
+        nameof(PatchApproval.ApproverId),
+        nameof(PatchApproval.CreatedAt),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(JMdictPatchApproval.PatchId),
-        nameof(JMdictPatchApproval.ApproverId),
-        nameof(JMdictPatchApproval.CreatedAt),
+        nameof(PatchApproval.PatchId),
+        nameof(PatchApproval.ApproverId),
+        nameof(PatchApproval.CreatedAt),
     ];
 
     protected override object?[] ParameterValues(JMdictPatchApprovalRow row) =>

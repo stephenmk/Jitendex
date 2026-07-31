@@ -22,20 +22,20 @@ namespace Jitendex.Import.Home.Tables.JMdict;
 
 internal sealed class JMdictPatchRecallTable : Table<JMdictPatchRecallRow>
 {
-    protected override string Name { get; } = nameof(JMdictPatchRecall);
+    protected override string Name { get; } = nameof(PatchRecall);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(JMdictPatchRecall.PatchId),
-        nameof(JMdictPatchRecall.RecallerId),
-        nameof(JMdictPatchRecall.CreatedAt),
+        nameof(PatchRecall.PatchId),
+        nameof(PatchRecall.RecallerId),
+        nameof(PatchRecall.CreatedAt),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(JMdictPatchRecall.PatchId),
-        nameof(JMdictPatchRecall.RecallerId),
-        nameof(JMdictPatchRecall.CreatedAt),
+        nameof(PatchRecall.PatchId),
+        nameof(PatchRecall.RecallerId),
+        nameof(PatchRecall.CreatedAt),
     ];
 
     protected override object?[] ParameterValues(JMdictPatchRecallRow row) =>

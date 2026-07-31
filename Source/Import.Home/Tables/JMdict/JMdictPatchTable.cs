@@ -22,23 +22,23 @@ namespace Jitendex.Import.Home.Tables.JMdict;
 
 internal sealed class JMdictPatchTable : Table<JMdictPatchRow>
 {
-    protected override string Name { get; } = nameof(JMdictPatch);
+    protected override string Name { get; } = nameof(Patch);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(JMdictPatch.Id),
-        nameof(JMdictPatch.SequenceId),
-        nameof(JMdictPatch.SequenceDate),
-        nameof(JMdictPatch.CreatedAt),
-        nameof(JMdictPatch.AuthorId),
-        nameof(JMdictPatch.AuthorComment),
-        nameof(JMdictPatch.PreviousPatchId),
-        nameof(JMdictPatch.Json),
+        nameof(Patch.Id),
+        nameof(Patch.SequenceId),
+        nameof(Patch.SequenceDate),
+        nameof(Patch.CreatedAt),
+        nameof(Patch.AuthorId),
+        nameof(Patch.AuthorComment),
+        nameof(Patch.PreviousPatchId),
+        nameof(Patch.JsonDiff),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(JMdictPatch.Id)
+        nameof(Patch.Id)
     ];
 
     protected override object?[] ParameterValues(JMdictPatchRow row) =>

@@ -20,26 +20,22 @@ namespace Jitendex.Import.Home.Services;
 
 internal sealed record ServiceOptions
 {
-    public DirectoryInfo DataDirectory { get; }
+    private string DataDirectoryPath { get; }
 
     public ServiceOptions(DirectoryInfo? dataDirectory)
     {
-        DataDirectory = dataDirectory
-            ?? AppDirectory.DataDirectory.Get(DataSubdirectory.HomeDataDirectory);
+        dataDirectory ??= AppDirectory.DataDirectory.Get(DataSubdirectory.HomeDataDirectory);
 
-        if (!DataDirectory.Exists)
-        {
-            DataDirectory.Create();
-        }
+        if (!dataDirectory.Exists)
+            dataDirectory.Create();
+
+        DataDirectoryPath = dataDirectory.FullName;
     }
 
-    public DirectoryInfo GetKanwaDirectory() => GetDirectory("kanwa");
-    public DirectoryInfo GetPatchDirectory() => GetDirectory("patches");
-    public DirectoryInfo GetJMdictDirectory() => GetDirectory("jmdict");
-    public DirectoryInfo GetTatoebaDirectory() => GetDirectory("tatoeba");
-    public DirectoryInfo GetGraphicDirectory() => GetDirectory("graphics");
-    public DirectoryInfo GetAudioDirectory() => GetDirectory("audio");
-
-    private DirectoryInfo GetDirectory(string name)
-        => DataDirectory.CreateSubdirectory(name);
+    public DirectoryInfo GetDirectory(DataDirectory directory)
+        => new(Path.Join
+        (
+            DataDirectoryPath,
+            directory.ToString().ToLower()
+        ));
 }

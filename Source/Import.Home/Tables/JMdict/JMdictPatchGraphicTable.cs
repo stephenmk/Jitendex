@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, SenseGraphicTable.cs, is part of Jitendex.
+// This file, JMdictPatchGraphicTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,39 +15,36 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Imagery;
+using Jitendex.Data.Home.Entities.JMdict;
 using Jitendex.Import.Home.TableRows;
 
-namespace Jitendex.Import.Home.Tables.Imagery;
+namespace Jitendex.Import.Home.Tables.JMdict;
 
-internal sealed class SenseGraphicTable : Table<SenseGraphicRow>
+internal sealed class JMdictPatchGraphicTable : Table<JMdictPatchGraphicRow>
 {
-    protected override string Name { get; } = nameof(SenseGraphic);
+    protected override string Name { get; } = nameof(PatchGraphic);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(SenseGraphic.SequenceId),
-        nameof(SenseGraphic.SenseOrder),
-        nameof(SenseGraphic.Order),
-        nameof(SenseGraphic.SequenceDate),
-        nameof(SenseGraphic.PatchId),
-        nameof(SenseGraphic.GraphicId),
+        nameof(PatchGraphic.PatchId),
+        nameof(PatchGraphic.Order),
+        nameof(PatchGraphic.Operation),
+        nameof(PatchGraphic.SenseOrder),
+        nameof(PatchGraphic.GraphicId),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(SenseGraphic.SequenceId),
-        nameof(SenseGraphic.SenseOrder),
-        nameof(SenseGraphic.Order),
+        nameof(PatchGraphic.PatchId),
+        nameof(PatchGraphic.Order),
     ];
 
-    protected override object?[] ParameterValues(SenseGraphicRow row) =>
+    protected override object?[] ParameterValues(JMdictPatchGraphicRow row) =>
     [
-        row.SequenceId,
-        row.SenseOrder,
-        row.Order,
-        row.SequenceDate,
         row.PatchId,
+        row.Order,
+        row.Operation,
+        row.SenseOrder,
         row.GraphicId,
     ];
 }

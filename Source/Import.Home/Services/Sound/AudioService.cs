@@ -91,14 +91,14 @@ internal sealed class AudioService
     private string GetCsvFilePath()
         => Path.Join
         (
-            options.GetAudioDirectory().FullName,
+            options.GetDirectory(DataDirectory.Audio).FullName,
             "kanjialive.csv"
         );
 
     private string GetDataDirectoryPath()
-    => Path.Join
-    (
-        options.GetAudioDirectory().FullName,
-        "kanjialive"
-    );
+        => Path.Join
+        (
+            options.GetDirectory(DataDirectory.Audio).FullName,
+            "kanjialive"
+        );
 }

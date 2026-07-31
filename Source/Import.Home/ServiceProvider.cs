@@ -58,7 +58,7 @@ internal static class ServiceProvider
         .AddTransient<ExampleTable>()
         .AddTransient<ExampleFuriganaTable>()
         .AddTransient<GraphicTable>()
-        .AddTransient<SenseGraphicTable>()
+        .AddTransient<JMdictPatchGraphicTable>()
         .AddTransient<GraphicLicenseTable>()
         .AddTransient<KanjiAliveAudioTable>()
 

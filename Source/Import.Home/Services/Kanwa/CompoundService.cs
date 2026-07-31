@@ -101,7 +101,7 @@ internal sealed class CompoundService
     private string GetJsonFilePath()
         => Path.Join
         (
-            options.GetKanwaDirectory().FullName,
+            options.GetDirectory(DataDirectory.Kanwa).FullName,
             "compounds.json"
         );
 

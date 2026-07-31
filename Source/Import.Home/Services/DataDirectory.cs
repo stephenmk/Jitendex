@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, ImageryRows.cs, is part of Jitendex.
+// This file, DataDirectory.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-namespace Jitendex.Import.Home.TableRows;
+namespace Jitendex.Import.Home.Services;
 
-internal sealed record GraphicRow
-(
-    int Id,
-    int LicenseId,
-    bool Cropped,
-    string PageUrl,
-    string FileUrl,
-    string Author,
-    string? AuthorUrl,
-    string? Title,
-    byte[] FileData
-);
+internal enum DataDirectory
+{
+    Attribution,
+    Audio,
+    Graphics,
+    JMdict,
+    Kanjidic2,
+    Kanwa,
+    Tatoeba,
+    Yomitan,
+}

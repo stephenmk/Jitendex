@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, UserService.cs, is part of Jitendex.
+// This file, 01-UserService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -18,9 +18,13 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
 
-namespace Jitendex.Import.Home.Services;
+namespace Jitendex.Import.Home.Services.Attribution;
 
-internal sealed class UserService(HomeContext context, ServiceOptions options)
+internal sealed class UserService
+(
+    HomeContext context,
+    ServiceOptions options
+)
 {
     public async Task ImportAsync()
     {
@@ -59,7 +63,7 @@ internal sealed class UserService(HomeContext context, ServiceOptions options)
     private string GetJsonFilePath()
         => Path.Join
         (
-            options.GetPatchDirectory().FullName,
+            options.GetDirectory(DataDirectory.Attribution).FullName,
             "users.json"
         );
 

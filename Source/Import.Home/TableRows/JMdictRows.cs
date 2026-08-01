@@ -24,8 +24,13 @@ internal sealed record JMdictPatchRow
     DateTime CreatedAt,
     int AuthorId,
     string AuthorComment,
-    int? PreviousPatchId,
-    byte[] Json
+    int? PreviousPatchId
+);
+
+internal sealed record JMdictPatchRevisionRow
+(
+    int PatchId,
+    byte[] JsonDiff
 );
 
 internal sealed record JMdictPatchGraphicRow

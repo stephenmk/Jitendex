@@ -31,13 +31,17 @@ internal sealed class Service
     UserService userService,
     LicenseService licenseService,
 
+    GraphicService graphicService,
+
+    JMdictPatchService jmdictPatchService,
+    JMdictPatchApprovalService jmdictPatchApprovalService,
+    JMdictPatchRecallService jmdictPatchRecallService,
+    TrademarkService trademarkService,
+
     CharacterService characterService,
     VariantService variantService,
     CompoundService compoundService,
-    JMdictPatchService jmdictPatchService,
-    TrademarkService trademarkService,
     ExampleFuriganaService exampleFuriganaService,
-    GraphicService graphicService,
     AudioService audioService
 )
 {
@@ -52,12 +56,15 @@ internal sealed class Service
 
         await graphicService.ImportAsync();
 
+        await jmdictPatchService.ImportAsync();
+        await jmdictPatchApprovalService.ImportAsync();
+        await jmdictPatchRecallService.ImportAsync();
+        await trademarkService.ImportAsync();
+
         await characterService.ImportAsync();
         await variantService.ImportAsync();
         await compoundService.ImportAsync();
 
-        await jmdictPatchService.ImportAsync();
-        await trademarkService.ImportAsync();
         await exampleFuriganaService.ImportAsync();
         await audioService.ImportAsync();
 
@@ -72,12 +79,15 @@ internal sealed class Service
 
         await graphicService.ExportAsync();
 
+        await jmdictPatchService.ExportAsync();
+        await jmdictPatchApprovalService.ImportAsync();
+        await jmdictPatchRecallService.ImportAsync();
+        await trademarkService.ExportAsync();
+
         await characterService.ExportAsync();
         await variantService.ExportAsync();
         await compoundService.ExportAsync();
 
-        await jmdictPatchService.ExportAsync();
-        await trademarkService.ExportAsync();
         await exampleFuriganaService.ExportAsync();
         await audioService.ExportAsync();
     }

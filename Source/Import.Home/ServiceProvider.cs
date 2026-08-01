@@ -16,6 +16,7 @@
 
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Services;
+using Jitendex.Import.Home.Services.Attribution;
 using Jitendex.Import.Home.Services.Imagery;
 using Jitendex.Import.Home.Services.JMdict;
 using Jitendex.Import.Home.Services.Kanwa;
@@ -59,18 +60,25 @@ internal static class ServiceProvider
         .AddTransient<ExampleFuriganaTable>()
         .AddTransient<GraphicTable>()
         .AddTransient<JMdictPatchGraphicTable>()
-        .AddTransient<GraphicLicenseTable>()
         .AddTransient<KanjiAliveAudioTable>()
 
         // Import services.
+        .AddTransient<UserService>()
+        .AddTransient<LicenseService>()
+
+        .AddTransient<GraphicService>()
+
+        .AddTransient<JMdictPatchService>()
+        .AddTransient<JMdictPatchApprovalService>()
+        .AddTransient<JMdictPatchRecallService>()
+        .AddTransient<TrademarkService>()
+
         .AddTransient<CharacterService>()
         .AddTransient<VariantService>()
         .AddTransient<CompoundService>()
-        .AddTransient<UserService>()
-        .AddTransient<JMdictPatchService>()
-        .AddTransient<TrademarkService>()
+
         .AddTransient<ExampleFuriganaService>()
-        .AddTransient<GraphicService>()
+
         .AddTransient<AudioService>()
 
         // Logging

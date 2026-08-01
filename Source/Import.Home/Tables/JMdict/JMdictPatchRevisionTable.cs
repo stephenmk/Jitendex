@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, JMdictPatchTable.cs, is part of Jitendex.
+// This file, JMdictPatchRevisionTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -20,34 +20,24 @@ using Jitendex.Import.Home.TableRows;
 
 namespace Jitendex.Import.Home.Tables.JMdict;
 
-internal sealed class JMdictPatchTable : Table<JMdictPatchRow>
+internal sealed class JMdictPatchRevisionTable : Table<JMdictPatchRevisionRow>
 {
-    protected override string Name { get; } = nameof(Patch);
+    protected override string Name { get; } = nameof(PatchRevision);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(Patch.Id),
-        nameof(Patch.SequenceId),
-        nameof(Patch.SequenceDate),
-        nameof(Patch.CreatedAt),
-        nameof(Patch.AuthorId),
-        nameof(Patch.AuthorComment),
-        nameof(Patch.PreviousPatchId),
+        nameof(PatchRevision.PatchId)
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(Patch.Id)
+        nameof(PatchRevision.PatchId),
+        nameof(PatchRevision.JsonDiff),
     ];
 
-    protected override object?[] ParameterValues(JMdictPatchRow row) =>
+    protected override object?[] ParameterValues(JMdictPatchRevisionRow row) =>
     [
-        row.Id,
-        row.SequenceId,
-        row.SequenceDate,
-        row.CreatedAt,
-        row.AuthorId,
-        row.AuthorComment,
-        row.PreviousPatchId,
+        row.PatchId,
+        row.JsonDiff,
     ];
 }

@@ -43,22 +43,8 @@ internal sealed class GraphicService
 
     public async Task ImportAsync()
     {
-        var fileData = new Dictionary<int, byte[]>();
-        foreach (var dir in options.GetDirectory(DataDirectory.Graphics).EnumerateDirectories())
-        {
-            var idRange = 1000 * int.Parse(dir.Name);
-            foreach (var file in dir.EnumerateFiles())
-            {
-                var basename = Path.GetFileNameWithoutExtension(file.Name);
-                var id = idRange + int.Parse(basename);
-                fileData.Add(id, File.ReadAllBytes(file.FullName));
-            }
-        }
-
-        var filePath = GetJsonFilePath();
-        await using var stream = File.OpenRead(filePath);
-        var index = await JsonSerializer.DeserializeAsync<Dictionary<int, GraphicObject>>(stream, ReadOptions) ?? [];
-
+        var index = LoadIndex();
+        var fileData = LoadFileData();
         var licenseNameToId = context.Licenses
             .Select(static l => new { l.Id, l.Name })
             .ToFrozenDictionary(static x => x.Name, static x => x.Id);
@@ -82,6 +68,29 @@ internal sealed class GraphicService
         }
 
         graphicTable.InsertItems(context, graphicRows);
+    }
+
+    private Dictionary<int, GraphicObject> LoadIndex()
+    {
+        var filePath = GetJsonFilePath();
+        using var stream = File.OpenRead(filePath);
+        return JsonSerializer.Deserialize<Dictionary<int, GraphicObject>>(stream, ReadOptions) ?? [];
+    }
+
+    private Dictionary<int, byte[]> LoadFileData()
+    {
+        var fileData = new Dictionary<int, byte[]>();
+        foreach (var dir in options.GetDirectory(DataDirectory.Graphics).EnumerateDirectories())
+        {
+            var idRange = 1000 * int.Parse(dir.Name);
+            foreach (var file in dir.EnumerateFiles())
+            {
+                var basename = Path.GetFileNameWithoutExtension(file.Name);
+                var id = idRange + int.Parse(basename);
+                fileData.Add(id, File.ReadAllBytes(file.FullName));
+            }
+        }
+        return fileData;
     }
 
     public async Task ExportAsync()

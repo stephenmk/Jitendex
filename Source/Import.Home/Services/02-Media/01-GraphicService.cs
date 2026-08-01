@@ -27,7 +27,7 @@ internal sealed class GraphicService
 (
     HomeContext context,
     ServiceOptions options,
-    GraphicTable graphicTable
+    GraphicTable table
 ) :
     IServiceUnit
 {
@@ -67,7 +67,7 @@ internal sealed class GraphicService
             ));
         }
 
-        graphicTable.InsertItems(context, graphicRows);
+        table.InsertItems(context, graphicRows);
     }
 
     private Dictionary<int, GraphicObject> LoadIndex()

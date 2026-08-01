@@ -25,7 +25,7 @@ internal sealed class JMdictPatchRecallService
 (
     HomeContext context,
     ServiceOptions options,
-    JMdictPatchRecallTable recallTable
+    JMdictPatchRecallTable table
 ) :
     IServiceUnit
 {
@@ -45,7 +45,7 @@ internal sealed class JMdictPatchRecallService
             ));
         }
 
-        recallTable.InsertItems(context, rows);
+        table.InsertItems(context, rows);
     }
 
     public async Task ExportAsync()

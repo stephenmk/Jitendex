@@ -25,7 +25,7 @@ internal sealed class JMdictPatchApprovalService
 (
     HomeContext context,
     ServiceOptions options,
-    JMdictPatchApprovalTable approvalTable
+    JMdictPatchApprovalTable table
 ) :
     IServiceUnit
 {
@@ -45,7 +45,7 @@ internal sealed class JMdictPatchApprovalService
             ));
         }
 
-        approvalTable.InsertItems(context, rows);
+        table.InsertItems(context, rows);
     }
 
     public async Task ExportAsync()

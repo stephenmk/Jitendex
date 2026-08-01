@@ -26,7 +26,7 @@ internal sealed class JMdictPatchService
 (
     HomeContext context,
     ServiceOptions options,
-    JMdictPatchTable patchTable
+    JMdictPatchTable table
 ) :
     IServiceUnit
 {
@@ -52,7 +52,7 @@ internal sealed class JMdictPatchService
             ));
         }
 
-        patchTable.InsertItems(context, patchRows);
+        table.InsertItems(context, patchRows);
     }
 
     public async Task ExportAsync()

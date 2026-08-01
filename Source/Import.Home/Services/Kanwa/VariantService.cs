@@ -34,7 +34,8 @@ internal sealed class VariantService
     CharacterTable characterTable,
     VariantTable variantTable,
     VariantTypeTable typeTable
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

@@ -34,7 +34,8 @@ internal sealed class CharacterService
     CharacterTable characterTable,
     CharacterReadingTable readingTable,
     CharacterReadingTypeTable typeTable
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

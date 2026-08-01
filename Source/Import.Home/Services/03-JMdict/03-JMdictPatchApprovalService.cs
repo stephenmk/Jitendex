@@ -26,7 +26,8 @@ internal sealed class JMdictPatchApprovalService
     HomeContext context,
     ServiceOptions options,
     JMdictPatchApprovalTable approvalTable
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

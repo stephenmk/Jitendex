@@ -34,7 +34,8 @@ internal sealed class CompoundService
     CompoundTable compoundTable,
     CompoundReadingTable readingTable,
     CompoundReadingTypeTable typeTable
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

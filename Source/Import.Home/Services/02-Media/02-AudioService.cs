@@ -25,7 +25,8 @@ internal sealed class AudioService
     HomeContext context,
     ServiceOptions options,
     AudioTable table
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

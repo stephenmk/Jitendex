@@ -27,7 +27,8 @@ internal sealed class TrademarkService
     HomeContext context,
     ServiceOptions options,
     TrademarkGlossTable table
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

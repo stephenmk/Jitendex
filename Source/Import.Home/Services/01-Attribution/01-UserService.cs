@@ -24,7 +24,8 @@ internal sealed class UserService
 (
     HomeContext context,
     ServiceOptions options
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

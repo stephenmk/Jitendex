@@ -28,7 +28,8 @@ internal sealed class GraphicService
     HomeContext context,
     ServiceOptions options,
     GraphicTable graphicTable
-)
+) :
+    IServiceUnit
 {
     private sealed record GraphicObject
     (

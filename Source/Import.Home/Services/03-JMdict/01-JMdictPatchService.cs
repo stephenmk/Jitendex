@@ -27,7 +27,8 @@ internal sealed class JMdictPatchService
     HomeContext context,
     ServiceOptions options,
     JMdictPatchTable patchTable
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

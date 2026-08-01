@@ -26,7 +26,8 @@ internal sealed class JMdictPatchRecallService
     HomeContext context,
     ServiceOptions options,
     JMdictPatchRecallTable recallTable
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

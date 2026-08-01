@@ -26,7 +26,8 @@ internal sealed class ExampleFuriganaService
     ServiceOptions options,
     ExampleTable exampleTable,
     ExampleFuriganaTable furiganaTable
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

@@ -31,7 +31,8 @@ internal sealed class JMdictPatchDataService
     ServiceOptions options,
     JMdictPatchRevisionTable revisionTable,
     JMdictPatchGraphicTable graphicTable
-)
+) :
+    IServiceUnit
 {
     public async Task ImportAsync()
     {

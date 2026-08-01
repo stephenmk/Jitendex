@@ -47,29 +47,35 @@ internal sealed class Service
     ExampleFuriganaService exampleFuriganaService
 )
 {
+    private IServiceUnit[] Services =>
+    [
+        userService,
+        licenseService,
+
+        graphicService,
+        audioService,
+
+        jmdictPatchService,
+        jmdictPatchDataService,
+        jmdictPatchApprovalService,
+        jmdictPatchRecallService,
+        trademarkService,
+
+        characterService,
+        variantService,
+        compoundService,
+
+        exampleFuriganaService
+    ];
+
     public async Task ImportAsync()
     {
         context.RecreateDatabase();
 
         using var transaction = context.Database.BeginTransaction();
 
-        await userService.ImportAsync();
-        await licenseService.ImportAsync();
-
-        await graphicService.ImportAsync();
-        await audioService.ImportAsync();
-
-        await jmdictPatchService.ImportAsync();
-        await jmdictPatchDataService.ImportAsync();
-        await jmdictPatchApprovalService.ImportAsync();
-        await jmdictPatchRecallService.ImportAsync();
-        await trademarkService.ImportAsync();
-
-        await characterService.ImportAsync();
-        await variantService.ImportAsync();
-        await compoundService.ImportAsync();
-
-        await exampleFuriganaService.ImportAsync();
+        foreach(var service in Services)
+            await service.ImportAsync();
 
         transaction.Commit();
         context.ExecuteVacuum();
@@ -77,22 +83,7 @@ internal sealed class Service
 
     public async Task ExportAsync()
     {
-        await userService.ExportAsync();
-        await licenseService.ExportAsync();
-
-        await graphicService.ExportAsync();
-        await audioService.ExportAsync();
-
-        await jmdictPatchService.ExportAsync();
-        await jmdictPatchDataService.ExportAsync();
-        await jmdictPatchApprovalService.ExportAsync();
-        await jmdictPatchRecallService.ExportAsync();
-        await trademarkService.ExportAsync();
-
-        await characterService.ExportAsync();
-        await variantService.ExportAsync();
-        await compoundService.ExportAsync();
-
-        await exampleFuriganaService.ExportAsync();
+        foreach(var service in Services)
+            await service.ExportAsync();
     }
 }

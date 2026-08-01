@@ -63,7 +63,7 @@ internal sealed class JMdictPatchRecallService
         await using var writer = new StreamWriter(stream);
 
         foreach (var x in query)
-            writer.WriteLine($"{x.CreatedAt}\t{x.RecallerId}\t{x.PatchId}");
+            writer.WriteLine($"{x.CreatedAt:o}\t{x.RecallerId}\t{x.PatchId}");
     }
 
     private string GetTsvFilePath()

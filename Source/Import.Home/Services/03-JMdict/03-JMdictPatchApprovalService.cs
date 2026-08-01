@@ -63,7 +63,7 @@ internal sealed class JMdictPatchApprovalService
         await using var writer = new StreamWriter(stream);
 
         foreach (var x in query)
-            writer.WriteLine($"{x.CreatedAt}\t{x.ApproverId}\t{x.PatchId}");
+            writer.WriteLine($"{x.CreatedAt:o}\t{x.ApproverId}\t{x.PatchId}");
     }
 
     private string GetTsvFilePath()

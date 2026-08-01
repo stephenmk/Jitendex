@@ -17,7 +17,6 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Unicode;
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.JMdict;
 using Jitendex.Import.Home.TableRows;
@@ -88,9 +87,6 @@ internal sealed class JMdictPatchDataService
     public async Task ExportAsync()
     {
         var patchDir = GetPatchDirectory();
-        if (patchDir.Exists) patchDir.Delete(recursive: true);
-        patchDir.Create();
-
         int directoryCount = (context.JMdictPatches.Count() / 1000) + 1;
 
         for (int i = 0; i < directoryCount; i++)
@@ -138,6 +134,7 @@ internal sealed class JMdictPatchDataService
             var filepath = GetDataFilePath(patchDir.FullName, x.PatchId);
             await using var stream = File.OpenWrite(filepath);
             JsonSerializer.Serialize(stream, data, JsonSerializerOptions);
+            stream.Write("\n"u8);
         }
     }
 
@@ -155,6 +152,6 @@ internal sealed class JMdictPatchDataService
     {
         WriteIndented = true,
         IndentSize = 4,
-        Encoder = JavaScriptEncoder.Create(UnicodeRanges.CjkUnifiedIdeographs),
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
 }

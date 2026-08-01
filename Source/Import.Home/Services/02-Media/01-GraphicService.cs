@@ -15,6 +15,7 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Frozen;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.TableRows;
@@ -104,6 +105,7 @@ internal sealed class GraphicService
         var filePath = GetJsonFilePath();
         await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
         await JsonSerializer.SerializeAsync(stream, data, WriteOptions);
+        stream.Write("\n"u8);
     }
 
     private static readonly JsonSerializerOptions ReadOptions
@@ -117,6 +119,7 @@ internal sealed class GraphicService
         {
             WriteIndented = true,
             IndentSize = 4,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         };
 
     private string GetJsonFilePath()

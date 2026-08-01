@@ -16,7 +16,6 @@
 
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Unicode;
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.TableRows;
 using Jitendex.Import.Home.Tables.JMdict;
@@ -77,6 +76,7 @@ internal sealed class JMdictPatchService
         var metadataPath = GetIndexFilePath();
         await using var stream = new FileStream(metadataPath, FileMode.Create, FileAccess.Write);
         await JsonSerializer.SerializeAsync(stream, index, JsonSerializerOptions);
+        stream.Write("\n"u8);
     }
 
     private string GetIndexFilePath()
@@ -90,7 +90,7 @@ internal sealed class JMdictPatchService
     {
         WriteIndented = true,
         IndentSize = 4,
-        Encoder = JavaScriptEncoder.Create(UnicodeRanges.CjkUnifiedIdeographs),
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
 
     private sealed record PatchMetadata

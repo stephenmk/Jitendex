@@ -26,13 +26,13 @@ internal sealed class JMdictPatchRevisionTable : Table<JMdictPatchRevisionRow>
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(PatchRevision.PatchId)
+        nameof(PatchRevision.PatchId),
+        nameof(PatchRevision.JsonDiff),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(PatchRevision.PatchId),
-        nameof(PatchRevision.JsonDiff),
+        nameof(PatchRevision.PatchId)
     ];
 
     protected override object?[] ParameterValues(JMdictPatchRevisionRow row) =>

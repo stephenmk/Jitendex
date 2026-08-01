@@ -34,7 +34,7 @@ internal sealed class Service
     GraphicService graphicService,
     AudioService audioService,
 
-    JMdictPatchService jmdictPatchService,
+    JMdictPatchIndexService jmdictPatchService,
     JMdictPatchDataService jmdictPatchDataService,
     JMdictPatchApprovalService jmdictPatchApprovalService,
     JMdictPatchRecallService jmdictPatchRecallService,

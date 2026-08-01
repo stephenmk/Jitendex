@@ -86,7 +86,7 @@ internal static class ServiceProvider
             .AddTransient<JMdictPatchRecallTable>()
             .AddTransient<TrademarkGlossTable>()
             // Services
-            .AddTransient<JMdictPatchService>()
+            .AddTransient<JMdictPatchIndexService>()
             .AddTransient<JMdictPatchDataService>()
             .AddTransient<JMdictPatchApprovalService>()
             .AddTransient<JMdictPatchRecallService>()

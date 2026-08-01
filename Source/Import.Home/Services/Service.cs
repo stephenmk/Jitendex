@@ -47,7 +47,26 @@ internal sealed class Service
     ExampleFuriganaService exampleFuriganaService
 )
 {
-    private IServiceUnit[] Services =>
+    public async Task ImportAsync()
+    {
+        context.RecreateDatabase();
+
+        await using var transaction = context.Database.BeginTransaction();
+
+        foreach (var unit in ServiceUnits)
+            await unit.ImportAsync();
+
+        transaction.Commit();
+        context.ExecuteVacuum();
+    }
+
+    public async Task ExportAsync()
+    {
+        foreach (var unit in ServiceUnits)
+            await unit.ExportAsync();
+    }
+
+    private IServiceUnit[] ServiceUnits =>
     [
         userService,
         licenseService,
@@ -67,23 +86,4 @@ internal sealed class Service
 
         exampleFuriganaService
     ];
-
-    public async Task ImportAsync()
-    {
-        context.RecreateDatabase();
-
-        using var transaction = context.Database.BeginTransaction();
-
-        foreach(var service in Services)
-            await service.ImportAsync();
-
-        transaction.Commit();
-        context.ExecuteVacuum();
-    }
-
-    public async Task ExportAsync()
-    {
-        foreach(var service in Services)
-            await service.ExportAsync();
-    }
 }

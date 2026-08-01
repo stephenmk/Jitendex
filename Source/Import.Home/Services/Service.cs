@@ -27,24 +27,19 @@ namespace Jitendex.Import.Home.Services;
 internal sealed class Service
 (
     HomeContext context,
-
     UserService userService,
     LicenseService licenseService,
-
     GraphicService graphicService,
     AudioService audioService,
-
     JMdictPatchIndexService jmdictPatchService,
     JMdictPatchDataService jmdictPatchDataService,
     JMdictPatchApprovalService jmdictPatchApprovalService,
     JMdictPatchRecallService jmdictPatchRecallService,
     TrademarkService trademarkService,
-
+    ExampleFuriganaService exampleFuriganaService,
     CharacterService characterService,
     VariantService variantService,
-    CompoundService compoundService,
-
-    ExampleFuriganaService exampleFuriganaService
+    CompoundService compoundService
 )
 {
     public async Task ImportAsync()
@@ -68,22 +63,27 @@ internal sealed class Service
 
     private IServiceUnit[] ServiceUnits =>
     [
+        // 01 Attribution
         userService,
         licenseService,
 
+        // 02 Media
         graphicService,
         audioService,
 
+        // 03 JMdict
         jmdictPatchService,
         jmdictPatchDataService,
         jmdictPatchApprovalService,
         jmdictPatchRecallService,
         trademarkService,
 
+        // 04 Tatoeba
+        exampleFuriganaService,
+
+        // 05 Kanwa
         characterService,
         variantService,
         compoundService,
-
-        exampleFuriganaService
     ];
 }

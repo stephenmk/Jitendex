@@ -31,13 +31,15 @@ public sealed class Patch
     public required int AuthorId { get; init; }
     public required string AuthorComment { get; init; }
     public required int? PreviousPatchId { get; init; }
-    public required byte[]? JsonDiff { get; init; }
 
     [ForeignKey(nameof(AuthorId))]
     public User Author { get; init; } = null!;
 
     [ForeignKey(nameof(PreviousPatchId))]
     public Patch? PreviousPatch { get; init; }
+
+    [InverseProperty(nameof(PatchRevision.Patch))]
+    public PatchRevision? Revision { get; set; }
 
     [InverseProperty(nameof(PatchGraphic.Patch))]
     public List<PatchGraphic> GraphicPatches { get; init; } = [];

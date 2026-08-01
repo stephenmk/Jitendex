@@ -85,8 +85,8 @@ internal sealed class Service
 
         await jmdictPatchService.ExportAsync();
         await jmdictPatchDataService.ExportAsync();
-        await jmdictPatchApprovalService.ImportAsync();
-        await jmdictPatchRecallService.ImportAsync();
+        await jmdictPatchApprovalService.ExportAsync();
+        await jmdictPatchRecallService.ExportAsync();
         await trademarkService.ExportAsync();
 
         await characterService.ExportAsync();

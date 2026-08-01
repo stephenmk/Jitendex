@@ -18,9 +18,9 @@ using System.Collections.Frozen;
 using System.Text.Json;
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.TableRows;
-using Jitendex.Import.Home.Tables.Imagery;
+using Jitendex.Import.Home.Tables.Media;
 
-namespace Jitendex.Import.Home.Services.Imagery;
+namespace Jitendex.Import.Home.Services.Media;
 
 internal sealed class GraphicService
 (
@@ -125,5 +125,4 @@ internal sealed class GraphicService
             options.GetDirectory(DataDirectory.Graphics).FullName,
             "index.json"
         );
-
 }

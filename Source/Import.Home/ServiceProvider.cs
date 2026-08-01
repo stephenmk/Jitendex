@@ -17,15 +17,14 @@
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Services;
 using Jitendex.Import.Home.Services.Attribution;
-using Jitendex.Import.Home.Services.Imagery;
 using Jitendex.Import.Home.Services.JMdict;
 using Jitendex.Import.Home.Services.Kanwa;
+using Jitendex.Import.Home.Services.Media;
 using Jitendex.Import.Home.Services.Sound;
 using Jitendex.Import.Home.Services.Tatoeba;
-using Jitendex.Import.Home.Tables.Imagery;
 using Jitendex.Import.Home.Tables.JMdict;
 using Jitendex.Import.Home.Tables.Kanwa;
-using Jitendex.Import.Home.Tables.Sound;
+using Jitendex.Import.Home.Tables.Media;
 using Jitendex.Import.Home.Tables.Tatoeba;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -43,43 +42,11 @@ internal static class ServiceProvider
         // Database context.
         .AddDbContext<HomeContext>()
 
-        // Database tables.
-        .AddTransient<CharacterTable>()
-        .AddTransient<CharacterReadingTable>()
-        .AddTransient<CharacterReadingTypeTable>()
-        .AddTransient<CompoundTable>()
-        .AddTransient<CompoundReadingTable>()
-        .AddTransient<CompoundReadingTypeTable>()
-        .AddTransient<VariantTable>()
-        .AddTransient<VariantTypeTable>()
-        .AddTransient<TrademarkGlossTable>()
-        .AddTransient<JMdictPatchTable>()
-        .AddTransient<JMdictPatchApprovalTable>()
-        .AddTransient<JMdictPatchRecallTable>()
-        .AddTransient<ExampleTable>()
-        .AddTransient<ExampleFuriganaTable>()
-        .AddTransient<GraphicTable>()
-        .AddTransient<JMdictPatchGraphicTable>()
-        .AddTransient<KanjiAliveAudioTable>()
-
-        // Import services.
-        .AddTransient<UserService>()
-        .AddTransient<LicenseService>()
-
-        .AddTransient<GraphicService>()
-
-        .AddTransient<JMdictPatchService>()
-        .AddTransient<JMdictPatchApprovalService>()
-        .AddTransient<JMdictPatchRecallService>()
-        .AddTransient<TrademarkService>()
-
-        .AddTransient<CharacterService>()
-        .AddTransient<VariantService>()
-        .AddTransient<CompoundService>()
-
-        .AddTransient<ExampleFuriganaService>()
-
-        .AddTransient<AudioService>()
+        .AddAttributionServices()
+        .AddMediaServices()
+        .AddJMdictServices()
+        .AddTatoebaServices()
+        .AddKanwaServices()
 
         // Logging
         .AddLogging(static builder =>
@@ -94,4 +61,58 @@ internal static class ServiceProvider
         .AddTransient<Service>()
         .BuildServiceProvider()
         .GetRequiredService<Service>();
+
+    private static IServiceCollection AddAttributionServices(this IServiceCollection collection)
+        => collection
+            .AddTransient<UserService>()
+            .AddTransient<LicenseService>();
+
+    private static IServiceCollection AddMediaServices(this IServiceCollection collection)
+        => collection
+            // Database tables.
+            .AddTransient<GraphicTable>()
+            .AddTransient<AudioTable>()
+            // Services
+            .AddTransient<GraphicService>()
+            .AddTransient<AudioService>();
+
+    private static IServiceCollection AddJMdictServices(this IServiceCollection collection)
+        => collection
+            // Database tables.
+            .AddTransient<JMdictPatchTable>()
+            .AddTransient<JMdictPatchRevisionTable>()
+            .AddTransient<JMdictPatchGraphicTable>()
+            .AddTransient<JMdictPatchApprovalTable>()
+            .AddTransient<JMdictPatchRecallTable>()
+            .AddTransient<TrademarkGlossTable>()
+            // Services
+            .AddTransient<JMdictPatchService>()
+            .AddTransient<JMdictPatchDataService>()
+            .AddTransient<JMdictPatchApprovalService>()
+            .AddTransient<JMdictPatchRecallService>()
+            .AddTransient<TrademarkService>();
+
+    private static IServiceCollection AddTatoebaServices(this IServiceCollection collection)
+        => collection
+            // Database Tables
+            .AddTransient<ExampleTable>()
+            .AddTransient<ExampleFuriganaTable>()
+            // Services
+            .AddTransient<ExampleFuriganaService>();
+
+    private static IServiceCollection AddKanwaServices(this IServiceCollection collection)
+        => collection
+            // Database tables.
+            .AddTransient<CharacterTable>()
+            .AddTransient<CharacterReadingTable>()
+            .AddTransient<CharacterReadingTypeTable>()
+            .AddTransient<CompoundTable>()
+            .AddTransient<CompoundReadingTable>()
+            .AddTransient<CompoundReadingTypeTable>()
+            .AddTransient<VariantTable>()
+            .AddTransient<VariantTypeTable>()
+            // Services
+            .AddTransient<CharacterService>()
+            .AddTransient<CompoundService>()
+            .AddTransient<VariantService>();
 }

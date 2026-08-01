@@ -16,9 +16,9 @@
 
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.Services.Attribution;
-using Jitendex.Import.Home.Services.Imagery;
 using Jitendex.Import.Home.Services.JMdict;
 using Jitendex.Import.Home.Services.Kanwa;
+using Jitendex.Import.Home.Services.Media;
 using Jitendex.Import.Home.Services.Sound;
 using Jitendex.Import.Home.Services.Tatoeba;
 
@@ -32,8 +32,10 @@ internal sealed class Service
     LicenseService licenseService,
 
     GraphicService graphicService,
+    AudioService audioService,
 
     JMdictPatchService jmdictPatchService,
+    JMdictPatchDataService jmdictPatchDataService,
     JMdictPatchApprovalService jmdictPatchApprovalService,
     JMdictPatchRecallService jmdictPatchRecallService,
     TrademarkService trademarkService,
@@ -41,8 +43,8 @@ internal sealed class Service
     CharacterService characterService,
     VariantService variantService,
     CompoundService compoundService,
-    ExampleFuriganaService exampleFuriganaService,
-    AudioService audioService
+
+    ExampleFuriganaService exampleFuriganaService
 )
 {
     public async Task ImportAsync()
@@ -55,8 +57,10 @@ internal sealed class Service
         await licenseService.ImportAsync();
 
         await graphicService.ImportAsync();
+        await audioService.ImportAsync();
 
         await jmdictPatchService.ImportAsync();
+        await jmdictPatchDataService.ImportAsync();
         await jmdictPatchApprovalService.ImportAsync();
         await jmdictPatchRecallService.ImportAsync();
         await trademarkService.ImportAsync();
@@ -66,7 +70,6 @@ internal sealed class Service
         await compoundService.ImportAsync();
 
         await exampleFuriganaService.ImportAsync();
-        await audioService.ImportAsync();
 
         transaction.Commit();
         context.ExecuteVacuum();
@@ -78,8 +81,10 @@ internal sealed class Service
         await licenseService.ExportAsync();
 
         await graphicService.ExportAsync();
+        await audioService.ExportAsync();
 
         await jmdictPatchService.ExportAsync();
+        await jmdictPatchDataService.ExportAsync();
         await jmdictPatchApprovalService.ImportAsync();
         await jmdictPatchRecallService.ImportAsync();
         await trademarkService.ExportAsync();
@@ -89,6 +94,5 @@ internal sealed class Service
         await compoundService.ExportAsync();
 
         await exampleFuriganaService.ExportAsync();
-        await audioService.ExportAsync();
     }
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, KanjiAliveAudioTable.cs, is part of Jitendex.
+// This file, GraphicTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -15,39 +15,43 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.Home.Entities.Sound;
+using Jitendex.Data.Home.Entities.Imagery;
 using Jitendex.Import.Home.TableRows;
 
-namespace Jitendex.Import.Home.Tables.Sound;
+namespace Jitendex.Import.Home.Tables.Media;
 
-internal sealed class KanjiAliveAudioTable : Table<KanjiAliveAudioRow>
+internal sealed class GraphicTable : Table<GraphicRow>
 {
-    protected override string Name { get; } = nameof(KanjiAliveAudio);
+    protected override string Name { get; } = nameof(Graphic);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(KanjiAliveAudio.Filename),
-        nameof(KanjiAliveAudio.EntryId),
-        nameof(KanjiAliveAudio.ReadingText),
-        nameof(KanjiAliveAudio.KanjiFormText),
-        nameof(KanjiAliveAudio.Suffix),
-        nameof(KanjiAliveAudio.PitchAccent),
-        nameof(KanjiAliveAudio.FileData),
+        nameof(Graphic.Id),
+        nameof(Graphic.LicenseId),
+        nameof(Graphic.Cropped),
+        nameof(Graphic.PageUrl),
+        nameof(Graphic.FileUrl),
+        nameof(Graphic.Author),
+        nameof(Graphic.AuthorUrl),
+        nameof(Graphic.Title),
+        nameof(Graphic.FileData),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(KanjiAliveAudio.Filename)
+        nameof(Graphic.Id)
     ];
 
-    protected override object?[] ParameterValues(KanjiAliveAudioRow row) =>
+    protected override object?[] ParameterValues(GraphicRow row) =>
     [
-        row.Filename,
-        row.EntryId,
-        row.ReadingText,
-        row.KanjiFormText,
-        row.Suffix,
-        row.PitchAccent,
+        row.Id,
+        row.LicenseId,
+        row.Cropped,
+        row.PageUrl,
+        row.FileUrl,
+        row.Author,
+        row.AuthorUrl,
+        row.Title,
         row.FileData,
     ];
 }

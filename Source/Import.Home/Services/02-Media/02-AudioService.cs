@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, AudioService.cs, is part of Jitendex.
+// This file, 02-AudioService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -16,7 +16,7 @@
 
 using Jitendex.Data.Home;
 using Jitendex.Import.Home.TableRows;
-using Jitendex.Import.Home.Tables.Sound;
+using Jitendex.Import.Home.Tables.Media;
 
 namespace Jitendex.Import.Home.Services.Sound;
 
@@ -24,7 +24,7 @@ internal sealed class AudioService
 (
     HomeContext context,
     ServiceOptions options,
-    KanjiAliveAudioTable table
+    AudioTable table
 )
 {
     public async Task ImportAsync()

@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, ImageryRows.cs, is part of Jitendex.
+// This file, MediaRows.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -26,5 +26,16 @@ internal sealed record GraphicRow
     string Author,
     string? AuthorUrl,
     string? Title,
+    byte[] FileData
+);
+
+internal sealed record KanjiAliveAudioRow
+(
+    string Filename,
+    int EntryId,
+    string ReadingText,
+    string KanjiFormText,
+    string? Suffix,
+    int? PitchAccent,
     byte[] FileData
 );

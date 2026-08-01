@@ -56,7 +56,7 @@ internal sealed class JMdictPatchDataService
         {
             var data = (JsonObject)JsonNode.Parse(bytes)!;
 
-            if (data.TryGetPropertyValue("patch", out var patch))
+            if (data.TryGetPropertyValue("revision", out var patch))
             {
                 revisionRows.Add(new(
                     patchId,
@@ -99,7 +99,7 @@ internal sealed class JMdictPatchDataService
             .Select(static x => new
             {
                 PatchId = x.Id,
-                Patch = x.Revision != null
+                Revision = x.Revision != null
                     ? x.Revision.JsonDiff
                     : null,
                 Graphics = x.GraphicPatches
@@ -116,8 +116,8 @@ internal sealed class JMdictPatchDataService
         {
             var data = new JsonObject();
 
-            if (x.Patch is not null)
-                data["patch"] = JsonNode.Parse(x.Patch);
+            if (x.Revision is not null)
+                data["revision"] = JsonNode.Parse(x.Revision);
 
             var graphics = new JsonArray();
             foreach (var graphic in x.Graphics)

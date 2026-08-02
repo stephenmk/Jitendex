@@ -42,7 +42,7 @@ public sealed class Patch
     public PatchRevision? Revision { get; set; }
 
     [InverseProperty(nameof(PatchGraphic.Patch))]
-    public List<PatchGraphic> GraphicPatches { get; init; } = [];
+    public List<PatchGraphic> Graphics { get; init; } = [];
 
     [InverseProperty(nameof(PatchApproval.Patch))]
     public ICollection<PatchApproval> Approvals { get; init; } = [];

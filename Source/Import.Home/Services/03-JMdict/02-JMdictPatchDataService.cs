@@ -102,7 +102,7 @@ internal sealed class JMdictPatchDataService
                 Revision = x.Revision != null
                     ? x.Revision.JsonDiff
                     : null,
-                Graphics = x.GraphicPatches
+                Graphics = x.Graphics
                     .OrderBy(static g => g.Order)
                     .Select(static g => new
                     {

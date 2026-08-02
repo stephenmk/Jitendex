@@ -33,5 +33,5 @@ public sealed class Graphic
     public string? Title { get; set; }
 
     [ForeignKey(nameof(LicenceId))]
-    public GraphicLicense License { get; set; } = null!;
+    public License License { get; set; } = null!;
 }

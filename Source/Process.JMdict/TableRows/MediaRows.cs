@@ -16,7 +16,7 @@
 
 namespace Jitendex.Process.JMdict.TableRows;
 
-internal sealed record GraphicLicenseRow
+internal sealed record LicenseRow
 (
     int Id,
     string Name,

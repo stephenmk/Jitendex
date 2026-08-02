@@ -95,7 +95,7 @@ internal static class ServiceProvider
         .AddTransient<ReadingReferenceTable>()
         .AddTransient<KanjiFormReferenceTable>()
         .AddTransient<GraphicTable>()
-        .AddTransient<GraphicLicenseTable>()
+        .AddTransient<LicenseTable>()
         .AddTransient<SenseGraphicTable>()
         .AddTransient<CompoundTable>()
         .AddTransient<CompoundReadingTable>()

@@ -102,7 +102,7 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
 
     #region Media
     public DbSet<Graphic> Graphics { get; set; } = null!;
-    public DbSet<GraphicLicense> GraphicLicenses { get; set; } = null!;
+    public DbSet<License> GraphicLicenses { get; set; } = null!;
     public DbSet<SenseGraphic> SenseGraphics { get; set; } = null!;
     #endregion
 

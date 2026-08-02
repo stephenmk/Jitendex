@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, GraphicLicense.cs, is part of Jitendex.
+// This file, License.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -19,8 +19,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Media;
 
-[Table(nameof(GraphicLicense))]
-public sealed class GraphicLicense
+[Table(nameof(License))]
+public sealed class License
 {
     [Key]
     public required int Id { get; init; }

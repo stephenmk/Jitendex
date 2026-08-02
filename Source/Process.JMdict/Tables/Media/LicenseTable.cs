@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, GraphicLicenseTable.cs, is part of Jitendex.
+// This file, LicenseTable.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -20,23 +20,23 @@ using Jitendex.Process.JMdict.TableRows;
 
 namespace Jitendex.Process.JMdict.Tables.Media;
 
-internal sealed class GraphicLicenseTable : Table<GraphicLicenseRow>
+internal sealed class LicenseTable : Table<LicenseRow>
 {
-    protected override string Name { get; } = nameof(GraphicLicense);
+    protected override string Name { get; } = nameof(License);
 
     protected override ImmutableArray<string> ColumnNames { get; } =
     [
-        nameof(GraphicLicense.Id),
-        nameof(GraphicLicense.Name),
-        nameof(GraphicLicense.InfoUrl),
+        nameof(License.Id),
+        nameof(License.Name),
+        nameof(License.InfoUrl),
     ];
 
     protected override ImmutableArray<string> KeyColNames { get; } =
     [
-        nameof(GraphicLicense.Id)
+        nameof(License.Id)
     ];
 
-    protected override object?[] ParameterValues(GraphicLicenseRow row) =>
+    protected override object?[] ParameterValues(LicenseRow row) =>
     [
         row.Id,
         row.Name,

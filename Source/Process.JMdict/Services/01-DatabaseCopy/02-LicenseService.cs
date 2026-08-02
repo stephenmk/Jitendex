@@ -25,18 +25,19 @@ internal class LicenseService
 (
     HomeContext homeContext,
     JMdictForkContext forkContext,
-    GraphicLicenseTable table
+    LicenseTable table
 )
 {
     public void Write()
     {
         var rows = homeContext.Licenses
-            .Select(static l => new GraphicLicenseRow
+            .Select(static l => new LicenseRow
             (
                 l.Id,
                 l.Name,
                 l.InfoUrl
             ));
+
         table.InsertItems(forkContext, rows);
     }
 }

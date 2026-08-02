@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, MediaRows.cs, is part of Jitendex.
+// This file, 02-LicenseService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -14,23 +14,29 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-namespace Jitendex.Process.JMdict.TableRows;
+using Jitendex.Data.Home;
+using Jitendex.Data.JMdict;
+using Jitendex.Process.JMdict.TableRows;
+using Jitendex.Process.JMdict.Tables.Media;
 
-internal sealed record GraphicLicenseRow
-(
-    int Id,
-    string Name,
-    string InfoUrl
-);
+namespace Jitendex.Process.JMdict.Services.DatabaseCopy;
 
-internal sealed record GraphicRow
+internal class LicenseService
 (
-    int Id,
-    int LicenseId,
-    bool Cropped,
-    string PageUrl,
-    string FileUrl,
-    string Author,
-    string? AuthorUrl,
-    string? Title
-);
+    HomeContext homeContext,
+    JMdictForkContext forkContext,
+    GraphicLicenseTable table
+)
+{
+    public void Write()
+    {
+        var rows = homeContext.Licenses
+            .Select(static l => new GraphicLicenseRow
+            (
+                l.Id,
+                l.Name,
+                l.InfoUrl
+            ));
+        table.InsertItems(forkContext, rows);
+    }
+}

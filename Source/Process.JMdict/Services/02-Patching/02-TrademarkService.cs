@@ -24,14 +24,18 @@ namespace Jitendex.Process.JMdict.Services.Patching;
 internal partial class TrademarkService
 (
     ILogger<TrademarkService> logger,
-    JMdictForkContext forkContext,
-    HomeContext homeContext
+    HomeContext homeContext,
+    JMdictForkContext forkContext
 )
 {
     public void Write()
     {
         var textToReplacement = homeContext.TrademarkGlosses
-            .Select(static g => new { Key = g.OriginalText, Value = g.ReplacementText })
+            .Select(static g => new
+            {
+                Key = g.OriginalText,
+                Value = g.ReplacementText,
+            })
             .ToFrozenDictionary(static x => x.Key, static x => x.Value);
 
         var trademarkGlosses = forkContext.GlossTypes

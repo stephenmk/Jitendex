@@ -14,187 +14,106 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-using System.Collections.Frozen;
 using System.Text.Json;
-using Jitendex.Data.Home;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Dto.JMdict;
 using Microsoft.AspNetCore.JsonPatch.SystemTextJson;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Jitendex.Process.JMdict.Services.Patching;
 
-internal partial class PatchService
+internal class PatchService
 (
-    ILogger<PatchService> logger,
     JMdictContext jmdictContext,
     JMdictForkContext forkContext,
-    HomeContext homeContext,
-    PatchRebaser rebaser
+    PatchDateChecker dateChecker,
+    PatchStacker patchStacker,
+    PatchStackSquasher stackSquasher,
+    PatchRebaser patchRebaser
 )
 {
-    private sealed record PatchData
-    (
-        int Id,
-        DateOnly Date,
-        byte[] Json
-    );
-
     public void Write()
     {
-        var patchStacks = GetPatchStacks();
-        var seqToLatestRevisionDate = GetSequenceIdToLatestRevisionDate(patchStacks.Keys);
-        var sequences = SequenceDictionaryLoader.Load(jmdictContext, patchStacks.Keys);
-
-        foreach (var (seqId, stack) in patchStacks)
+        foreach (var stack in patchStacker.EnumeratePatchStacks())
         {
-            var sequence = sequences[seqId];
-            var date = seqToLatestRevisionDate[seqId];
-            if (ApplyPatchStack(ref sequence, date, stack) is int patchId)
+            var newPatchDate = dateChecker.CheckPatchDate(stack.Peek());
+
+            // Validate and squash the patch sequence.
+            if (GetPatchFromStack(stack) is not PatchData patch)
+                continue;
+
+            if (newPatchDate.HasValue)
             {
-                var patchedEntry = sequence.Entry?.ToEntry(seqId);
-                forkContext.Entries
-                    .Where(e => e.Id == seqId)
-                    .ExecuteDelete();
-                var seq = forkContext.Sequences
-                    .Where(s => s.Id == seqId)
-                    .First();
-                seq.Entry = patchedEntry;
-                seq.Patch = new() { SequenceId = seqId, PatchId = patchId };
+                // Patch is outdated and needs to be reapproved.
+                patchRebaser.Write(patch, newPatchDate.Value);
+                continue;
             }
+
+            WriteRevision(patch);
+            WriteGraphics(patch);
         }
 
         forkContext.SaveChanges();
     }
 
-    private Dictionary<int, Stack<PatchData>> GetPatchStacks()
+    private PatchData? GetPatchFromStack(Stack<PatchData> stack)
     {
-        var sequenceIdToStack = new Dictionary<int, Stack<PatchData>>();
+        const string emptyErrorMessage
+            = $"All collections enumerated by `{nameof(patchStacker)}` are expected to have at least one item.";
 
-        var validDates = forkContext.FileHeaders
-            .Select(static f => f.Date)
-            .ToFrozenSet();
+        if (!stack.Any())
+            throw new InvalidOperationException(emptyErrorMessage);
 
-        var patches = homeContext.JMdictPatches
-            .Select(static p => new
-            {
-                Key = p.Id,
-                Value = new { p.Id, p.SequenceId, p.SequenceDate, p.JsonDiff, p.PreviousPatchId }
-            })
-            .ToFrozenDictionary(static x => x.Key, static x => x.Value);
+        // Squash even if there's only one patch,
+        // because this also validates the patch.
+        else if (stackSquasher.SquashStack(stack) is PatchData squashedPatch)
+            return squashedPatch;
 
-        var recalledPatches = homeContext.JMdictPatchRecalls
-            .GroupBy(static r => r.PatchId)
-            .Select(static group => new
-            {
-                group.Key,
-                Value = group.Max(static r => r.CreatedAt),
-            })
-            .ToFrozenDictionary(static x => x.Key, static x => x.Value);
-
-        var patchApprovals = homeContext.JMdictPatchApprovals
-            .OrderByDescending(static a => a.CreatedAt)
-            .Select(static a => new { a.PatchId, a.CreatedAt });
-
-        foreach (var approval in patchApprovals)
-        {
-            if (recalledPatches.TryGetValue(approval.PatchId, out var recalledAt))
-            {
-                if (approval.CreatedAt < recalledAt)
-                {
-                    continue;
-                }
-            }
-            var patch = patches[approval.PatchId];
-            var sequenceId = patch.SequenceId;
-            if (sequenceIdToStack.ContainsKey(sequenceId))
-            {
-                continue;
-            }
-            var stack = new Stack<PatchData>();
-            while (patch is not null)
-            {
-                if (validDates.Contains(patch.SequenceDate) is false)
-                {
-                    LogInvalidFileDate(patch.Id, patch.SequenceDate);
-                    return [];
-                }
-                var patchData = new PatchData(patch.Id, patch.SequenceDate, patch.Json);
-                stack.Push(patchData);
-                patch = patch.PreviousPatchId.HasValue
-                    ? patches[patch.PreviousPatchId.Value]
-                    : null;
-            }
-            sequenceIdToStack[sequenceId] = stack;
-        }
-
-        return sequenceIdToStack;
+        else
+            return null;
     }
 
-    private FrozenDictionary<int, DateOnly> GetSequenceIdToLatestRevisionDate(IEnumerable<int> sequenceIds)
-        => forkContext.Sequences
-            .Where(s => sequenceIds.Contains(s.Id))
-            .Select(static s => new
-            {
-                Key = s.Id,
-                DefaultValue = s.OriginFile.Date,
-                Value = s.Revisions.Max(static r => (DateOnly?)r.FileHeader.Date)
-            })
-            .ToFrozenDictionary(static x => x.Key, static x => x.Value ?? x.DefaultValue);
-
-    private int? ApplyPatchStack(ref SequenceDto sequence, DateOnly sequenceDate, Stack<PatchData> stack)
+    private void WriteRevision(PatchData patch)
     {
-        bool outdated = false;
-        int finalPatchId = stack.Peek().Id;
-        while (stack.Count > 0)
+        if (patch.Revision is null)
+            return;
+
+        var sequence = SequenceLoader.LoadSequence(jmdictContext, patch.SequenceId);
+        var patchDoc = JsonSerializer.Deserialize<JsonPatchDocument<SequenceDto>>(patch.Revision)!;
+        patchDoc.ApplyTo(sequence);
+
+        var patchedEntry = sequence.Entry?.ToEntry(patch.SequenceId);
+
+        forkContext.Entries
+            .Where(e => e.Id == patch.SequenceId)
+            .ExecuteDelete();
+
+        var seq = forkContext.Sequences
+            .Where(s => s.Id == patch.SequenceId)
+            .First();
+
+        seq.Entry = patchedEntry;
+
+        seq.Patch = new()
         {
-            var patch = stack.Pop();
-            finalPatchId = patch.Id;
+            SequenceId = patch.SequenceId,
+            PatchId = patch.Id,
+        };
+    }
 
-            if (!sequenceDate.Equals(patch.Date))
+    private void WriteGraphics(PatchData patch)
+    {
+        int i = 0;
+        foreach (var graphic in patch.Graphics)
+        {
+            forkContext.SenseGraphics.Add(new()
             {
-                outdated = true;
-                LogOutdatedPatch(patch.Id, sequence.Id, patch.Date, sequenceDate);
-            }
-
-            var patchDoc = JsonSerializer.Deserialize<JsonPatchDocument<SequenceDto>>(patch.Json);
-            if (patchDoc is null)
-            {
-                LogDeserializationError(patch.Id);
-                return null;
-            }
-
-            var patchError = false;
-            patchDoc.ApplyTo(sequence, logErrorAction: action =>
-            {
-                patchError = true;
-                LogPatchError(patch.Id, action.ErrorMessage);
+                EntryId = patch.SequenceId,
+                Order = i++,
+                SenseOrder = graphic.SenseOrder,
+                GraphicId = graphic.GraphicId,
             });
-
-            if (patchError)
-            {
-                return null;
-            }
         }
-        if (outdated)
-        {
-            rebaser.Write(sequence, sequenceDate);
-        }
-        return finalPatchId;
     }
-
-    [LoggerMessage(LogLevel.Error, "Invalid sequence date {Date} in patch ID #{Id}")]
-    private partial void LogInvalidFileDate(int id, DateOnly date);
-
-    [LoggerMessage(LogLevel.Warning,
-    "Patch ID {PatchId} for sequence #{SeqId} targets file version {PatchDate}, but the the current version is {SeqDate}")]
-    private partial void LogOutdatedPatch(int patchId, int seqId, DateOnly patchDate, DateOnly seqDate);
-
-    [LoggerMessage(LogLevel.Warning, "Unable to apply patch ID #{Id}: `{Message}`")]
-    private partial void LogPatchError(int id, string message);
-
-    [LoggerMessage(LogLevel.Error, "Unable to deserialize patch ID {Id}")]
-    private partial void LogDeserializationError(int id);
 }

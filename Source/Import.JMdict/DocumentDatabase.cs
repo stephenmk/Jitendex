@@ -156,7 +156,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
 
         using var transaction = context.Database.BeginTransaction();
 
-        var aSequences = SequenceDictionaryLoader.Load(context, sequenceIds);
+        var aSequences = SequenceLoader.LoadSequences(context, sequenceIds);
 
         var versionId = context.FileVersions
             .Where(v => v.Number == diff.Upserts.Version)
@@ -236,7 +236,7 @@ internal sealed class DocumentDatabase(ILogger<DocumentDatabase> logger, JMdictC
 
         #pragma warning restore format
 
-        var bSequences = SequenceDictionaryLoader.Load(context, sequenceIds);
+        var bSequences = SequenceLoader.LoadSequences(context, sequenceIds);
         var revisions = new List<RevisionRow>(aSequences.Count);
 
         foreach (var id in sequenceIds)

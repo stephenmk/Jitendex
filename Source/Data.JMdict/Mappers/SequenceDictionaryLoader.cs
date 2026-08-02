@@ -23,9 +23,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.Mappers;
 
-public static class SequenceDictionaryLoader
+public static class SequenceLoader
 {
-    public static Dictionary<int, SequenceDto> Load(JMdictContext context, IEnumerable<int> sequenceIds)
+    public static readonly Func<JMdictContext, int, SequenceDto> LoadSequence
+        = EF.CompileQuery(
+            (JMdictContext context, int id) =>
+                context.Sequences
+                    .AsSplitQuery()
+                    .Where(seq => seq.Id == id)
+                    .Select(RevisionlessSequenceProjection)
+                    .First());
+
+    public static Dictionary<int, SequenceDto> LoadSequences(JMdictContext context, IEnumerable<int> sequenceIds)
         => sequenceIds.Chunk(10)
             .SelectMany(ids =>
                 context.Sequences

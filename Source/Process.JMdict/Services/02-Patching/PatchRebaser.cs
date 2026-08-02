@@ -14,46 +14,60 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-using System.Text.Json;
 using Jitendex.Data.Home;
-using Jitendex.Data.Home.Entities;
-using Jitendex.Data.JMdict;
-using Jitendex.Data.JMdict.Mappers;
-using Jitendex.Dto.JMdict;
-using Jitendex.MinimalJsonDiff;
+using Jitendex.Data.Home.Entities.Attribution;
+using Jitendex.Data.Home.Entities.JMdict;
 
 namespace Jitendex.Process.JMdict.Services.Patching;
 
-internal sealed class PatchRebaser(HomeContext context, JMdictContext jmdictContext)
+internal sealed class PatchRebaser(HomeContext context)
 {
-    public void Write(SequenceDto newSequence, DateOnly sequenceDate)
+    public void Write(PatchData patchData, DateOnly newDate)
     {
         var author = GetAutomatedUser();
 
-        if (AnyExistingPatches(newSequence.Id, sequenceDate, author.Id))
-        {
+        if (AnyExistingPatches(patchData.SequenceId, newDate, author.Id))
             return;
-        }
 
-        var oldSequences = SequenceDictionaryLoader.Load(jmdictContext, [newSequence.Id]);
-        var oldSequence = oldSequences[newSequence.Id];
+        var comment = $"Rebasing patch #{patchData.Id} onto new sequence version from date {newDate}";
 
-        var json = JsonDiffer.DiffToUtf8Bytes(oldSequence, newSequence, JsonSerializerOptions);
-        var comment = $"Rebasing and squashing patches onto new sequence version from date {sequenceDate}";
-
-        context.JMdictPatches.Add(new()
+        var patch = new Patch()
         {
             Id = default,
-            SequenceId = newSequence.Id,
-            SequenceDate = sequenceDate,
+            SequenceId = patchData.SequenceId,
+            SequenceDate = newDate,
             CreatedAt = DateTime.UtcNow,
             AuthorId = author.Id,
             AuthorComment = comment,
             PreviousPatchId = null,
-            JsonDiff = json,
             Author = author,
-        });
+        };
 
+        if (patchData.Revision is not null)
+        {
+            patch.Revision = new()
+            {
+                PatchId = patch.Id,
+                JsonDiff = patchData.Revision,
+                Patch = patch,
+            };
+        }
+
+        int i = 0;
+        foreach (var graphic in patchData.Graphics)
+        {
+            patch.Graphics.Add(new()
+            {
+                PatchId = patch.Id,
+                Order = i++,
+                Operation = graphic.Operation,
+                SenseOrder = graphic.SenseOrder,
+                GraphicId = graphic.GraphicId,
+                Patch = patch,
+            });
+        }
+
+        context.JMdictPatches.Add(patch);
         context.SaveChanges();
     }
 
@@ -61,13 +75,12 @@ internal sealed class PatchRebaser(HomeContext context, JMdictContext jmdictCont
     {
         const string userName = "PatchRebaser";
 
-        var query = context.Users
-            .Where(static u => u.Name == userName);
+        var user = context.Users
+            .Where(static u => u.Name == userName)
+            .FirstOrDefault();
 
-        if (query.FirstOrDefault() is User user)
-        {
+        if (user is not null)
             return user;
-        }
 
         user = new User()
         {
@@ -79,12 +92,6 @@ internal sealed class PatchRebaser(HomeContext context, JMdictContext jmdictCont
 
         return user;
     }
-
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
-    {
-        WriteIndented = true,
-        IndentSize = 4,
-    };
 
     private bool AnyExistingPatches(int sequenceId, DateOnly sequenceDate, int authorId)
         => context.JMdictPatches

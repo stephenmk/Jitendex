@@ -17,6 +17,7 @@
 using Jitendex.Data.Home;
 using Jitendex.Data.Home.Entities.Attribution;
 using Jitendex.Data.Home.Entities.JMdict;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Process.JMdict.Services.Patching;
 
@@ -26,7 +27,7 @@ internal sealed class PatchRebaser(HomeContext context)
     {
         var author = GetAutomatedUser();
 
-        if (AnyExistingPatches(patchData.SequenceId, newDate, author.Id))
+        if (QueryAnyExistingPatches(context, patchData.SequenceId, newDate, author.Id))
             return;
 
         var comment = $"Rebasing patch #{patchData.Id} onto new sequence version from date {newDate}";
@@ -93,10 +94,12 @@ internal sealed class PatchRebaser(HomeContext context)
         return user;
     }
 
-    private bool AnyExistingPatches(int sequenceId, DateOnly sequenceDate, int authorId)
-        => context.JMdictPatches
-            .Where(p => p.SequenceId == sequenceId)
-            .Where(p => p.SequenceDate == sequenceDate)
-            .Where(p => p.AuthorId == authorId)
-            .Any();
+    private static readonly Func<HomeContext, int, DateOnly, int, bool> QueryAnyExistingPatches
+        = EF.CompileQuery(
+            static (HomeContext ctx, int sequenceId, DateOnly sequenceDate, int authorId) =>
+                ctx.JMdictPatches
+                    .Where(p => p.SequenceId == sequenceId)
+                    .Where(p => p.SequenceDate == sequenceDate)
+                    .Where(p => p.AuthorId == authorId)
+                    .Any());
 }

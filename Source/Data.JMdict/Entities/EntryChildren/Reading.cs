@@ -16,7 +16,6 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Jitendex.Data.JMdict.Entities.EntryChildren.ReadingChildren;
-using Jitendex.Data.JMdict.ForkEntities.Furigana;
 using Jitendex.Data.JMdict.ForkEntities.Links;
 using Jitendex.Data.JMdict.ForkEntities.References;
 using Microsoft.EntityFrameworkCore;

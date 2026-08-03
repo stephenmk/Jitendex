@@ -21,7 +21,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Process.JMdict.Services.Headwords;
 
-internal partial class HeadwordSenseService
+internal sealed class HeadwordSenseService
 (
     JMdictForkContext context,
     HeadwordSenseTable senseTable,
@@ -89,7 +89,7 @@ internal partial class HeadwordSenseService
                 var kanjiMatch = headword.KanjiFormOrder.HasValue && kanjiRestrs.Contains(headword.KanjiFormOrder.Value);
                 bool isMatch;
 
-                if (readingRestrs.Length > 0 && kanjiRestrs.Length > 0)
+                if (readingRestrs.Any() && kanjiRestrs.Any())
                 {
                     if (sense.ReadingRestrictionsAreForSurfaceForms)
                     {
@@ -100,11 +100,11 @@ internal partial class HeadwordSenseService
                         isMatch = readingMatch && kanjiMatch;
                     }
                 }
-                else if (readingRestrs.Length > 0)
+                else if (readingRestrs.Any())
                 {
                     isMatch = readingMatch;
                 }
-                else if (kanjiRestrs.Length > 0)
+                else if (kanjiRestrs.Any())
                 {
                     isMatch = kanjiMatch;
                 }
@@ -144,6 +144,7 @@ internal partial class HeadwordSenseService
         ruleTable.InsertItems(context, ruleRows);
     }
 
+    // TODO: Should use an enum here
     private static string? GetRule(string partOfSpeech, string surfaceForm, string? reading)
     {
         if (partOfSpeech.StartsWith("v5", StringComparison.Ordinal))
@@ -169,7 +170,7 @@ internal partial class HeadwordSenseService
             {
                 return "adj-i";
             }
-            if (reading is not null && reading.EndsWith(yoi, StringComparison.Ordinal))
+            if (reading?.EndsWith(yoi, StringComparison.Ordinal) is true)
             {
                 return "adj-i";
             }

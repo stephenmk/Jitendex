@@ -30,7 +30,7 @@ internal sealed class PatchRebaser(HomeContext context)
         if (QueryAnyExistingPatches(context, patchData.SequenceId, newDate, author.Id))
             return;
 
-        var comment = $"Rebasing patch #{patchData.Id} onto new sequence version from date {newDate}";
+        var comment = $"Rebasing patch #{patchData.Id} onto new sequence version from date {newDate:yyyy-MM-dd}.";
 
         var patch = new Patch()
         {

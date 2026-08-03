@@ -15,6 +15,7 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Json;
+using Jitendex.Data.Home.Entities.JMdict;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Dto.JMdict;
@@ -40,8 +41,7 @@ internal class PatchService
         {
             var newPatchDate = dateChecker.CheckPatchDate(stack.Peek());
 
-            // Validate and squash the patch sequence.
-            if (GetPatchFromStack(stack) is not PatchData patch)
+            if (GetNormalizedPatch(stack) is not PatchData patch)
                 continue;
 
             if (newPatchDate.HasValue)
@@ -58,7 +58,10 @@ internal class PatchService
         forkContext.SaveChanges();
     }
 
-    private PatchData? GetPatchFromStack(Stack<PatchData> stack)
+    /// <summary>
+    /// Validate and squash the patch sequence into a single patch.
+    /// </summary>
+    private PatchData? GetNormalizedPatch(Stack<PatchData> stack)
     {
         const string emptyErrorMessage
             = $"All collections enumerated by `{nameof(patchStacker)}` are expected to have at least one item.";
@@ -66,9 +69,8 @@ internal class PatchService
         if (!stack.Any())
             throw new InvalidOperationException(emptyErrorMessage);
 
-        // Squash even if there's only one patch,
-        // because this also validates the patch.
-        else if (stackSquasher.SquashStack(stack) is PatchData squashedPatch)
+        // Squash even if there's only one patch, because this also validates the patch.
+        else if (stackSquasher.Squash(stack) is PatchData squashedPatch)
             return squashedPatch;
 
         else
@@ -108,6 +110,11 @@ internal class PatchService
         int i = 0;
         foreach (var graphic in patch.Graphics)
         {
+            // All of the "remove" operations should have been
+            // squashed in the patch squasher.
+            if (graphic.Operation is not PatchGraphicOperation.Add)
+                throw new InvalidDataException();
+
             forkContext.SenseGraphics.Add(new()
             {
                 EntryId = patch.SequenceId,

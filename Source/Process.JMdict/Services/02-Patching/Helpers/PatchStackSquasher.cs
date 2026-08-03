@@ -33,7 +33,7 @@ internal sealed partial class PatchStackSquasher
     JMdictContext context
 )
 {
-    public PatchData? SquashStack(Stack<PatchData> stack)
+    public PatchData? Squash(Stack<PatchData> stack)
     {
         var sequence = SequenceLoader.LoadSequence(context, stack.Peek().SequenceId);
         var senseToGraphicIds = new Dictionary<int, List<int>>();

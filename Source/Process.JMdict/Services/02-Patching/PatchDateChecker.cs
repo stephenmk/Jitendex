@@ -32,7 +32,14 @@ internal sealed partial class PatchDateChecker
     /// <returns>The new sequence date if the patch date is outdated. Otherwise, null.</returns>
     public DateOnly? CheckPatchDate(PatchData patch)
     {
-        var sequenceDate = QueryLatestRevisionDate(context, patch.SequenceId);
+        if (QueryLatestRevisionDate(context, patch.SequenceId) is not SequenceDates dates)
+        {
+            LogMissingSequence(patch.Id, patch.SequenceId);
+            return null;
+        }
+
+        var sequenceDate = dates.GetLatest();
+
         if (sequenceDate.Equals(patch.Date))
         {
             return null;
@@ -43,16 +50,30 @@ internal sealed partial class PatchDateChecker
         }
     }
 
-    private static readonly Func<JMdictContext, int, DateOnly> QueryLatestRevisionDate
+    private static readonly Func<JMdictContext, int, SequenceDates?> QueryLatestRevisionDate
         = EF.CompileQuery(
-            static (JMdictContext ctx, int sequenceId) => ctx.Sequences
-                .AsSplitQuery()
-                .Where(s => s.Id == sequenceId)
-                .Select(static s => s.Revisions
-                    .Select(static r => r.FileHeader.Date)
-                    .Append(s.OriginFile.Date)
-                    .Max())
-                .First());
+            static (JMdictContext ctx, int sequenceId) =>
+                ctx.Sequences
+                    .AsSplitQuery()
+                    .Where(s => s.Id == sequenceId)
+                    .Select(static s => new SequenceDates
+                    (
+                        s.OriginFile.Date,
+                        s.Revisions
+                            .Select(static r => r.FileHeader.Date)
+                            .ToArray()
+                    ))
+                    .FirstOrDefault());
+
+    private sealed record SequenceDates(DateOnly OriginalDate, DateOnly[] RevisionDates)
+    {
+        public DateOnly GetLatest()
+            => RevisionDates.Any() ? RevisionDates.Max() : OriginalDate;
+    }
+
+    [LoggerMessage(LogLevel.Warning,
+    "Patch ID {PatchId} targets for sequence #{SeqId}, which does not exist in the database.")]
+    partial void LogMissingSequence(int patchId, int seqId);
 
     [LoggerMessage(LogLevel.Warning,
     "Patch ID {PatchId} for sequence #{SeqId} targets file version {PatchDate}, but the the current version is {SeqDate}")]

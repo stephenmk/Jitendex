@@ -15,10 +15,10 @@
 // If not, see <https://www.gnu.org/licenses/>.
 
 using Jitendex.Data;
-using Jitendex.Data.JMdict.ForkEntities.Furigana;
+using Jitendex.Data.JMdict.ForkEntities.Links;
 using Jitendex.Process.JMdict.TableRows;
 
-namespace Jitendex.Process.JMdict.Tables.Furigana;
+namespace Jitendex.Process.JMdict.Tables.Restrictions;
 
 internal sealed class ReadingKanjiFormBridgeTable : Table<KanjiFormBridgeRow>
 {

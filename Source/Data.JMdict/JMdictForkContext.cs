@@ -69,9 +69,10 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     #endregion
 
     #region Internal Entry Restriction Links
-    public DbSet<RestrictionLink> RestrictionLinks { get; set; } = null!;
     public DbSet<ReadingRestrictionLink> ReadingRestrictionLinks { get; set; } = null!;
     public DbSet<KanjiFormRestrictionLink> KanjiFormRestrictionLinks { get; set; } = null!;
+    public DbSet<RestrictionLink> RestrictionLinks { get; set; } = null!;
+    public DbSet<ReadingKanjiFormBridge> ReadingKanjiFormBridges { get; set; } = null!;
     #endregion
 
     #region External Entry References
@@ -81,7 +82,6 @@ public class JMdictForkContext() : SqliteContext(DatabaseFile.JMdictFork)
     #endregion
 
     #region Furigana Items
-    public DbSet<ReadingKanjiFormBridge> ReadingKanjiFormBridges { get; set; } = null!;
     public DbSet<FuriganaSegment> FuriganaSegments { get; set; } = null!;
     public DbSet<CharacterReadingLink> CharacterReadingLinks { get; set; } = null!;
     public DbSet<CompoundReadingLink> CompoundReadingLinks { get; set; } = null!;

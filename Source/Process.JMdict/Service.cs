@@ -60,7 +60,7 @@ internal sealed class Service
     DerivedReadingTypeService derivedReadingTypes,
 
     // 06
-    KanjiFormBridgeService kanjiFormBridges,
+    ReadingKanjiFormBridgeService kanjiFormBridges,
     FuriganaSegmentService furiganaSegments,
 
     // 07
@@ -128,6 +128,7 @@ internal sealed class Service
         readingRestrictions.Run01();
         kanjiFormRestrictions.Run02();
         restrictions.Run03();
+        kanjiFormBridges.Write();
     }
 
     private void Run04CrossReferenceServices()
@@ -152,9 +153,6 @@ internal sealed class Service
 
     private void Run06FuriganaServices()
     {
-        logger.LogInformation("Bridging readings with corresponding kanji forms");
-        kanjiFormBridges.Write();
-
         logger.LogInformation("Running furigana solver.");
         furiganaSegments.Write();
     }

@@ -1,7 +1,7 @@
 // Copyright (c) Stephen Kraus
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// This file, 01-KanjiFormBridgeService.cs, is part of Jitendex.
+// This file, 04-ReadingKanjiFormBridgeService.cs, is part of Jitendex.
 //
 // Jitendex is free software: you can redistribute it and/or modify it under the terms of
 // the GNU Affero General Public License as published by the Free Software Foundation,
@@ -16,16 +16,16 @@
 
 using Jitendex.Data.JMdict;
 using Jitendex.Process.JMdict.TableRows;
-using Jitendex.Process.JMdict.Tables.Furigana;
+using Jitendex.Process.JMdict.Tables.Restrictions;
 using Jitendex.JapaneseTextUtils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Process.JMdict.Services.Furigana;
+namespace Jitendex.Process.JMdict.Services.Restrictions;
 
-internal partial class KanjiFormBridgeService
+internal partial class ReadingKanjiFormBridgeService
 (
-    ILogger<KanjiFormBridgeService> logger,
+    ILogger<ReadingKanjiFormBridgeService> logger,
     JMdictForkContext context,
     ReadingKanjiFormBridgeTable table
 )
@@ -79,7 +79,7 @@ internal partial class KanjiFormBridgeService
                     CheckForRestrictionRedundancies(entry.Id, entry.KanjiFormOrders.Length, reading);
                     continue;
                 }
-                var kanjiFormOrders = reading.RestrictionOrders.Length > 0
+                var kanjiFormOrders = reading.RestrictionOrders.Any()
                     ? reading.RestrictionOrders
                     : entry.KanjiFormOrders;
                 var normalizedReading = reading.Text.KatakanaToHiragana();

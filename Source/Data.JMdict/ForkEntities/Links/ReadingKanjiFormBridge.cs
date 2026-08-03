@@ -16,10 +16,11 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Jitendex.Data.JMdict.Entities.EntryChildren;
+using Jitendex.Data.JMdict.ForkEntities.Furigana;
 using Jitendex.Data.JMdict.ForkEntities.Headwords;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Data.JMdict.ForkEntities.Furigana;
+namespace Jitendex.Data.JMdict.ForkEntities.Links;
 
 [Table(nameof(ReadingKanjiFormBridge))]
 [PrimaryKey(nameof(EntryId), nameof(ReadingOrder), nameof(KanjiFormOrder))]

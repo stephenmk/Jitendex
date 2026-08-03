@@ -84,10 +84,12 @@ internal static class ServiceProvider
             .AddTransient<RestrictionLinkTable>()
             .AddTransient<ReadingRestrictionLinkTable>()
             .AddTransient<KanjiFormRestrictionLinkTable>()
+            .AddTransient<ReadingKanjiFormBridgeTable>()
             // Services
             .AddTransient<KanjiFormRestrictionService>()
             .AddTransient<ReadingRestrictionService>()
-            .AddTransient<RestrictionService>();
+            .AddTransient<RestrictionService>()
+            .AddTransient<ReadingKanjiFormBridgeService>();
 
     private static IServiceCollection AddCrossReferencesServices(this IServiceCollection services)
         => services
@@ -124,12 +126,10 @@ internal static class ServiceProvider
     private static IServiceCollection AddFuriganaServices(this IServiceCollection services)
         => services
             // Tables
-            .AddTransient<ReadingKanjiFormBridgeTable>()
             .AddTransient<FuriganaSegmentTable>()
             .AddTransient<CharacterReadingLinkTable>()
             .AddTransient<CompoundReadingLinkTable>()
             // Services
-            .AddTransient<KanjiFormBridgeService>()
             .AddTransient<FuriganaSegmentService>();
 
     private static IServiceCollection AddHeadwordsServices(this IServiceCollection services)

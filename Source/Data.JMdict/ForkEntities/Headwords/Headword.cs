@@ -16,7 +16,7 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 using Jitendex.Data.JMdict.Entities;
-using Jitendex.Data.JMdict.ForkEntities.Furigana;
+using Jitendex.Data.JMdict.ForkEntities.Links;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Data.JMdict.ForkEntities.Headwords;
@@ -38,10 +38,10 @@ public sealed class Headword
     public Entry Entry { get; init; } = null!;
 
     [ForeignKey($"{nameof(EntryId)}, {nameof(ReadingOrder)}, {nameof(KanjiFormOrder)}")]
-    public ReadingKanjiFormBridge? ReadingKanjiFormBridge { get; set; } = null!;
+    public ReadingKanjiFormBridge? ReadingKanjiFormBridge { get; set; }
 
     [InverseProperty(nameof(HeadwordRedirect.Headword))]
-    public HeadwordRedirect? Redirect { get; set; } = null!;
+    public HeadwordRedirect? Redirect { get; set; }
 
     [InverseProperty(nameof(HeadwordSense.Headword))]
     public ICollection<HeadwordSense> Senses { get; init; } = [];

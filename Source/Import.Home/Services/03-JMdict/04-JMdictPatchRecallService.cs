@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License along with Jitendex.
 // If not, see <https://www.gnu.org/licenses/>.
 
-// using System.Globalization;
 using Jitendex.Data.Home;
+using Jitendex.Data.Home.Entities.JMdict;
 using Jitendex.Import.Home.TableRows;
 using Jitendex.Import.Home.Tables.JMdict;
 
@@ -37,6 +37,8 @@ internal sealed class JMdictPatchRecallService
 
         while (await reader.ReadLineAsync() is string line)
         {
+            if (line.StartsWith('#'))
+                continue;
             var split = line.Split('\t');
             rows.Add(new(
                 PatchId: int.Parse(split[2]),
@@ -63,9 +65,13 @@ internal sealed class JMdictPatchRecallService
         await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
         await using var writer = new StreamWriter(stream);
 
+        writer.WriteLine(TsvHeader);
         foreach (var x in query)
             writer.WriteLine($"{x.CreatedAt:o}\t{x.RecallerId}\t{x.PatchId}");
     }
+
+    private const string TsvHeader
+        = $"# {nameof(PatchRecall.CreatedAt)}\t{nameof(PatchRecall.RecallerId)}\t{nameof(PatchRecall.PatchId)}";
 
     private string GetTsvFilePath()
         => Path.Join
@@ -73,12 +79,4 @@ internal sealed class JMdictPatchRecallService
             options.GetDirectory(DataDirectory.JMdict).CreateSubdirectory("patches").FullName,
             "recalls.tsv"
         );
-
-    // private DateTime ParseUtcDateTime(string text)
-    //     => DateTime.Parse
-    //     (
-    //         text,
-    //         CultureInfo.InvariantCulture,
-    //         DateTimeStyles.AssumeUniversal
-    //     );
 }

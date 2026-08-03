@@ -17,7 +17,7 @@
 using Jitendex.Data.Home;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Process.JMdict.Services.Patching;
+namespace Jitendex.Process.JMdict.Services.Patching.Helpers;
 
 internal sealed class PatchStacker(HomeContext context)
 {

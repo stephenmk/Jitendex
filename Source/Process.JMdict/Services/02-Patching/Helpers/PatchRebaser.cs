@@ -19,7 +19,7 @@ using Jitendex.Data.Home.Entities.Attribution;
 using Jitendex.Data.Home.Entities.JMdict;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jitendex.Process.JMdict.Services.Patching;
+namespace Jitendex.Process.JMdict.Services.Patching.Helpers;
 
 internal sealed class PatchRebaser(HomeContext context)
 {

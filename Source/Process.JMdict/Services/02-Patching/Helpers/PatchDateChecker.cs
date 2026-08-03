@@ -18,7 +18,7 @@ using Jitendex.Data.JMdict;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Process.JMdict.Services.Patching;
+namespace Jitendex.Process.JMdict.Services.Patching.Helpers;
 
 internal sealed partial class PatchDateChecker
 (

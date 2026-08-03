@@ -18,6 +18,7 @@ using System.Text.Json;
 using Jitendex.Data.JMdict;
 using Jitendex.Data.JMdict.Mappers;
 using Jitendex.Dto.JMdict;
+using Jitendex.Process.JMdict.Services.Patching.Helpers;
 using Microsoft.AspNetCore.JsonPatch.SystemTextJson;
 using Microsoft.EntityFrameworkCore;
 

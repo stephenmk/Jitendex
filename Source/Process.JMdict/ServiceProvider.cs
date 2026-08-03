@@ -23,6 +23,7 @@ using Jitendex.Process.JMdict.Services.Headwords;
 using Jitendex.Process.JMdict.Services.IntegrityChecks;
 using Jitendex.Process.JMdict.Services.Kanwa;
 using Jitendex.Process.JMdict.Services.Patching;
+using Jitendex.Process.JMdict.Services.Patching.Helpers;
 using Jitendex.Process.JMdict.Services.Restrictions;
 using Jitendex.Process.JMdict.Tables.Furigana;
 using Jitendex.Process.JMdict.Tables.Headwords;

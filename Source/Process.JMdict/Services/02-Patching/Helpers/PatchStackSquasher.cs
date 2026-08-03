@@ -25,7 +25,7 @@ using Jitendex.MinimalJsonDiff;
 using Microsoft.AspNetCore.JsonPatch.SystemTextJson;
 using Microsoft.Extensions.Logging;
 
-namespace Jitendex.Process.JMdict.Services.Patching;
+namespace Jitendex.Process.JMdict.Services.Patching.Helpers;
 
 internal sealed partial class PatchStackSquasher
 (

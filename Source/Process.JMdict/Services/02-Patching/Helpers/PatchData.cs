@@ -16,7 +16,7 @@
 
 using Jitendex.Data.Home.Entities.JMdict;
 
-namespace Jitendex.Process.JMdict.Services.Patching;
+namespace Jitendex.Process.JMdict.Services.Patching.Helpers;
 
 internal sealed record PatchData
 (

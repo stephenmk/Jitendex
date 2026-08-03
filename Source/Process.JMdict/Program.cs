@@ -27,7 +27,7 @@ builder.Logging.AddSimpleConsole(static options =>
     options.TimestampFormat = "HH:mm:ss ";
 });
 
-builder.Services.AddJMdictForkService();
+builder.Services.AddJMdictProcess();
 using var host = builder.Build();
 var service = host.Services.GetRequiredService<Service>();
 service.Run();

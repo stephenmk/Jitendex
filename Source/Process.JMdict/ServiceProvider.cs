@@ -22,7 +22,6 @@ using Jitendex.Process.JMdict.Services.Furigana;
 using Jitendex.Process.JMdict.Services.Headwords;
 using Jitendex.Process.JMdict.Services.IntegrityChecks;
 using Jitendex.Process.JMdict.Services.Kanwa;
-using Jitendex.Process.JMdict.Services.Media;
 using Jitendex.Process.JMdict.Services.Patching;
 using Jitendex.Process.JMdict.Services.Restrictions;
 using Jitendex.Process.JMdict.Tables.Furigana;
@@ -37,88 +36,123 @@ namespace Jitendex.Process.JMdict;
 
 internal static class ServiceProvider
 {
-    public static IServiceCollection AddJMdictForkService(this IServiceCollection services)
+    public static IServiceCollection AddJMdictProcess(this IServiceCollection services)
         => services
 
         .AddTransient<Service>()
 
-    #region Databases
+        // Databases
         .AddDbContext<JMdictContext>()
         .AddDbContext<JMdictForkContext>()
         .AddDbContext<HomeContext>()
-    #endregion
 
-    #region Services
-        .AddTransient<DatabaseCopyService>()
+        // Process Steps
+        .AddDatabaseCopyServices()
+        .AddPatchingServices()
+        .AddRestrictionsServices()
+        .AddCrossReferencesServices()
+        .AddKanwaServices()
+        .AddFuriganaServices()
+        .AddHeadwordsServices()
+        .AddIntegrityChecksServices();
 
-        .AddTransient<PatchService>()
-        .AddTransient<PatchRebaser>()
-        .AddTransient<TrademarkService>()
+    private static IServiceCollection AddDatabaseCopyServices(this IServiceCollection services)
+        => services
+            // Tables
+            .AddTransient<GraphicTable>()
+            .AddTransient<LicenseTable>()
+            // Services
+            .AddTransient<DatabaseCopyService>()
+            .AddTransient<LicenseService>()
+            .AddTransient<GraphicService>();
 
-        .AddTransient<KanjiFormRestrictionService>()
-        .AddTransient<ReadingRestrictionService>()
-        .AddTransient<RestrictionService>()
+    private static IServiceCollection AddPatchingServices(this IServiceCollection services)
+        => services
+            // Helpers
+            .AddTransient<PatchDateChecker>()
+            .AddTransient<PatchRebaser>()
+            .AddTransient<PatchStacker>()
+            .AddTransient<PatchStackSquasher>()
+            // Services
+            .AddTransient<PatchService>()
+            .AddTransient<TrademarkService>();
 
-        .AddTransient<EntryReferenceService>()
-        .AddTransient<KanjiFormReferenceService>()
-        .AddTransient<ReadingReferenceService>()
+    private static IServiceCollection AddRestrictionsServices(this IServiceCollection services)
+        => services
+            // Tables
+            .AddTransient<RestrictionLinkTable>()
+            .AddTransient<ReadingRestrictionLinkTable>()
+            .AddTransient<KanjiFormRestrictionLinkTable>()
+            // Services
+            .AddTransient<KanjiFormRestrictionService>()
+            .AddTransient<ReadingRestrictionService>()
+            .AddTransient<RestrictionService>();
 
-        .AddTransient<CharacterReadingService>()
-        .AddTransient<CharacterService>()
-        .AddTransient<DerivedReadingService>()
-        .AddTransient<DerivedReadingTypeService>()
+    private static IServiceCollection AddCrossReferencesServices(this IServiceCollection services)
+        => services
+            // Tables
+            .AddTransient<EntryReferenceTable>()
+            .AddTransient<ReadingReferenceTable>()
+            .AddTransient<KanjiFormReferenceTable>()
+            // Services
+            .AddTransient<EntryReferenceService>()
+            .AddTransient<KanjiFormReferenceService>()
+            .AddTransient<ReadingReferenceService>();
 
-        .AddTransient<KanjiFormBridgeService>()
-        .AddTransient<FuriganaSegmentService>()
+    private static IServiceCollection AddKanwaServices(this IServiceCollection services)
+        => services
+            // Tables
+            .AddTransient<CompoundTable>()
+            .AddTransient<CompoundReadingTable>()
+            .AddTransient<CompoundReadingTypeTable>()
+            .AddTransient<CompoundCharacterTable>()
+            .AddTransient<CharacterTable>()
+            .AddTransient<CharacterReadingTable>()
+            .AddTransient<CharacterReadingTypeTable>()
+            .AddTransient<CharacterReadingOkuriganaTable>()
+            .AddTransient<DerivedCharacterReadingTable>()
+            .AddTransient<DerivedCharacterReadingTypeTable>()
+            .AddTransient<VariantTable>()
+            .AddTransient<VariantTypeTable>()
+            // Services.
+            .AddTransient<CharacterReadingService>()
+            .AddTransient<CharacterService>()
+            .AddTransient<DerivedReadingService>()
+            .AddTransient<DerivedReadingTypeService>();
 
-        .AddTransient<GraphicService>()
+    private static IServiceCollection AddFuriganaServices(this IServiceCollection services)
+        => services
+            // Tables
+            .AddTransient<ReadingKanjiFormBridgeTable>()
+            .AddTransient<FuriganaSegmentTable>()
+            .AddTransient<CharacterReadingLinkTable>()
+            .AddTransient<CompoundReadingLinkTable>()
+            // Services
+            .AddTransient<KanjiFormBridgeService>()
+            .AddTransient<FuriganaSegmentService>();
 
-        .AddTransient<HeadwordService>()
-        .AddTransient<HeadwordSenseService>()
-        .AddTransient<HeadwordReferenceService>()
+    private static IServiceCollection AddHeadwordsServices(this IServiceCollection services)
+        => services
+            // Tables
+            .AddTransient<HeadwordTable>()
+            .AddTransient<HeadwordRedirectTable>()
+            .AddTransient<HeadwordSenseTable>()
+            .AddTransient<HeadwordRuleTable>()
+            .AddTransient<HeadwordReferenceTable>()
+            .AddTransient<HeadwordTagTable>()
+            // Services
+            .AddTransient<HeadwordService>()
+            .AddTransient<HeadwordSenseService>()
+            .AddTransient<HeadwordReferenceService>();
 
-        .AddTransient<CheckForUkTagOnEntriesWithoutKanjiForms>()
-        .AddTransient<CheckForRightSingleQuotes>()
-        .AddTransient<CheckForZeroWidthSpaces>()
-        .AddTransient<CheckForUnpairedPriorityTags>()
-        .AddTransient<CheckForPriorityTagsOnRareForms>()
-        .AddTransient<CheckForTransitivityTagOnSensesGlossedAsAdverbs>()
-        .AddTransient<CheckForCrossReferencesToSearchOnlyForms>()
-        .AddTransient<CheckForRestrictionsToEveryVisibleKanjiForm>()
-    #endregion
-
-    #region Tables
-        .AddTransient<RestrictionLinkTable>()
-        .AddTransient<ReadingRestrictionLinkTable>()
-        .AddTransient<KanjiFormRestrictionLinkTable>()
-        .AddTransient<EntryReferenceTable>()
-        .AddTransient<ReadingReferenceTable>()
-        .AddTransient<KanjiFormReferenceTable>()
-        .AddTransient<GraphicTable>()
-        .AddTransient<LicenseTable>()
-        .AddTransient<SenseGraphicTable>()
-        .AddTransient<CompoundTable>()
-        .AddTransient<CompoundReadingTable>()
-        .AddTransient<CompoundReadingTypeTable>()
-        .AddTransient<CompoundCharacterTable>()
-        .AddTransient<CharacterTable>()
-        .AddTransient<CharacterReadingTable>()
-        .AddTransient<CharacterReadingTypeTable>()
-        .AddTransient<CharacterReadingOkuriganaTable>()
-        .AddTransient<DerivedCharacterReadingTable>()
-        .AddTransient<DerivedCharacterReadingTypeTable>()
-        .AddTransient<VariantTable>()
-        .AddTransient<VariantTypeTable>()
-        .AddTransient<ReadingKanjiFormBridgeTable>()
-        .AddTransient<FuriganaSegmentTable>()
-        .AddTransient<CharacterReadingLinkTable>()
-        .AddTransient<CompoundReadingLinkTable>()
-        .AddTransient<HeadwordTable>()
-        .AddTransient<HeadwordRedirectTable>()
-        .AddTransient<HeadwordSenseTable>()
-        .AddTransient<HeadwordRuleTable>()
-        .AddTransient<HeadwordReferenceTable>()
-        .AddTransient<HeadwordTagTable>()
-    #endregion
-    ;
+    private static IServiceCollection AddIntegrityChecksServices(this IServiceCollection services)
+        => services
+            .AddTransient<CheckForUkTagOnEntriesWithoutKanjiForms>()
+            .AddTransient<CheckForRightSingleQuotes>()
+            .AddTransient<CheckForZeroWidthSpaces>()
+            .AddTransient<CheckForUnpairedPriorityTags>()
+            .AddTransient<CheckForPriorityTagsOnRareForms>()
+            .AddTransient<CheckForTransitivityTagOnSensesGlossedAsAdverbs>()
+            .AddTransient<CheckForCrossReferencesToSearchOnlyForms>()
+            .AddTransient<CheckForRestrictionsToEveryVisibleKanjiForm>();
 }

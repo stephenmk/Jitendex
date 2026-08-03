@@ -22,7 +22,6 @@ using Jitendex.Process.JMdict.Services.Furigana;
 using Jitendex.Process.JMdict.Services.Headwords;
 using Jitendex.Process.JMdict.Services.IntegrityChecks;
 using Jitendex.Process.JMdict.Services.Kanwa;
-using Jitendex.Process.JMdict.Services.Media;
 using Jitendex.Process.JMdict.Services.Patching;
 using Jitendex.Process.JMdict.Services.Restrictions;
 using Microsoft.Extensions.Logging;
@@ -37,6 +36,8 @@ internal sealed class Service
 
     // 01
     DatabaseCopyService databaseCopier,
+    LicenseService licenseService,
+    GraphicService graphicService,
 
     // 02
     PatchService patches,
@@ -63,14 +64,11 @@ internal sealed class Service
     FuriganaSegmentService furiganaSegments,
 
     // 07
-    GraphicService graphicService,
-
-    // 08
     HeadwordService headwordService,
     HeadwordSenseService headwordSenseService,
     HeadwordReferenceService headwordReferenceService,
 
-    // 09
+    // 08
     CheckForUkTagOnEntriesWithoutKanjiForms checkForUkTagOnEntriesWithoutKanjiForms,
     CheckForRightSingleQuotes checkForRightSingleQuotes,
     CheckForZeroWidthSpaces checkForZeroWidthSpaces,
@@ -94,9 +92,8 @@ internal sealed class Service
         Run04CrossReferenceServices();
         Run05KanwaServices();
         Run06FuriganaServices();
-        Run07GraphicServices();
-        Run08HeadwordServices();
-        Run09IntegrityChecks();
+        Run07HeadwordServices();
+        Run08IntegrityChecks();
 
         forkTransaction.Commit();
         homeTransaction.Commit();
@@ -111,6 +108,10 @@ internal sealed class Service
     {
         logger.LogInformation("Copying data from the JMdict database file.");
         databaseCopier.CopyDataFromJmdict();
+
+        logger.LogInformation("Copying data from the home database file.");
+        licenseService.Write();
+        graphicService.Write();
     }
 
     private void Run02PatchServices()
@@ -158,13 +159,7 @@ internal sealed class Service
         furiganaSegments.Write();
     }
 
-    private void Run07GraphicServices()
-    {
-        logger.LogInformation("Transferring graphics data.");
-        graphicService.Write();
-    }
-
-    private void Run08HeadwordServices()
+    private void Run07HeadwordServices()
     {
         logger.LogInformation("Computing dictionary headwords.");
         headwordService.Write();
@@ -172,7 +167,7 @@ internal sealed class Service
         headwordReferenceService.Write();
     }
 
-    private void Run09IntegrityChecks()
+    private void Run08IntegrityChecks()
     {
         logger.LogInformation("Checking for miscellaneous data integrity issues.");
 

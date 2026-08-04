@@ -47,7 +47,11 @@ internal partial class FuriganaSegmentService
         DerivedCharacterReadingTypeId TypeId
     ) : IReadingKey;
 
-    private sealed record CompoundReadingKey(int Id, string Text) : IReadingKey;
+    private sealed record CompoundReadingKey
+    (
+        int Id,
+        string Text
+    ) : IReadingKey;
 
     public void Write()
     {
@@ -118,7 +122,14 @@ internal partial class FuriganaSegmentService
             {
                 Rune = new Rune(g.CharacterValue),
                 DerivedReadings = g.DerivedReadings
-                    .Select(static x => new { x.ReadingId, x.Text, x.IsPrefix, x.IsSuffix, x.TypeId })
+                    .Select(static x => new
+                    {
+                        x.ReadingId,
+                        x.Text,
+                        x.IsPrefix,
+                        x.IsSuffix,
+                        x.TypeId,
+                    })
             });
 
         foreach (var character in characters)

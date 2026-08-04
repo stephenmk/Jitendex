@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jitendex.Process.JMdict.Services.Headwords;
 
-internal partial class HeadwordService
+internal sealed class HeadwordService
 (
     JMdictForkContext context,
     HeadwordTable headwordTable,
@@ -165,7 +165,7 @@ internal partial class HeadwordService
                     var prios = reading.Prios.Intersect(kanjiForm.Prios);
                     var readingParts = kanjiForm.Furigana
                         .Select(static f => f.RubyText ?? f.BaseText);
-                    var normalizedReading = string.Join(string.Empty, readingParts);
+                    var normalizedReading = string.Concat(readingParts);
                     tagRows.AddRange(infos.Concat(prios)
                         .Select(name => new HeadwordTagRow(entry.Id, entryOrder, name)));
                     headwordRows.Add(new(

@@ -24,10 +24,9 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
     public ImmutableArray<ImmutableArray<SolutionPart>> Solve(in TextSlice textSlice, in ReadingState readingState)
     {
         var readings = knowledge.GetCompoundReadings(textSlice.Runes);
-        if (readings.Count == 0)
-        {
+
+        if (!readings.Any())
             return [];
-        }
 
         // Note: this is an array (mutable) of immutable arrays.
         var partsLists = new ImmutableArray<SolutionPart>[readings.Count];
@@ -36,20 +35,15 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
         foreach (var readingArray in readings)
         {
             if (readingArray[0].IsSuffix && textSlice.ContainsFirstRune)
-            {
                 continue;
-            }
-            if (readingArray[^1].IsPrefix && textSlice.ContainsFinalRune)
-            {
-                continue;
-            }
 
-            var text = string.Join(string.Empty, readingArray.Select(static r => r.Text));
+            if (readingArray[^1].IsPrefix && textSlice.ContainsFinalRune)
+                continue;
+
+            var text = string.Concat(readingArray.Select(static r => r.Text));
 
             if (!readingState.RemainingTextNormalized.StartsWith(text, StringComparison.Ordinal))
-            {
                 continue;
-            }
 
             // If the array contains one reading, then there is one
             // reading for all the runes in the surface form.
@@ -72,6 +66,7 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
             // there is one reading per surface rune.
             var partsList = new SolutionPart[readingArray.Length];
             int start = 0;
+
             for (int j = 0; j < readingArray.Length; j++)
             {
                 var partBaseText = textSlice.RawRunes[j].ToString();
@@ -87,6 +82,7 @@ internal sealed class KnownCompoundAlgorithm(IReadOnlyKnowledge knowledge)
                 };
                 start += length;
             }
+
             partsLists[i++] = ImmutableArray.Create(partsList);
         }
 

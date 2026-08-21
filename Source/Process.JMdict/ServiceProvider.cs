@@ -155,5 +155,6 @@ internal static class ServiceProvider
             .AddTransient<CheckForPriorityTagsOnRareForms>()
             .AddTransient<CheckForTransitivityTagOnSensesGlossedAsAdverbs>()
             .AddTransient<CheckForCrossReferencesToSearchOnlyForms>()
-            .AddTransient<CheckForRestrictionsToEveryVisibleKanjiForm>();
+            .AddTransient<CheckForRestrictionsToEveryVisibleKanjiForm>()
+            .AddTransient<CheckForSearchOnlyFormsAtEnd>();
 }

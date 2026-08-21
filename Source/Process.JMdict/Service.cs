@@ -76,7 +76,8 @@ internal sealed class Service
     CheckForPriorityTagsOnRareForms checkForPriorityTagsOnRareForms,
     CheckForTransitivityTagOnSensesGlossedAsAdverbs checkForTransitivityTagOnSensesGlossedAsAdverbs,
     CheckForCrossReferencesToSearchOnlyForms checkForCrossReferencesToSearchOnlyForms,
-    CheckForRestrictionsToEveryVisibleKanjiForm checkForRestrictionsToEveryVisibleKanjiForm
+    CheckForRestrictionsToEveryVisibleKanjiForm checkForRestrictionsToEveryVisibleKanjiForm,
+    CheckForSearchOnlyFormsAtEnd checkForSearchOnlyFormsAtEnd
 )
 {
     public void Run()
@@ -177,5 +178,6 @@ internal sealed class Service
         checkForTransitivityTagOnSensesGlossedAsAdverbs.Run();
         checkForCrossReferencesToSearchOnlyForms.Run();
         checkForRestrictionsToEveryVisibleKanjiForm.Run();
+        checkForSearchOnlyFormsAtEnd.Run();
     }
 }
